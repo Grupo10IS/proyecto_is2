@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block title %}
+                Mi Sitio
+            {% endblock title %}
+        </title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+              rel="stylesheet">
+        <!-- Custom CSS -->
+        <style>
+            body {
+                background: linear-gradient(to right, #0f0f0f, #1c1c1c, #333333);
+                color: #ffffff;
+                font-family: Arial, sans-serif;
+            }
+            header, footer {
+                background-color: #1c1c1c;
+                padding: 20px 0;
+                text-align: center;
+            }
+            h1 {
+                color: #e0e0e0;
+                text-shadow: 2px 2px 5px #000;
+            }
+            footer p {
+                color: #b0b0b0;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="container mt-5">
+            <div class="row justify-content-center">
+                <h1>Bienvenido a MakeX</h1>
+            </div>
+        </header>
+        <main class="container mt-5">
+            {% block content %}
+                <!-- Aquí va el contenido específico de cada vista -->
+            {% endblock content %}
+        </main>
+        <footer class="container mt-5">
+            <div class="row justify-content-center">
+                <p>&copy; 2024 Mi Sitio</p>
+            </div>
+        </footer>
+    </body>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</html>
