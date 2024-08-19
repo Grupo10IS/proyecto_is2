@@ -37,6 +37,7 @@ STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 INSTALLED_APPS = [
     "compressor",
     "modulos.UserProfile.apps.UserprofileConfig",
+    "modulos.Authorization.apps.AuthorizationConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

@@ -1,7 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
+from django.db import models
 
 # Create your models here.
 
+
 class UserProfile(AbstractUser):
-    direccion = "que ondaaa"
+    direccion = models.CharField(max_length=80, verbose_name="direccion", blank=True)
+    email = models.EmailField(verbose_name="email address", blank=False)
