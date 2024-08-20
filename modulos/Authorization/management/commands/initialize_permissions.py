@@ -8,10 +8,10 @@ from modulos.Authorization.permissions import *
 class Command(BaseCommand):
     help = "Incializar los roles y permisos del sistema"
 
-    initialize_permissions()
-    print()
-
     def handle(self, *args, **kwargs):
+        initialize_permissions()
+        print()
+
         # Definir los roles por defecto y sus permisos
         roles_permissions = {
             roles.ADMIN: [POST_CREATE_PERMISSION],
