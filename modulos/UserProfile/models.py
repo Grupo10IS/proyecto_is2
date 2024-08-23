@@ -6,4 +6,4 @@ from django.db import models
 
 class UserProfile(AbstractUser):
     direccion = models.CharField(max_length=80, verbose_name="direccion", blank=True)
-    email = models.EmailField(verbose_name="email address", blank=False)
+    email = models.EmailField(unique=True, blank=False, null=False)
