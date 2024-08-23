@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>modulos.Authorization package &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=9c9b61ad"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=d190bf04"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="modulos-authorization-package">
+<h1>modulos.Authorization package<a class="headerlink" href="#modulos-authorization-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization.admin">
+<span id="modulos-authorization-admin-module"></span><h2>modulos.Authorization.admin module<a class="headerlink" href="#module-modulos.Authorization.admin" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization.apps">
+<span id="modulos-authorization-apps-module"></span><h2>modulos.Authorization.apps module<a class="headerlink" href="#module-modulos.Authorization.apps" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Authorization.apps.AuthorizationConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Authorization.apps.</span></span><span class="sig-name descname"><span class="pre">AuthorizationConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/apps.html#AuthorizationConfig"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.apps.AuthorizationConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.apps.AuthorizationConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#modulos.Authorization.apps.AuthorizationConfig.default_auto_field" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.apps.AuthorizationConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modulos.Authorization'</span></em><a class="headerlink" href="#modulos.Authorization.apps.AuthorizationConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.Authorization.models">
+<span id="modulos-authorization-models-module"></span><h2>modulos.Authorization.models module<a class="headerlink" href="#module-modulos.Authorization.models" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization.permissions">
+<span id="modulos-authorization-permissions-module"></span><h2>modulos.Authorization.permissions module<a class="headerlink" href="#module-modulos.Authorization.permissions" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.permissions.initialize_permissions">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.permissions.</span></span><span class="sig-name descname"><span class="pre">initialize_permissions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/permissions.html#initialize_permissions"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.permissions.initialize_permissions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-modulos.Authorization.roles">
+<span id="modulos-authorization-roles-module"></span><h2>modulos.Authorization.roles module<a class="headerlink" href="#module-modulos.Authorization.roles" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization.signals">
+<span id="modulos-authorization-signals-module"></span><h2>modulos.Authorization.signals module<a class="headerlink" href="#module-modulos.Authorization.signals" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.signals.prevent_default_role_deletion">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.signals.</span></span><span class="sig-name descname"><span class="pre">prevent_default_role_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/signals.html#prevent_default_role_deletion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.signals.prevent_default_role_deletion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-modulos.Authorization.tests">
+<span id="modulos-authorization-tests-module"></span><h2>modulos.Authorization.tests module<a class="headerlink" href="#module-modulos.Authorization.tests" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization.views">
+<span id="modulos-authorization-views-module"></span><h2>modulos.Authorization.views module<a class="headerlink" href="#module-modulos.Authorization.views" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-modulos.Authorization">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-modulos.Authorization" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Proyecto IS2 grupo 6</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Grupo 6 IS2.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/docs/source/modulos.Authorization.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
