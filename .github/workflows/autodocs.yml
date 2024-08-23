@@ -24,14 +24,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry env use
           poetry install
 
       - name: Generate API documentation
-        run: sphinx-apidoc -o docs/source modulos
+        run: poetry run sphinx-apidoc -o docs/source modulos
 
       - name: Build the documentation
-        run: make html
+        run: poetry run make html
 
       - name: Commit and push documentation changes
         env:
