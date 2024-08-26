@@ -41,3 +41,16 @@ def test_login_view(client):
     # FIX: ver bug con las redirecciones (retorna 200)
     # assert response.status_code == 302  # Redirección tras el login
     # assert response.url == '/'  # Redirige a la página de inicio
+
+
+@pytest.mark.django_db
+def test_user_list_view(client, django_user_model):
+    # Crear un usuario de prueba
+    admin_user = django_user_model.objects.create_user(
+        username="admin", password="adminpassword", email="admin@example.com"
+    )
+    client.login(username="admin", password="adminpassword")
+
+    url = reverse("user_list")
+    response = client.get(url)
+    assert response.status_code == 200

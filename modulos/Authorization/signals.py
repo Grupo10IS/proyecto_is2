@@ -12,3 +12,4 @@ def prevent_default_role_deletion(sender, instance, **kwargs):
 
     if instance.name in default_roles:
         raise PermissionDenied("Este rol no puede ser eliminado.")
+
