@@ -36,22 +36,46 @@
 
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
 <span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_migrate</span>
+<span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
 
 <span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
+<span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
+
+<span class="c1">#####</span>
+<span class="c1"># Definicion de permisos</span>
+<span class="c1">#####</span>
+
+<span class="c1"># modificacion de usuarios</span>
+<span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;users_view_all_profiles_permission&quot;</span>
+
+<span class="c1"># posts</span>
 <span class="n">POST_CREATE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_creation_permission&quot;</span>
 <span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
 <span class="n">POST_DELETE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_delete_permission&quot;</span>
 
+<span class="c1">#####</span>
+<span class="c1"># Creacion de permisos</span>
+<span class="c1">#####</span>
+
 
 <div class="viewcode-block" id="initialize_permissions">
 <a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.permissions.initialize_permissions">[documentos]</a>
-<span class="k">def</span> <span class="nf">initialize_permissions</span><span class="p">():</span>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_migrate</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">initialize_permissions</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inicializa y crea la lista de permisos disponibles dentro de la bd luego de</span>
+<span class="sd">    crear las migraciones</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># usuarios</span>
+        <span class="p">(</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Ver todos los perfiles de usuarios&quot;</span><span class="p">),</span>
+
+        <span class="c1"># posts</span>
         <span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para editar publicaciones&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para eliminar publicaciones&quot;</span><span class="p">),</span>
-        <span class="c1"># NOTE: agregar mas permisos aca</span>
     <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">permissions</span><span class="p">:</span>
@@ -61,10 +85,11 @@
                 <span class="n">name</span><span class="o">=</span><span class="n">perm</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                 <span class="n">content_type</span><span class="o">=</span><span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Permiso creado: </span><span class="si">{</span><span class="n">perm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+            <span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Default permisos incializados&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 

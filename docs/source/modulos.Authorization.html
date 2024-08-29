@@ -56,6 +56,12 @@
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modulos.Authorization'</span></em><a class="headerlink" href="#modulos.Authorization.apps.AuthorizationConfig.name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Authorization.apps.AuthorizationConfig.ready">
+<span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/apps.html#AuthorizationConfig.ready"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.apps.AuthorizationConfig.ready" title="Link to this definition">¶</a></dt>
+<dd><p>Override this method in subclasses to run code when Django starts.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -66,23 +72,32 @@
 <span id="modulos-authorization-permissions-module"></span><h2>modulos.Authorization.permissions module<a class="headerlink" href="#module-modulos.Authorization.permissions" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Authorization.permissions.initialize_permissions">
-<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.permissions.</span></span><span class="sig-name descname"><span class="pre">initialize_permissions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/permissions.html#initialize_permissions"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.permissions.initialize_permissions" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.permissions.</span></span><span class="sig-name descname"><span class="pre">initialize_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/permissions.html#initialize_permissions"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.permissions.initialize_permissions" title="Link to this definition">¶</a></dt>
+<dd><p>Inicializa y crea la lista de permisos disponibles dentro de la bd luego de
+crear las migraciones</p>
+</dd></dl>
 
 </section>
 <section id="module-modulos.Authorization.roles">
 <span id="modulos-authorization-roles-module"></span><h2>modulos.Authorization.roles module<a class="headerlink" href="#module-modulos.Authorization.roles" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-modulos.Authorization.signals">
-<span id="modulos-authorization-signals-module"></span><h2>modulos.Authorization.signals module<a class="headerlink" href="#module-modulos.Authorization.signals" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.Authorization.signals.prevent_default_role_deletion">
-<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.signals.</span></span><span class="sig-name descname"><span class="pre">prevent_default_role_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/signals.html#prevent_default_role_deletion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.signals.prevent_default_role_deletion" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="modulos.Authorization.roles.create_default_groups">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.roles.</span></span><span class="sig-name descname"><span class="pre">create_default_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/roles.html#create_default_groups"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.roles.create_default_groups" title="Link to this definition">¶</a></dt>
+<dd><p>Crear los roles por defecto despues de realizar migraciones</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.roles.prevent_default_role_deletion">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.roles.</span></span><span class="sig-name descname"><span class="pre">prevent_default_role_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/roles.html#prevent_default_role_deletion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.roles.prevent_default_role_deletion" title="Link to this definition">¶</a></dt>
+<dd><p>Evitar la eliminacion de los roles por defecto del sistema</p>
+</dd></dl>
 
 </section>
-<section id="module-modulos.Authorization.tests">
-<span id="modulos-authorization-tests-module"></span><h2>modulos.Authorization.tests module<a class="headerlink" href="#module-modulos.Authorization.tests" title="Link to this heading">¶</a></h2>
+<section id="modulos-authorization-signals-module">
+<h2>modulos.Authorization.signals module<a class="headerlink" href="#modulos-authorization-signals-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="modulos-authorization-tests-module">
+<h2>modulos.Authorization.tests module<a class="headerlink" href="#modulos-authorization-tests-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.Authorization.views">
 <span id="modulos-authorization-views-module"></span><h2>modulos.Authorization.views module<a class="headerlink" href="#module-modulos.Authorization.views" title="Link to this heading">¶</a></h2>

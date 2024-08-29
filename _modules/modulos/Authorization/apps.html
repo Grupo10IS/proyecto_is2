@@ -38,8 +38,15 @@
 <div class="viewcode-block" id="AuthorizationConfig">
 <a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.apps.AuthorizationConfig">[documentos]</a>
 <span class="k">class</span> <span class="nc">AuthorizationConfig</span><span class="p">(</span><span class="n">AppConfig</span><span class="p">):</span>
-    <span class="n">default_auto_field</span> <span class="o">=</span> <span class="s1">&#39;django.db.models.BigAutoField&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;modulos.Authorization&#39;</span></div>
+    <span class="n">default_auto_field</span> <span class="o">=</span> <span class="s2">&quot;django.db.models.BigAutoField&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;modulos.Authorization&quot;</span>
+
+<div class="viewcode-block" id="AuthorizationConfig.ready">
+<a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.apps.AuthorizationConfig.ready">[documentos]</a>
+    <span class="k">def</span> <span class="nf">ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Importar roles.py para registrar las señales</span>
+        <span class="kn">import</span> <span class="nn">modulos.Authorization.roles</span></div>
+</div>
 
 </pre></div>
 

@@ -35,6 +35,8 @@
 <span></span><span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
 
+<span class="kn">from</span> <span class="nn">modulos.UserProfile.management.commands.new_admin</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_credentials</span><span class="p">,</span>
+                                                               <span class="n">create_admin</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 
@@ -81,6 +83,40 @@
     <span class="c1"># FIX: ver bug con las redirecciones (retorna 200)</span>
     <span class="c1"># assert response.status_code == 302  # Redirección tras el login</span>
     <span class="c1"># assert response.url == &#39;/&#39;  # Redirige a la página de inicio</span>
+
+
+<div class="viewcode-block" id="test_user_list_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.test_views.test_user_list_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_user_list_view</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">django_user_model</span><span class="p">):</span>
+    <span class="c1"># Crear un usuario de prueba sin permisos</span>
+
+    <span class="n">admin_user</span> <span class="o">=</span> <span class="n">django_user_model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;adminpassword&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s2">&quot;admin@example.com&quot;</span>
+    <span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;adminpassword&quot;</span><span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;user_list&quot;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span>
+
+    <span class="c1"># Crear un usuario de prueba con permisos</span>
+
+    <span class="n">create_admin</span><span class="p">(</span>
+        <span class="n">_credentials</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;true_admin&quot;</span><span class="p">,</span>
+            <span class="n">paswd</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="n">pas_conf</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;adimns@gmail.com&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;true_admin&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;user_list&quot;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
 </pre></div>
 
           </div>

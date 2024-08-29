@@ -39,7 +39,13 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.apps.UserprofileConfig">[documentos]</a>
 <span class="k">class</span> <span class="nc">UserprofileConfig</span><span class="p">(</span><span class="n">AppConfig</span><span class="p">):</span>
     <span class="n">default_auto_field</span> <span class="o">=</span> <span class="s2">&quot;django.db.models.BigAutoField&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;modulos.UserProfile&quot;</span></div>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;modulos.UserProfile&quot;</span>
+
+<div class="viewcode-block" id="UserprofileConfig.ready">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.apps.UserprofileConfig.ready">[documentos]</a>
+    <span class="k">def</span> <span class="nf">ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">modulos.UserProfile.signals</span></div>
+</div>
 
 </pre></div>
 

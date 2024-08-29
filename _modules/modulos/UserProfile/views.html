@@ -32,11 +32,18 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.UserProfile.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.views</span> <span class="kn">import</span> <span class="n">LoginView</span>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.views</span> <span class="kn">import</span> <span class="n">LoginView</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">generic</span>
 
-<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">CustomUserCreationForm</span>
+<span class="kn">from</span> <span class="nn">modulos.Authorization</span> <span class="kn">import</span> <span class="n">permissions</span>
+<span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="n">ADMIN</span>
+
+<span class="kn">from</span> <span class="nn">.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">CustomUserCreationForm</span><span class="p">,</span> <span class="n">UserGroupForm</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 
 <div class="viewcode-block" id="SignUpView">
@@ -44,7 +51,16 @@
 <span class="k">class</span> <span class="nc">SignUpView</span><span class="p">(</span><span class="n">generic</span><span class="o">.</span><span class="n">CreateView</span><span class="p">):</span>
     <span class="n">form_class</span> <span class="o">=</span> <span class="n">CustomUserCreationForm</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;registration/signup.html&quot;</span></div>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;registration/signup.html&quot;</span>
+
+<div class="viewcode-block" id="SignUpView.form_invalid">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.SignUpView.form_invalid">[documentos]</a>
+    <span class="k">def</span> <span class="nf">form_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="c1"># Perform the redirection on form failure</span>
+        <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Campo: </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> - Errores: </span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;signup&quot;</span><span class="p">))</span></div>
+</div>
 
 
 
@@ -59,9 +75,69 @@
         <span class="c1"># Default redirection</span>
         <span class="n">redirect_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># FIX: cambiar el url de admin a home</span>
-        <span class="k">return</span> <span class="n">redirect_to</span> <span class="ow">or</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;admin:index&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">redirect_to</span> <span class="ow">or</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;user_list&quot;</span><span class="p">)</span></div>
 </div>
+
+
+
+<span class="c1"># Vista para listar usuarios</span>
+<span class="nd">@login_required</span>
+<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">user_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;admin_panel/user_list.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">})</span>
+
+
+<span class="c1"># Vista para editar un usuario existente</span>
+<div class="viewcode-block" id="user_edit">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.user_edit">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="c1"># FIX: anadir chequeo de permisos</span>
+<span class="k">def</span> <span class="nf">user_edit</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">CustomUserCreationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;user_list&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">CustomUserCreationForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;admin_panel/user_form.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+
+<span class="c1"># Vista para eliminar un usuario</span>
+<div class="viewcode-block" id="user_delete">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.user_delete">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="c1"># FIX: anadir chequeo de permisos</span>
+<span class="k">def</span> <span class="nf">user_delete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;user_list&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;admin_panel/user_confirm_delete.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="manage_user_groups">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.manage_user_groups">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="c1"># FIX: anadir chequeo de permisos</span>
+<span class="k">def</span> <span class="nf">manage_user_groups</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserGroupForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+                <span class="s2">&quot;user_list&quot;</span>
+            <span class="p">)</span>  <span class="c1"># Redirige al listado de usuarios después de guardar</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserGroupForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;admin_panel/manage_user_groups.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">}</span>
+    <span class="p">)</span></div>
 
 </pre></div>
 

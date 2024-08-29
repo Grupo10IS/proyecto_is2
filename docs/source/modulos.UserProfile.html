@@ -85,14 +85,20 @@
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modulos.UserProfile'</span></em><a class="headerlink" href="#modulos.UserProfile.apps.UserprofileConfig.name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.UserProfile.apps.UserprofileConfig.ready">
+<span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/apps.html#UserprofileConfig.ready"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.apps.UserprofileConfig.ready" title="Link to this definition">¶</a></dt>
+<dd><p>Override this method in subclasses to run code when Django starts.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="module-modulos.UserProfile.decorators">
 <span id="modulos-userprofile-decorators-module"></span><h2>modulos.UserProfile.decorators module<a class="headerlink" href="#module-modulos.UserProfile.decorators" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.decorators.role_required">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.decorators.</span></span><span class="sig-name descname"><span class="pre">role_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allowed_roles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/decorators.html#role_required"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.decorators.role_required" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.UserProfile.decorators.permissions_required">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.decorators.</span></span><span class="sig-name descname"><span class="pre">permissions_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/decorators.html#permissions_required"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.decorators.permissions_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -142,12 +148,51 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.forms.</span></span><span class="sig-name descname"><span class="pre">UserGroupForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#UserGroupForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#UserGroupForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.Meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['username',</span> <span class="pre">'email',</span> <span class="pre">'groups']</span></em><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.Meta.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#modulos.UserProfile.models.UserProfile" title="modulos.UserProfile.models.UserProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserProfile</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'groups':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'groups':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modulos.UserProfile.forms.UserGroupForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.UserProfile.forms.UserGroupForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-modulos.UserProfile.models">
 <span id="modulos-userprofile-models-module"></span><h2>modulos.UserProfile.models module<a class="headerlink" href="#module-modulos.UserProfile.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.DoesNotExist">
@@ -164,13 +209,6 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.date_joined">
 <span class="sig-name descname"><span class="pre">date_joined</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.date_joined" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.direccion">
-<span class="sig-name descname"><span class="pre">direccion</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.direccion" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
@@ -317,6 +355,11 @@ object the first time, the query is executed.</p>
 <span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.test_views.</span></span><span class="sig-name descname"><span class="pre">test_register_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/test_views.html#test_register_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.test_views.test_register_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.test_views.test_user_list_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.test_views.</span></span><span class="sig-name descname"><span class="pre">test_user_list_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">django_user_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/test_views.html#test_user_list_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.test_views.test_user_list_view" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-modulos.UserProfile.tests">
 <span id="modulos-userprofile-tests-module"></span><h2>modulos.UserProfile.tests module<a class="headerlink" href="#module-modulos.UserProfile.tests" title="Link to this heading">¶</a></h2>
@@ -353,9 +396,15 @@ object the first time, the query is executed.</p>
 <dd><p>alias de <a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm" title="modulos.UserProfile.forms.CustomUserCreationForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomUserCreationForm</span></code></a></p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.SignUpView.form_invalid">
+<span class="sig-name descname"><span class="pre">form_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#SignUpView.form_invalid"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.SignUpView.form_invalid" title="Link to this definition">¶</a></dt>
+<dd><p>If the form is invalid, render the invalid form.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.views.SignUpView.success_url">
-<span class="sig-name descname"><span class="pre">success_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/user/login/'</span></em><a class="headerlink" href="#modulos.UserProfile.views.SignUpView.success_url" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">success_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/users/login/'</span></em><a class="headerlink" href="#modulos.UserProfile.views.SignUpView.success_url" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -364,6 +413,21 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.manage_user_groups">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">manage_user_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#manage_user_groups"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.manage_user_groups" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.user_delete">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">user_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#user_delete"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.user_delete" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.user_edit">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">user_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#user_edit"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.user_edit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-modulos.UserProfile">
