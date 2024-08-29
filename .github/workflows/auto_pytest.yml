@@ -1,0 +1,37 @@
+# The name of the action
+name: Django Automatic Tests con PostgreSQL
+
+# Cuando la acción es desencadenada
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  # Una tarea llamada 'build' - arbitraria
+  build:
+    # Ejecutar en una máquina Ubuntu más reciente
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout el repositorio de GitHub
+      - uses: actions/checkout@v2
+      
+      # Instalar Python 3.12
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      
+      # Instalar dependencias
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      
+      # Configurar variable de entorno y correr el sistema
+      - name: Ejecutar tests con PostgreSQL
+        run: |
+          GH_ACTION=True poetry run python manage.py migrate
+          GH_ACTION=True poetry run pytest -vv
