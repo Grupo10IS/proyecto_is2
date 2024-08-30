@@ -1,0 +1,328 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    height: 13vh;
+}
+
+.navbar-left {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    color: black;
+}
+
+.navbar-middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: black;
+    font-size: 65px;
+}
+
+.navbar-middle .navbar-slogan {
+    display: block;
+    font-size: 25px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.navbar-right {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar-right .subscribe {
+    background-color: #000000;
+    color: #fff;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+    border: 1px solid #ffffff;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.navbar-right .login {
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.navbar-right .subscribe:hover,
+.navbar-right .login:hover {
+    background-color: #464646;
+    border-color: #464646;
+    color: #fff;
+}
+
+.today-paper {
+    font-size: 12px;
+}
+
+#search-icon {
+    cursor: pointer;
+}
+
+#search-input {
+    width: 0;
+    transition: width 0.4s ease-in-out;
+}
+
+#search-input.show {
+    width: 200px;
+    display: inline-block;
+}
+
+#headerTitle {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 450;
+    font-style: normal;
+    color: black;
+    font-size: 40px;
+}
+
+#headerContent {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: black;
+    font-size: 20px;
+}
+
+/*ADMIN PANEL*/
+
+/*user_list*/
+.user-list-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #2e2e2e;
+    /* Gris oscuro plateado */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 15px rgba(0, 0, 0, 0.5);
+    /* Añade un leve efecto metálico */
+}
+
+.user-list-container .title {
+    font-size: 36px;
+    color: #d9d9d9;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-table th {
+    background-color: #575758;
+    color: #fff;
+    font-weight: bold;
+}
+
+.user-table tr:hover {
+    background-color: #646566;
+}
+
+.actions a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.actions .edit-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.actions .edit-btn:hover {
+    background-color: #218838;
+}
+
+.actions .delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.actions .delete-btn:hover {
+    background-color: #c82333;
+}
+
+.actions .group-btn {
+    background-color: #2201f7;
+    color: #fff;
+}
+
+.actions .group-btn:hover {
+    background-color: #13037c;
+    color: #fff;
+}
+
+/*user_confirm_delete*/
+
+.delete-user-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #2e2e2e;
+    /* Gris oscuro plateado */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    text-align: center;
+}
+
+.delete-user-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #e74c3c;
+    /* Color rojo suave */
+}
+
+.delete-user-message {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.delete-user-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.delete-button {
+    background-color: #ff1900;
+    /* Color rojo para el botón de eliminación */
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #761e14;
+    /* Un tono más oscuro en hover */
+}
+
+.cancel-button {
+    background-color: #34495e;
+    /* Color gris oscuro para el botón de cancelar */
+    color: #ffffff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #37424d;
+    /* Un tono más oscuro en hover */
+}
+
+/*user_form*/
+.user-form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #2e2e2e;
+    /* Gris oscuro plateado */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+.user-form-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #a0a0a0;
+    /* Azul suave para el título */
+    text-align: center;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-form p {
+    margin-bottom: 15px;
+}
+
+.user-form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.save-button {
+    background-color: #088d1c;
+    /* Verde para el botón de guardar */
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #27ae60;
+    /* Un tono más oscuro en hover */
+}
+
+.cancel-button {
+    background-color: #34495e;
+    /* Gris oscuro para el botón de cancelar */
+    color: #ffffff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #2c3e50;
+    /* Un tono más oscuro en hover */
+}

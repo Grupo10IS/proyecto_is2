@@ -1,44 +1,33 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card" style="background-color: #333; border-color: #444;">
-                    <div class="card-header text-center"
-                         style="background-color: #444;
-                                color: #fff">
-                        <h2>Regístrate</h2>
-                    </div>
-                    <div class="card-body" style="color: #fff;">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="id_username">Nombre de usuario</label>
-                                {{ form.username }} <!-- Campo del formulario -->
-                            </div>
-                            <div class="form-group">
-                                <label for="id_email">Correo Electrónico</label>
-                                {{ form.email }} <!-- Campo del formulario -->
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password1">Contraseña</label>
-                                {{ form.password1 }} <!-- Campo del formulario -->
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password2">Confirmar Contraseña</label>
-                                {{ form.password2 }} <!-- Campo del formulario -->
-                            </div>
-                            <button type="submit"
-                                    class="btn btn-primary btn-block"
-                                    style="background-color: #007bff;
-                                           border-color: #007bff">Registrarse</button>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center" style="background-color: #444;">
-                        <a href="{% url 'login' %}" style="color: #007bff;">¿Ya tienes una cuenta? Inicia sesión aquí</a>
-                    </div>
-                </div>
-            </div>
+<div class="container mt-5">
+    <h2>Registrarse</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_username"></label>
+            {{ form.username|as_crispy_field }}
         </div>
-    </div>
-{% endblock content %}
+        
+        <div class="form-group">
+            <label for="id_email"></label>
+            {{ form.email|as_crispy_field }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_password1"></label>
+            {{ form.password1|as_crispy_field }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password2"></label>
+            {{ form.password2|as_crispy_field }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,26 +1,29 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Usuarios</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-        <tr>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            <a href="{% url 'user_edit' user.id %}">Editar</a>
-            <a href="{% url 'user_delete' user.id %}">Eliminar</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="user-list-container">
+    <h1 class="title">Usuarios</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td class="actions">
+                        <a href="{% url 'user_edit' user.id %}" class="edit-btn">Editar</a>
+                        <a href="{% url 'manage_user_groups' user.id %}" class="group-btn">Rol</a>
+                        <a href="{% url 'user_delete' user.id %}" class="delete-btn">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

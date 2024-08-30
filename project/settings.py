@@ -31,9 +31,15 @@ ALLOWED_HOSTS = []
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_URL = "static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 COMPRESS_ENABLED = True
-COMPRESS_ROOT = BASE_DIR / "static"
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -46,6 +52,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -140,3 +148,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "UserProfile.UserProfile"
 LOGIN_REDIRECT_URL = "/user/profile/"
 LOGIN_URL = "/users/login"
+
+
+LOGOUT_REDIRECT_URL = "home"  # Redirigir a la página de inicio después del logout
+
+
+# Bootstrap library
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Enviar correos
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "apikey"  # Esto es literal, no cambies 'apikey'
+EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
+DEFAULT_FROM_EMAIL = "groupmakex@gmail.com"

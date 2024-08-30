@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
 {% block content %}
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -10,6 +10,13 @@
                         <h2>Iniciar Sesión</h2>
                     </div>
                     <div class="card-body" style="color: #fff;">
+                        {% if messages %}
+                            <div class="alert alert-danger">
+                                {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <form method="post">
                             {% csrf_token %}
                             <div class="form-group">
@@ -37,7 +44,14 @@
                         </form>
                     </div>
                     <div class="card-footer text-center" style="background-color: #444;">
-                        <a href="{% url 'password_reset' %}" style="color: #007bff;">¿Olvidaste tu contraseña?</a>
+                        <p style="margin-bottom: 10px;">
+                            <a href="{% url 'signup' %}" style="color: #007bff;">
+                                ¿Aún no tienes cuenta? Regístrate
+                            </a>
+                        </p>
+                        <a href="{% url 'password_reset' %}" style="color: #007bff;">
+                            ¿Olvidaste tu contraseña?
+                        </a>
                     </div>
                 </div>
             </div>

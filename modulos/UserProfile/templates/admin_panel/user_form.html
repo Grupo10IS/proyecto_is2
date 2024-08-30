@@ -1,11 +1,15 @@
-{% extends "base.html" %}
+{% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>{% if form.instance.pk %}Editar Usuario{% else %}Crear Usuario{% endif %}</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
+<div class="user-form-container">
+  <h1 class="user-form-title">{% if form.instance.pk %}Editar Usuario{% else %}Crear Usuario{% endif %}</h1>
+  <form method="post" class="user-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="user-form-actions">
+          <button type="submit" class="save-button">Guardar</button>
+          <a href="{% url 'user_list' %}" class="cancel-button">Cancelar</a>
+      </div>
   </form>
-  <a href="{% url 'user_list' %}">Cancelar</a>
+</div>
 {% endblock %}
