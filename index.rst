@@ -14,4 +14,4 @@ Proyecto:
    :caption: Table of Contents:
    :glob:
 
-   docs/*
+   docs/source/*
