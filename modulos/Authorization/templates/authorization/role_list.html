@@ -1,36 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="role_list">
-  <div class="container mt-5 text-white">
-    <h1 class="mb-4">Roles del sistema</h1>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Permisos</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for role in roles %}
-            <tr>
-              <td class="text-white">{{ role.id }}</td>
-              <td class="text-white">{{ role.name }}</td>
-              <td>
-                <ul>
-                  {% for perm in role.permissions.all %}<li class="text-white">{{ perm.name }}</li>{% endfor %}
-                </ul>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="2" class="text-center">No hay roles disponibles.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="role_list">
+        <div class="container mt-5 text-white">
+            <h1 class="mb-4">Roles del sistema</h1>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Permisos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for role in roles %}
+                            <tr>
+                                <td class="text-white">{{ role.id }}</td>
+                                <td class="text-white">{{ role.name }}</td>
+                                <td>
+                                    <ul>
+                                        {% for perm in role.permissions.all %}<li class="text-white">{{ perm.name }}</li>{% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">No hay roles disponibles.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-{% endblock content%}
+{% endblock content %}

@@ -6,18 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('UserProfile', '0004_remove_userprofile_direccion'),
+        ("UserProfile", "0004_remove_userprofile_direccion"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='address',
-            field=models.CharField(blank=True, max_length=80, verbose_name='Dirección'),
+            model_name="userprofile",
+            name="address",
+            field=models.CharField(blank=True, max_length=80, verbose_name="Dirección"),
         ),
         migrations.AddField(
-            model_name='userprofile',
-            name='phone_number',
-            field=models.CharField(blank=True, max_length=15, verbose_name='Número de teléfono'),
+            model_name="userprofile",
+            name="phone_number",
+            field=models.CharField(
+                blank=True, max_length=15, verbose_name="Número de teléfono"
+            ),
         ),
     ]

@@ -1,33 +1,27 @@
 {% extends "base_generic.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-<div class="container mt-5">
-    <h2>Registrarse</h2>
-    <form method="POST">
-        {% csrf_token %}
-
-        <div class="form-group">
-            <label for="id_username"></label>
-            {{ form.username|as_crispy_field }}
-        </div>
-        
-        <div class="form-group">
-            <label for="id_email"></label>
-            {{ form.email|as_crispy_field }}
-        </div>
-        
-        <div class="form-group">
-            <label for="id_password1"></label>
-            {{ form.password1|as_crispy_field }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_password2"></label>
-            {{ form.password2|as_crispy_field }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-    </form>
-</div>
+    <div class="container mt-5">
+        <h2>Registrarse</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username"></label>
+                {{ form.username|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                <label for="id_email"></label>
+                {{ form.email|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                <label for="id_password1"></label>
+                {{ form.password1|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                <label for="id_password2"></label>
+                {{ form.password2|as_crispy_field }}
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+    </div>
 {% endblock %}

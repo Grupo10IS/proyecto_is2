@@ -1,15 +1,12 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
-<div class="group-management-container">
-    <h1 class="title">Gestionar Grupos para {{ user.username }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.as_p }}
-        </div>
-        <button type="submit" class="save-btn">Guardar</button>
-    </form>
-    <a href="{% url 'user_list' %}" class="back-btn">Volver a la lista de usuarios</a>
-</div>
-{% endblock content%}
+    <div class="group-management-container">
+        <h1 class="title">Gestionar Grupos para {{ user.username }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">{{ form.as_p }}</div>
+            <button type="submit" class="save-btn">Guardar</button>
+        </form>
+        <a href="{% url 'user_list' %}" class="back-btn">Volver a la lista de usuarios</a>
+    </div>
+{% endblock content %}

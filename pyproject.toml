@@ -35,10 +35,10 @@ build-backend = "poetry.core.masonry.api"
 line-length = 88
 
 [tool.djlint]
-indent=2
+indent=4
 
 [tool.djlint.js]
-indent_size = 2
+indent_size = 4
 
 # -- testing --- 
 

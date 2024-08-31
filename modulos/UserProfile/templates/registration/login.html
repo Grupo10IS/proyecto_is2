@@ -12,9 +12,7 @@
                     <div class="card-body" style="color: #fff;">
                         {% if messages %}
                             <div class="alert alert-danger">
-                                {% for message in messages %}
-                                    <p>{{ message }}</p>
-                                {% endfor %}
+                                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
                             </div>
                         {% endif %}
                         <form method="post">
@@ -45,13 +43,9 @@
                     </div>
                     <div class="card-footer text-center" style="background-color: #444;">
                         <p style="margin-bottom: 10px;">
-                            <a href="{% url 'signup' %}" style="color: #007bff;">
-                                ¿Aún no tienes cuenta? Regístrate
-                            </a>
+                            <a href="{% url 'signup' %}" style="color: #007bff;">¿Aún no tienes cuenta? Regístrate</a>
                         </p>
-                        <a href="{% url 'password_reset' %}" style="color: #007bff;">
-                            ¿Olvidaste tu contraseña?
-                        </a>
+                        <a href="{% url 'password_reset' %}" style="color: #007bff;">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
             </div>
