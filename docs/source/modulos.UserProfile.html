@@ -15,6 +15,8 @@
     <script src="../../_static/translations.js?v=d190bf04"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="modulos.UserProfile.migrations package" href="modulos.UserProfile.migrations.html" />
+    <link rel="prev" title="modulos.Authorization package" href="modulos.Authorization.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -461,11 +463,116 @@ object the first time, the query is executed.</p>
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">modulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.html">modulos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.UserProfile package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.admin">modulos.UserProfile.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.apps">modulos.UserProfile.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.apps.UserprofileConfig"><code class="docutils literal notranslate"><span class="pre">UserprofileConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.apps.UserprofileConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">UserprofileConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.apps.UserprofileConfig.name"><code class="docutils literal notranslate"><span class="pre">UserprofileConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.apps.UserprofileConfig.ready"><code class="docutils literal notranslate"><span class="pre">UserprofileConfig.ready()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.decorators">modulos.UserProfile.decorators module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.decorators.permissions_required"><code class="docutils literal notranslate"><span class="pre">permissions_required()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.forms">modulos.UserProfile.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.media"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm"><code class="docutils literal notranslate"><span class="pre">UserGroupForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm.Meta"><code class="docutils literal notranslate"><span class="pre">UserGroupForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm.base_fields"><code class="docutils literal notranslate"><span class="pre">UserGroupForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">UserGroupForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm.media"><code class="docutils literal notranslate"><span class="pre">UserGroupForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.models">modulos.UserProfile.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile"><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserProfile.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserProfile.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.date_joined</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.email"><code class="docutils literal notranslate"><span class="pre">UserProfile.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.first_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.first_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_next_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_previous_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.groups"><code class="docutils literal notranslate"><span class="pre">UserProfile.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.id"><code class="docutils literal notranslate"><span class="pre">UserProfile.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.is_active"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_active</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.is_staff"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_staff</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.is_superuser"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_superuser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.last_login"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_login</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.last_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.test_views">modulos.UserProfile.test_views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_login_view"><code class="docutils literal notranslate"><span class="pre">test_login_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_register_view"><code class="docutils literal notranslate"><span class="pre">test_register_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_user_list_view"><code class="docutils literal notranslate"><span class="pre">test_user_list_view()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.tests">modulos.UserProfile.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.urls">modulos.UserProfile.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.views">modulos.UserProfile.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView"><code class="docutils literal notranslate"><span class="pre">CustomLoginView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView.get_redirect_url"><code class="docutils literal notranslate"><span class="pre">CustomLoginView.get_redirect_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView.redirect_authenticated_user"><code class="docutils literal notranslate"><span class="pre">CustomLoginView.redirect_authenticated_user</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView"><code class="docutils literal notranslate"><span class="pre">SignUpView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView.form_class"><code class="docutils literal notranslate"><span class="pre">SignUpView.form_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView.form_invalid"><code class="docutils literal notranslate"><span class="pre">SignUpView.form_invalid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView.success_url"><code class="docutils literal notranslate"><span class="pre">SignUpView.success_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView.template_name"><code class="docutils literal notranslate"><span class="pre">SignUpView.template_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.manage_user_groups"><code class="docutils literal notranslate"><span class="pre">manage_user_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.user_delete"><code class="docutils literal notranslate"><span class="pre">user_delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.user_edit"><code class="docutils literal notranslate"><span class="pre">user_edit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">modulos</a><ul>
+  <li><a href="modulos.html">modulos package</a><ul>
+      <li>Previous: <a href="modulos.Authorization.html" title="capítulo anterior">modulos.Authorization package</a></li>
+      <li>Next: <a href="modulos.UserProfile.migrations.html" title="próximo capítulo">modulos.UserProfile.migrations package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

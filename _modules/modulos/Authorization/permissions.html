@@ -41,19 +41,34 @@
 
 <span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
-<span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
-
 <span class="c1">#####</span>
 <span class="c1"># Definicion de permisos</span>
 <span class="c1">#####</span>
 
-<span class="c1"># modificacion de usuarios</span>
+<span class="c1"># usuarios</span>
 <span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;users_view_all_profiles_permission&quot;</span>
 
 <span class="c1"># posts</span>
 <span class="n">POST_CREATE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_creation_permission&quot;</span>
 <span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
 <span class="n">POST_DELETE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_delete_permission&quot;</span>
+
+<span class="c1"># roles</span>
+<span class="n">ROLE_VIEW_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;role_view_permission&quot;</span>
+<span class="n">ROLE_MANAGE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;role_manage_permission&quot;</span>
+
+<span class="c1"># NOTE: se utiliza para listar los permisos en la vista</span>
+<span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># usuarios</span>
+    <span class="p">(</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Ver todos los perfiles de usuarios&quot;</span><span class="p">),</span>
+    <span class="c1"># posts</span>
+    <span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para editar publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para eliminar publicaciones&quot;</span><span class="p">),</span>
+    <span class="c1"># roles</span>
+    <span class="p">(</span><span class="n">ROLE_VIEW_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para listar los roles del sistema&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">ROLE_MANAGE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear y eliminar los roles del sistema&quot;</span><span class="p">),</span>
+<span class="p">]</span>
 
 <span class="c1">#####</span>
 <span class="c1"># Creacion de permisos</span>
@@ -68,16 +83,6 @@
 <span class="sd">    Inicializa y crea la lista de permisos disponibles dentro de la bd luego de</span>
 <span class="sd">    crear las migraciones</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="c1"># usuarios</span>
-        <span class="p">(</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Ver todos los perfiles de usuarios&quot;</span><span class="p">),</span>
-
-        <span class="c1"># posts</span>
-        <span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para editar publicaciones&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para eliminar publicaciones&quot;</span><span class="p">),</span>
-    <span class="p">]</span>
-
     <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">permissions</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">update_or_create</span><span class="p">(</span>
@@ -118,6 +123,16 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
