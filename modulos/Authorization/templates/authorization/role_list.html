@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="role_list">
   <div class="container mt-5 text-white">
-    <h1 class="mb-4">roles</h1>
+    <h1 class="mb-4">Roles del sistema</h1>
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Permissions</th>
+            <th>Nombre</th>
+            <th>Permisos</th>
           </tr>
         </thead>
         <tbody>
@@ -24,11 +25,12 @@
             </tr>
           {% empty %}
             <tr>
-              <td colspan="2" class="text-center">No roles available.</td>
+              <td colspan="2" class="text-center">No hay roles disponibles.</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
-{% endblock %}
+</div>
+{% endblock content%}

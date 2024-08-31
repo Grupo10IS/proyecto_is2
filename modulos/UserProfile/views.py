@@ -106,7 +106,7 @@ def user_list(request):
 
 # Vista para editar un usuario existente
 @login_required
-# FIX: anadir chequeo de permisos
+@permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
 def user_edit(request, user_id):
     user = get_object_or_404(UserProfile, pk=user_id)
     if request.method == "POST":
@@ -121,7 +121,7 @@ def user_edit(request, user_id):
 
 # Vista para eliminar un usuario
 @login_required
-# FIX: anadir chequeo de permisos
+@permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
 def user_delete(request, user_id):
     user = get_object_or_404(UserProfile, pk=user_id)
     if request.method == "POST":
@@ -131,7 +131,7 @@ def user_delete(request, user_id):
 
 
 @login_required
-# FIX: anadir chequeo de permisos
+@permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
 def manage_user_groups(request, user_id):
     user = get_object_or_404(UserProfile, pk=user_id)
     if request.method == "POST":

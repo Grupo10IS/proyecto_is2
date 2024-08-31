@@ -5,11 +5,11 @@ from django.dispatch import receiver
 
 from modulos.Authorization.permissions import *
 
-ADMIN = "admin"
-PUBLISHER = "publicador"
-EDITOR = "editor"
-AUTOR = "publicador"
-SUBSCRIBER = "suscriptor"
+ADMIN = "Administrador"
+PUBLISHER = "Publicador"
+EDITOR = "Editor"
+AUTOR = "Autor"
+SUBSCRIBER = "Suscriptor"
 
 # Roles por defecto y sus permisos
 default_roles = {
@@ -17,8 +17,12 @@ default_roles = {
         USERS_VIEW_ALL_PROFILES_PERMISSION,
         ROLE_VIEW_PERMISSION,
         ROLE_MANAGE_PERMISSION,
+        POST_DELETE_PERMISSION,
     ],
     SUBSCRIBER: [],
+    AUTOR: [POST_CREATE_PERMISSION],
+    EDITOR: [POST_EDIT_PERMISSION],
+    PUBLISHER: [],
 }
 
 

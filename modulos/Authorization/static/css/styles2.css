@@ -1,0 +1,126 @@
+/*role_form*/
+.rol-form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #1a1a1a;
+    /* Gris oscuro plateado */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    /* Añade un leve efecto metálico */
+}
+
+.rol-form-container .title {
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.rol-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.rol-form-container .save-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.rol-form-container .save-btn:hover {
+    background-color: #095bb2;
+}
+
+.rol-form-container .back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #6c757d;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.rol-form-container .back-btn:hover {
+    background-color: #5a6268;
+}
+
+/* role_list */
+.role_list .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.role_list h1 {
+    font-size: 36px;
+    color: #f5f5f5;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.role_list .table-responsive {
+    overflow-x: auto;
+}
+
+.role_list .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #f5f5f5;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.role_list .table th,
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    border-top: 1px solid #343a40;
+}
+
+.role_list .table th {
+    background-color: #343a40;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.role_list .table tbody tr {
+    background-color: #2c2c2c;
+    transition: all 0.2s ease-in-out;
+}
+
+.role_list .table tbody tr:hover {
+    background-color: #3a3a3a;
+}
+
+.role_list .table tbody tr td {
+    border-color: #343a40;
+}
+
+.role_list .table tbody tr td ul {
+    padding-left: 15px;
+}
+
+.role_list .table tbody tr td ul li {
+    list-style-type: disc;
+}
+
+.role_list .table tbody tr td ul li::marker {
+    color: #007bff;
+}
+
+.role_list .table tbody tr td.text-center {
+    color: #adb5bd;
+    font-style: italic;
+}
