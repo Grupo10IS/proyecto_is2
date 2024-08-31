@@ -7,19 +7,34 @@ from django.dispatch import receiver
 
 from modulos.UserProfile.models import UserProfile
 
-POST_EDIT_PERMISSION = "post_edit_permission"
-
 #####
 # Definicion de permisos
 #####
 
-# modificacion de usuarios
+# usuarios
 USERS_VIEW_ALL_PROFILES_PERMISSION = "users_view_all_profiles_permission"
 
 # posts
 POST_CREATE_PERMISSION = "post_creation_permission"
 POST_EDIT_PERMISSION = "post_edit_permission"
 POST_DELETE_PERMISSION = "post_delete_permission"
+
+# roles
+ROLE_VIEW_PERMISSION = "role_view_permission"
+ROLE_MANAGE_PERMISSION = "role_manage_permission"
+
+# NOTE: se utiliza para listar los permisos en la vista
+permissions = [
+    # usuarios
+    (USERS_VIEW_ALL_PROFILES_PERMISSION, "Ver todos los perfiles de usuarios"),
+    # posts
+    (POST_CREATE_PERMISSION, "Permiso para crear publicaciones"),
+    (POST_EDIT_PERMISSION, "Permiso para editar publicaciones"),
+    (POST_DELETE_PERMISSION, "Permiso para eliminar publicaciones"),
+    # roles
+    (ROLE_VIEW_PERMISSION, "Permiso para listar los roles del sistema"),
+    (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
+]
 
 #####
 # Creacion de permisos
@@ -32,16 +47,6 @@ def initialize_permissions(sender, **kwargs):
     Inicializa y crea la lista de permisos disponibles dentro de la bd luego de
     crear las migraciones
     """
-    permissions = [
-        # usuarios
-        (USERS_VIEW_ALL_PROFILES_PERMISSION, "Ver todos los perfiles de usuarios"),
-
-        # posts
-        (POST_CREATE_PERMISSION, "Permiso para crear publicaciones"),
-        (POST_EDIT_PERMISSION, "Permiso para editar publicaciones"),
-        (POST_DELETE_PERMISSION, "Permiso para eliminar publicaciones"),
-    ]
-
     for perm in permissions:
         try:
             Permission.objects.update_or_create(

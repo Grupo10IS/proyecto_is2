@@ -19,8 +19,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 from modulos.UserProfile import urls as user_urls
+from modulos.Authorization import urls as roles_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("users/", include(user_urls)),
+    path("roles/", include(roles_urls)),
 ]
