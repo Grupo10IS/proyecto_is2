@@ -12,7 +12,14 @@ AUTOR = "publicador"
 SUBSCRIBER = "suscriptor"
 
 # Roles por defecto y sus permisos
-default_roles = {ADMIN: [USERS_VIEW_ALL_PROFILES_PERMISSION], SUBSCRIBER: []}
+default_roles = {
+    ADMIN: [
+        USERS_VIEW_ALL_PROFILES_PERMISSION,
+        ROLE_VIEW_PERMISSION,
+        ROLE_MANAGE_PERMISSION,
+    ],
+    SUBSCRIBER: [],
+}
 
 
 @receiver(pre_delete, sender=Group)

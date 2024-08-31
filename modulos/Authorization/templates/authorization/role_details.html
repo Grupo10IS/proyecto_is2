@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="mb-4">role Details: {{ group.name }}</h1>
+    <!-- role Permissions -->
+    <h3>Permissions</h3>
+    {% if role.permissions.all %}
+      <ul class="list-role mb-4">
+        {% for perm in role.permissions.all %}
+          <li class="list-role-item">{{ perm.name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No permissions assigned to this role.</p>
+    {% endif %}
+    <!-- role Members -->
+    <h3>Members</h3>
+    {% if role.user_set.all %}
+      <ul class="list-role mb-4">
+        {% for user in role.user_set.all %}
+          <li class="list-role-item">{{ user.username }} ({{ user.email }})</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No users assigned to this role.</p>
+    {% endif %}
+  </div>
+{% endblock %}
