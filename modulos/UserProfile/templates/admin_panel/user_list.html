@@ -20,12 +20,13 @@
                                 <a href="{% url 'user_edit' user.id %}" class="btn btn-sm btn-primary">Editar</a>
                                 <a href="{% url 'manage_user_groups' user.id %}"
                                    class="btn btn-sm btn-secondary">Rol</a>
-                                <a href="{% url 'user_delete' user.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                   <a href="{% url 'user_delete' user.id %}" class="btn btn-sm btn-danger">Eliminar</a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Volver al Inicio</a>
         </div>
     </div>
 {% endblock %}

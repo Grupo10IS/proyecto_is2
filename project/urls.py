@@ -19,11 +19,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 from modulos.Authorization import urls as roles_urls
-from modulos.Posts.views import HomeView
+from modulos.Posts.views import HomeView, AdminHomeView
 from modulos.UserProfile import urls as user_urls
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin-home/", AdminHomeView.as_view(), name="admin_home"),
     path("", HomeView.as_view(), name="home"),
     path("users/", include(user_urls)),
     path("roles/", include(roles_urls)),
