@@ -1,25 +1,17 @@
-from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
-from django.views import generic
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import UserProfile
-from .decorators import permissions_required
-from .forms import (
-    CustomUserCreationForm,
-    UserGroupForm,
-    CustomUserChangeForm,
-    ProfileForm,
-)
-from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views import generic
+
 from modulos.Authorization import permissions
-from modulos.Authorization.roles import ADMIN
 
-
-class HomeView(TemplateView):
-    template_name = "pages/home.html"
+from .decorators import permissions_required
+from .forms import (CustomUserChangeForm, CustomUserCreationForm, ProfileForm,
+                    UserGroupForm)
+from .models import UserProfile
 
 
 class SignUpView(generic.CreateView):
@@ -38,9 +30,6 @@ class SignUpView(generic.CreateView):
                 ""  # Elimina el texto de ayuda predeterminado para el campo password2
             )
 
-        return super().form_invalid(form)
-
-    def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -50,12 +39,6 @@ class CustomLoginView(LoginView):
     def get_redirect_url(self):
         # Default redirection
         redirect_to = self.request.POST.get("next", "")
-
-        # Verifica si el usuario pertenece al grupo 'admin'
-        if self.request.user.groups.filter(name="admin").exists():
-            return reverse_lazy("home")
-
-        # Si no pertenece al grupo 'admin', redirige a la página de inicio
         return redirect_to or reverse_lazy("home")
 
     def form_invalid(self, form):

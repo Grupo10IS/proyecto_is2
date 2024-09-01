@@ -1,8 +1,11 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from .views import user_list, user_edit, user_delete, manage_user_groups, profile_view
+
+from modulos.UserProfile.views import CustomLoginView, SignUpView
+
 from .forms import CustomPasswordResetForm
-from modulos.UserProfile.views import CustomLoginView, SignUpView, HomeView
+from .views import (manage_user_groups, profile_view, user_delete, user_edit,
+                    user_list)
 
 urlpatterns = [
     path("login/", CustomLoginView.as_view(), name="login"),  # Vista de login

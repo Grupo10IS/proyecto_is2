@@ -45,6 +45,7 @@ STATICFILES_FINDERS = [
 INSTALLED_APPS = [
     "compressor",
     "modulos.UserProfile.apps.UserprofileConfig",
+    "modulos.Posts.apps.PostsConfig",
     "modulos.Authorization.apps.AuthorizationConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -71,7 +72,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

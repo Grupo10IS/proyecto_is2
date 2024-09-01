@@ -24,6 +24,7 @@ pytest-django = "^4.8.0"
 crispy-bootstrap5 = "^2024.2"
 sendgrid = "^6.11.0"
 django-crispy-forms = "^2.3"
+black = "^24.8.0"
 
 [build-system]
 requires = ["poetry-core"]
