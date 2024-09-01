@@ -23,6 +23,9 @@ POST_DELETE_PERMISSION = "post_delete_permission"
 ROLE_VIEW_PERMISSION = "role_view_permission"
 ROLE_MANAGE_PERMISSION = "role_manage_permission"
 
+# categoria
+CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
+
 # NOTE: se utiliza para listar los permisos en la vista
 permissions = [
     # usuarios
@@ -34,6 +37,8 @@ permissions = [
     # roles
     (ROLE_VIEW_PERMISSION, "Permiso para listar los roles del sistema"),
     (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
+    # categoria
+    (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
 ]
 
 #####
