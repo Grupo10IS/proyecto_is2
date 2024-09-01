@@ -18,7 +18,7 @@ class Post:
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     content = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
-    creation_date = models.DateTimeField(default=timezone.now)
+    #creation_date = models.DateTimeField(default=timezone.now)
 
     """
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
