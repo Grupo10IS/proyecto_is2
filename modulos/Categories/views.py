@@ -1,28 +1,65 @@
 from multiprocessing import context
 from pyexpat.errors import messages
 from django.views import generic
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
 from modulos.Authorization import permissions
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.decorators import permissions_required
+from modulos.Categories.models import Category
 
 
 class CategoryCreateView(generic.CreateView):
     form_class = CategoryCreationForm
     template_name = "create_category.html"
-    success_url = "/categories/category_create/"
+    success_url = "/categories/"
 
 
+# Vista para crear categorias
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
-def create_category(request):
+def category_create(request):
     if request.method == "POST":
         form = CategoryCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect("category_list")
     else:
         form = CategoryCreationForm()
     context = {"form": form}
-    return render(request, "create_category.html", context)
+    return render(request, "category_form.html", context)
+
+
+# Vista para listar categorias
+@login_required
+@permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, "category_list.html", {"categories": categories})
+
+
+# Vista para eliminar una categoría
+@login_required
+@permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
+def category_delete(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == "POST":
+        category.delete()
+        return redirect("category_list")
+    return render(request, "category_confirm_delete.html", {"category": category})
+
+
+# Vista para editar un usuario existente
+@login_required
+@permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
+def category_edit(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == "POST":
+        form = CategoryCreationForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect("category_list")
+    else:
+        form = CategoryCreationForm(instance=category)
+    return render(request, "category_form.html", {"form": form})
