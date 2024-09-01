@@ -112,7 +112,7 @@ def user_delete(request, user_id):
         return redirect("user_list")
     return render(request, "admin_panel/user_confirm_delete.html", {"user": user})
 
-
+# Vista para agregar un rol a un usuario
 @login_required
 @permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
 def manage_user_groups(request, user_id):
