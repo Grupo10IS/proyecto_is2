@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from django.views.generic import TemplateView
 from modulos.Authorization import permissions
 
 from .decorators import permissions_required
