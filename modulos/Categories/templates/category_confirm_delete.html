@@ -5,8 +5,13 @@
         <div class="card-body text-white">
             <h1 class="card-title">Eliminar Categoria</h1>
             <p class="card-text">
-                ¿Estás seguro de que deseas eliminar la categoría<strong>{{ category.name }}</strong>?
+                ¿Estás seguro de que deseas eliminar la categoría <strong>{{ category.name }}</strong>?
             </p>
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
             <form method="post">
                 {% csrf_token %}
                 <div class="d-flex justify-content-between">

@@ -8,6 +8,7 @@ from modulos.Authorization import permissions
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.decorators import permissions_required
 from modulos.Categories.models import Category
+from modulos.Posts.models import Post
 
 
 class CategoryCreateView(generic.CreateView):
@@ -45,6 +46,19 @@ def category_list(request):
 def category_delete(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     if request.method == "POST":
+        # Verifica si hay posts asociados a esta categoría
+        if Post.objects.filter(category=category).exists():
+            # Mostrar un mensaje de error si hay posts asociados
+            return render(
+                request,
+                "category_confirm_delete.html",
+                {
+                    "category": category,
+                    "error_message": "No se puede eliminar la categoría porque tiene posts asociados.",
+                },
+            )
+
+        # Elimina la categoría si no hay posts asociados
         category.delete()
         return redirect("category_list")
     return render(request, "category_confirm_delete.html", {"category": category})
