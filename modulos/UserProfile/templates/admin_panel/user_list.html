@@ -1,28 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="user-list-container">
-        <h1 class="title">Usuarios</h1>
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Usuarios</h1>
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
-                        <td class="actions">
-                            <a href="{% url 'user_edit' user.id %}" class="edit-btn">Editar</a>
-                            <a href="{% url 'manage_user_groups' user.id %}" class="group-btn">Rol</a>
-                            <a href="{% url 'user_delete' user.id %}" class="delete-btn">Eliminar</a>
-                        </td>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Acciones</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td class="actions">
+                                <a href="{% url 'user_edit' user.id %}" class="btn btn-sm btn-primary">Editar</a>
+                                <a href="{% url 'manage_user_groups' user.id %}"
+                                   class="btn btn-sm btn-secondary">Rol</a>
+                                <a href="{% url 'user_delete' user.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

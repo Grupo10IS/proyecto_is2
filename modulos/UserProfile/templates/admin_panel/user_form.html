@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="user-form-container">
-        <h1 class="user-form-title">
-            {% if form.instance.pk %}
-                Editar Usuario
-            {% else %}
-                Crear Usuario
-            {% endif %}
-        </h1>
-        <form method="post" class="user-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="user-form-actions">
-                <button type="submit" class="save-button">Guardar</button>
-                <a href="{% url 'user_list' %}" class="cancel-button">Cancelar</a>
-            </div>
-        </form>
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">
+                {% if form.instance.pk %}
+                    Editar Usuario
+                {% else %}
+                    Crear Usuario
+                {% endif %}
+            </h1>
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{% url 'user_list' %}" class="btn btn-secondary ms-2">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}

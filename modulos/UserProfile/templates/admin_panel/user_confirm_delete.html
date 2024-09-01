@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="delete-user-container">
-        <h1 class="delete-user-title">Eliminar Usuario</h1>
-        <p class="delete-user-message">
-            ¿Estás seguro de que deseas eliminar a <strong>{{ user.username }}</strong>?
-        </p>
-        <form method="post" class="delete-user-form">
-            {% csrf_token %}
-            <div class="delete-user-actions">
-                <button type="submit" class="delete-button">Eliminar</button>
-                <a href="{% url 'user_list' %}" class="cancel-button">Cancelar</a>
+    <div class="container mt-5">
+        <div class="card bg-dark border-danger">
+            <div class="card-body text-white">
+                <h1 class="card-title">Eliminar Usuario</h1>
+                <p class="card-text">
+                    ¿Estás seguro de que deseas eliminar a <strong>{{ user.username }}</strong>?
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <a href="{% url 'user_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}
