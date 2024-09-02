@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group, Permission
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 
 from modulos.Authorization import permissions
+from modulos.Authorization.roles import default_roles
 from modulos.Authorization.forms import CustomRoleCreationForm
 from modulos.UserProfile.decorators import permissions_required
 
@@ -28,7 +29,11 @@ def role_list(req):
     View para listar los roles existentes en el sistema
     """
     roles = Group.objects.all()
-    return render(req, "authorization/role_list.html", {"roles": roles})
+    return render(
+        req,
+        "authorization/role_list.html",
+        {"roles": roles, "default_roles": default_roles},
+    )
 
 
 @login_required

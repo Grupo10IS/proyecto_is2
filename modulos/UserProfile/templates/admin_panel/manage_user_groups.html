@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5 text-white">
+        <h1 class="title mb-4">Gestionar Grupos para {{ user.username }}</h1>
+        <div class="card bg-dark border-secondary">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-4">{{ form.as_p }}</div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+            <div class="card-footer bg-dark">
+                <a href="{% url 'user_list' %}" class="btn btn-secondary">Volver a la lista de usuarios</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

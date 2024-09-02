@@ -3,17 +3,20 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card" style="background-color: #333; border-color: #444;">
-                    <div class="card-header text-center"
-                         style="background-color: #444;
-                                color: #fff">
-                        <h2>Iniciar Sesión</h2>
+                <div class="border rounded overflow-hidden shadow-sm text-body-emphasis bg-body-secondary">
+                    <div class="p-3 text-center border-bottom">
+                        <h2 class="display-6 fst-italic">Iniciar Sesión</h2>
                     </div>
-                    <div class="card-body" style="color: #fff;">
+                    <div class="p-4">
+                        {% if messages %}
+                            <div class="alert alert-danger">
+                                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+                            </div>
+                        {% endif %}
                         <form method="post">
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label for="username">Nombre de usuario</label>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nombre de usuario</label>
                                 <input type="text"
                                        name="username"
                                        class="form-control"
@@ -21,8 +24,8 @@
                                        style="background-color: #555;
                                               color: #fff">
                             </div>
-                            <div class="form-group">
-                                <label for="password">Contraseña</label>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
                                 <input type="password"
                                        name="password"
                                        class="form-control"
@@ -31,13 +34,16 @@
                                               color: #fff">
                             </div>
                             <button type="submit"
-                                    class="btn btn-primary btn-block"
+                                    class="btn btn-primary btn-block w-100"
                                     style="background-color: #007bff;
                                            border-color: #007bff">Iniciar Sesión</button>
                         </form>
                     </div>
-                    <div class="card-footer text-center" style="background-color: #444;">
-                        <a href="{% url 'password_reset' %}" style="color: #007bff;">¿Olvidaste tu contraseña?</a>
+                    <div class="p-3 text-center border-top">
+                        <p class="mb-2">
+                            <a href="{% url 'signup' %}" class="text-body-emphasis fw-bold">¿Aún no tienes cuenta? Regístrate</a>
+                        </p>
+                        <a href="{% url 'password_reset' %}" class="text-body-emphasis fw-bold">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
             </div>

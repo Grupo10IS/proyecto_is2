@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,32 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
             {% block title %}
-                Mi Sitio
+                Usuarios
             {% endblock title %}
         </title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
               rel="stylesheet">
         <!-- Custom CSS -->
-        <style>
-            body {
-                background: linear-gradient(to right, #0f0f0f, #1c1c1c, #333333);
-                color: #ffffff;
-                font-family: Arial, sans-serif;
-            }
-            header, footer {
-                background-color: #1c1c1c;
-                padding: 20px 0;
-                text-align: center;
-            }
-            h1 {
-                color: #e0e0e0;
-                text-shadow: 2px 2px 5px #000;
-            }
-            footer p {
-                color: #b0b0b0;
-            }
-        </style>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
     <body>
         <header class="container mt-5">
@@ -45,7 +28,7 @@
         </main>
         <footer class="container mt-5">
             <div class="row justify-content-center">
-                <p>&copy; 2024 Mi Sitio</p>
+                <p>&copy; 2024 - Copyright - GroupSix</p>
             </div>
         </footer>
     </body>

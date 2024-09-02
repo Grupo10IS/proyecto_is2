@@ -1,0 +1,42 @@
+{% extends "base_for_pages.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="border rounded overflow-hidden shadow-sm text-body-emphasis bg-body-secondary p-4">
+                    <h2 class="display-6 fst-italic text-center mb-4">Tu Perfil</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de usuario</label>
+                            {{ u_form.username|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            {{ u_form.email|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Número de teléfono</label>
+                            {{ p_form.phone_number|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Dirección</label>
+                            {{ p_form.address|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="groups" class="form-label">Grupos:</label>
+                            <ul class="list-unstyled">
+                                {% for group in groups %}<li>{{ group.name }}</li>{% endfor %}
+                            </ul>
+                        </div>
+                        <button type="submit"
+                                class="btn btn-primary btn-block w-100"
+                                style="background-color: #007bff;
+                                       border-color: #007bff">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

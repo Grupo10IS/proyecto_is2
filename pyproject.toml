@@ -21,6 +21,10 @@ sphinx = "^8.0.2"
 sphinx-autodoc-typehints = "^2.2.3"
 pytest = "^8.3.2"
 pytest-django = "^4.8.0"
+crispy-bootstrap5 = "^2024.2"
+sendgrid = "^6.11.0"
+django-crispy-forms = "^2.3"
+black = "^24.8.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -32,10 +36,10 @@ build-backend = "poetry.core.masonry.api"
 line-length = 88
 
 [tool.djlint]
-indent=2
+indent=4
 
 [tool.djlint.js]
-indent_size = 2
+indent_size = 4
 
 # -- testing --- 
 

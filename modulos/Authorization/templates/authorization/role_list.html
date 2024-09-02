@@ -1,34 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="container mt-5 text-white">
-    <h1 class="mb-4">roles</h1>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Permissions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for role in roles %}
-            <tr>
-              <td class="text-white">{{ role.id }}</td>
-              <td class="text-white">{{ role.name }}</td>
-              <td>
-                <ul>
-                  {% for perm in role.permissions.all %}<li class="text-white">{{ perm.name }}</li>{% endfor %}
-                </ul>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="2" class="text-center">No roles available.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Roles del sistema</h1>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Permisos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for role in roles %}
+                            <tr>
+                                <td>{{ role.id }}</td>
+                                <td>{{ role.name }}</td>
+                                <td>
+                                    <ul>
+                                        {% for perm in role.permissions.all %}<li>{{ perm.name }}</li>{% endfor %}
+                                    </ul>
+                                </td>
+                                <td>
+                                    {% if role.name not in default_roles %}
+                                        <a href="{% url 'role_delete' role.id %}"
+                                           class="btn btn-danger"
+                                           onclick="return confirm('¿Estás seguro de que quieres eliminar este rol?');">Eliminar</a>
+                                    {% else %}
+                                        <span style="color: blue;">Default</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No hay roles disponibles.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'role_create' %}" class="btn btn-primary">Crear Rol</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
     </div>
-  </div>
-{% endblock %}
+{% endblock content %}
