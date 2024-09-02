@@ -52,10 +52,16 @@
 <span class="n">POST_CREATE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_creation_permission&quot;</span>
 <span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
 <span class="n">POST_DELETE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_delete_permission&quot;</span>
+<span class="n">POST_POST_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_post_permission&quot;</span>
+<span class="n">POST_POST_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_post_permission&quot;</span>
+<span class="n">POST_DECLINE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_decline_permission&quot;</span>
 
 <span class="c1"># roles</span>
 <span class="n">ROLE_VIEW_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;role_view_permission&quot;</span>
 <span class="n">ROLE_MANAGE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;role_manage_permission&quot;</span>
+
+<span class="c1"># categoria</span>
+<span class="n">CATEGORY_MANAGE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;category_manage_permission&quot;</span>
 
 <span class="c1"># NOTE: se utiliza para listar los permisos en la vista</span>
 <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
@@ -65,9 +71,13 @@
     <span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para editar publicaciones&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para eliminar publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_POST_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para publicar publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_DECLINE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para rechazar publicaciones&quot;</span><span class="p">),</span>
     <span class="c1"># roles</span>
     <span class="p">(</span><span class="n">ROLE_VIEW_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para listar los roles del sistema&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">ROLE_MANAGE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear y eliminar los roles del sistema&quot;</span><span class="p">),</span>
+    <span class="c1"># categoria</span>
+    <span class="p">(</span><span class="n">CATEGORY_MANAGE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para gestionar categorías&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="c1">#####</span>
@@ -81,7 +91,10 @@
 <span class="k">def</span> <span class="nf">initialize_permissions</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inicializa y crea la lista de permisos disponibles dentro de la bd luego de</span>
-<span class="sd">    crear las migraciones</span>
+<span class="sd">    crear las migraciones.</span>
+
+<span class="sd">    Esta senhal se lanza automaticamente luego de realizar las migraciones</span>
+<span class="sd">    con el comendo manage.py migrate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">permissions</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -128,6 +141,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>

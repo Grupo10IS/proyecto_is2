@@ -33,8 +33,13 @@
             
   <h1>Código fuente para modulos.UserProfile.forms</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.forms</span> <span class="kn">import</span> <span class="n">UserCreationForm</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.forms</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PasswordResetForm</span><span class="p">,</span>
+    <span class="n">UserChangeForm</span><span class="p">,</span>
+    <span class="n">UserCreationForm</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
+
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 
@@ -52,6 +57,24 @@
             <span class="s2">&quot;password1&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">PasswordInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
             <span class="s2">&quot;password2&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">PasswordInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
         <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="CustomUserCreationForm.clean_username">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomUserCreationForm.clean_username">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_username</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">forms</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Este username ya está en uso.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">username</span></div>
+
+
+<div class="viewcode-block" id="CustomUserCreationForm.clean_email">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomUserCreationForm.clean_email">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">forms</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Este correo está ya en uso&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">email</span></div>
 </div>
 
 
@@ -71,6 +94,79 @@
     <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">UserProfile</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;groups&quot;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CustomUserChangeForm">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomUserChangeForm">[documentos]</a>
+<span class="k">class</span> <span class="nc">CustomUserChangeForm</span><span class="p">(</span><span class="n">UserChangeForm</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomUserChangeForm.Meta">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomUserChangeForm.Meta">[documentos]</a>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">UserProfile</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ProfileForm">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.ProfileForm">[documentos]</a>
+<span class="k">class</span> <span class="nc">ProfileForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<div class="viewcode-block" id="ProfileForm.Meta">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.ProfileForm.Meta">[documentos]</a>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">UserProfile</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;phone_number&quot;</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CustomPasswordResetForm">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomPasswordResetForm">[documentos]</a>
+<span class="k">class</span> <span class="nc">CustomPasswordResetForm</span><span class="p">(</span><span class="n">PasswordResetForm</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CustomPasswordResetForm.clean_email">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomPasswordResetForm.clean_email">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">forms</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Correo no asociado a una cuenta&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">email</span></div>
+
+
+<div class="viewcode-block" id="CustomPasswordResetForm.save">
+<a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomPasswordResetForm.save">[documentos]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">domain_override</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">subject_template_name</span><span class="o">=</span><span class="s2">&quot;registration/password_reset_subject.txt&quot;</span><span class="p">,</span>
+        <span class="n">email_template_name</span><span class="o">=</span><span class="s2">&quot;registration/password_reset_email.html&quot;</span><span class="p">,</span>
+        <span class="n">use_https</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">token_generator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">from_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">html_email_template_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">extra_email_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Envía un correo con las instrucciones para restablecer la contraseña.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">users</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+                    <span class="n">domain_override</span><span class="o">=</span><span class="n">domain_override</span><span class="p">,</span>
+                    <span class="n">subject_template_name</span><span class="o">=</span><span class="n">subject_template_name</span><span class="p">,</span>
+                    <span class="n">email_template_name</span><span class="o">=</span><span class="n">email_template_name</span><span class="p">,</span>
+                    <span class="n">use_https</span><span class="o">=</span><span class="n">use_https</span><span class="p">,</span>
+                    <span class="n">token_generator</span><span class="o">=</span><span class="n">token_generator</span><span class="p">,</span>
+                    <span class="n">from_email</span><span class="o">=</span><span class="n">from_email</span><span class="p">,</span>
+                    <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+                    <span class="n">html_email_template_name</span><span class="o">=</span><span class="n">html_email_template_name</span><span class="p">,</span>
+                    <span class="n">extra_email_context</span><span class="o">=</span><span class="n">extra_email_context</span><span class="p">,</span>
+                <span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -105,6 +201,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
