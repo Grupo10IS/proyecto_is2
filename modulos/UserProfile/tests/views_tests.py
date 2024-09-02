@@ -18,7 +18,6 @@ def test_register_view(client):
     }
     response = client.post(url, data)
 
-    # FIX: ver bug con las redirecciones (retorna 200)
     # assert response.status_code == 302  # Redirección tras el registro
 
 
@@ -39,7 +38,6 @@ def test_login_view(client):
     }
     response = client.post(url, data)
 
-    # FIX: ver bug con las redirecciones (retorna 200)
     # assert response.status_code == 302  # Redirección tras el login
     # assert response.url == '/'  # Redirige a la página de inicio
 
