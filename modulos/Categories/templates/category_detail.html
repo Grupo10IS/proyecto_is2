@@ -1,0 +1,18 @@
+{% extends "base_for_pages.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <h1 class="display-6 fst-italic mb-4">{{ category.name }}</h1>
+        <p>{{ category.description }}</p>
+        <hr>
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>  
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

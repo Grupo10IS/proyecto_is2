@@ -18,6 +18,11 @@ default_roles = {
         ROLE_VIEW_PERMISSION,
         ROLE_MANAGE_PERMISSION,
         POST_DELETE_PERMISSION,
+<<<<<<< Updated upstream
+=======
+        CATEGORY_MANAGE_PERMISSION,
+        HOME_ADMIN_VIEW_PERMISSION,
+>>>>>>> Stashed changes
     ],
     SUBSCRIBER: [],
     AUTOR: [POST_CREATE_PERMISSION],

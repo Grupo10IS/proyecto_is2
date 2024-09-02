@@ -17,14 +17,17 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-
+from modulos.Posts import urls as posts_urls
 from modulos.Authorization import urls as roles_urls
 from modulos.Posts.views import HomeView, AdminHomeView
 from modulos.UserProfile import urls as user_urls
+from modulos.Categories import urls as category_urls
 
 urlpatterns = [
     path("admin-home/", AdminHomeView.as_view(), name="admin_home"),
     path("", HomeView.as_view(), name="home"),
     path("users/", include(user_urls)),
     path("roles/", include(roles_urls)),
+    path("categories/", include(category_urls)),
+    path("posts/", include(posts_urls)),
 ]
