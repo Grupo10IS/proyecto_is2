@@ -4,7 +4,7 @@ from django.views import generic
 from django.views.generic import DetailView, ListView
 
 from modulos.Authorization import permissions
-from modulos.Categories.decorators import permissions_required
+from modulos.Authorization.decorators import permissions_required
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
