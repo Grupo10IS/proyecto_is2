@@ -141,6 +141,7 @@
                 </div>
             </nav>
             
+<<<<<<< HEAD
             <div class="nav-scroller py-1 mb-3 border-bottom">
                 <nav class="nav nav-underline justify-content-between">
                     {% for category in categories %}
@@ -152,13 +153,38 @@
             </div>
 
             <div class="row">
+=======
+                <div class="nav-scroller py-1 mb-3 border-bottom">
+                    <nav class="nav nav-underline justify-content-between">
+                        <a class="nav-item nav-link link-body-emphasis active" href="#">Mundo</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Nacional</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Tecnologia</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Diseño</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Cultura</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Negocios</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Politica</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Deportes</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Ciencia</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Salud</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Moda</a>
+                        <a class="nav-item nav-link link-body-emphasis" href="#">Viajes</a>
+                    </nav>
+                </div>
+            </div>
+
+                <div class="row">
+>>>>>>> categories
                     <!-- Panel de Control -->
                     <div class="col-2">
                         <h2>Panel de Control</h2>
                         <div id="list-example" class="list-group">
                             <a class="list-group-item list-group-item-action" href="{% url 'user_list' %}">Gestionar Usuarios</a>
                             <a class="list-group-item list-group-item-action" href="{% url 'role_list' %}">Gestionar Roles y Permisos</a>
+<<<<<<< HEAD
                             <a class="list-group-item list-group-item-action" href="#">Gestionar Categorías</a>
+=======
+                            <a class="list-group-item list-group-item-action" href="{% url 'category_list' %}">Gestionar Categorías</a>
+>>>>>>> categories
                             <a class="list-group-item list-group-item-action" href="#">Gestionar Contenido</a>
                         </div>
                     </div>

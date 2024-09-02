@@ -29,5 +29,8 @@ urlpatterns = [
     path("users/", include(user_urls)),
     path("roles/", include(roles_urls)),
     path("categories/", include(category_urls)),
+<<<<<<< HEAD
     path("posts/", include(posts_urls)),
+=======
+>>>>>>> categories
 ]

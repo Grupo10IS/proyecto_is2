@@ -1,14 +1,26 @@
+<<<<<<< HEAD
 from django.shortcuts import render
 
 <<<<<<< Updated upstream
 # Create your views here.
 =======
+=======
+from multiprocessing import context
+from pyexpat.errors import messages
+from django.views import generic
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+
+>>>>>>> categories
 from modulos.Authorization import permissions
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.decorators import permissions_required
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
+<<<<<<< HEAD
 from django.views.generic import DetailView, ListView
+=======
+>>>>>>> categories
 
 
 class CategoryCreateView(generic.CreateView):
@@ -17,6 +29,7 @@ class CategoryCreateView(generic.CreateView):
     success_url = "/categories/"
 
 
+<<<<<<< HEAD
 class CategoryListView(ListView):
     model = Category
     template_name = "categories_list.html"
@@ -36,6 +49,8 @@ class CategoryDetailView(DetailView):
         return context
 
 
+=======
+>>>>>>> categories
 # Vista para crear categorias
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
@@ -96,4 +111,7 @@ def category_edit(request, category_id):
     else:
         form = CategoryCreationForm(instance=category)
     return render(request, "category_form.html", {"form": form})
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> categories

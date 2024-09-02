@@ -18,11 +18,15 @@ USERS_VIEW_ALL_PROFILES_PERMISSION = "users_view_all_profiles_permission"
 POST_CREATE_PERMISSION = "post_creation_permission"
 POST_EDIT_PERMISSION = "post_edit_permission"
 POST_DELETE_PERMISSION = "post_delete_permission"
+POST_POST_PERMISSION = "post_post_permission"
+POST_POST_PERMISSION = "post_post_permission"
+POST_DECLINE_PERMISSION = "post_decline_permission"
 
 # roles
 ROLE_VIEW_PERMISSION = "role_view_permission"
 ROLE_MANAGE_PERMISSION = "role_manage_permission"
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 # categoria
@@ -32,6 +36,11 @@ CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 HOME_ADMIN_VIEW_PERMISSION = "category_manage_permission_permission"
 
 >>>>>>> Stashed changes
+=======
+# categoria
+CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
+
+>>>>>>> categories
 # NOTE: se utiliza para listar los permisos en la vista
 permissions = [
     # usuarios
@@ -40,15 +49,22 @@ permissions = [
     (POST_CREATE_PERMISSION, "Permiso para crear publicaciones"),
     (POST_EDIT_PERMISSION, "Permiso para editar publicaciones"),
     (POST_DELETE_PERMISSION, "Permiso para eliminar publicaciones"),
+    (POST_POST_PERMISSION, "Permiso para publicar publicaciones"),
+    (POST_DECLINE_PERMISSION, "Permiso para rechazar publicaciones"),
     # roles
     (ROLE_VIEW_PERMISSION, "Permiso para listar los roles del sistema"),
     (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     # categoria
     (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
     (HOME_ADMIN_VIEW_PERMISSION, "Permiso para acceder al home para administradores"),
 >>>>>>> Stashed changes
+=======
+    # categoria
+    (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
+>>>>>>> categories
 ]
 
 #####
