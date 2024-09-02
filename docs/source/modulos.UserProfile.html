@@ -107,78 +107,6 @@
 <section id="module-modulos.UserProfile.forms">
 <span id="modulos-userprofile-forms-module"></span><h2>modulos.UserProfile.forms module<a class="headerlink" href="#module-modulos.UserProfile.forms" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.forms.</span></span><span class="sig-name descname"><span class="pre">CustomPasswordResetForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomPasswordResetForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PasswordResetForm</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm.base_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm.clean_email">
-<span class="sig-name descname"><span class="pre">clean_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomPasswordResetForm.clean_email"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm.clean_email" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm.declared_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm.media">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm.media" title="Link to this definition">¶</a></dt>
-<dd><p>Return all media required to render the widgets on this form.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomPasswordResetForm.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain_override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject_template_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'registration/password_reset_subject.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_template_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'registration/password_reset_email.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_https</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html_email_template_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_email_context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomPasswordResetForm.save"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomPasswordResetForm.save" title="Link to this definition">¶</a></dt>
-<dd><p>Envía un correo con las instrucciones para restablecer la contraseña.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.forms.</span></span><span class="sig-name descname"><span class="pre">CustomUserChangeForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomUserChangeForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserChangeForm</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.Meta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomUserChangeForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.Meta" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['username',</span> <span class="pre">'email']</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.Meta.fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.Meta.model" title="Link to this definition">¶</a></dt>
-<dd><p>alias de <a class="reference internal" href="#modulos.UserProfile.models.UserProfile" title="modulos.UserProfile.models.UserProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserProfile</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'password':</span> <span class="pre">&lt;django.contrib.auth.forms.ReadOnlyPasswordHashField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.base_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password':</span> <span class="pre">&lt;django.contrib.auth.forms.ReadOnlyPasswordHashField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.declared_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserChangeForm.media">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserChangeForm.media" title="Link to this definition">¶</a></dt>
-<dd><p>Return all media required to render the widgets on this form.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserCreationForm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.forms.</span></span><span class="sig-name descname"><span class="pre">CustomUserCreationForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomUserCreationForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserCreationForm</span></code></p>
@@ -209,17 +137,6 @@
 <span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'usable_password':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserCreationForm.clean_email">
-<span class="sig-name descname"><span class="pre">clean_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomUserCreationForm.clean_email"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm.clean_email" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserCreationForm.clean_username">
-<span class="sig-name descname"><span class="pre">clean_username</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#CustomUserCreationForm.clean_username"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm.clean_username" title="Link to this definition">¶</a></dt>
-<dd><p>Reject usernames that differ only in case.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserCreationForm.declared_fields">
 <span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'usable_password':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm.declared_fields" title="Link to this definition">¶</a></dt>
@@ -228,45 +145,6 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="modulos.UserProfile.forms.CustomUserCreationForm.media">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.UserProfile.forms.CustomUserCreationForm.media" title="Link to this definition">¶</a></dt>
-<dd><p>Return all media required to render the widgets on this form.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.forms.</span></span><span class="sig-name descname"><span class="pre">ProfileForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#ProfileForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.Meta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../../_modules/modulos/UserProfile/forms.html#ProfileForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.Meta" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['phone_number',</span> <span class="pre">'address']</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.Meta.fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.Meta.model" title="Link to this definition">¶</a></dt>
-<dd><p>alias de <a class="reference internal" href="#modulos.UserProfile.models.UserProfile" title="modulos.UserProfile.models.UserProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserProfile</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'address':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.base_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.declared_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.media">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.media" title="Link to this definition">¶</a></dt>
 <dd><p>Return all media required to render the widgets on this form.</p>
 </dd></dl>
 
@@ -316,7 +194,7 @@
 <span id="modulos-userprofile-models-module"></span><h2>modulos.UserProfile.models module<a class="headerlink" href="#module-modulos.UserProfile.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.DoesNotExist">
@@ -328,13 +206,6 @@
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.MultipleObjectsReturned">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.address">
-<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.address" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -449,13 +320,6 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.phone_number">
-<span class="sig-name descname"><span class="pre">phone_number</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.phone_number" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.user_permissions">
 <span class="sig-name descname"><span class="pre">user_permissions</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.user_permissions" title="Link to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -512,12 +376,6 @@ object the first time, the query is executed.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">CustomLoginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#CustomLoginView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.CustomLoginView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginView</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="modulos.UserProfile.views.CustomLoginView.form_invalid">
-<span class="sig-name descname"><span class="pre">form_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#CustomLoginView.form_invalid"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.CustomLoginView.form_invalid" title="Link to this definition">¶</a></dt>
-<dd><p>If the form is invalid, render the invalid form.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="modulos.UserProfile.views.CustomLoginView.get_redirect_url">
 <span class="sig-name descname"><span class="pre">get_redirect_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#CustomLoginView.get_redirect_url"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.CustomLoginView.get_redirect_url" title="Link to this definition">¶</a></dt>
 <dd><p>Return the user-originating redirect URL if it’s safe.</p>
@@ -559,8 +417,18 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.views.profile_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">profile_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#profile_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.profile_view" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.UserProfile.views.manage_user_groups">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">manage_user_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#manage_user_groups"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.manage_user_groups" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.user_delete">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">user_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#user_delete"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.user_delete" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.user_edit">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">user_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#user_edit"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.user_edit" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -600,10 +468,6 @@ object the first time, the query is executed.</p>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.UserProfile package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
@@ -625,35 +489,11 @@ object the first time, the query is executed.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.forms">modulos.UserProfile.forms module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.base_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.clean_email"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.clean_email()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.declared_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.media"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.media</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.save"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserChangeForm"><code class="docutils literal notranslate"><span class="pre">CustomUserChangeForm</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserChangeForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomUserChangeForm.Meta</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserChangeForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserChangeForm.base_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserChangeForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserChangeForm.declared_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserChangeForm.media"><code class="docutils literal notranslate"><span class="pre">CustomUserChangeForm.media</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.Meta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.base_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.clean_email"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.clean_email()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.clean_username"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.clean_username()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.declared_fields</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomUserCreationForm.media"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.media</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.ProfileForm"><code class="docutils literal notranslate"><span class="pre">ProfileForm</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.ProfileForm.Meta"><code class="docutils literal notranslate"><span class="pre">ProfileForm.Meta</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.ProfileForm.base_fields"><code class="docutils literal notranslate"><span class="pre">ProfileForm.base_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.ProfileForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">ProfileForm.declared_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.ProfileForm.media"><code class="docutils literal notranslate"><span class="pre">ProfileForm.media</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.UserGroupForm"><code class="docutils literal notranslate"><span class="pre">UserGroupForm</span></code></a><ul>
@@ -669,7 +509,6 @@ object the first time, the query is executed.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile"><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserProfile.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserProfile.MultipleObjectsReturned</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.address"><code class="docutils literal notranslate"><span class="pre">UserProfile.address</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.date_joined</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.email"><code class="docutils literal notranslate"><span class="pre">UserProfile.email</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.first_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.first_name</span></code></a></li>
@@ -684,7 +523,6 @@ object the first time, the query is executed.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.last_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 </ul>
@@ -701,7 +539,6 @@ object the first time, the query is executed.</p>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.urls">modulos.UserProfile.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.views">modulos.UserProfile.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView"><code class="docutils literal notranslate"><span class="pre">CustomLoginView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView.form_invalid"><code class="docutils literal notranslate"><span class="pre">CustomLoginView.form_invalid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView.get_redirect_url"><code class="docutils literal notranslate"><span class="pre">CustomLoginView.get_redirect_url()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.CustomLoginView.redirect_authenticated_user"><code class="docutils literal notranslate"><span class="pre">CustomLoginView.redirect_authenticated_user</span></code></a></li>
 </ul>
@@ -713,7 +550,9 @@ object the first time, the query is executed.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.views.SignUpView.template_name"><code class="docutils literal notranslate"><span class="pre">SignUpView.template_name</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.profile_view"><code class="docutils literal notranslate"><span class="pre">profile_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.manage_user_groups"><code class="docutils literal notranslate"><span class="pre">manage_user_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.user_delete"><code class="docutils literal notranslate"><span class="pre">user_delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.user_edit"><code class="docutils literal notranslate"><span class="pre">user_edit()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile">Module contents</a></li>

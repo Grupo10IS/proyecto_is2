@@ -39,11 +39,11 @@
 
 <span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">ADMIN</span> <span class="o">=</span> <span class="s2">&quot;Administrador&quot;</span>
-<span class="n">PUBLISHER</span> <span class="o">=</span> <span class="s2">&quot;Publicador&quot;</span>
-<span class="n">EDITOR</span> <span class="o">=</span> <span class="s2">&quot;Editor&quot;</span>
-<span class="n">AUTOR</span> <span class="o">=</span> <span class="s2">&quot;Autor&quot;</span>
-<span class="n">SUBSCRIBER</span> <span class="o">=</span> <span class="s2">&quot;Suscriptor&quot;</span>
+<span class="n">ADMIN</span> <span class="o">=</span> <span class="s2">&quot;admin&quot;</span>
+<span class="n">PUBLISHER</span> <span class="o">=</span> <span class="s2">&quot;publicador&quot;</span>
+<span class="n">EDITOR</span> <span class="o">=</span> <span class="s2">&quot;editor&quot;</span>
+<span class="n">AUTOR</span> <span class="o">=</span> <span class="s2">&quot;publicador&quot;</span>
+<span class="n">SUBSCRIBER</span> <span class="o">=</span> <span class="s2">&quot;suscriptor&quot;</span>
 
 <span class="c1"># Roles por defecto y sus permisos</span>
 <span class="n">default_roles</span> <span class="o">=</span> <span class="p">{</span>
@@ -51,12 +51,8 @@
         <span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">,</span>
         <span class="n">ROLE_VIEW_PERMISSION</span><span class="p">,</span>
         <span class="n">ROLE_MANAGE_PERMISSION</span><span class="p">,</span>
-        <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="n">SUBSCRIBER</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="n">AUTOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">],</span>
-    <span class="n">EDITOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">],</span>
-    <span class="n">PUBLISHER</span><span class="p">:</span> <span class="p">[],</span>
 <span class="p">}</span>
 
 
@@ -128,10 +124,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
