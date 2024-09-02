@@ -21,6 +21,9 @@ help:
 update:
 	@$(SPHINXSRC) -o "$(OUTDIR)" "$(SOURCES)"
 
+test:
+	pytest -q --show-capture=no --disable-warnings --tb=no
+
 format:
 	djlint . --reformat
 	black .

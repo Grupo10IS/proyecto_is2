@@ -4,7 +4,7 @@ from django.views import generic
 from django.views.generic import DetailView, ListView
 
 from modulos.Authorization import permissions
-from modulos.Categories.decorators import permissions_required
+from modulos.Authorization.decorators import permissions_required
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
@@ -90,6 +90,19 @@ def category_edit(request, category_id):
     if request.method == "POST":
         form = CategoryCreationForm(request.POST, instance=category)
         if form.is_valid():
+            # Verifica si la categoría está siendo cambiada a inactiva y tiene posts asociados
+            if (
+                form.cleaned_data["status"] == "INACTIVO"
+                and Post.objects.filter(category=category).exists()
+            ):
+                return render(
+                    request,
+                    "category_form.html",
+                    {
+                        "form": form,
+                        "error_message": "No se puede inactivar la categoría porque tiene posts asociados.",
+                    },
+                )
             form.save()
             return redirect("category_list")
     else:

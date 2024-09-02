@@ -7,7 +7,7 @@ from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from modulos.Authorization import permissions
 from modulos.Authorization.roles import default_roles
 from modulos.Authorization.forms import CustomRoleCreationForm
-from modulos.UserProfile.decorators import permissions_required
+from modulos.Authorization.decorators import permissions_required
 
 # Create your views here.
 
