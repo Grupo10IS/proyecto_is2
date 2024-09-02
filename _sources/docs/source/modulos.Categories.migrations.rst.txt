@@ -1,0 +1,10 @@
+modulos.Categories.migrations package
+=====================================
+
+Module contents
+---------------
+
+.. automodule:: modulos.Categories.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

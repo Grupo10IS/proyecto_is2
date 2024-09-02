@@ -1,0 +1,10 @@
+modulos.Posts.migrations package
+================================
+
+Module contents
+---------------
+
+.. automodule:: modulos.Posts.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

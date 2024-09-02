@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.UserProfile.models</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span><span class="p">,</span> <span class="n">Group</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
 <span class="c1"># Create your models here.</span>
@@ -41,8 +41,13 @@
 <div class="viewcode-block" id="UserProfile">
 <a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.UserProfile">[documentos]</a>
 <span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">AbstractUser</span><span class="p">):</span>
-    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Dirección&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">phone_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Número de teléfono&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
 
+    <span class="c1"># profile_picture = models.ImageField(upload_to=&#39;profile_pics/&#39;, blank=True, null=True)  # Comentado temporalmente</span>
 </pre></div>
 
           </div>
@@ -75,6 +80,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
