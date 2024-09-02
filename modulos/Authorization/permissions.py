@@ -57,7 +57,7 @@ def initialize_permissions(sender, **kwargs):
     Inicializa y crea la lista de permisos disponibles dentro de la bd luego de
     crear las migraciones.
 
-    Esta senhal se lanza automaticamente luego de realizar las migraciones 
+    Esta senhal se lanza automaticamente luego de realizar las migraciones
     con el comendo manage.py migrate.
     """
     for perm in permissions:

@@ -9,8 +9,12 @@ from django.views.generic import TemplateView
 from modulos.Authorization import permissions
 
 from .decorators import permissions_required
-from .forms import (CustomUserChangeForm, CustomUserCreationForm, ProfileForm,
-                    UserGroupForm)
+from .forms import (
+    CustomUserChangeForm,
+    CustomUserCreationForm,
+    ProfileForm,
+    UserGroupForm,
+)
 from .models import UserProfile
 
 
@@ -111,6 +115,7 @@ def user_delete(request, user_id):
         user.delete()
         return redirect("user_list")
     return render(request, "admin_panel/user_confirm_delete.html", {"user": user})
+
 
 # Vista para agregar un rol a un usuario
 @login_required

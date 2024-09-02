@@ -1,8 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from modulos.UserProfile.management.commands.new_admin import (_credentials,
-                                                               create_admin)
+from modulos.UserProfile.management.commands.new_admin import _credentials, create_admin
 from modulos.UserProfile.models import UserProfile
 
 

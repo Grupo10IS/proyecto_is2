@@ -4,8 +4,7 @@ from django.urls import path
 from modulos.UserProfile.views import CustomLoginView, SignUpView
 
 from .forms import CustomPasswordResetForm
-from .views import (manage_user_groups, profile_view, user_delete, user_edit,
-                    user_list)
+from .views import manage_user_groups, profile_view, user_delete, user_edit, user_list
 
 urlpatterns = [
     path("login/", CustomLoginView.as_view(), name="login"),  # Vista de login

@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-5">
-    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <h1 class="display-6 fst-italic mb-4">Categorias</h1>
-        <table class="table table-hover table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
-                <tr>
-                    <td>{{ category.name }}</td>
-                    <td>{{ category.description }}</td>
-                    <td class="actions">
-                        <a href="{% url 'category_edit' category.id %}" class="btn btn-sm btn-primary">Editar</a>
-                        <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{% url 'category_create' %}" class="btn btn-primary">Crear Categoria</a>
-        <a href="{% url 'home' %}" class="btn btn-secondary">Volver al Inicio</a>
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Categorias</h1>
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description }}</td>
+                            <td class="actions">
+                                <a href="{% url 'category_edit' category.id %}"
+                                   class="btn btn-sm btn-primary">Editar</a>
+                                <a href="{% url 'category_delete' category.id %}"
+                                   class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'category_create' %}" class="btn btn-primary">Crear Categoria</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
     </div>
-</div>
 {% endblock %}
