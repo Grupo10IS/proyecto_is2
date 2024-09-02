@@ -1,39 +1,34 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import DetailView, TemplateView
+from django.shortcuts import render
+from django.views.generic import DetailView
 
-from modulos.Authorization import permissions
-from modulos.Categories.models import \
-    Category  # Importa el modelo de categorías
-
-from .decorators import permissions_required
-from .models import Post
+from modulos.Categories.models import Category
+from modulos.Posts.models import Post
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "pages/home.html"  # Default home for non-admin users
+def home_view(req):
+    sitios = []
+    if req.user.is_authenticated:
+        permisos = req.user.get_all_permissions()
 
-    @permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
-    def get(self, request, *args, **kwargs):
-        return redirect(reverse("admin_home"))
+        # Itera sobre los permisos
+        for perm in permisos:
+            if "user" in perm and perm not in sitios:
+                sitios.append("user")
+            if "post" in perm and perm not in sitios:
+                sitios.append("post")
+            if "categor" in perm and perm not in sitios:
+                sitios.append("category")
+            if "role" in perm and perm not in sitios:
+                sitios.append("role")
 
-    # Añade todas las categorías al home
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
-        return context
-
-
-class AdminHomeView(LoginRequiredMixin, TemplateView):
-    template_name = "pages/home_for_admin.html"
-
-    # Añade todas las categorías al home del admin
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
-        return context
+    return render(
+        req,
+        "pages/home.html",
+        context={
+            "categories": Category.objects.all(),
+            "sitios": sitios,
+        },
+    )
 
 
 class PostDetailView(DetailView):

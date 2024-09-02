@@ -83,7 +83,7 @@ def profile_view(request):
 @login_required
 @permissions_required([permissions.USERS_VIEW_ALL_PROFILES_PERMISSION])
 def user_list(request):
-    users = UserProfile.objects.all()
+    users = UserProfile.objects.exclude(id=request.user.id)
     return render(request, "admin_panel/user_list.html", {"users": users})
 
 

@@ -29,12 +29,6 @@ ROLE_MANAGE_PERMISSION = "role_manage_permission"
 # categoria
 CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
-# home for admin
-HOME_ADMIN_VIEW_PERMISSION = "category_manage_permission_permission"
-
-# categoria
-CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
-
 # NOTE: se utiliza para listar los permisos en la vista
 permissions = [
     # usuarios
@@ -50,7 +44,6 @@ permissions = [
     (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
     # categoria
     (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
-    (HOME_ADMIN_VIEW_PERMISSION, "Permiso para acceder al home para administradores"),
 ]
 
 #####
@@ -62,7 +55,10 @@ permissions = [
 def initialize_permissions(sender, **kwargs):
     """
     Inicializa y crea la lista de permisos disponibles dentro de la bd luego de
-    crear las migraciones
+    crear las migraciones.
+
+    Esta senhal se lanza automaticamente luego de realizar las migraciones 
+    con el comendo manage.py migrate.
     """
     for perm in permissions:
         try:

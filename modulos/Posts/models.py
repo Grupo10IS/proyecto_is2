@@ -1,4 +1,3 @@
-from datetime import timezone
 from django.db import models
 
 from modulos.Categories.models import Category
