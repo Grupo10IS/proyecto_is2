@@ -43,3 +43,13 @@ language = "es"
 
 html_theme = "alabaster"
 html_static_path = []
+
+# Autodoc configuration: excluir librerias externas.
+autodoc_default_options = {
+        'members': True,
+        'undoc-members': True,
+        'private-members': False,
+        'special-members': '__init__',
+        'inherited-members': False,  # Do not include inherited members
+        'show-inheritance': True,
+}
