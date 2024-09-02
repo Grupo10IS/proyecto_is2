@@ -10,6 +10,7 @@
                             <th>Id</th>
                             <th>Nombre</th>
                             <th>Permisos</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,10 +23,19 @@
                                         {% for perm in role.permissions.all %}<li>{{ perm.name }}</li>{% endfor %}
                                     </ul>
                                 </td>
+                                <td>
+                                    {% if role.name not in default_roles %}
+                                        <a href="{% url 'role_delete' role.id %}"
+                                           class="btn btn-danger"
+                                           onclick="return confirm('¿Estás seguro de que quieres eliminar este rol?');">Eliminar</a>
+                                    {% else %}
+                                        <span style="color: blue;">Default</span>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="3" class="text-center">No hay roles disponibles.</td>
+                                <td colspan="4" class="text-center">No hay roles disponibles.</td>
                             </tr>
                         {% endfor %}
                     </tbody>
