@@ -26,21 +26,15 @@ POST_DECLINE_PERMISSION = "post_decline_permission"
 ROLE_VIEW_PERMISSION = "role_view_permission"
 ROLE_MANAGE_PERMISSION = "role_manage_permission"
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 # categoria
 CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
 # home for admin
 HOME_ADMIN_VIEW_PERMISSION = "category_manage_permission_permission"
 
->>>>>>> Stashed changes
-=======
 # categoria
 CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
->>>>>>> categories
 # NOTE: se utiliza para listar los permisos en la vista
 permissions = [
     # usuarios
@@ -54,17 +48,9 @@ permissions = [
     # roles
     (ROLE_VIEW_PERMISSION, "Permiso para listar los roles del sistema"),
     (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
     # categoria
     (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
     (HOME_ADMIN_VIEW_PERMISSION, "Permiso para acceder al home para administradores"),
->>>>>>> Stashed changes
-=======
-    # categoria
-    (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
->>>>>>> categories
 ]
 
 #####
