@@ -69,6 +69,15 @@
 <dt class="sig sig-object py" id="modulos.Posts.apps.PostsConfig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.apps.</span></span><span class="sig-name descname"><span class="pre">PostsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/apps.html#PostsConfig"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.apps.PostsConfig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<p>Configuración de la aplicación “Posts”.</p>
+<p>Esta clase define la configuración predeterminada para la aplicación “Posts”,
+especificando el tipo de campo automático predeterminado para los modelos de la aplicación
+y el nombre del módulo de la aplicación.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>default_auto_field (str): Tipo de campo automático predeterminado para los modelos de la aplicación.
+name (str): Nombre del módulo de la aplicación “Posts”.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.apps.PostsConfig.default_auto_field">
 <span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#modulos.Posts.apps.PostsConfig.default_auto_field" title="Link to this definition">¶</a></dt>
@@ -82,13 +91,8 @@
 </dd></dl>
 
 </section>
-<section id="module-modulos.Posts.decorators">
-<span id="modulos-posts-decorators-module"></span><h2>modulos.Posts.decorators module<a class="headerlink" href="#module-modulos.Posts.decorators" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Posts.decorators.permissions_required">
-<span class="sig-prename descclassname"><span class="pre">modulos.Posts.decorators.</span></span><span class="sig-name descname"><span class="pre">permissions_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/decorators.html#permissions_required"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.decorators.permissions_required" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="modulos-posts-decorators-module">
+<h2>modulos.Posts.decorators module<a class="headerlink" href="#modulos-posts-decorators-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.Posts.models">
 <span id="modulos-posts-models-module"></span><h2>modulos.Posts.models module<a class="headerlink" href="#module-modulos.Posts.models" title="Link to this heading">¶</a></h2>
@@ -158,17 +162,8 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.models.Post.status">
 <span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#modulos.Posts.models.Post.status" title="Link to this definition">¶</a></dt>
-<dd><p>author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-comments = models.ManyToManyField(</p>
-<blockquote>
-<div><p>«Comment», related_name=»posts»</p>
-</div></blockquote>
-<p>)  # Relación muchos a muchos con el modelo Comment
-history = models.ManyToManyField(</p>
-<blockquote>
-<div><p>«ContentHistory», related_name=»posts»</p>
-</div></blockquote>
-<p>)  # Relación muchos a muchos con el modelo ContentHistory</p>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -193,6 +188,16 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="modulos.Posts.views.PostDetailView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">PostDetailView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#PostDetailView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.PostDetailView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></p>
+<p>Vista de detalle de publicación “PostDetailView”.</p>
+<p>Esta vista muestra los detalles de un solo objeto “Post”.
+Utiliza el modelo “Post” para recuperar la instancia específica que se va a mostrar y
+utiliza la plantilla “posts/post_detail.html” para renderizar el contenido.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>model (Model): El modelo utilizado por la vista (“Post”).
+template_name (str): La plantilla HTML utilizada para renderizar el detalle de la publicación.
+context_object_name (str): El nombre de la variable de contexto que representa el objeto “Post”.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.views.PostDetailView.context_object_name">
 <span class="sig-name descname"><span class="pre">context_object_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'post'</span></em><a class="headerlink" href="#modulos.Posts.views.PostDetailView.context_object_name" title="Link to this definition">¶</a></dt>
@@ -214,7 +219,17 @@ object the first time, the query is executed.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.home_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#home_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.home_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista de inicio “home_view”.</p>
+<p>Esta vista verifica si el usuario está autenticado y obtiene todos sus permisos.
+Dependiendo de los permisos del usuario, agrega nombres específicos a la lista “sitios” para
+determinar qué secciones o funcionalidades se deben mostrar en la página de inicio.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>req (HttpRequest): El objeto de solicitud HTTP.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla “pages/home.html”.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-modulos.Posts">
@@ -270,10 +285,7 @@ object the first time, the query is executed.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.decorators">modulos.Posts.decorators module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.decorators.permissions_required"><code class="docutils literal notranslate"><span class="pre">permissions_required()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#modulos-posts-decorators-module">modulos.Posts.decorators module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.models">modulos.Posts.models module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.Post"><code class="docutils literal notranslate"><span class="pre">Post</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Post.DoesNotExist</span></code></a></li>

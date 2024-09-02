@@ -42,6 +42,20 @@
 <div class="viewcode-block" id="home_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.home_view">[documentos]</a>
 <span class="k">def</span> <span class="nf">home_view</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista de inicio &#39;home_view&#39;.</span>
+
+<span class="sd">    Esta vista verifica si el usuario está autenticado y obtiene todos sus permisos.</span>
+<span class="sd">    Dependiendo de los permisos del usuario, agrega nombres específicos a la lista &#39;sitios&#39; para</span>
+<span class="sd">    determinar qué secciones o funcionalidades se deben mostrar en la página de inicio.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        req (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla &#39;pages/home.html&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">sitios</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">permisos</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
@@ -71,6 +85,19 @@
 <div class="viewcode-block" id="PostDetailView">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.PostDetailView">[documentos]</a>
 <span class="k">class</span> <span class="nc">PostDetailView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista de detalle de publicación &#39;PostDetailView&#39;.</span>
+
+<span class="sd">    Esta vista muestra los detalles de un solo objeto &#39;Post&#39;.</span>
+<span class="sd">    Utiliza el modelo &#39;Post&#39; para recuperar la instancia específica que se va a mostrar y</span>
+<span class="sd">    utiliza la plantilla &#39;posts/post_detail.html&#39; para renderizar el contenido.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        model (Model): El modelo utilizado por la vista (&#39;Post&#39;).</span>
+<span class="sd">        template_name (str): La plantilla HTML utilizada para renderizar el detalle de la publicación.</span>
+<span class="sd">        context_object_name (str): El nombre de la variable de contexto que representa el objeto &#39;Post&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;posts/post_detail.html&quot;</span>
     <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;post&quot;</span></div>

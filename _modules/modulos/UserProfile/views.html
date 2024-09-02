@@ -40,21 +40,30 @@
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">generic</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
+
 <span class="kn">from</span> <span class="nn">modulos.Authorization</span> <span class="kn">import</span> <span class="n">permissions</span>
 
-<span class="kn">from</span> <span class="nn">.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
-<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CustomUserChangeForm</span><span class="p">,</span>
-    <span class="n">CustomUserCreationForm</span><span class="p">,</span>
-    <span class="n">ProfileForm</span><span class="p">,</span>
-    <span class="n">UserGroupForm</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">modulos.Authorization.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CustomUserChangeForm</span><span class="p">,</span> <span class="n">CustomUserCreationForm</span><span class="p">,</span> <span class="n">ProfileForm</span><span class="p">,</span>
+                    <span class="n">UserGroupForm</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 
 <div class="viewcode-block" id="SignUpView">
 <a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.SignUpView">[documentos]</a>
 <span class="k">class</span> <span class="nc">SignUpView</span><span class="p">(</span><span class="n">generic</span><span class="o">.</span><span class="n">CreateView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista de registro &#39;SignUpView&#39;.</span>
+
+<span class="sd">    Permite que los nuevos usuarios se registren creando una cuenta.</span>
+<span class="sd">    Si el formulario es inválido, elimina los textos de ayuda predeterminados para las contraseñas.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        form_class (ModelForm): Formulario utilizado para la creación de usuarios (CustomUserCreationForm).</span>
+<span class="sd">        success_url (str): URL de redirección al iniciar sesión después del registro.</span>
+<span class="sd">        template_name (str): Plantilla utilizada para renderizar el formulario de registro.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">form_class</span> <span class="o">=</span> <span class="n">CustomUserCreationForm</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;registration/signup.html&quot;</span>
@@ -80,6 +89,16 @@
 <div class="viewcode-block" id="CustomLoginView">
 <a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.CustomLoginView">[documentos]</a>
 <span class="k">class</span> <span class="nc">CustomLoginView</span><span class="p">(</span><span class="n">LoginView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista personalizada de inicio de sesión &#39;CustomLoginView&#39;.</span>
+
+<span class="sd">    Gestiona el inicio de sesión de los usuarios. Redirige a la página de inicio si el usuario ya está autenticado.</span>
+<span class="sd">    Si el formulario es inválido, verifica si el usuario existe y si la contraseña es correcta.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        redirect_authenticated_user (bool): Si es True, redirige a los usuarios autenticados.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">redirect_authenticated_user</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Redirigir si ya está autenticado</span>
 
 <div class="viewcode-block" id="CustomLoginView.get_redirect_url">
@@ -114,6 +133,18 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.UserProfile.html#modulos.UserProfile.views.profile_view">[documentos]</a>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">profile_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista de perfil de usuario &#39;profile_view&#39;.</span>
+
+<span class="sd">    Permite a los usuarios autenticados ver y editar su perfil.</span>
+<span class="sd">    Gestiona los formularios de actualización de datos del usuario y de su perfil.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla &#39;registration/profile.html&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">u_form</span> <span class="o">=</span> <span class="n">CustomUserChangeForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
         <span class="n">p_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
@@ -139,6 +170,18 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">user_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para listar usuarios &#39;user_list&#39;.</span>
+
+<span class="sd">    Muestra una lista de todos los usuarios excluyendo al usuario autenticado.</span>
+<span class="sd">    Requiere autenticación y permisos para ver todos los perfiles de usuario.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla &#39;admin_panel/user_list.html&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">users</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;admin_panel/user_list.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">})</span>
 
@@ -147,6 +190,19 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">user_edit</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para editar un usuario existente &#39;user_edit&#39;.</span>
+
+<span class="sd">    Permite editar la información de un usuario seleccionado.</span>
+<span class="sd">    Requiere autenticación y permisos para ver todos los perfiles de usuario.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">        user_id (int): ID del usuario a editar.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP con el formulario de edición del usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">CustomUserCreationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
@@ -162,6 +218,19 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">user_delete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para eliminar un usuario &#39;user_delete&#39;.</span>
+
+<span class="sd">    Permite eliminar un usuario específico.</span>
+<span class="sd">    Requiere autenticación y permisos para ver todos los perfiles de usuario.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">        user_id (int): ID del usuario a eliminar.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP para confirmar o realizar la eliminación.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">user</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
@@ -173,6 +242,19 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">USERS_VIEW_ALL_PROFILES_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">manage_user_groups</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para gestionar roles de un usuario &#39;manage_user_groups&#39;.</span>
+
+<span class="sd">    Permite agregar o eliminar roles de un usuario específico.</span>
+<span class="sd">    Requiere autenticación y permisos para ver todos los perfiles de usuario.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">        user_id (int): ID del usuario al que se le gestionarán los roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP con el formulario de gestión de roles del usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">UserGroupForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>

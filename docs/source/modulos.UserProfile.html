@@ -96,13 +96,8 @@
 </dd></dl>
 
 </section>
-<section id="module-modulos.UserProfile.decorators">
-<span id="modulos-userprofile-decorators-module"></span><h2>modulos.UserProfile.decorators module<a class="headerlink" href="#module-modulos.UserProfile.decorators" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.decorators.permissions_required">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.decorators.</span></span><span class="sig-name descname"><span class="pre">permissions_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/decorators.html#permissions_required"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.decorators.permissions_required" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="modulos-userprofile-decorators-module">
+<h2>modulos.UserProfile.decorators module<a class="headerlink" href="#modulos-userprofile-decorators-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.UserProfile.forms">
 <span id="modulos-userprofile-forms-module"></span><h2>modulos.UserProfile.forms module<a class="headerlink" href="#module-modulos.UserProfile.forms" title="Link to this heading">¶</a></h2>
@@ -316,8 +311,17 @@
 <span id="modulos-userprofile-models-module"></span><h2>modulos.UserProfile.models module<a class="headerlink" href="#module-modulos.UserProfile.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
+<p>Modelo de perfil de usuario “UserProfile”.</p>
+<p>Este modelo extiende de <cite>AbstractUser</cite> para agregar campos adicionales al perfil del usuario.
+Incluye campos para dirección, correo electrónico y número de teléfono.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>address (CharField): Dirección del usuario, con un máximo de 80 caracteres. Puede estar vacío.
+email (EmailField): Correo electrónico del usuario, que debe ser único y no puede estar vacío.
+phone_number (CharField): Número de teléfono del usuario, con un máximo de 15 caracteres. Puede estar vacío.</p>
+</dd>
+</dl>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.DoesNotExist" title="Link to this definition">¶</a></dt>
@@ -481,23 +485,8 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 </section>
-<section id="module-modulos.UserProfile.test_views">
-<span id="modulos-userprofile-test-views-module"></span><h2>modulos.UserProfile.test_views module<a class="headerlink" href="#module-modulos.UserProfile.test_views" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.test_views.test_login_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.test_views.</span></span><span class="sig-name descname"><span class="pre">test_login_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/test_views.html#test_login_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.test_views.test_login_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.test_views.test_register_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.test_views.</span></span><span class="sig-name descname"><span class="pre">test_register_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/test_views.html#test_register_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.test_views.test_register_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.UserProfile.test_views.test_user_list_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.test_views.</span></span><span class="sig-name descname"><span class="pre">test_user_list_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">django_user_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/test_views.html#test_user_list_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.test_views.test_user_list_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="modulos-userprofile-test-views-module">
+<h2>modulos.UserProfile.test_views module<a class="headerlink" href="#modulos-userprofile-test-views-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.UserProfile.tests">
 <span id="modulos-userprofile-tests-module"></span><h2>modulos.UserProfile.tests module<a class="headerlink" href="#module-modulos.UserProfile.tests" title="Link to this heading">¶</a></h2>
@@ -511,6 +500,13 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="modulos.UserProfile.views.CustomLoginView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">CustomLoginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#CustomLoginView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.CustomLoginView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginView</span></code></p>
+<p>Vista personalizada de inicio de sesión “CustomLoginView”.</p>
+<p>Gestiona el inicio de sesión de los usuarios. Redirige a la página de inicio si el usuario ya está autenticado.
+Si el formulario es inválido, verifica si el usuario existe y si la contraseña es correcta.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>redirect_authenticated_user (bool): Si es True, redirige a los usuarios autenticados.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modulos.UserProfile.views.CustomLoginView.form_invalid">
 <span class="sig-name descname"><span class="pre">form_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#CustomLoginView.form_invalid"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.CustomLoginView.form_invalid" title="Link to this definition">¶</a></dt>
@@ -534,6 +530,15 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="modulos.UserProfile.views.SignUpView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">SignUpView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#SignUpView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.SignUpView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateView</span></code></p>
+<p>Vista de registro “SignUpView”.</p>
+<p>Permite que los nuevos usuarios se registren creando una cuenta.
+Si el formulario es inválido, elimina los textos de ayuda predeterminados para las contraseñas.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>form_class (ModelForm): Formulario utilizado para la creación de usuarios (CustomUserCreationForm).
+success_url (str): URL de redirección al iniciar sesión después del registro.
+template_name (str): Plantilla utilizada para renderizar el formulario de registro.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.views.SignUpView.form_class">
 <span class="sig-name descname"><span class="pre">form_class</span></span><a class="headerlink" href="#modulos.UserProfile.views.SignUpView.form_class" title="Link to this definition">¶</a></dt>
@@ -561,7 +566,16 @@ object the first time, the query is executed.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.UserProfile.views.profile_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">profile_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#profile_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.profile_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista de perfil de usuario “profile_view”.</p>
+<p>Permite a los usuarios autenticados ver y editar su perfil.
+Gestiona los formularios de actualización de datos del usuario y de su perfil.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla “registration/profile.html”.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-modulos.UserProfile">
@@ -620,10 +634,7 @@ object the first time, the query is executed.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.decorators">modulos.UserProfile.decorators module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.decorators.permissions_required"><code class="docutils literal notranslate"><span class="pre">permissions_required()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#modulos-userprofile-decorators-module">modulos.UserProfile.decorators module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.forms">modulos.UserProfile.forms module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.forms.CustomPasswordResetForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetForm.base_fields</span></code></a></li>
@@ -691,12 +702,7 @@ object the first time, the query is executed.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.test_views">modulos.UserProfile.test_views module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_login_view"><code class="docutils literal notranslate"><span class="pre">test_login_view()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_register_view"><code class="docutils literal notranslate"><span class="pre">test_register_view()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.test_views.test_user_list_view"><code class="docutils literal notranslate"><span class="pre">test_user_list_view()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#modulos-userprofile-test-views-module">modulos.UserProfile.test_views module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.tests">modulos.UserProfile.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.urls">modulos.UserProfile.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.views">modulos.UserProfile.views module</a><ul>

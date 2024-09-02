@@ -39,8 +39,38 @@
 <div class="viewcode-block" id="Category">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.forms.Category">[documentos]</a>
 <span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modelo de categoría &#39;Category&#39;.</span>
+
+<span class="sd">    Este modelo representa una categoría con un nombre, descripción, estado y tipo.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (CharField): Nombre de la categoría, con un máximo de 80 caracteres. Puede estar vacío.</span>
+<span class="sd">        description (TextField): Descripción de la categoría. Puede estar vacío o ser nula.</span>
+<span class="sd">        status (CharField): Estado de la categoría, con opciones definidas por `ESTADO_CHOICES`.</span>
+<span class="sd">                            El valor predeterminado es &#39;ACTIVO&#39;.</span>
+<span class="sd">        tipo (CharField): Tipo de la categoría, con opciones definidas por `TIPO_CHOICES`.</span>
+<span class="sd">                          El valor predeterminado es &#39;GRATIS&#39;.</span>
+
+<span class="sd">    Choices:</span>
+<span class="sd">        ESTADO_CHOICES: Lista de opciones para el estado de la categoría, incluyendo &#39;ACTIVO&#39; e &#39;INACTIVO&#39;.</span>
+<span class="sd">        TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo &#39;PREMIUM&#39; y &#39;GRATIS&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># FIX: STRING MAGICOS YA OTRA VEZ</span>
+    <span class="n">ESTADO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;ACTIVO&quot;</span><span class="p">,</span> <span class="s2">&quot;Activo&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;INACTIVO&quot;</span><span class="p">,</span> <span class="s2">&quot;Inactivo&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">TIPO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;PREMIUM&quot;</span><span class="p">,</span> <span class="s2">&quot;Premium&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;GRATIS&quot;</span><span class="p">,</span> <span class="s2">&quot;Gratis&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Nombre&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descrición&quot;</span><span class="p">)</span></div>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descrición&quot;</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ESTADO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ACTIVO&quot;</span><span class="p">)</span>
+    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;GRATIS&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 

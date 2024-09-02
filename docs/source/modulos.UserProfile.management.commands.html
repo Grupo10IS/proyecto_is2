@@ -40,6 +40,8 @@
 </section>
 <section id="module-modulos.UserProfile.management.commands.new_admin">
 <span id="modulos-userprofile-management-commands-new-admin-module"></span><h2>modulos.UserProfile.management.commands.new_admin module<a class="headerlink" href="#module-modulos.UserProfile.management.commands.new_admin" title="Link to this heading">¶</a></h2>
+<p>Genera un nuevo usuario administrado para el sistema. Este comando debe correrse
+para generar un nuevo usuario en el momento de realizar el despliegue.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.management.commands.new_admin.Command">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.management.commands.new_admin.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/management/commands/new_admin.html#Command"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.management.commands.new_admin.Command" title="Link to this definition">¶</a></dt>
@@ -61,9 +63,18 @@ this method.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.UserProfile.management.commands.new_admin.create_admin">
 <span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.management.commands.new_admin.</span></span><span class="sig-name descname"><span class="pre">create_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/management/commands/new_admin.html#create_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.management.commands.new_admin.create_admin" title="Link to this definition">¶</a></dt>
-<dd><p>Genera un nuevo usuario administrado para el sistema. Este comando debe correrse
-para generar un nuevo usuario en el momento de realizar el despliegue.</p>
-<p>Raise (ValueError): cuando las credenciales del usuario no son validas.</p>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.management.commands.new_admin.has_valid_credentials">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.management.commands.new_admin.</span></span><span class="sig-name descname"><span class="pre">has_valid_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/management/commands/new_admin.html#has_valid_credentials"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.management.commands.new_admin.has_valid_credentials" title="Link to this definition">¶</a></dt>
+<dd><p>Utilidad para la comprobacion de credenciales del usuario. Retorna true si las
+credenciales son validas. En caso de no serlo retorna false y un mensaje de error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -118,6 +129,7 @@ para generar un nuevo usuario en el momento de realizar el despliegue.</p>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.management.commands.new_admin.create_admin"><code class="docutils literal notranslate"><span class="pre">create_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.management.commands.new_admin.has_valid_credentials"><code class="docutils literal notranslate"><span class="pre">has_valid_credentials()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.management.commands">Module contents</a></li>

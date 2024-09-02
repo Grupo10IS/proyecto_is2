@@ -52,19 +52,17 @@
     <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
     <span class="n">category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">PROTECT</span><span class="p">)</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
-    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;DRAFT&quot;</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;DRAFT&quot;</span><span class="p">)</span></div>
+
     <span class="c1"># creation_date = models.DateTimeField(default=timezone.now)</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)</span>
-<span class="sd">    comments = models.ManyToManyField(</span>
-<span class="sd">        &quot;Comment&quot;, related_name=&quot;posts&quot;</span>
-<span class="sd">    )  # Relación muchos a muchos con el modelo Comment</span>
-<span class="sd">    history = models.ManyToManyField(</span>
-<span class="sd">        &quot;ContentHistory&quot;, related_name=&quot;posts&quot;</span>
-<span class="sd">    )  # Relación muchos a muchos con el modelo ContentHistory</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
-
+    <span class="c1">#  author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)</span>
+    <span class="c1">#  comments = models.ManyToManyField(</span>
+    <span class="c1">#      &quot;Comment&quot;, related_name=&quot;posts&quot;</span>
+    <span class="c1">#  )  # Relación muchos a muchos con el modelo Comment</span>
+    <span class="c1">#  history = models.ManyToManyField(</span>
+    <span class="c1">#      &quot;ContentHistory&quot;, related_name=&quot;posts&quot;</span>
+    <span class="c1">#  )  # Relación muchos a muchos con el modelo ContentHistory</span>
 </pre></div>
 
           </div>
