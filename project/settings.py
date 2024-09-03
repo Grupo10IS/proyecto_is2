@@ -31,8 +31,10 @@ ALLOWED_HOSTS = []
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'modulos'),]
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "modulos"),
+]
 COMPRESS_ENABLED = True
 COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_FINDERS = [
@@ -45,6 +47,7 @@ STATICFILES_FINDERS = [
 # Application definition
 INSTALLED_APPS = [
     "compressor",
+    "modulos.mdeditor.apps.MdeditorConfig",
     "modulos.UserProfile.apps.UserprofileConfig",
     "modulos.Posts.apps.PostsConfig",
     "modulos.Authorization.apps.AuthorizationConfig",
@@ -168,3 +171,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "apikey"  # Esto es literal, no cambies 'apikey'
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = "groupmakex@gmail.com"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+MEDIA_URL = "/media/"
+X_FRAME_OPTIONS = "SAMEORIGIN"

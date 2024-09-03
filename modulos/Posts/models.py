@@ -1,6 +1,7 @@
 from django.db import models
 
 from modulos.Categories.models import Category
+from modulos.mdeditor.fields import MDTextField
 
 
 # Create your models here.
@@ -13,10 +14,10 @@ class Post(models.Model):
     ]
 
     title = models.CharField(max_length=80)
-    content = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    content = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
+    content = MDTextField(name="content")
+    # category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
+
     # creation_date = models.DateTimeField(default=timezone.now)
 
     #  author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

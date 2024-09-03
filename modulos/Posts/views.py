@@ -5,6 +5,7 @@ from django.views.generic import DetailView
 from markdown import Markdown
 
 from modulos.Categories.models import Category
+from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
 
 
@@ -76,3 +77,15 @@ def view_post(request, id):
     return HttpResponse("No se encontro el post al que quiere acceder")
 
 
+def create_post(request):
+    if request.method == "POST":
+        post = NewPostForm(request.POST)
+        if post.is_valid():
+            post.save()
+            return redirect("profile")
+
+    return render(
+        request,
+        "pages/markdown.html",
+        context={"form": NewPostForm},
+    )
