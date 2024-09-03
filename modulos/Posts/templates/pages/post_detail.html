@@ -1,31 +1,10 @@
-{% extends "base_for_pages.html" %}
+{% extends "pages/base.html" %}
 {% block content %}
     <div class="container mt-5">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-4 fst-italic">{{ post.title }}</h1>
-            <p class="lead">{{ post.content }}</p>
-            <p class="text-muted">Publicado el: {{ post.created_at|date:"d M Y" }}</p>
-            <p class="text-muted">Autor: {{ post.author.username }}</p>
-            <hr>
-            <div class="comments">
-                <h3>Comentarios</h3>
-                {% if post.comments.all %}
-                    <ul>
-                        {% for comment in post.comments.all %}
-                            <li>
-                                <p>
-                                    <strong>{{ comment.author.username }}:</strong> {{ comment.content }}
-                                </p>
-                                <p class="text-muted">{{ comment.created_at|date:"d M Y H:i" }}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No hay comentarios.</p>
-                {% endif %}
-            </div>
-            <hr>
-            <a href="{% url 'home' %}" class="btn btn-primary">Volver al Inicio</a>
+            <!-- NOTE: poner "safe" para renderizar html desde una vista -->
+            {{ post.content|safe }}
         </div>
     </div>
 {% endblock %}

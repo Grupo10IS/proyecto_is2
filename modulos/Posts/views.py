@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.forms import CharField, forms
+from django.forms.models import ModelForm
+from django.shortcuts import HttpResponse, redirect, render
 from django.views.generic import DetailView
+from markdown import Markdown
 
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
@@ -40,12 +43,13 @@ def home_view(req):
         "pages/home.html",
         context={
             "categories": Category.objects.all(),
+            "posts": Post.objects.all()[:10],
             "sitios": sitios,
         },
     )
 
 
-class PostDetailView(DetailView):
+def view_post(request, id):
     """
     Vista de detalle de publicación 'PostDetailView'.
 
@@ -59,6 +63,16 @@ class PostDetailView(DetailView):
         context_object_name (str): El nombre de la variable de contexto que representa el objeto 'Post'.
     """
 
-    model = Post
-    template_name = "posts/post_detail.html"
-    context_object_name = "post"
+    post = Post.objects.get(id=id)
+    if post != None:
+        md = Markdown(extensions=["fenced_code"])
+        post.content = md.convert(post.content)
+        context = {
+            "post": post,
+            "categories": Category.objects.all(),
+        }
+        return render(request, "pages/post_detail.html", context=context)
+
+    return HttpResponse("No se encontro el post al que quiere acceder")
+
+
