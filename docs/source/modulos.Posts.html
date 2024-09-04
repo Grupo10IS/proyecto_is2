@@ -51,6 +51,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more">modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -91,8 +99,47 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 </dd></dl>
 
 </section>
-<section id="modulos-posts-decorators-module">
-<h2>modulos.Posts.decorators module<a class="headerlink" href="#modulos-posts-decorators-module" title="Link to this heading">¶</a></h2>
+<section id="module-modulos.Posts.forms">
+<span id="modulos-posts-forms-module"></span><h2>modulos.Posts.forms module<a class="headerlink" href="#module-modulos.Posts.forms" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.forms.</span></span><span class="sig-name descname"><span class="pre">NewPostForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['title',</span> <span class="pre">'content']</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#modulos.Posts.models.Post" title="modulos.Posts.models.Post"><code class="xref py py-class docutils literal notranslate"><span class="pre">Post</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;modulos.mdeditor.fields.MDTextFormField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-modulos.Posts.models">
 <span id="modulos-posts-models-module"></span><h2>modulos.Posts.models module<a class="headerlink" href="#module-modulos.Posts.models" title="Link to this heading">¶</a></h2>
@@ -243,7 +290,16 @@ context_object_name (str): El nombre de la variable de contexto que representa e
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#modulos-posts-decorators-module">modulos.Posts.decorators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.forms">modulos.Posts.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm"><code class="docutils literal notranslate"><span class="pre">NewPostForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.Meta"><code class="docutils literal notranslate"><span class="pre">NewPostForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.base_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.media"><code class="docutils literal notranslate"><span class="pre">NewPostForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.models">modulos.Posts.models module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.Post"><code class="docutils literal notranslate"><span class="pre">Post</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Post.DoesNotExist</span></code></a></li>
@@ -280,8 +336,12 @@ context_object_name (str): El nombre de la variable de contexto que representa e
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">modulos</a><ul>
+  <li><a href="modulos.html">modulos package</a><ul>
       <li>Previous: <a href="modulos.Categories.migrations.html" title="capítulo anterior">modulos.Categories.migrations package</a></li>
       <li>Next: <a href="modulos.Posts.migrations.html" title="próximo capítulo">modulos.Posts.migrations package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

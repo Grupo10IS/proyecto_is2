@@ -15,7 +15,7 @@
     <script src="../../_static/translations.js?v=d190bf04"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="modulos.UserProfile.management package" href="modulos.UserProfile.management.html" />
+    <link rel="next" title="modulos.UserProfile package" href="modulos.UserProfile.html" />
     <link rel="prev" title="modulos.Posts package" href="modulos.Posts.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -58,6 +58,25 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.migrations.0001_initial.Migration.operations">
 <span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Post',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('title',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('content',</span> <span class="pre">&lt;django.db.models.fields.TextField&gt;),</span> <span class="pre">('status',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('category',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0001_initial.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more">
+<span id="modulos-posts-migrations-0002-remove-post-category-remove-post-status-and-more-module"></span><h2>modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more module<a class="headerlink" href="#module-modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0002_remove_post_category_remove_post_status_and_more.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RemoveField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='category'&gt;,</span> <span class="pre">&lt;RemoveField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='status'&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='content',</span> <span class="pre">field=&lt;modulos.mdeditor.fields.MDTextField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.operations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -113,6 +132,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more">modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -127,9 +154,13 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">modulos</a><ul>
+  <li><a href="modulos.html">modulos package</a><ul>
   <li><a href="modulos.Posts.html">modulos.Posts package</a><ul>
       <li>Previous: <a href="modulos.Posts.html" title="capítulo anterior">modulos.Posts package</a></li>
-      <li>Next: <a href="modulos.UserProfile.management.html" title="próximo capítulo">modulos.UserProfile.management package</a></li>
+      <li>Next: <a href="modulos.UserProfile.html" title="próximo capítulo">modulos.UserProfile package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>

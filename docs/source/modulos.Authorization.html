@@ -15,7 +15,7 @@
     <script src="../../_static/translations.js?v=d190bf04"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="modulos.UserProfile package" href="modulos.UserProfile.html" />
+    <link rel="next" title="modulos.Categories package" href="modulos.Categories.html" />
     <link rel="prev" title="modulos package" href="modulos.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -67,6 +67,74 @@
 </dd></dl>
 
 </section>
+<section id="module-modulos.Authorization.decorators">
+<span id="modulos-authorization-decorators-module"></span><h2>modulos.Authorization.decorators module<a class="headerlink" href="#module-modulos.Authorization.decorators" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.decorators.permissions_required">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.decorators.</span></span><span class="sig-name descname"><span class="pre">permissions_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/decorators.html#permissions_required"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.decorators.permissions_required" title="Link to this definition">¶</a></dt>
+<dd><p>Decorador para verificar que el usuario tenga los permisos especificados.</p>
+<p>Este decorador recibe una lista de permisos y verifica si el usuario autenticado tiene
+cada uno de ellos. Si el usuario no tiene alguno de los permisos requeridos, se devuelve
+una respuesta de <cite>HttpResponseForbidden</cite>. Si el usuario tiene todos los permisos,
+la vista original se ejecuta normalmente.</p>
+<dl>
+<dt>Args:</dt><dd><p>perms (list[str]): Lista de permisos que se deben verificar. Cada permiso debe ser
+una cadena con el nombre del permiso (sin prefijo de aplicación).</p>
+</dd>
+<dt>Returns:</dt><dd><p>function: Una vista envuelta que verifica los permisos antes de ejecutar la vista original.</p>
+</dd>
+<dt>Ejemplo:</dt><dd><p>&#64;permissions_required([«can_edit», «can_delete»])
+def my_view(request):</p>
+<blockquote>
+<div><p># Vista lógica aquí</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-modulos.Authorization.forms">
+<span id="modulos-authorization-forms-module"></span><h2>modulos.Authorization.forms module<a class="headerlink" href="#module-modulos.Authorization.forms" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Authorization.forms.</span></span><span class="sig-name descname"><span class="pre">CustomRoleCreationForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/forms.html#CustomRoleCreationForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../../_modules/modulos/Authorization/forms.html#CustomRoleCreationForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.Meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name']</span></em><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.Meta.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias de <code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'perms':</span> <span class="pre">&lt;django.forms.fields.MultipleChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'perms':</span> <span class="pre">&lt;django.forms.fields.MultipleChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modulos.Authorization.forms.CustomRoleCreationForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.Authorization.forms.CustomRoleCreationForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-modulos.Authorization.models">
 <span id="modulos-authorization-models-module"></span><h2>modulos.Authorization.models module<a class="headerlink" href="#module-modulos.Authorization.models" title="Link to this heading">¶</a></h2>
 </section>
@@ -97,11 +165,8 @@ con el comendo manage.py migrate.</p>
 </dd></dl>
 
 </section>
-<section id="modulos-authorization-signals-module">
-<h2>modulos.Authorization.signals module<a class="headerlink" href="#modulos-authorization-signals-module" title="Link to this heading">¶</a></h2>
-</section>
-<section id="modulos-authorization-tests-module">
-<h2>modulos.Authorization.tests module<a class="headerlink" href="#modulos-authorization-tests-module" title="Link to this heading">¶</a></h2>
+<section id="module-modulos.Authorization.urls">
+<span id="modulos-authorization-urls-module"></span><h2>modulos.Authorization.urls module<a class="headerlink" href="#module-modulos.Authorization.urls" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.Authorization.views">
 <span id="modulos-authorization-views-module"></span><h2>modulos.Authorization.views module<a class="headerlink" href="#module-modulos.Authorization.views" title="Link to this heading">¶</a></h2>
@@ -153,6 +218,20 @@ con el comendo manage.py migrate.</p>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.decorators">modulos.Authorization.decorators module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.decorators.permissions_required"><code class="docutils literal notranslate"><span class="pre">permissions_required()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.forms">modulos.Authorization.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.forms.CustomRoleCreationForm"><code class="docutils literal notranslate"><span class="pre">CustomRoleCreationForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Authorization.forms.CustomRoleCreationForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomRoleCreationForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Authorization.forms.CustomRoleCreationForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomRoleCreationForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Authorization.forms.CustomRoleCreationForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomRoleCreationForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Authorization.forms.CustomRoleCreationForm.media"><code class="docutils literal notranslate"><span class="pre">CustomRoleCreationForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.models">modulos.Authorization.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.permissions">modulos.Authorization.permissions module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.permissions.initialize_permissions"><code class="docutils literal notranslate"><span class="pre">initialize_permissions()</span></code></a></li>
@@ -163,8 +242,7 @@ con el comendo manage.py migrate.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.roles.prevent_default_role_deletion"><code class="docutils literal notranslate"><span class="pre">prevent_default_role_deletion()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#modulos-authorization-signals-module">modulos.Authorization.signals module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modulos-authorization-tests-module">modulos.Authorization.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.urls">modulos.Authorization.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.views">modulos.Authorization.views module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization">Module contents</a></li>
 </ul>
@@ -187,7 +265,7 @@ con el comendo manage.py migrate.</p>
   <li><a href="modules.html">modulos</a><ul>
   <li><a href="modulos.html">modulos package</a><ul>
       <li>Previous: <a href="modulos.html" title="capítulo anterior">modulos package</a></li>
-      <li>Next: <a href="modulos.UserProfile.html" title="próximo capítulo">modulos.UserProfile package</a></li>
+      <li>Next: <a href="modulos.Categories.html" title="próximo capítulo">modulos.Categories package</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

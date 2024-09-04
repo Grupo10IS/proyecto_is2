@@ -8,7 +8,10 @@ Subpackages
    :maxdepth: 4
 
    modulos.Authorization
+   modulos.Categories
+   modulos.Posts
    modulos.UserProfile
+   modulos.mdeditor
 
 Module contents
 ---------------
