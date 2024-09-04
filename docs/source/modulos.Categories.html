@@ -231,21 +231,6 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Categories.models.Category.post_set">
-<span class="sig-name descname"><span class="pre">post_set</span></span><a class="headerlink" href="#modulos.Categories.models.Category.post_set" title="Link to this definition">¶</a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.status">
 <span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#modulos.Categories.models.Category.status" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
@@ -417,7 +402,6 @@ object the first time, the query is executed.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.id"><code class="docutils literal notranslate"><span class="pre">Category.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.name"><code class="docutils literal notranslate"><span class="pre">Category.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.objects"><code class="docutils literal notranslate"><span class="pre">Category.objects</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.post_set"><code class="docutils literal notranslate"><span class="pre">Category.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.status"><code class="docutils literal notranslate"><span class="pre">Category.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.tipo"><code class="docutils literal notranslate"><span class="pre">Category.tipo</span></code></a></li>
 </ul>
@@ -458,6 +442,7 @@ object the first time, the query is executed.</p>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.mdeditor.html">modulos.mdeditor package</a></li>
 </ul>
 
 <div class="relations">
