@@ -19,6 +19,7 @@ help:
 .PHONY: help Makefile
 
 update:
+	make clean
 	@$(SPHINXSRC) -o "$(OUTDIR)" "$(SOURCES)"
 
 test:

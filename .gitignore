@@ -157,6 +157,7 @@ static/*/CACHE/
 # Sphinx build files
 docs/_build/
 
+uploads/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
