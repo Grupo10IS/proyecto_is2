@@ -28,10 +28,10 @@ modulos.Posts.apps module
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.decorators module
--------------------------------
+modulos.Posts.forms module
+--------------------------
 
-.. automodule:: modulos.Posts.decorators
+.. automodule:: modulos.Posts.forms
    :members:
    :undoc-members:
    :show-inheritance:

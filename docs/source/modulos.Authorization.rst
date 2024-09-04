@@ -20,6 +20,22 @@ modulos.Authorization.apps module
    :undoc-members:
    :show-inheritance:
 
+modulos.Authorization.decorators module
+---------------------------------------
+
+.. automodule:: modulos.Authorization.decorators
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Authorization.forms module
+----------------------------------
+
+.. automodule:: modulos.Authorization.forms
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 modulos.Authorization.models module
 -----------------------------------
 
@@ -44,18 +60,10 @@ modulos.Authorization.roles module
    :undoc-members:
    :show-inheritance:
 
-modulos.Authorization.signals module
-------------------------------------
+modulos.Authorization.urls module
+---------------------------------
 
-.. automodule:: modulos.Authorization.signals
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-modulos.Authorization.tests module
-----------------------------------
-
-.. automodule:: modulos.Authorization.tests
+.. automodule:: modulos.Authorization.urls
    :members:
    :undoc-members:
    :show-inheritance:

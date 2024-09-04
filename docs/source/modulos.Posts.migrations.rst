@@ -12,6 +12,14 @@ modulos.Posts.migrations.0001\_initial module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0002\_remove\_post\_category\_remove\_post\_status\_and\_more module
+---------------------------------------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0002_remove_post_category_remove_post_status_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

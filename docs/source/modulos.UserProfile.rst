@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   modulos.UserProfile.management
    modulos.UserProfile.migrations
 
 Submodules
@@ -28,14 +29,6 @@ modulos.UserProfile.apps module
    :undoc-members:
    :show-inheritance:
 
-modulos.UserProfile.decorators module
--------------------------------------
-
-.. automodule:: modulos.UserProfile.decorators
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 modulos.UserProfile.forms module
 --------------------------------
 
@@ -52,18 +45,10 @@ modulos.UserProfile.models module
    :undoc-members:
    :show-inheritance:
 
-modulos.UserProfile.test\_views module
---------------------------------------
+modulos.UserProfile.signals module
+----------------------------------
 
-.. automodule:: modulos.UserProfile.test_views
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-modulos.UserProfile.tests module
---------------------------------
-
-.. automodule:: modulos.UserProfile.tests
+.. automodule:: modulos.UserProfile.signals
    :members:
    :undoc-members:
    :show-inheritance:
