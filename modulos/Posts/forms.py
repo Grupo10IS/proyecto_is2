@@ -1,16 +1,20 @@
 from django import forms
-from django.forms.models import ModelForm
+from django.forms import ModelForm
 
-from modulos.Posts.models import Post
+from .models import Post  # Ensure you have imported the Post model
+
 
 class NewPostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content"]
+        fields = ["title", "category", "content"]
 
         widgets = {
             "title": forms.TextInput(
                 attrs={"class": "custom-input", "placeholder": "Enter title"}
+            ),
+            "category": forms.Select(
+                attrs={"class": "custom-select"}  # Custom class for the dropdown
             ),
             "content": forms.Textarea(
                 attrs={

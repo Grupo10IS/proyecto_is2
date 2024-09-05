@@ -16,6 +16,7 @@ class Post(models.Model):
     title = models.CharField(max_length=80)
     content = MDTextField(name="content")
     # category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
     # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
 
     # creation_date = models.DateTimeField(default=timezone.now)

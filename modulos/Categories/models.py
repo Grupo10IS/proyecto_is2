@@ -35,3 +35,6 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name="Descrición")
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="ACTIVO")
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default="GRATIS")
+
+    def __str__(self):
+        return self.name  # Returns the category name for display

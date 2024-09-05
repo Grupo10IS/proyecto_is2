@@ -58,13 +58,13 @@ def create_post(request):
     if request.method == "POST":
         post = NewPostForm(request.POST)
         if post.is_valid():
-            post.save()
-            return redirect("profile")
+            p = post.save()
+            return redirect("/posts/" + str(p.id))
 
     ctx = new_ctx(request, {"form": NewPostForm})
 
     return render(
         request,
-        "pages/markdown.html",
+        "pages/new_post.html",
         context=ctx,
     )
