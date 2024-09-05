@@ -27,7 +27,6 @@ django-crispy-forms = "^2.3"
 black = "^24.8.0"
 mistune = "^3.0.2"
 asgiref = "^3.8.1"
-markdown = "^3.7"
 
 [build-system]
 requires = ["poetry-core"]

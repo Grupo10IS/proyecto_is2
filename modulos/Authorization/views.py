@@ -5,9 +5,10 @@ from django.contrib.auth.models import Group, Permission
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 
 from modulos.Authorization import permissions
-from modulos.Authorization.roles import default_roles
-from modulos.Authorization.forms import CustomRoleCreationForm
 from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.forms import CustomRoleCreationForm
+from modulos.Authorization.roles import default_roles
+from modulos.utils import new_ctx
 
 # Create your views here.
 
@@ -19,7 +20,7 @@ def role_information(req, id: int):
     Ver la informacion general del rol con los permisos asignados
     """
     rol = get_object_or_404(Group, id=id)
-    return render(req, "authorization/role_details.html", {"role": rol})
+    return render(req, "authorization/role_details.html", new_ctx(req, {"role": rol}))
 
 
 @login_required
@@ -32,7 +33,7 @@ def role_list(req):
     return render(
         req,
         "authorization/role_list.html",
-        {"roles": roles, "default_roles": default_roles},
+        new_ctx(req, {"roles": roles, "default_roles": default_roles}),
     )
 
 
@@ -76,5 +77,7 @@ def role_create(request):
             return redirect("role_list")
 
     return render(
-        request, "authorization/role_form.html", {"form": CustomRoleCreationForm()}
+        request,
+        "authorization/role_form.html",
+        new_ctx(request, {"form": CustomRoleCreationForm()}),
     )

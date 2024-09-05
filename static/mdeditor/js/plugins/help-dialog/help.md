@@ -41,7 +41,6 @@
 | Ctrl + Shift + K                                | 插入TeX(KaTeX)公式符号            | Insert TeX(KaTeX) symbol &#36;&#36;TeX&#36;&#36;   |
 | Ctrl + Shift + L                                | 打开插入链接对话框                | Open link dialog                                   |
 | Ctrl + Shift + O                                | 插入有序列表                      | Insert ordered list                                |
-| Ctrl + Shift + P                                | 打开插入PRE对话框                 | Open Preformatted text dialog                      |
 | Ctrl + Shift + Q                                | 插入引用                          | Insert blockquotes                                 |
 | Ctrl + Shift + R / Shift + Command + Option + F | 全部替换                          | Replace all                                        |
 | Ctrl + Shift + S                                | 插入删除线                        | Insert strikethrough                               |

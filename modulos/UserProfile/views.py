@@ -8,8 +8,9 @@ from django.views import generic
 from django.views.generic import TemplateView
 
 from modulos.Authorization import permissions
-
 from modulos.Authorization.decorators import permissions_required
+from modulos.utils import new_ctx
+
 from .forms import (CustomUserChangeForm, CustomUserCreationForm, ProfileForm,
                     UserGroupForm)
 from .models import UserProfile
@@ -105,11 +106,14 @@ def profile_view(request):
         u_form = CustomUserChangeForm(instance=request.user)
         p_form = ProfileForm(instance=request.user)
 
-    context = {
-        "u_form": u_form,
-        "p_form": p_form,
-        "groups": request.user.groups.all(),
-    }
+    context = new_ctx(
+        request,
+        {
+            "u_form": u_form,
+            "p_form": p_form,
+            "groups": request.user.groups.all(),
+        },
+    )
 
     return render(request, "registration/profile.html", context)
 
@@ -131,7 +135,9 @@ def user_list(request):
         HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla 'admin_panel/user_list.html'.
     """
     users = UserProfile.objects.exclude(id=request.user.id)
-    return render(request, "admin_panel/user_list.html", {"users": users})
+    return render(
+        request, "admin_panel/user_list.html", new_ctx(request, {"users": users})
+    )
 
 
 # Vista para editar un usuario existente
@@ -159,7 +165,9 @@ def user_edit(request, user_id):
             return redirect("user_list")
     else:
         form = CustomUserCreationForm(instance=user)
-    return render(request, "admin_panel/user_form.html", {"form": form})
+    return render(
+        request, "admin_panel/user_form.html", new_ctx(request, {"form": form})
+    )
 
 
 # Vista para eliminar un usuario
@@ -183,7 +191,11 @@ def user_delete(request, user_id):
     if request.method == "POST":
         user.delete()
         return redirect("user_list")
-    return render(request, "admin_panel/user_confirm_delete.html", {"user": user})
+    return render(
+        request,
+        "admin_panel/user_confirm_delete.html",
+        new_ctx(request, {"user": user}),
+    )
 
 
 # Vista para agregar un rol a un usuario
@@ -214,5 +226,7 @@ def manage_user_groups(request, user_id):
     else:
         form = UserGroupForm(instance=user)
     return render(
-        request, "admin_panel/manage_user_groups.html", {"form": form, "user": user}
+        request,
+        "admin_panel/manage_user_groups.html",
+        new_ctx(request, {"form": form, "user": user}),
     )
