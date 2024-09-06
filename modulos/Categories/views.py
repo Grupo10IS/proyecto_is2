@@ -8,6 +8,7 @@ from modulos.Authorization.decorators import permissions_required
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
+from modulos.utils import new_ctx
 
 
 class CategoryCreateView(generic.CreateView):
@@ -15,11 +16,21 @@ class CategoryCreateView(generic.CreateView):
     template_name = "create_category.html"
     success_url = "/categories/"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Agregar más contexto
+        return new_ctx(self.request, context)
+
 
 class CategoryListView(ListView):
     model = Category
     template_name = "categories_list.html"
     context_object_name = "categories"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Agregar más contexto
+        return new_ctx(self.request, context)
 
 
 class CategoryDetailView(DetailView):
@@ -31,8 +42,8 @@ class CategoryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Aquí puedes agregar más información al contexto si es necesario
-        return context
+        # Agregar más contexto
+        return new_ctx(self.request, context)
 
 
 # Vista para crear categorias
@@ -46,16 +57,19 @@ def category_create(request):
             return redirect("category_list")
     else:
         form = CategoryCreationForm()
-    context = {"form": form}
+
+    context = new_ctx(request, {"form": form})
+
     return render(request, "category_form.html", context)
 
 
 # Vista para listar categorias
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
-def category_list(request):
+def categories_manage(request):
     categories = Category.objects.all()
-    return render(request, "category_list.html", {"categories": categories})
+    ctx = new_ctx(request, {"categories": categories})
+    return render(request, "category_list.html", ctx)
 
 
 # Vista para eliminar una categoría
@@ -67,19 +81,25 @@ def category_delete(request, category_id):
         # Verifica si hay posts asociados a esta categoría
         if Post.objects.filter(category=category).exists():
             # Mostrar un mensaje de error si hay posts asociados
-            return render(
+            ctx = new_ctx(
                 request,
-                "category_confirm_delete.html",
                 {
                     "category": category,
                     "error_message": "No se puede eliminar la categoría porque tiene posts asociados.",
                 },
             )
+            return render(
+                request,
+                "category_confirm_delete.html",
+                ctx,
+            )
 
         # Elimina la categoría si no hay posts asociados
         category.delete()
         return redirect("category_list")
-    return render(request, "category_confirm_delete.html", {"category": category})
+
+    ctx = new_ctx(request, {"category": category})
+    return render(request, "category_confirm_delete.html", ctx)
 
 
 # Vista para editar un usuario existente
@@ -98,13 +118,16 @@ def category_edit(request, category_id):
                 return render(
                     request,
                     "category_form.html",
-                    {
-                        "form": form,
-                        "error_message": "No se puede inactivar la categoría porque tiene posts asociados.",
-                    },
+                    new_ctx(
+                        request,
+                        {
+                            "form": form,
+                            "error_message": "No se puede inactivar la categoría porque tiene posts asociados.",
+                        },
+                    ),
                 )
             form.save()
             return redirect("category_list")
-    else:
-        form = CategoryCreationForm(instance=category)
-    return render(request, "category_form.html", {"form": form})
+
+    form = CategoryCreationForm(instance=category)
+    return render(request, "category_form.html", new_ctx(request, {"form": form}))

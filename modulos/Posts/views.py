@@ -1,12 +1,12 @@
-from django.forms import CharField, forms
-from django.forms.models import ModelForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
-from django.views.generic import DetailView
-from markdown import Markdown
 
+from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.permissions import POST_CREATE_PERMISSION
 from modulos.Categories.models import Category
 from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
+from modulos.utils import new_ctx
 
 
 def home_view(req):
@@ -24,30 +24,9 @@ def home_view(req):
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
     """
 
-    sitios = []
-    if req.user.is_authenticated:
-        permisos = req.user.get_all_permissions()
+    ctx = new_ctx(req, {"posts": Post.objects.all()[:10]})
 
-        # Itera sobre los permisos
-        for perm in permisos:
-            if "user" in perm and perm not in sitios:
-                sitios.append("user")
-            if "post" in perm and perm not in sitios:
-                sitios.append("post")
-            if "categor" in perm and perm not in sitios:
-                sitios.append("category")
-            if "role" in perm and perm not in sitios:
-                sitios.append("role")
-
-    return render(
-        req,
-        "pages/home.html",
-        context={
-            "categories": Category.objects.all(),
-            "posts": Post.objects.all()[:10],
-            "sitios": sitios,
-        },
-    )
+    return render(req, "pages/home.html", context=ctx)
 
 
 def view_post(request, id):
@@ -66,26 +45,38 @@ def view_post(request, id):
 
     post = Post.objects.get(id=id)
     if post != None:
-        md = Markdown(extensions=["fenced_code"])
-        post.content = md.convert(post.content)
-        context = {
-            "post": post,
-            "categories": Category.objects.all(),
-        }
-        return render(request, "pages/post_detail.html", context=context)
+        # parse tags
+        tags = post.tags.split(",") if post.tags else []
+        tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+
+        ctx = new_ctx(
+            request,
+            {
+                "post": post,
+                "tags": tags,
+                "categories": Category.objects.all(),
+            },
+        )
+        return render(request, "pages/post_detail.html", context=ctx)
 
     return HttpResponse("No se encontro el post al que quiere acceder")
 
 
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
 def create_post(request):
     if request.method == "POST":
         post = NewPostForm(request.POST)
         if post.is_valid():
-            post.save()
-            return redirect("profile")
+            p = post.save(commit=False)
+            p.author = request.user
+            p.save()
+            return redirect("/posts/" + str(p.id))
+
+    ctx = new_ctx(request, {"form": NewPostForm})
 
     return render(
         request,
-        "pages/markdown.html",
-        context={"form": NewPostForm},
+        "pages/new_post.html",
+        context=ctx,
     )

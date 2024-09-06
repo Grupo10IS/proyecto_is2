@@ -23,14 +23,14 @@ DEFAULT_CONFIG = {
     'toolbar_autofixed': True,
     'search_replace': True,
     'emoji': True,
-    'tex': True,
-    'task_list': False,
-    'flow_chart': True,
+    'tex': False,
+    'task_list': True,
+    'flow_chart': False,
     'sequence': True,
     'language': 'en',  # zh / en / de 
     'watch': False,  # Live preview
-    'lineWrapping': False,  # lineWrapping
-    'lineNumbers': False  # lineNumbers
+    'lineWrapping': True,  # lineWrapping
+    'lineNumbers': True  # lineNumbers
 }
 
 

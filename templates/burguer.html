@@ -1,0 +1,80 @@
+<!-- Botón hamburguesa -->
+<style>
+h4 {
+    color: black;
+    font-weight: bold;
+}
+</style>
+<button class="navbar-toggler"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#categoriesOffcanvas"
+        aria-controls="categoriesOffcanvas">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="24"
+         height="24"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="feather menu">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+</button>
+<!-- Offcanvas para el menú de navegación -->
+<div class="offcanvas offcanvas-end"
+     tabindex="-1"
+     id="categoriesOffcanvas"
+     aria-labelledby="categoriesOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="categoriesOffcanvasLabel">Menús</h5>
+        <button type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Control Panel -->
+        <!-- Control Panel -->
+        {% if user.is_authenticated %}
+            {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos %}
+                <h4>Panel de Control</h4>
+                <nav class="nav nav-pills flex-column mb-5">
+                    {% if "user" in permisos %}
+                        <a class="nav-link link-body-emphasis text-start"
+                           href="{% url 'user_list' %}"
+                           role="button">Gestionar Usuarios</a>
+                    {% endif %}
+                    {% if "role" in permisos %}
+                        <a class="nav-link link-body-emphasis text-start"
+                           href="{% url 'role_list' %}"
+                           role="button">Roles y Permisos</a>
+                    {% endif %}
+                    {% if "category" in permisos %}
+                        <a class="nav-link link-body-emphasis text-start"
+                           href="{% url 'category_list' %}"
+                           role="button">Gestion de Categorias</a>
+                    {% endif %}
+                    {% if "post" in permisos %}
+                        <a class="nav-link link-body-emphasis text-start"
+                           href="{% url 'category_list' %}"
+                           role="button">Gestion de Contenido</a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        {% endif %}
+        <!-- Sección de categorías -->
+        <h4>Categorías</h4>
+        <nav class="nav nav-pills flex-column">
+            {% for category in categories %}
+                <a class="nav-link link-body-emphasis text-start"
+                   href="{% url 'category_detail' category.id %}"
+                   role="button">{{ category.name }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+</div>

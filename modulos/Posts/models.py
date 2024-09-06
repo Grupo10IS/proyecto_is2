@@ -1,29 +1,23 @@
 from django.db import models
+from django.utils.timezone import now
 
 from modulos.Categories.models import Category
 from modulos.mdeditor.fields import MDTextField
+from modulos.UserProfile.models import UserProfile
 
 
 # Create your models here.
 class Post(models.Model):
+    DRAFT = "Borrador"
+    PUBLISHED = "Publicado"
+    REJECTED = "Rechazado"
 
-    STATUS_CHOICES = [
-        ("DRAFT", "Borrador"),
-        ("PUBLISHED", "Publicado"),
-        ("REJECTED", "Rechazado"),
-    ]
+    STATUS_CHOICES = [(DRAFT, DRAFT), (REJECTED, REJECTED), (PUBLISHED, PUBLISHED)]
 
     title = models.CharField(max_length=80)
     content = MDTextField(name="content")
-    # category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="DRAFT")
-
-    # creation_date = models.DateTimeField(default=timezone.now)
-
-    #  author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    #  comments = models.ManyToManyField(
-    #      "Comment", related_name="posts"
-    #  )  # Relación muchos a muchos con el modelo Comment
-    #  history = models.ManyToManyField(
-    #      "ContentHistory", related_name="posts"
-    #  )  # Relación muchos a muchos con el modelo ContentHistory
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=DRAFT)
+    creation_date = models.DateTimeField(default=now)
+    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
+    tags = models.CharField(name="tags", max_length=80, blank=True)

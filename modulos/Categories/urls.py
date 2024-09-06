@@ -4,7 +4,7 @@ from modulos.Categories.views import *
 
 
 urlpatterns = [
-    path("", category_list, name="category_list"),
+    path("", categories_manage, name="category_list"),
     path("list/", CategoryListView.as_view(), name="categories_list"),
     path("<int:pk>/", CategoryDetailView.as_view(), name="category_detail"),
     path("category_create/", category_create, name="category_create"),

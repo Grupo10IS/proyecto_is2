@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <form method = "post" action = "./" style="margin-left: 30px">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Enviar">
+        </input>
+    </div>
+    </ form>
+{% endblock content %}
