@@ -3,10 +3,12 @@ import datetime
 import os
 
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
+
+from modulos.Authorization.permissions import POST_CREATE_PERMISSION
 
 from .configs import MDConfig
 
@@ -24,6 +26,13 @@ class UploadView(generic.View):
         return super(UploadView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.has_perm(
+            "UserProfile." + POST_CREATE_PERMISSION
+        ):
+            return HttpResponseForbidden(
+                "No tienes permiso para acceder a esta página."
+            )
+
         upload_image = request.FILES.get("editormd-image-file", None)
 
         # image none check
@@ -47,7 +56,7 @@ class UploadView(generic.View):
             )
 
         # TODO: hacer que cambie segun sea entorno de tests o de produccion
-        upload_local(file_name, file_extension, upload_image)
+        return upload_local(file_name, file_extension, upload_image)
 
 
 def upload_local(file_name, file_extension, upload_image):
@@ -59,7 +68,7 @@ def upload_local(file_name, file_extension, upload_image):
             os.makedirs(file_path)
         except Exception as err:
             return JsonResponse(
-                {"success": 0, "message": "上传失败：%s" % str(err), "url": ""}
+                {"success": 0, "message": "Error saving file" % str(err), "url": ""}
             )
 
     # save image
@@ -75,7 +84,7 @@ def upload_local(file_name, file_extension, upload_image):
     return JsonResponse(
         {
             "success": 1,
-            "message": "上传成功！",
+            "message": "Image succesfully uploaded",
             "url": os.path.join(
                 settings.MEDIA_URL, MDEDITOR_CONFIGS["image_folder"], file_full_name
             ),

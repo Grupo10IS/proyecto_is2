@@ -66,7 +66,7 @@ def category_create(request):
 # Vista para listar categorias
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
-def category_list(request):
+def categories_manage(request):
     categories = Category.objects.all()
     ctx = new_ctx(request, {"categories": categories})
     return render(request, "category_list.html", ctx)

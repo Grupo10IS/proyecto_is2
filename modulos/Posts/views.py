@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
 
+from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.permissions import POST_CREATE_PERMISSION
 from modulos.Categories.models import Category
 from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
@@ -42,10 +45,15 @@ def view_post(request, id):
 
     post = Post.objects.get(id=id)
     if post != None:
+        # parse tags
+        tags = post.tags.split(",") if post.tags else []
+        tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+
         ctx = new_ctx(
             request,
             {
                 "post": post,
+                "tags": tags,
                 "categories": Category.objects.all(),
             },
         )
@@ -54,11 +62,15 @@ def view_post(request, id):
     return HttpResponse("No se encontro el post al que quiere acceder")
 
 
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
 def create_post(request):
     if request.method == "POST":
         post = NewPostForm(request.POST)
         if post.is_valid():
-            p = post.save()
+            p = post.save(commit=False)
+            p.author = request.user
+            p.save()
             return redirect("/posts/" + str(p.id))
 
     ctx = new_ctx(request, {"form": NewPostForm})

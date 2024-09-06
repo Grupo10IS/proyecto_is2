@@ -15,10 +15,11 @@
                     <p class="text-muted">
                         <!-- FIX: anadir los titulos que debe de ser aca -->
                         <small>
-                        Por Elias Gill | 01/01/2001 |
-                        <span class="border border-success p-1 rounded white">#cafe</span>
-                        <span class="border border-warning p-1 rounded white">#cocina</span>
-                    </small>
+                        Por {{ post.author }} | {{ post.creation_date }} |
+                            {% if post.tags %}
+                        {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
+                            {% endif %}
+                        </small>
                     </p>
                     <!-- Puedes añadir más detalles aquí como categorías o etiquetas -->
                 </div>

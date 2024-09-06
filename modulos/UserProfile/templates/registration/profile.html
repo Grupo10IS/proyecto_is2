@@ -9,24 +9,20 @@
                     <form method="POST">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nombre de usuario</label>
                             {{ u_form.username|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico</label>
                             {{ u_form.email|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            <label for="phone_number" class="form-label">Número de teléfono</label>
                             {{ p_form.phone_number|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            <label for="address" class="form-label">Dirección</label>
                             {{ p_form.address|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            <label for="groups" class="form-label">Grupos:</label>
-                            <ul class="list-unstyled">
+                            <label for="groups" class="form-label">Roles asignados:</label>
+                            <ul class="list">
                                 {% for group in groups %}<li>{{ group.name }}</li>{% endfor %}
                             </ul>
                         </div>

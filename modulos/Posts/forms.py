@@ -7,12 +7,15 @@ from .models import Post  # Ensure you have imported the Post model
 class NewPostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "category", "content"]
+        fields = ["title", "category", "content", "status", "tags"]
 
         widgets = {
             "title": forms.TextInput(
                 attrs={"class": "custom-input", "placeholder": "Enter title"}
             ),
+            "tags": forms.TextInput(
+                attrs={"class": "custom-input", "placeholder": "Tag1, tag2, tag3 ..."}
+                ),
             "category": forms.Select(
                 attrs={"class": "custom-select"}  # Custom class for the dropdown
             ),
