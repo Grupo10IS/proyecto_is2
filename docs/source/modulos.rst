@@ -13,6 +13,17 @@ Subpackages
    modulos.UserProfile
    modulos.mdeditor
 
+Submodules
+----------
+
+modulos.utils module
+--------------------
+
+.. automodule:: modulos.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
