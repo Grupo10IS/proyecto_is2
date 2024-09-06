@@ -19,8 +19,7 @@ help:
 .PHONY: help Makefile
 
 update:
-	make clean
-	@$(SPHINXSRC) -o "$(OUTDIR)" "$(SOURCES)"
+	@$(SPHINXSRC) -o "$(OUTDIR)" "$(SOURCES)" -f
 
 test:
 	pytest -q --show-capture=no --disable-warnings --tb=no
