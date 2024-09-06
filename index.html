@@ -214,6 +214,7 @@
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.id"><code class="docutils literal notranslate"><span class="pre">Category.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.name"><code class="docutils literal notranslate"><span class="pre">Category.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.objects"><code class="docutils literal notranslate"><span class="pre">Category.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.post_set"><code class="docutils literal notranslate"><span class="pre">Category.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.status"><code class="docutils literal notranslate"><span class="pre">Category.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.tipo"><code class="docutils literal notranslate"><span class="pre">Category.tipo</span></code></a></li>
 </ul>
@@ -234,6 +235,7 @@
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Categories.html#module-modulos.Categories.views">modulos.Categories.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.form_class"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView.form_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView.get_context_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.success_url"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView.success_url</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView.template_name</span></code></a></li>
 </ul>
@@ -247,6 +249,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView"><code class="docutils literal notranslate"><span class="pre">CategoryListView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.context_object_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.context_object_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_context_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.model"><code class="docutils literal notranslate"><span class="pre">CategoryListView.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.template_name</span></code></a></li>
 </ul>
@@ -327,12 +330,25 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Posts.html#module-modulos.Posts.models">modulos.Posts.models module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post"><code class="docutils literal notranslate"><span class="pre">Post</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.DRAFT"><code class="docutils literal notranslate"><span class="pre">Post.DRAFT</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Post.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Post.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PUBLISHED"><code class="docutils literal notranslate"><span class="pre">Post.PUBLISHED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.REJECTED"><code class="docutils literal notranslate"><span class="pre">Post.REJECTED</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.STATUS_CHOICES"><code class="docutils literal notranslate"><span class="pre">Post.STATUS_CHOICES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.author"><code class="docutils literal notranslate"><span class="pre">Post.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.author_id"><code class="docutils literal notranslate"><span class="pre">Post.author_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.category"><code class="docutils literal notranslate"><span class="pre">Post.category</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.category_id"><code class="docutils literal notranslate"><span class="pre">Post.category_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.content"><code class="docutils literal notranslate"><span class="pre">Post.content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.creation_date"><code class="docutils literal notranslate"><span class="pre">Post.creation_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_next_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_next_by_creation_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_previous_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_previous_by_creation_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_status_display"><code class="docutils literal notranslate"><span class="pre">Post.get_status_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.id"><code class="docutils literal notranslate"><span class="pre">Post.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.objects"><code class="docutils literal notranslate"><span class="pre">Post.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.status"><code class="docutils literal notranslate"><span class="pre">Post.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.tags"><code class="docutils literal notranslate"><span class="pre">Post.tags</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.title"><code class="docutils literal notranslate"><span class="pre">Post.title</span></code></a></li>
 </ul>
 </li>
@@ -341,7 +357,6 @@
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Posts.html#module-modulos.Posts.tests">modulos.Posts.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Posts.html#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Posts.html#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.views.create_post"><code class="docutils literal notranslate"><span class="pre">create_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Posts.html#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>
@@ -462,6 +477,7 @@
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.post_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 </ul>
@@ -604,6 +620,7 @@
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.mdeditor.html#modulos.mdeditor.views.UploadView.post"><code class="docutils literal notranslate"><span class="pre">UploadView.post()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.mdeditor.html#modulos.mdeditor.views.upload_local"><code class="docutils literal notranslate"><span class="pre">upload_local()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.mdeditor.html#module-modulos.mdeditor.widgets">modulos.mdeditor.widgets module</a><ul>

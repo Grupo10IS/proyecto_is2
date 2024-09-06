@@ -42,6 +42,7 @@
 <span class="kn">from</span> <span class="nn">modulos.Categories.forms</span> <span class="kn">import</span> <span class="n">CategoryCreationForm</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Post</span>
+<span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 
 
 <div class="viewcode-block" id="CategoryCreateView">
@@ -49,7 +50,15 @@
 <span class="k">class</span> <span class="nc">CategoryCreateView</span><span class="p">(</span><span class="n">generic</span><span class="o">.</span><span class="n">CreateView</span><span class="p">):</span>
     <span class="n">form_class</span> <span class="o">=</span> <span class="n">CategoryCreationForm</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;create_category.html&quot;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="s2">&quot;/categories/&quot;</span></div>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="s2">&quot;/categories/&quot;</span>
+
+<div class="viewcode-block" id="CategoryCreateView.get_context_data">
+<a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.get_context_data">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Agregar más contexto</span>
+        <span class="k">return</span> <span class="n">new_ctx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -58,7 +67,15 @@
 <span class="k">class</span> <span class="nc">CategoryListView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Category</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;categories_list.html&quot;</span>
-    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;categories&quot;</span></div>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;categories&quot;</span>
+
+<div class="viewcode-block" id="CategoryListView.get_context_data">
+<a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.get_context_data">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Agregar más contexto</span>
+        <span class="k">return</span> <span class="n">new_ctx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -75,8 +92,8 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView.get_context_data">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="c1"># Aquí puedes agregar más información al contexto si es necesario</span>
-        <span class="k">return</span> <span class="n">context</span></div>
+        <span class="c1"># Agregar más contexto</span>
+        <span class="k">return</span> <span class="n">new_ctx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 </div>
 
 
@@ -92,16 +109,19 @@
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;category_list&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">CategoryCreationForm</span><span class="p">()</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">}</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_form.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 
 
 <span class="c1"># Vista para listar categorias</span>
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">permissions</span><span class="o">.</span><span class="n">CATEGORY_MANAGE_PERMISSION</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">category_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">categories_manage</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">categories</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_list.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">categories</span><span class="p">})</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">categories</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 
 
 <span class="c1"># Vista para eliminar una categoría</span>
@@ -113,19 +133,25 @@
         <span class="c1"># Verifica si hay posts asociados a esta categoría</span>
         <span class="k">if</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="c1"># Mostrar un mensaje de error si hay posts asociados</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
-                <span class="s2">&quot;category_confirm_delete.html&quot;</span><span class="p">,</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
                     <span class="s2">&quot;error_message&quot;</span><span class="p">:</span> <span class="s2">&quot;No se puede eliminar la categoría porque tiene posts asociados.&quot;</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">)</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;category_confirm_delete.html&quot;</span><span class="p">,</span>
+                <span class="n">ctx</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="c1"># Elimina la categoría si no hay posts asociados</span>
         <span class="n">category</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;category_list&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_confirm_delete.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_confirm_delete.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 
 
 <span class="c1"># Vista para editar un usuario existente</span>
@@ -144,16 +170,19 @@
                 <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
                     <span class="n">request</span><span class="p">,</span>
                     <span class="s2">&quot;category_form.html&quot;</span><span class="p">,</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
-                        <span class="s2">&quot;error_message&quot;</span><span class="p">:</span> <span class="s2">&quot;No se puede inactivar la categoría porque tiene posts asociados.&quot;</span><span class="p">,</span>
-                    <span class="p">},</span>
+                    <span class="n">new_ctx</span><span class="p">(</span>
+                        <span class="n">request</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                            <span class="s2">&quot;error_message&quot;</span><span class="p">:</span> <span class="s2">&quot;No se puede inactivar la categoría porque tiene posts asociados.&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">),</span>
                 <span class="p">)</span>
             <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;category_list&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">CategoryCreationForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_form.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">CategoryCreationForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category_form.html&quot;</span><span class="p">,</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">}))</span>
 </pre></div>
 
           </div>

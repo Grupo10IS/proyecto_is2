@@ -494,6 +494,21 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.post_set">
+<span class="sig-name descname"><span class="pre">post_set</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.post_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.user_permissions">
 <span class="sig-name descname"><span class="pre">user_permissions</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.user_permissions" title="Link to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -739,6 +754,7 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.post_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 </ul>
