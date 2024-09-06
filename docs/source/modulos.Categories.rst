@@ -28,14 +28,6 @@ modulos.Categories.apps module
    :undoc-members:
    :show-inheritance:
 
-modulos.Categories.decorators module
-------------------------------------
-
-.. automodule:: modulos.Categories.decorators
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 modulos.Categories.forms module
 -------------------------------
 
@@ -48,6 +40,14 @@ modulos.Categories.models module
 --------------------------------
 
 .. automodule:: modulos.Categories.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Categories.test\_views module
+-------------------------------------
+
+.. automodule:: modulos.Categories.test_views
    :members:
    :undoc-members:
    :show-inheritance:

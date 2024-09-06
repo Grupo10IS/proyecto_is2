@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block expand_nav %}
+    <nav class="nav nav-scroller nav-underline justify-content-start">
+        {% for category in categories %}
+            <a class="nav-item nav-link link-body-emphasis"
+               href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+        {% endfor %}
+    </nav>
+{% endblock expand_nav %}
