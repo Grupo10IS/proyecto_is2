@@ -20,6 +20,38 @@ modulos.Posts.migrations.0002\_remove\_post\_category\_remove\_post\_status\_and
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0003\_post\_category module
+----------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0003_post_category
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0004\_tag\_post\_tags module
+-----------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0004_tag_post_tags
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0005\_remove\_post\_tags\_post\_author\_post\_creation\_date\_and\_more module
+-------------------------------------------------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0005_remove_post_tags_post_author_post_creation_date_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0006\_alter\_post\_creation\_date module
+-----------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0006_alter_post_creation_date
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
