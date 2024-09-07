@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container mt-5">
+    <div class="container">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-4 fst-italic mb-4">Categorías</h1>
             <div class="row">
@@ -11,7 +11,8 @@
                                 <h5 class="card-title">{{ category.name }}</h5>
                                 <p class="card-text">{{ category.description }}</p>
                                 <a href="{% url 'category_detail' category.id %}"
-                                   class="btn btn-primary">Ver más</a>
+                                   class="btn btn-primary" style="background-color: black;
+                                   border-color: black;color:white">Ver más</a>
                             </div>
                         </div>
                     </div>

@@ -1,11 +1,12 @@
-{% extends "base.html" %}
+{% extends  "register_base.html" %}
 {% block content %}
-    <div class="container mt-5">
+    <div class="container">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-6 fst-italic mb-4">Roles del sistema</h1>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-dark text-white">
+                <table class="table table-bordered table-striped" style="background-color: black;
+                border-color: black;color:white">
+                    <thead class="bg-dark text-white fst-italic">
                         <tr>
                             <th>Id</th>
                             <th>Nombre</th>
@@ -26,10 +27,11 @@
                                 <td>
                                     {% if role.name not in default_roles %}
                                         <a href="{% url 'role_delete' role.id %}"
-                                           class="btn btn-danger"
+                                           class="btn" style="background-color: black;
+            border-color: black;color:white"
                                            onclick="return confirm('¿Estás seguro de que quieres eliminar este rol?');">Eliminar</a>
                                     {% else %}
-                                        <span style="color: blue;">Default</span>
+                                        <span style="color: black;">Default</span>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -41,8 +43,10 @@
                     </tbody>
                 </table>
             </div>
-            <a href="{% url 'role_create' %}" class="btn btn-primary">Crear Rol</a>
-            <a href="{% url 'home' %}" class="btn btn-secondary">Volver al Inicio</a>
+            <a href="{% url 'role_create' %}" class="btn btn-primary" style="background-color: black;
+            border-color: black;color:white">Crear Rol</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary" style="background-color: black;
+            border-color: black;color:white">Volver al Inicio</a>
         </div>
     </div>
 {% endblock content %}

@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends  "register_base.html" %}
 {% block content %}
-    <div class="container mt-5 text-white">
-        <h1 class="mb-4">Detalles Rol: {{ group.name }}</h1>
+    <div class="container text-black" style="background-color:white;height:350px">
+        <h1 class="display-6 fst-italic mb-4">Detalles Rol: {{ group.name }}</h1>
         <!-- role Permissions -->
-        <h3 class="text-light">Permisos</h3>
+        <h3 class="text-black fst-italic">Permisos</h3>
         {% if role.permissions.all %}
             <ul class="list-unstyled mb-4">
                 {% for perm in role.permissions.all %}<li class="bg-secondary rounded p-2 mb-2">{{ perm.name }}</li>{% endfor %}
@@ -12,7 +12,7 @@
             <p>Este rol no tiene asignado permisos.</p>
         {% endif %}
         <!-- role Members -->
-        <h3 class="text-light">Miembros</h3>
+        <h3 class="text-black fst-italic">Miembros</h3>
         {% if role.user_set.all %}
             <ul class="list-unstyled mb-4">
                 {% for user in role.user_set.all %}

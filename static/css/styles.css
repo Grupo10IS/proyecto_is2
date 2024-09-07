@@ -1,26 +1,32 @@
+/*base*/
 body {
+    display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        /* Ocupa toda la altura de la ventana */
     margin: 0;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #a4a4a4, #dddcdc, #f1f1f1, #dddcdc, #a4a4a4);
 }
 
-.navbar {
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    height: 13vh;
+/* Para asegurarse de que el contenido principal ocupe el espacio restante */
+main {
+    flex: 1;
+}
+
+header {
+    background-color: #000000;
 }
 
 .navbar-left {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
+.subscribe {
+    background-color: white;
+}
 .navbar-middle {
     position: absolute;
     left: 50%;
@@ -30,7 +36,7 @@ body {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    color: black;
+    color: rgb(255, 255, 255);
     font-size: 65px;
 }
 
@@ -47,8 +53,8 @@ body {
 }
 
 .navbar-right .subscribe {
-    background-color: #000000;
-    color: #fff;
+    background-color: #ffffff;
+        color: #000000;
     padding: 5px 10px;
     text-decoration: none;
     border-radius: 3px;
@@ -61,7 +67,7 @@ body {
 }
 
 .navbar-right .login {
-    color: black;
+    color: rgb(255, 255, 255);
     padding: 5px 10px;
     text-decoration: none;
     border-radius: 3px;
@@ -70,8 +76,8 @@ body {
 
 .navbar-right .subscribe:hover,
 .navbar-right .login:hover {
-    background-color: #464646;
-    border-color: #464646;
+    background-color: #333333;
+        border-color: #1f1f1f;
     color: #fff;
 }
 
@@ -93,24 +99,21 @@ body {
     display: inline-block;
 }
 
-#headerTitle {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 450;
-    font-style: normal;
-    color: black;
-    font-size: 40px;
-}
-
 #headerContent {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
-    color: black;
-    font-size: 20px;
+    font-size: 18px;
 }
 
+#headerContent a {
+    color: rgb(255, 255, 255);
+}
+
+#headerTitle {
+    margin-right: 10px;
+}
 /*ADMIN PANEL*/
 
 /*user_list*/
@@ -145,8 +148,8 @@ body {
 }
 
 .user-table th {
-    background-color: #575758;
-    color: #fff;
+    background-color: #ffffff;
+        color: #000000;
     font-weight: bold;
 }
 
@@ -163,30 +166,30 @@ body {
 }
 
 .actions .edit-btn {
-    background-color: #28a745;
+    background-color: #000000;
     color: #fff;
 }
 
 .actions .edit-btn:hover {
-    background-color: #218838;
+    background-color: ##000000;
 }
 
 .actions .delete-btn {
-    background-color: #dc3545;
+    background-color: #000000;
     color: #fff;
 }
 
 .actions .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #1c1c1c;
 }
 
 .actions .group-btn {
-    background-color: #2201f7;
+    background-color: #000000;
     color: #fff;
 }
 
 .actions .group-btn:hover {
-    background-color: #13037c;
+    background-color: #1c1c1c;
     color: #fff;
 }
 
@@ -195,7 +198,7 @@ body {
 .delete-user-container {
     max-width: 600px;
     margin: 50px auto;
-    background-color: #2e2e2e;
+    background-color: #ffffff;
     /* Gris oscuro plateado */
     padding: 30px;
     border-radius: 10px;
@@ -207,8 +210,7 @@ body {
 .delete-user-title {
     font-size: 28px;
     margin-bottom: 20px;
-    color: #e74c3c;
-    /* Color rojo suave */
+
 }
 
 .delete-user-message {
@@ -223,7 +225,7 @@ body {
 }
 
 .delete-button {
-    background-color: #ff1900;
+    background-color: #000000;
     /* Color rojo para el botón de eliminación */
     color: #ffffff;
     padding: 10px 20px;
@@ -236,12 +238,12 @@ body {
 }
 
 .delete-button:hover {
-    background-color: #761e14;
+    background-color: #181818;
     /* Un tono más oscuro en hover */
 }
 
 .cancel-button {
-    background-color: #34495e;
+    
     /* Color gris oscuro para el botón de cancelar */
     color: #ffffff;
     padding: 10px 20px;
@@ -253,7 +255,7 @@ body {
 }
 
 .cancel-button:hover {
-    background-color: #37424d;
+    background-color: #1a1a1a;
     /* Un tono más oscuro en hover */
 }
 
@@ -293,7 +295,7 @@ body {
 }
 
 .save-button {
-    background-color: #007bff;
+    background-color: #000000;
     /* Verde para el botón de guardar */
     color: #ffffff;
     padding: 10px 20px;
@@ -306,12 +308,12 @@ body {
 }
 
 .save-button:hover {
-    background-color: #095bb2;
+    background-color: #1a1a1a;
     /* Un tono más oscuro en hover */
 }
 
 .cancel-button {
-    background-color: #34495e;
+    background-color: #000000;
     /* Gris oscuro para el botón de cancelar */
     color: #ffffff;
     padding: 10px 20px;
@@ -323,7 +325,7 @@ body {
 }
 
 .cancel-button:hover {
-    background-color: #2c3e50;
+    background-color: #1a1a1a;
     /* Un tono más oscuro en hover */
 }
 /*manage_user_groups.html*/
@@ -361,7 +363,7 @@ body {
 }
 
 .group-management-container .save-btn:hover {
-    background-color: #095bb2;
+    background-color: #000000;
 }
 
 .group-management-container .back-btn {
@@ -376,7 +378,7 @@ body {
 }
 
 .group-management-container .back-btn:hover {
-    background-color: #5a6268;
+    background-color: #1a1a1a;
 }
 /*home_for_admin*/
 .list-group-item-action {
@@ -406,4 +408,36 @@ body {
 
 .col-8 {
     padding-left: 15px;
+}
+/*footer*/
+footer .nav {
+    margin-right: 10px;
+
+}
+
+footer {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+
+}
+
+.offcanvas-body {
+    color: white;
+}
+
+#copyright {
+    color: white;
+}
+
+/*burguer*/
+.offcanvas {
+    background-color: #000000;
+}
+
+#burguerSideBar {
+    color: white;
 }
