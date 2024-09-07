@@ -11,14 +11,14 @@
                 <div class="px-0">
                     {% if posts %}
                         <h1 class="display-4 fst-italic">{{ posts.0.title }}</h1>
-                        <p class="lead my-3">Este es el título del primer post destacado.</p>
+                        <p class="lead my-3">Nuestro post destacado del dia</p>
                         <p class="lead mb-0">
                             <a href="{% url 'post_detail' posts.0.id %}"
-                               class="text-body-emphasis fw-bold">Continue reading...</a>
+                               class="text-body-emphasis fw-bold">Ver más..</a>
                         </p>
                     {% else %}
                         <h1 class="display-4 fst-italic">No hay posts disponibles</h1>
-                        <p class="lead my-3">Por favor, regresa pronto para ver nuestros últimos posts.</p>
+                        <p class="lead my-3">Por favor, regresa pronto para ver nuestros últimos posts</p>
                     {% endif %}
                 </div>
             </div>
