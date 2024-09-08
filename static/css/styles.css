@@ -501,3 +501,36 @@ footer {
 #burguerSideBar {
     color: white;
 }
+/*Para el diseño responsive del login*/
+@media (max-width: 768px) {
+    .navbar-middle {
+        font-size: 40px;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-right .subscribe, .navbar-right .login {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .user-list-container, .user-form-container, .delete-user-container, .group-management-container {
+        padding: 15px;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .save-button, .cancel-button, .delete-button {
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+}
+
