@@ -42,6 +42,7 @@ class CategoryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         # Obtener los posts relacionados a esta categoría
         category = self.get_object()
         context["posts"] = Post.objects.filter(
