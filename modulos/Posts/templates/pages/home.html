@@ -6,17 +6,17 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="p-5">
+    <div>
         <div class="p-2">
             <!-- Contenido Principal -->
-            <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <div class="p-4 p-md-5 mb-4 rounded bg-body-secondary">
                 <div class="px-0">
                     {% if posts %}
                         <h1 class="display-4 fst-italic">{{ posts.0.title }}</h1>
                         <p class="lead my-3">Nuestro post destacado del día</p>
                         <p class="lead mb-0">
                             <a href="{% url 'post_detail' posts.0.id %}"
-                               class="text-body-emphasis fw-bold">Ver más..</a>
+                               class="fw-bold">Ver más..</a>
                         </p>
                     {% else %}
                         <h1 class="display-4 fst-italic">No hay posts disponibles</h1>
@@ -25,11 +25,11 @@
                 </div>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 mb-4 g-4" id="homePosts">
+            <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
                 {% if posts %}
                     {% for post in posts %}
                         <div class="col">
-                            <div class="p-4 card h-100">
+                            <div class="p-4 card h-100 card-container">
                                  
                                  <div class="post-category fst-italic mb-2">
                                     {{ post.category }}  <!-- Muestra la categoría del post -->
@@ -39,12 +39,12 @@
                                     <!-- Show the uploaded post image -->
                                     <img src="{{ post.image.url }}" 
                                          class="card-img-top"
-                                         alt="{{ post.title }}" width="300" height="300">
+                                         alt="{{ post.title }}" width="100" height="300">
                                 {% else %}
                                     <!-- Fallback to a placeholder if no image is uploaded -->
                                     <img src="{% static 'images/makex.png' %}"
                                          class="card-img-top "
-                                         alt="{{ post.title }}"  width="300" height="300">
+                                         alt="{{ post.title }}"  width="100" height="300">
                                 {% endif %}
 
                                 <div class="card-body">
