@@ -441,3 +441,7 @@ footer {
 #burguerSideBar {
     color: white;
 }
+/*Home Posts*/
+#homePosts .p-4:hover {
+    transform: scale(1.05);
+}
