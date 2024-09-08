@@ -42,12 +42,12 @@ class CategoryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         # Obtener los posts relacionados a esta categoría
         category = self.get_object()
-        context["posts"] = Post.objects.filter(
-            category=category
-        )  # Filtrar los posts por categoría
-        return context
+        context["posts"] = Post.objects.filter(category=category)
+
+        return new_ctx(self.request, context)
 
 
 # Vista para crear categorias
