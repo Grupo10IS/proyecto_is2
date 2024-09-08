@@ -15,6 +15,7 @@ class Post(models.Model):
     STATUS_CHOICES = [(DRAFT, DRAFT), (REJECTED, REJECTED), (PUBLISHED, PUBLISHED)]
 
     title = models.CharField(max_length=80)
+    image = models.ImageField(upload_to="posts_images/", blank=True, null=True)
     content = MDTextField(name="content")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=DRAFT)

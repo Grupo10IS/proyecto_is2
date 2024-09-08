@@ -66,7 +66,7 @@ def view_post(request, id):
 @permissions_required([POST_CREATE_PERMISSION])
 def create_post(request):
     if request.method == "POST":
-        post = NewPostForm(request.POST)
+        post = NewPostForm(request.POST, request.FILES)
         if post.is_valid():
             p = post.save(commit=False)
             p.author = request.user

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}
     Inicio - MakeX
 {% endblock title %}
+
 {% block content %}
     <div class="p-5">
         <div class="p-2">
@@ -11,7 +13,7 @@
                 <div class="px-0">
                     {% if posts %}
                         <h1 class="display-4 fst-italic">{{ posts.0.title }}</h1>
-                        <p class="lead my-3">Nuestro post destacado del dia</p>
+                        <p class="lead my-3">Nuestro post destacado del día</p>
                         <p class="lead mb-0">
                             <a href="{% url 'post_detail' posts.0.id %}"
                                class="text-body-emphasis fw-bold">Ver más..</a>
@@ -22,19 +24,26 @@
                     {% endif %}
                 </div>
             </div>
+
             <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
                 {% if posts %}
                     {% for post in posts %}
                         <div class="col">
                             <div class="p-4 card h-100">
-                                <!-- <img src=" static 'posts/images/'|add:post.image " -->
+                                {% if post.image %}
+                                    <!-- Show the uploaded post image -->
+                                    <img src="{{ post.image.url }}" 
+                                         class="card-img-top img-fluid"
+                                         alt="{{ post.title }}">
+                                {% else %}
+                                    <!-- Fallback to a placeholder if no image is uploaded -->
+                                    <img src="{% static 'images/logo.png' %}"
+                                         class="card-img-top img-fluid"
+                                         alt="{{ post.title }}">
+                                {% endif %}
+
                                 <div class="card-body">
-                                    <h4 class="card-title">{{ post.title }}</h5>
-                                </div>
-                                <img src="https://webcolours.ca/wp-content/uploads/2020/10/webcolours-unknown.png"
-                                     class="card-img-top img-fluid"
-                                     alt="{{ post.title }}">
-                                <div class="card-body">
+                                    <h4 class="card-title">{{ post.title }}</h4>
                                     <small class="text-muted">{{ post.date_created|date:"d M Y" }}</small>
                                     <p class="card-text mt-3">{{ post.summary|truncatewords:30|safe }}</p>
                                     <p class="card-text mt-3">
