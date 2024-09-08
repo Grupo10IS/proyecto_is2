@@ -47,7 +47,7 @@ class CategoryDetailView(DetailView):
         context["posts"] = Post.objects.filter(
             category=category
         )  # Filtrar los posts por categoría
-        return context
+        return new_ctx(self.request, context)
 
 
 # Vista para crear categorias
