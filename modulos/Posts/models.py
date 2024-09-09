@@ -20,7 +20,7 @@ class Post(models.Model):
     )
     content = MDTextField(name="content", verbose_name="Contenido")
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, null=False, verbose_name="Categoria"
+        Category, on_delete=models.PROTECT, null=True, verbose_name="Categoria"
     )
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=DRAFT, verbose_name="Status"
