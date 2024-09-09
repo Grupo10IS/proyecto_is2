@@ -25,9 +25,9 @@ test:
 	pytest -q --show-capture=no --disable-warnings --tb=no
 
 format:
-	djlint . --reformat
 	black .
 	isort .
+	-djlint . --reformat --quiet
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

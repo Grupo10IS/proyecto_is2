@@ -41,7 +41,7 @@ def _create_default_groups():
     """
     Crear los roles por defecto configurados en el sistema
 
-    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo, 
+    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo,
     el cual sobreescribe las funciones por defecto del comando migrate de django.
     """
     for role_name, permissions in default_roles.items():

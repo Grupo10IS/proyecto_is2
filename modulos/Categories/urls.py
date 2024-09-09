@@ -2,7 +2,6 @@ from django.urls import path
 
 from modulos.Categories.views import *
 
-
 urlpatterns = [
     path("", categories_manage, name="category_list"),
     path("list/", CategoryListView.as_view(), name="categories_list"),

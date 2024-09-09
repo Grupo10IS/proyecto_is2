@@ -6,12 +6,17 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group mb-4">{{ form.as_p }}</div>
-                <button type="submit" class="btn btn-primary" style="background-color: black;
-                border-color: black;color:white">Guardar</button>
-                <a href="{% url 'user_list' %}" class="btn btn-secondary ms-2" style="background-color: black;
-                border-color: black;color:white">Volver a la lista de usuarios</a>
+                <button type="submit"
+                        class="btn btn-primary"
+                        style="background-color: black;
+                               border-color: black;
+                               color:white">Guardar</button>
+                <a href="{% url 'user_list' %}"
+                   class="btn btn-secondary ms-2"
+                   style="background-color: black;
+                          border-color: black;
+                          color:white">Volver a la lista de usuarios</a>
             </form>
-       
         </div>
     </div>
 {% endblock content %}

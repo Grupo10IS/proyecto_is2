@@ -33,4 +33,6 @@ class Command(MigrateCommand):
             _create_default_groups()
         else:
             print("No se pudieron inicializar los roles y permisos.")
-            print("El estado de la BD es inconsistente. Por favor verifique los errores de migracion")
+            print(
+                "El estado de la BD es inconsistente. Por favor verifique los errores de migracion"
+            )

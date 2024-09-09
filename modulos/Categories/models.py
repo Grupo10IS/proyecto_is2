@@ -37,7 +37,9 @@ class Category(models.Model):
         (PREMIUM, PREMIUM),
         (GRATIS, GRATIS),
     ]
-    name = models.CharField(max_length=80, verbose_name="Nombre", blank=False, null=False)
+    name = models.CharField(
+        max_length=80, verbose_name="Nombre", blank=False, null=False
+    )
     description = models.TextField(blank=True, null=True, verbose_name="Descricion")
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default=GRATIS)

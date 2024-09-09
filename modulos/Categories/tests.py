@@ -1,10 +1,11 @@
 import pytest
-from django.urls import reverse
-from modulos.Categories.models import Category
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from modulos.Authorization import permissions
-from modulos.UserProfile.management.commands.new_admin import _credentials, create_admin
+from modulos.Categories.models import Category
+from modulos.UserProfile.management.commands.new_admin import (_credentials,
+                                                               create_admin)
 
 
 @pytest.mark.django_db

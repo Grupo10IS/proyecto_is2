@@ -54,7 +54,7 @@ def _initialize_permissions():
     """
     Inicializa y crea la lista de permisos disponibles dentro de la bd.
 
-    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo, 
+    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo,
     el cual sobreescribe las funciones por defecto del comando migrate de django.
     """
     for perm in permissions:
