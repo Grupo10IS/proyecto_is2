@@ -36,35 +36,74 @@
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ImproperlyConfigured</span>
 
-
 <span class="n">DEFAULT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;100%&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
-    <span class="s1">&#39;toolbar&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;undo&quot;</span><span class="p">,</span> <span class="s2">&quot;redo&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="s2">&quot;del&quot;</span><span class="p">,</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span> <span class="s2">&quot;quote&quot;</span><span class="p">,</span> <span class="s2">&quot;ucwords&quot;</span><span class="p">,</span> <span class="s2">&quot;uppercase&quot;</span><span class="p">,</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;h2&quot;</span><span class="p">,</span> <span class="s2">&quot;h3&quot;</span><span class="p">,</span> <span class="s2">&quot;h5&quot;</span><span class="p">,</span> <span class="s2">&quot;h6&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;list-ul&quot;</span><span class="p">,</span> <span class="s2">&quot;list-ol&quot;</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="s2">&quot;reference-link&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;code-block&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;emoji&quot;</span><span class="p">,</span> 
-                <span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;watch&quot;</span><span class="p">,</span> <span class="s2">&quot;fullscreen&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">],</span>
-    <span class="s1">&#39;upload_image_formats&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;JPG&quot;</span><span class="p">,</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">,</span> <span class="s2">&quot;gif&quot;</span><span class="p">,</span> <span class="s2">&quot;GIF&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">,</span>
-                             <span class="s2">&quot;PNG&quot;</span><span class="p">,</span> <span class="s2">&quot;bmp&quot;</span><span class="p">,</span> <span class="s2">&quot;BMP&quot;</span><span class="p">,</span> <span class="s2">&quot;webp&quot;</span><span class="p">,</span> <span class="s2">&quot;WEBP&quot;</span><span class="p">],</span>
-    <span class="s1">&#39;upload_image_url&#39;</span><span class="p">:</span> <span class="s1">&#39;/mdeditor/uploads/&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;image_folder&#39;</span><span class="p">:</span> <span class="s1">&#39;editor&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;theme&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>  <span class="c1"># dark / default</span>
-    <span class="s1">&#39;preview_theme&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>  <span class="c1"># dark / default</span>
-    <span class="s1">&#39;editor_theme&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>  <span class="c1"># pastel-on-dark / default</span>
-    <span class="s1">&#39;toolbar_autofixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;search_replace&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;emoji&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;tex&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;task_list&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;flow_chart&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>  <span class="c1"># zh / en / de </span>
-    <span class="s1">&#39;watch&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Live preview</span>
-    <span class="s1">&#39;lineWrapping&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># lineWrapping</span>
-    <span class="s1">&#39;lineNumbers&#39;</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># lineNumbers</span>
+    <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;100%&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s2">&quot;toolbar&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;undo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;redo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;del&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quote&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ucwords&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;uppercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;h1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;h2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;h3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;h5&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;h6&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;list-ul&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;list-ol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;link&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;reference-link&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;code-block&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;table&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;emoji&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;||&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;watch&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fullscreen&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;info&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;upload_image_formats&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;JPG&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;JPEG&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gif&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GIF&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;png&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PNG&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bmp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;BMP&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;webp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WEBP&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;upload_image_url&quot;</span><span class="p">:</span> <span class="s2">&quot;/mdeditor/uploads/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;editor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;theme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>  <span class="c1"># dark / default</span>
+    <span class="s2">&quot;preview_theme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>  <span class="c1"># dark / default</span>
+    <span class="s2">&quot;editor_theme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>  <span class="c1"># pastel-on-dark / default</span>
+    <span class="s2">&quot;toolbar_autofixed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;search_replace&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;tex&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;task_list&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;flow_chart&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;sequence&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>  <span class="c1"># zh / en / de</span>
+    <span class="s2">&quot;watch&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Live preview</span>
+    <span class="s2">&quot;lineWrapping&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># lineWrapping</span>
+    <span class="s2">&quot;lineNumbers&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># lineNumbers</span>
 <span class="p">}</span>
 
 
@@ -74,21 +113,21 @@
 
 <div class="viewcode-block" id="MDConfig.__init__">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.configs.MDConfig.__init__">[documentos]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">DEFAULT_CONFIG</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_configs</span><span class="p">(</span><span class="n">config_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MDConfig.set_configs">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.configs.MDConfig.set_configs">[documentos]</a>
-    <span class="k">def</span> <span class="nf">set_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        set config item</span>
 <span class="sd">        :param config_name:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Try to get valid config from settings.</span>
-        <span class="n">configs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;MDEDITOR_CONFIGS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">configs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">&quot;MDEDITOR_CONFIGS&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">configs</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">configs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="c1"># Make sure the config_name exists.</span>
@@ -96,20 +135,25 @@
                     <span class="n">config</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="n">config_name</span><span class="p">]</span>
                     <span class="c1"># Make sure the configuration is a dictionary.</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="s1">&#39;MDEDITOR_CONFIGS[&quot;</span><span class="si">%s</span><span class="s1">&quot;] </span><span class="se">\</span>
-<span class="s1">                                        setting must be a dictionary type.&#39;</span> <span class="o">%</span>
-                                                   <span class="n">config_name</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span>
+                            <span class="s1">&#39;MDEDITOR_CONFIGS[&quot;</span><span class="si">%s</span><span class="s1">&quot;] </span><span class="se">\</span>
+<span class="s1">                                        setting must be a dictionary type.&#39;</span>
+                            <span class="o">%</span> <span class="n">config_name</span>
+                        <span class="p">)</span>
                     <span class="c1"># Override defaults with settings config.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="s2">&quot;No configuration named &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="se">\</span>
-<span class="s2">                                    found in your CKEDITOR_CONFIGS setting.&quot;</span> <span class="o">%</span>
-                                               <span class="n">config_name</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span>
+                        <span class="s2">&quot;No configuration named &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="se">\</span>
+<span class="s2">                                    found in your CKEDITOR_CONFIGS setting.&quot;</span>
+                        <span class="o">%</span> <span class="n">config_name</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="s1">&#39;MDEDITOR_CONFIGS setting must be a</span><span class="se">\</span>
-<span class="s1">                                dictionary type.&#39;</span><span class="p">)</span></div>
+                <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span>
+                    <span class="s2">&quot;MDEDITOR_CONFIGS setting must be a</span><span class="se">\</span>
+<span class="s2">                                dictionary type.&quot;</span>
+                <span class="p">)</span></div>
 </div>
-
 
 </pre></div>
 
@@ -143,6 +187,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>

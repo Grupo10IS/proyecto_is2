@@ -16,7 +16,7 @@
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
     <link rel="next" title="modulos.Categories.migrations package" href="modulos.Categories.migrations.html" />
-    <link rel="prev" title="modulos.Authorization package" href="modulos.Authorization.html" />
+    <link rel="prev" title="modulos.Authorization.management.commands package" href="modulos.Authorization.management.commands.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -71,6 +71,14 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0004_category_status_category_tipo.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0004_category_status_category_tipo.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0004_category_status_category_tipo.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more">modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -177,6 +185,11 @@ status (CharField): Estado de la categoría, con opciones definidas por <cite>ES
 TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PREMIUM” y “GRATIS”.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.ACTIVO">
+<span class="sig-name descname"><span class="pre">ACTIVO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Activo'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.ACTIVO" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#modulos.Categories.models.Category.DoesNotExist" title="Link to this definition">¶</a></dt>
@@ -185,7 +198,17 @@ TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PRE
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.ESTADO_CHOICES">
-<span class="sig-name descname"><span class="pre">ESTADO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ACTIVO',</span> <span class="pre">'Activo'),</span> <span class="pre">('INACTIVO',</span> <span class="pre">'Inactivo')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.ESTADO_CHOICES" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ESTADO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Activo',</span> <span class="pre">'Activo'),</span> <span class="pre">('Inactivo',</span> <span class="pre">'Inactivo')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.ESTADO_CHOICES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.GRATIS">
+<span class="sig-name descname"><span class="pre">GRATIS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Gratis'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.GRATIS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.INACTIVO">
+<span class="sig-name descname"><span class="pre">INACTIVO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Inactivo'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.INACTIVO" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
@@ -195,8 +218,13 @@ TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PRE
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.PREMIUM">
+<span class="sig-name descname"><span class="pre">PREMIUM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Premium'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.PREMIUM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.TIPO_CHOICES">
-<span class="sig-name descname"><span class="pre">TIPO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('PREMIUM',</span> <span class="pre">'Premium'),</span> <span class="pre">('GRATIS',</span> <span class="pre">'Gratis')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.TIPO_CHOICES" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">TIPO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Premium',</span> <span class="pre">'Premium'),</span> <span class="pre">('Gratis',</span> <span class="pre">'Gratis')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.TIPO_CHOICES" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -267,41 +295,38 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 </section>
-<section id="module-modulos.Categories.test_views">
-<span id="modulos-categories-test-views-module"></span><h2>modulos.Categories.test_views module<a class="headerlink" href="#module-modulos.Categories.test_views" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_create_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_create_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_create_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_create_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_create_view_non_admin">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_create_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_create_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_create_view_non_admin" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_delete_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_delete_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_delete_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_delete_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_delete_view_non_admin">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_delete_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_delete_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_delete_view_non_admin" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_edit_view">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_edit_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_edit_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_edit_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Categories.test_views.test_category_edit_view_non_admin">
-<span class="sig-prename descclassname"><span class="pre">modulos.Categories.test_views.</span></span><span class="sig-name descname"><span class="pre">test_category_edit_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/test_views.html#test_category_edit_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.test_views.test_category_edit_view_non_admin" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</section>
 <section id="module-modulos.Categories.tests">
 <span id="modulos-categories-tests-module"></span><h2>modulos.Categories.tests module<a class="headerlink" href="#module-modulos.Categories.tests" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_create_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_create_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_create_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_create_view" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_create_view_non_admin">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_create_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_create_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_create_view_non_admin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_delete_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_delete_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_delete_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_delete_view" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_delete_view_non_admin">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_delete_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_delete_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_delete_view_non_admin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_edit_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_edit_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_edit_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_edit_view" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Categories.tests.test_category_edit_view_non_admin">
+<span class="sig-prename descclassname"><span class="pre">modulos.Categories.tests.</span></span><span class="sig-name descname"><span class="pre">test_category_edit_view_non_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/tests.html#test_category_edit_view_non_admin"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.tests.test_category_edit_view_non_admin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-modulos.Categories.urls">
 <span id="modulos-categories-urls-module"></span><h2>modulos.Categories.urls module<a class="headerlink" href="#module-modulos.Categories.urls" title="Link to this heading">¶</a></h2>
@@ -429,6 +454,8 @@ object the first time, the query is executed.</p>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.Categories package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
@@ -456,9 +483,13 @@ object the first time, the query is executed.</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.models">modulos.Categories.models module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.models.Category"><code class="docutils literal notranslate"><span class="pre">Category</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.ACTIVO"><code class="docutils literal notranslate"><span class="pre">Category.ACTIVO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Category.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.ESTADO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.ESTADO_CHOICES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.GRATIS"><code class="docutils literal notranslate"><span class="pre">Category.GRATIS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.INACTIVO"><code class="docutils literal notranslate"><span class="pre">Category.INACTIVO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Category.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.PREMIUM"><code class="docutils literal notranslate"><span class="pre">Category.PREMIUM</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.TIPO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.TIPO_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.description"><code class="docutils literal notranslate"><span class="pre">Category.description</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.get_status_display"><code class="docutils literal notranslate"><span class="pre">Category.get_status_display()</span></code></a></li>
@@ -473,16 +504,15 @@ object the first time, the query is executed.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.test_views">modulos.Categories.test_views module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_create_view"><code class="docutils literal notranslate"><span class="pre">test_category_create_view()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_create_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_create_view_non_admin()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_delete_view"><code class="docutils literal notranslate"><span class="pre">test_category_delete_view()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_delete_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_delete_view_non_admin()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_edit_view"><code class="docutils literal notranslate"><span class="pre">test_category_edit_view()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.test_views.test_category_edit_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_edit_view_non_admin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.tests">modulos.Categories.tests module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_create_view"><code class="docutils literal notranslate"><span class="pre">test_category_create_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_create_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_create_view_non_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_delete_view"><code class="docutils literal notranslate"><span class="pre">test_category_delete_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_delete_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_delete_view_non_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_edit_view"><code class="docutils literal notranslate"><span class="pre">test_category_edit_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.tests.test_category_edit_view_non_admin"><code class="docutils literal notranslate"><span class="pre">test_category_edit_view_non_admin()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.tests">modulos.Categories.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.urls">modulos.Categories.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Categories.views">modulos.Categories.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.views.CategoryCreateView"><code class="docutils literal notranslate"><span class="pre">CategoryCreateView</span></code></a><ul>
@@ -527,7 +557,7 @@ object the first time, the query is executed.</p>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="modules.html">modulos</a><ul>
   <li><a href="modulos.html">modulos package</a><ul>
-      <li>Previous: <a href="modulos.Authorization.html" title="capítulo anterior">modulos.Authorization package</a></li>
+      <li>Previous: <a href="modulos.Authorization.management.commands.html" title="capítulo anterior">modulos.Authorization.management.commands package</a></li>
       <li>Next: <a href="modulos.Categories.migrations.html" title="próximo capítulo">modulos.Categories.migrations package</a></li>
   </ul></li>
   </ul></li>

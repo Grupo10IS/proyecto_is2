@@ -43,13 +43,12 @@
 <div class="viewcode-block" id="MDTextFormField">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.fields.MDTextFormField">[documentos]</a>
 <span class="k">class</span> <span class="nc">MDTextFormField</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">CharField</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; custom form field &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;custom form field&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="MDTextFormField.__init__">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.fields.MDTextFormField.__init__">[documentos]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;widget&#39;</span><span class="p">:</span> <span class="n">MDEditorWidget</span><span class="p">(</span><span class="n">config_name</span><span class="o">=</span><span class="n">config_name</span><span class="p">)</span>
-        <span class="p">})</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;widget&quot;</span><span class="p">:</span> <span class="n">MDEditorWidget</span><span class="p">(</span><span class="n">config_name</span><span class="o">=</span><span class="n">config_name</span><span class="p">)})</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MDTextFormField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
@@ -58,7 +57,7 @@
 <div class="viewcode-block" id="MDTextField">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.fields.MDTextField">[documentos]</a>
 <span class="k">class</span> <span class="nc">MDTextField</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; custom model field &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;custom model field&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MDTextField.__init__">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.fields.MDTextField.__init__">[documentos]</a>
@@ -70,10 +69,7 @@
 <div class="viewcode-block" id="MDTextField.formfield">
 <a class="viewcode-back" href="../../../docs/source/modulos.mdeditor.html#modulos.mdeditor.fields.MDTextField.formfield">[documentos]</a>
     <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">MDTextFormField</span><span class="p">,</span>
-            <span class="s1">&#39;config_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_name</span>
-        <span class="p">}</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form_class&quot;</span><span class="p">:</span> <span class="n">MDTextFormField</span><span class="p">,</span> <span class="s2">&quot;config_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_name</span><span class="p">}</span>
         <span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MDTextField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">formfield</span><span class="p">(</span><span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
 </div>
@@ -110,6 +106,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>

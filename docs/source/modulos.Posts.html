@@ -91,6 +91,22 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0007_post_image">modulos.Posts.migrations.0007_post_image module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0007_post_image.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0007_post_image.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0007_post_image.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more">modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -143,7 +159,7 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['title',</span> <span class="pre">'category',</span> <span class="pre">'content',</span> <span class="pre">'status',</span> <span class="pre">'tags']</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['title',</span> <span class="pre">'image',</span> <span class="pre">'category',</span> <span class="pre">'tags',</span> <span class="pre">'content']</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -154,14 +170,14 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.Meta.widgets">
-<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'content':</span> <span class="pre">&lt;django.forms.widgets.Textarea</span> <span class="pre">object&gt;,</span> <span class="pre">'tags':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.widgets" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'content':</span> <span class="pre">&lt;django.forms.widgets.Textarea</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.widgets.ClearableFileInput</span> <span class="pre">object&gt;,</span> <span class="pre">'tags':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.Meta.widgets" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'content':</span> <span class="pre">&lt;modulos.mdeditor.fields.MDTextFormField</span> <span class="pre">object&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'tags':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.base_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'content':</span> <span class="pre">&lt;modulos.mdeditor.fields.MDTextFormField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'tags':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -182,7 +198,7 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <span id="modulos-posts-models-module"></span><h2>modulos.Posts.models module<a class="headerlink" href="#module-modulos.Posts.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Posts.models.Post">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Post" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Post" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.models.Post.DRAFT">
@@ -289,6 +305,13 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Post.image">
+<span class="sig-name descname"><span class="pre">image</span></span><a class="headerlink" href="#modulos.Posts.models.Post.image" title="Link to this definition">¶</a></dt>
+<dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
+assigning the width/height to the width_field/height_field, if appropriate.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.models.Post.objects">
 <span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#modulos.Posts.models.Post.objects" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -319,6 +342,24 @@ object the first time, the query is executed.</p>
 </section>
 <section id="module-modulos.Posts.tests">
 <span id="modulos-posts-tests-module"></span><h2>modulos.Posts.tests module<a class="headerlink" href="#module-modulos.Posts.tests" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_create_post_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_create_post_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_create_post_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_create_post_view" title="Link to this definition">¶</a></dt>
+<dd><p>Test the create post view for different user permissions and form validation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_home_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_home_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_home_view" title="Link to this definition">¶</a></dt>
+<dd><p>Test the home view to check if posts are displayed correctly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_view_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_view_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_view_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_view_post" title="Link to this definition">¶</a></dt>
+<dd><p>Test the post detail view with an existing post and a non-existent post.</p>
+</dd></dl>
+
 </section>
 <section id="module-modulos.Posts.urls">
 <span id="modulos-posts-urls-module"></span><h2>modulos.Posts.urls module<a class="headerlink" href="#module-modulos.Posts.urls" title="Link to this heading">¶</a></h2>
@@ -392,6 +433,8 @@ context_object_name (str): El nombre de la variable de contexto que representa e
 <li class="toctree-l1"><a class="reference internal" href="modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.Posts package</a><ul>
@@ -437,6 +480,7 @@ context_object_name (str): El nombre de la variable de contexto que representa e
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_previous_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_previous_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_status_display"><code class="docutils literal notranslate"><span class="pre">Post.get_status_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.id"><code class="docutils literal notranslate"><span class="pre">Post.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.image"><code class="docutils literal notranslate"><span class="pre">Post.image</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.objects"><code class="docutils literal notranslate"><span class="pre">Post.objects</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.status"><code class="docutils literal notranslate"><span class="pre">Post.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.tags"><code class="docutils literal notranslate"><span class="pre">Post.tags</span></code></a></li>
@@ -445,7 +489,12 @@ context_object_name (str): El nombre de la variable de contexto que representa e
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.tests">modulos.Posts.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.tests">modulos.Posts.tests module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_create_post_view"><code class="docutils literal notranslate"><span class="pre">test_create_post_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_home_view"><code class="docutils literal notranslate"><span class="pre">test_home_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_view_post"><code class="docutils literal notranslate"><span class="pre">test_view_post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>

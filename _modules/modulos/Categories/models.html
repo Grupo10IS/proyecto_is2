@@ -58,19 +58,27 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># FIX: STRING MAGICOS YA OTRA VEZ</span>
+    <span class="n">ACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Activo&quot;</span>
+    <span class="n">INACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Inactivo&quot;</span>
+
+    <span class="n">PREMIUM</span> <span class="o">=</span> <span class="s2">&quot;Premium&quot;</span>
+    <span class="n">GRATIS</span> <span class="o">=</span> <span class="s2">&quot;Gratis&quot;</span>
+
     <span class="n">ESTADO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;ACTIVO&quot;</span><span class="p">,</span> <span class="s2">&quot;Activo&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;INACTIVO&quot;</span><span class="p">,</span> <span class="s2">&quot;Inactivo&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">ACTIVO</span><span class="p">,</span> <span class="n">ACTIVO</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">INACTIVO</span><span class="p">,</span> <span class="n">INACTIVO</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">TIPO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;PREMIUM&quot;</span><span class="p">,</span> <span class="s2">&quot;Premium&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;GRATIS&quot;</span><span class="p">,</span> <span class="s2">&quot;Gratis&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">PREMIUM</span><span class="p">,</span> <span class="n">PREMIUM</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">GRATIS</span><span class="p">,</span> <span class="n">GRATIS</span><span class="p">),</span>
     <span class="p">]</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Nombre&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descrición&quot;</span><span class="p">)</span>
-    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ESTADO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ACTIVO&quot;</span><span class="p">)</span>
-    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;GRATIS&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Nombre&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descricion&quot;</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ESTADO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ACTIVO</span><span class="p">)</span>
+    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">GRATIS</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Returns the category name for display</span></div>
@@ -107,6 +115,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>

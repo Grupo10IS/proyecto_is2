@@ -34,7 +34,7 @@
   <h1>Código fuente para modulos.Authorization.roles</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Permission</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">PermissionDenied</span>
-<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_migrate</span><span class="p">,</span> <span class="n">pre_delete</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">pre_delete</span>
 <span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="o">*</span>
@@ -73,14 +73,13 @@
 
 
 
-<span class="c1"># NOTE: si da problemas con el orden de los permisos, entonces mover esto</span>
-<span class="c1"># al final del archivo de initialize_permissions</span>
-<div class="viewcode-block" id="create_default_groups">
-<a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.roles.create_default_groups">[documentos]</a>
-<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_migrate</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">create_default_groups</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="c1"># NOTE: esta funcion se utiliza en el comando migrate custom</span>
+<span class="k">def</span> <span class="nf">_create_default_groups</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Crear los roles por defecto despues de realizar migraciones</span>
+<span class="sd">    Crear los roles por defecto configurados en el sistema</span>
+
+<span class="sd">    Esta funcion es llamada dentro del comando custom &quot;migrate&quot; ubicado dentro del mismo modulo,</span>
+<span class="sd">    el cual sobreescribe las funciones por defecto del comando migrate de django.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">role_name</span><span class="p">,</span> <span class="n">permissions</span> <span class="ow">in</span> <span class="n">default_roles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">role</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">role_name</span><span class="p">)</span>
@@ -95,8 +94,7 @@
 
         <span class="n">role</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created default roles&quot;</span><span class="p">)</span></div>
-
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Roles por defecto inicializados correctamente&quot;</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -129,6 +127,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modulos.Posts.tests &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=9c9b61ad"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/translations.js?v=d190bf04"></script>
+    <link rel="index" title="Índice" href="../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para modulos.Posts.tests</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+
+<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+
+<div class="viewcode-block" id="test_home_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_home_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore::RuntimeWarning&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_home_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test the home view to check if posts are displayed correctly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Test home view with no posts</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;pages/home.html&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;posts&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="c1"># Test home view with existing posts</span>
+    <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test Post 1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content of test post 1&quot;</span><span class="p">)</span>
+    <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test Post 2&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content of test post 2&quot;</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+
+<div class="viewcode-block" id="test_view_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_view_post">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_view_post</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test the post detail view with an existing post and a non-existent post.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test Post&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content of test post&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="s2">&quot;tag1, tag2&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Test post detail view with an existing post</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_detail&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;pages/post_detail.html&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;post&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">post</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;tag1&quot;</span><span class="p">,</span> <span class="s2">&quot;tag2&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;categories&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>
+
+    <span class="c1"># Test post detail view with a non-existent post</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_detail&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="mi">999</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span></div>
+
+
+
+<div class="viewcode-block" id="test_create_post_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_create_post_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_create_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test the create post view for different user permissions and form validation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_create&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Test access to create post view without login</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+    <span class="p">),</span> <span class="s2">&quot;Should redirect to login page when not logged in.&quot;</span>
+
+    <span class="c1"># Create user and log in</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Test access to create post view without permission</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span>
+    <span class="p">),</span> <span class="s2">&quot;User without permission should get 403 Forbidden.&quot;</span>
+
+    <span class="c1"># Assign permission and test access</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;User with permission should access the view successfully.&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;pages/new_post.html&quot;</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span>
+    <span class="p">],</span> <span class="s2">&quot;Template &#39;new_post.html&#39; should be used.&quot;</span>
+
+    <span class="c1"># Test creating a post with invalid data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Content for new test post&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="p">),</span> <span class="s2">&quot;Invalid form data should return 400 Bad Request.&quot;</span>
+
+    <span class="c1"># Test creating a post with valid data</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;test_category&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;descripcion&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Content for new test post&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">,</span> <span class="s2">&quot;Successful post creation should redirect.&quot;</span>
+
+    <span class="c1"># test of existing new post</span>
+    <span class="k">assert</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;Post should exist in the database after creation.&quot;</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Proyecto IS2 grupo 6</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.html">modulos.mdeditor package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Grupo 6 IS2.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
