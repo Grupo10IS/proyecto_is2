@@ -9,12 +9,11 @@ class NewPostForm(ModelForm):
         model = Post
         fields = [
             "title",
-            "category",
-            "content",
             "image",
-            "status",
+            "category",
             "tags",
-        ]  # Add the image field here
+            "content",
+        ]
 
         widgets = {
             "title": forms.TextInput(
