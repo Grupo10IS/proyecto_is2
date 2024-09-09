@@ -10,5 +10,5 @@ else:
 
 
 urlpatterns = [
-    url_func(r'^uploads/$', UploadView.as_view(), name='uploads'),
+    url_func(r"^uploads/$", UploadView.as_view(), name="uploads"),
 ]

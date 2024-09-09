@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import HttpResponse, redirect, render
+from django.http.response import HttpResponseBadRequest
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import POST_CREATE_PERMISSION
@@ -43,35 +44,36 @@ def view_post(request, id):
         context_object_name (str): El nombre de la variable de contexto que representa el objeto 'Post'.
     """
 
-    post = Post.objects.get(id=id)
-    if post != None:
-        # parse tags
-        tags = post.tags.split(",") if post.tags else []
-        tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+    post = get_object_or_404(Post, id=id)
+    # parse tags
+    tags = post.tags.split(",") if post.tags else []
+    tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
 
-        ctx = new_ctx(
-            request,
-            {
-                "post": post,
-                "tags": tags,
-                "categories": Category.objects.all(),
-            },
-        )
-        return render(request, "pages/post_detail.html", context=ctx)
-
-    return HttpResponse("No se encontro el post al que quiere acceder")
+    ctx = new_ctx(
+        request,
+        {
+            "post": post,
+            "tags": tags,
+            "categories": Category.objects.all(),
+        },
+    )
+    return render(request, "pages/post_detail.html", context=ctx)
 
 
 @login_required
 @permissions_required([POST_CREATE_PERMISSION])
 def create_post(request):
     if request.method == "POST":
-        post = NewPostForm(request.POST)
-        if post.is_valid():
-            p = post.save(commit=False)
-            p.author = request.user
-            p.save()
-            return redirect("/posts/" + str(p.id))
+        post = NewPostForm(request.POST, request.FILES)
+        if not post.is_valid():
+            print(post.is_valid())
+            print(post.errors)
+            return HttpResponseBadRequest("Datos proporcionados invalidos")
+
+        p = post.save(commit=False)
+        p.author = request.user
+        p.save()
+        return redirect("/posts/" + str(p.id))
 
     ctx = new_ctx(request, {"form": NewPostForm})
 

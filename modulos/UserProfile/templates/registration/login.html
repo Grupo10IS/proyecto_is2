@@ -1,11 +1,12 @@
-{% extends "base.html" %}
+{% extends "register_base.html" %}
 {% block content %}
-    <div class="container mt-5">
+    <div class="container" style="color:black">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="border rounded overflow-hidden shadow-sm text-body-emphasis bg-body-secondary">
+                <div class="border rounded overflow-hidden shadow-sm "
+                     style="background-color:white">
                     <div class="p-3 text-center border-bottom">
-                        <h2 class="display-6 fst-italic">Iniciar Sesión</h2>
+                        <h2 class="display-6 fst-italic">Inicia Sesión en MakeX</h2>
                     </div>
                     <div class="p-4">
                         {% if messages %}
@@ -35,15 +36,18 @@
                             </div>
                             <button type="submit"
                                     class="btn btn-primary btn-block w-100"
-                                    style="background-color: #007bff;
-                                           border-color: #007bff">Iniciar Sesión</button>
+                                    style="background-color: black;
+                                           border-color:white;
+                                           color:white">Iniciar Sesión</button>
                         </form>
                     </div>
                     <div class="p-3 text-center border-top">
                         <p class="mb-2">
-                            <a href="{% url 'signup' %}" class="text-body-emphasis fw-bold">¿Aún no tienes cuenta? Regístrate</a>
+                            <a href="{% url 'signup' %}" class=" fw-bold" style="color:black">¿Aún no tienes cuenta? Regístrate</a>
                         </p>
-                        <a href="{% url 'password_reset' %}" class="text-body-emphasis fw-bold">¿Olvidaste tu contraseña?</a>
+                        <a href="{% url 'password_reset' %}"
+                           class=" fw-bold"
+                           style="color:black">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
             </div>

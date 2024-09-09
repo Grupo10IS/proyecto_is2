@@ -1,16 +1,22 @@
-{% extends "base.html" %}
+{% extends  "register_base.html" %}
 {% block content %}
-    <div class="container mt-5">
+    <div class="container">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-6 fst-italic mb-4">Gestionar Grupos para {{ user.username }}</h1>
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group mb-4">{{ form.as_p }}</div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit"
+                        class="btn btn-primary"
+                        style="background-color: black;
+                               border-color: black;
+                               color:white">Guardar</button>
+                <a href="{% url 'user_list' %}"
+                   class="btn btn-secondary ms-2"
+                   style="background-color: black;
+                          border-color: black;
+                          color:white">Volver a la lista de usuarios</a>
             </form>
-            <div class="mt-4">
-                <a href="{% url 'user_list' %}" class="btn btn-secondary">Volver a la lista de usuarios</a>
-            </div>
         </div>
     </div>
 {% endblock content %}

@@ -11,8 +11,8 @@ from modulos.Authorization import permissions
 from modulos.Authorization.decorators import permissions_required
 from modulos.utils import new_ctx
 
-from .forms import (CustomUserChangeForm, CustomUserCreationForm, ProfileForm,
-                    UserGroupForm)
+from .forms import (CustomUserChangeForm, CustomUserCreationForm,
+                    CustomUserEditForm, ProfileForm, UserGroupForm)
 from .models import UserProfile
 
 
@@ -146,7 +146,6 @@ def user_list(request):
 def user_edit(request, user_id):
     """
     Vista para editar un usuario existente 'user_edit'.
-
     Permite editar la información de un usuario seleccionado.
     Requiere autenticación y permisos para ver todos los perfiles de usuario.
 
@@ -159,12 +158,14 @@ def user_edit(request, user_id):
     """
     user = get_object_or_404(UserProfile, pk=user_id)
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST, instance=user)
+        form = CustomUserEditForm(request.POST, instance=user)
         if form.is_valid():
-            print(form.save())
+            form.save()
             return redirect("user_list")
+        else:
+            print(form.errors)  # Imprimir los errores del formulario si no es válido
     else:
-        form = CustomUserCreationForm(instance=user)
+        form = CustomUserEditForm(instance=user)
     return render(
         request, "admin_panel/user_form.html", new_ctx(request, {"form": form})
     )

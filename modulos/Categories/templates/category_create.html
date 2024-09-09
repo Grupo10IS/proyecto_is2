@@ -1,13 +1,17 @@
-{% extends "base.html" %}
+{% extends  "register_base.html" %}
 {% block content %}
-    <div class="container mt-5 text-white">
+    <div class="container text-white">
         <h1 class="title mb-4">Crear nueva categoria</h1>
         <div class="card bg-dark border-secondary">
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group mb-4">{{ form.as_p }}</div>
-                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            style="background-color: black;
+                                   border-color: black;
+                                   color:white">Crear</button>
                 </form>
             </div>
         </div>

@@ -2,8 +2,6 @@ from os import _exit
 
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from django.db.models.signals import post_migrate
-from django.dispatch import receiver
 
 from modulos.UserProfile.models import UserProfile
 
@@ -51,14 +49,13 @@ permissions = [
 #####
 
 
-@receiver(post_migrate)
-def initialize_permissions(sender, **kwargs):
+# NOTE: esta funcion se utiliza en el comando migrate custom
+def _initialize_permissions():
     """
-    Inicializa y crea la lista de permisos disponibles dentro de la bd luego de
-    crear las migraciones.
+    Inicializa y crea la lista de permisos disponibles dentro de la bd.
 
-    Esta senhal se lanza automaticamente luego de realizar las migraciones
-    con el comendo manage.py migrate.
+    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo,
+    el cual sobreescribe las funciones por defecto del comando migrate de django.
     """
     for perm in permissions:
         try:
@@ -71,4 +68,4 @@ def initialize_permissions(sender, **kwargs):
             print(e)
             _exit(1)
 
-    print(f"Default permisos incializados")
+    print(f"- Permisos incializados correctamente")

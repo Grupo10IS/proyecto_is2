@@ -22,19 +22,27 @@ class Category(models.Model):
     """
 
     # FIX: STRING MAGICOS YA OTRA VEZ
+    ACTIVO = "Activo"
+    INACTIVO = "Inactivo"
+
+    PREMIUM = "Premium"
+    GRATIS = "Gratis"
+
     ESTADO_CHOICES = [
-        ("ACTIVO", "Activo"),
-        ("INACTIVO", "Inactivo"),
+        (ACTIVO, ACTIVO),
+        (INACTIVO, INACTIVO),
     ]
 
     TIPO_CHOICES = [
-        ("PREMIUM", "Premium"),
-        ("GRATIS", "Gratis"),
+        (PREMIUM, PREMIUM),
+        (GRATIS, GRATIS),
     ]
-    name = models.CharField(max_length=80, verbose_name="Nombre", blank=True)
-    description = models.TextField(blank=True, null=True, verbose_name="Descrición")
-    status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="ACTIVO")
-    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default="GRATIS")
+    name = models.CharField(
+        max_length=80, verbose_name="Nombre", blank=False, null=False
+    )
+    description = models.TextField(blank=True, null=True, verbose_name="Descricion")
+    status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
+    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default=GRATIS)
 
     def __str__(self):
         return self.name  # Returns the category name for display

@@ -1,13 +1,21 @@
-{% extends "base.html" %}
+{% extends  "register_base.html" %}
 {% block content %}
-    <div class="container mt-5">
+    <div class="container">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-6 fst-italic mb-4">Creador de Rol</h1>
             <form method="post" class="needs-validation">
                 {% csrf_token %}
                 <div class="mb-3">{{ form.as_p }}</div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="{% url 'role_list' %}" class="btn btn-secondary ms-2">Cancelar</a>
+                <button type="submit"
+                        class="btn btn-primary"
+                        style="background-color: black;
+                               border-color: black;
+                               color:white">Guardar</button>
+                <a href="{% url 'role_list' %}"
+                   class="btn btn-secondary ms-2"
+                   style="background-color: black;
+                          border-color: black;
+                          color:white">Cancelar</a>
             </form>
         </div>
     </div>

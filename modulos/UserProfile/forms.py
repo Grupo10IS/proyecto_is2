@@ -1,9 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import (
-    PasswordResetForm,
-    UserChangeForm,
-    UserCreationForm,
-)
+from django.contrib.auth.forms import (PasswordResetForm, UserChangeForm,
+                                       UserCreationForm)
 from django.contrib.auth.models import Group
 
 from .models import UserProfile
@@ -20,17 +17,69 @@ class CustomUserCreationForm(UserCreationForm):
             "password2": forms.PasswordInput(attrs={"class": "form-control"}),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.get("instance", None)
+        super().__init__(*args, **kwargs)
+
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if UserProfile.objects.filter(username=username).exists():
+        if (
+            UserProfile.objects.filter(username=username)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
             raise forms.ValidationError("Este username ya está en uso.")
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if UserProfile.objects.filter(email=email).exists():
-            raise forms.ValidationError("Este correo está ya en uso")
+        if (
+            UserProfile.objects.filter(email=email)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
+            raise forms.ValidationError("Este correo ya está en uso.")
         return email
+
+
+class CustomUserEditForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="Nueva contraseña",
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "autocomplete": "new-password"}
+        ),
+        required=False,
+    )
+    password2 = forms.CharField(
+        label="Confirma nueva contraseña",
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "autocomplete": "new-password"}
+        ),
+        required=False,
+    )
+
+    class Meta:
+        model = UserProfile
+        fields = ["username", "email"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 or password2:
+            if password1 != password2:
+                raise forms.ValidationError("Las contraseñas no coinciden.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get("password1")
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
 
 
 class UserGroupForm(forms.ModelForm):

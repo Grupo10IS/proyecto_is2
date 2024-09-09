@@ -33,17 +33,15 @@
         color: #777 !important;
     }
 </style>
-
 <div class="wmd-wrapper"  id="{{ id }}-wmd-wrapper">
-  <textarea {{ final_attrs|safe }}>{{ value }}</textarea>
+    <textarea {{ final_attrs|safe }}>{{ value }}</textarea>
 </div>
-
 {% if config.language == 'en' %}
-<script src="{% static 'mdeditor/languages/en.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/en.js' %}"></script>
 {% elif config.language == 'de' %}
-<script src="{% static 'mdeditor/languages/de.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/de.js' %}"></script>
 {% elif config.language == 'pt_BR' %}
-<script src="{% static 'mdeditor/languages/pt_BR.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/pt_BR.js' %}"></script>
 {% endif %}
 <script type="text/javascript">
 

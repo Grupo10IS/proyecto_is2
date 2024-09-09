@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <form method = "post" action = "./" style="margin-left: 30px">
+    <form method="post"
+          enctype="multipart/form-data"
+          action="./"
+          style="margin-left: 30px">
         {% csrf_token %}
         {{ form.media }}
-        {{ form.as_p }}
+        {{ form.as_p }}  <!-- This already handles all the form fields, including the image field -->
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Enviar">
-        </input>
-    </div>
-    </ form>
+            <input type="submit"
+                   class="btn btn-primary"
+                   style="background-color: black;
+                          border-color: black;
+                          color: white"
+                   value="Enviar">
+        </div>
+    </form>
 {% endblock content %}

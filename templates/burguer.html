@@ -1,9 +1,9 @@
 <!-- Botón hamburguesa -->
 <style>
-h4 {
-    color: black;
-    font-weight: bold;
-}
+    h4 {
+        color: white;
+        font-weight: bold;
+    }
 </style>
 <button class="navbar-toggler"
         type="button"
@@ -15,7 +15,7 @@ h4 {
          height="24"
          viewBox="0 0 24 24"
          fill="none"
-         stroke="currentColor"
+         stroke="white"
          stroke-width="2"
          stroke-linecap="round"
          stroke-linejoin="round"
@@ -31,36 +31,41 @@ h4 {
      id="categoriesOffcanvas"
      aria-labelledby="categoriesOffcanvasLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="categoriesOffcanvasLabel">Menús</h5>
+        <h5 class="offcanvas-title"
+            id="categoriesOffcanvasLabel"
+            style="color:white">Menús</h5>
         <button type="button"
-                class="btn-close text-reset"
+                class="btn-close btn-close-white text-reset "
                 data-bs-dismiss="offcanvas"
                 aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <!-- Control Panel -->
-        <!-- Control Panel -->
+        <!-- Panel de Control -->
         {% if user.is_authenticated %}
             {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos %}
                 <h4>Panel de Control</h4>
                 <nav class="nav nav-pills flex-column mb-5">
                     {% if "user" in permisos %}
-                        <a class="nav-link link-body-emphasis text-start"
+                        <a class="nav-link  text-start "
+                           style="color:white"
                            href="{% url 'user_list' %}"
                            role="button">Gestionar Usuarios</a>
                     {% endif %}
                     {% if "role" in permisos %}
-                        <a class="nav-link link-body-emphasis text-start"
+                        <a class="nav-link  text-start"
+                           style="color:white"
                            href="{% url 'role_list' %}"
                            role="button">Roles y Permisos</a>
                     {% endif %}
                     {% if "category" in permisos %}
-                        <a class="nav-link link-body-emphasis text-start"
+                        <a class="nav-link  text-start"
+                           style="color:white"
                            href="{% url 'category_list' %}"
                            role="button">Gestion de Categorias</a>
                     {% endif %}
                     {% if "post" in permisos %}
-                        <a class="nav-link link-body-emphasis text-start"
+                        <a class="nav-link  text-start"
+                           style="color:white"
                            href="{% url 'category_list' %}"
                            role="button">Gestion de Contenido</a>
                     {% endif %}
@@ -71,7 +76,8 @@ h4 {
         <h4>Categorías</h4>
         <nav class="nav nav-pills flex-column">
             {% for category in categories %}
-                <a class="nav-link link-body-emphasis text-start"
+                <a class="nav-link  text-start"
+                   style="color:white"
                    href="{% url 'category_detail' category.id %}"
                    role="button">{{ category.name }}</a>
             {% endfor %}
