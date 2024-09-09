@@ -1,6 +1,14 @@
 modulos.Authorization package
 =============================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   modulos.Authorization.management
+
 Submodules
 ----------
 

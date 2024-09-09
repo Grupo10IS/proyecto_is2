@@ -52,6 +52,22 @@ modulos.Posts.migrations.0006\_alter\_post\_creation\_date module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0007\_post\_image module
+-------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0007_post_image
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0008\_alter\_post\_author\_alter\_post\_category\_and\_more module
+-------------------------------------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

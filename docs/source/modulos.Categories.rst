@@ -44,14 +44,6 @@ modulos.Categories.models module
    :undoc-members:
    :show-inheritance:
 
-modulos.Categories.test\_views module
--------------------------------------
-
-.. automodule:: modulos.Categories.test_views
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 modulos.Categories.tests module
 -------------------------------
 
