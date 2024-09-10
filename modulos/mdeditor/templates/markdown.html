@@ -47,13 +47,13 @@
 
     $(function () {
         editormd("{{ id }}-wmd-wrapper", {
-            watch: {{ config.watch|lower }}, // 关闭实时预览
+            watch: {{ config.watch|lower }}, 
             lineNumbers: {{ config.lineNumbers|lower }},
             lineWrapping: {{ config.lineWrapping|lower }},
             width: "{{ config.width }}",
             height: {{ config.height }},
             placeholder: '{{ config.placeholder }}',
-            // 当有多个mdeditor时，全屏后，其他mdeditor仍然显示，解决此问题。
+           
             onfullscreen : function() {
                 this.editor.css("border-radius", 0).css("z-index", 9999);
             },
@@ -65,12 +65,12 @@
             },
             syncScrolling: "single",
             path: "{% static  'mdeditor/js/lib' %}" + "/",
-            // theme
+            
             theme : "{{ config.theme|safe }}",
             previewTheme : "{{ config.preview_theme|safe }}",
             editorTheme : "{{ config.editor_theme }}",
 
-            saveHTMLToTextarea: true, // editor.md 有问题没有测试成功
+            saveHTMLToTextarea: true,
             toolbarAutoFixed: {{ config.toolbar_autofixed|lower }},
             searchReplace: {{ config.search_replace|lower }},
             emoji: {{ config.emoji|lower }},
