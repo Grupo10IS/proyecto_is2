@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseBadRequest
-from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from django.shortcuts import HttpResponse, get_object_or_404, get_object_or_404, redirect, render
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import POST_CREATE_PERMISSION
+from modulos.Authorization.permissions import (
+    POST_CREATE_PERMISSION,
+    POST_DELETE_PERMISSION,
+)
 from modulos.Categories.models import Category
 from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
@@ -82,3 +85,30 @@ def create_post(request):
         "pages/new_post.html",
         context=ctx,
     )
+
+
+# Vista para listar posts
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
+def manage_post(request):
+    posts = Post.objects.filter(author=request.user)
+    ctx = new_ctx(request, {"posts": posts})
+    return render(request, "pages/post_list.html", ctx)
+
+
+# Vista para eliminar un post
+@login_required
+@permissions_required([POST_DELETE_PERMISSION])
+def delete_post(request, id):
+    print("POSTID:", id)
+    post = get_object_or_404(Post, pk=id)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect("post_list")
+    else:
+        print("asndkadbasbk")
+
+    # Si no es una solicitud POST, muestra un mensaje de confirmación
+    ctx = new_ctx(request, {"post": post})
+    return render(request, "pages/post_confirm_delete.html", ctx)
