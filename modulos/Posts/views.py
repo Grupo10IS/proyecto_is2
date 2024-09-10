@@ -100,15 +100,27 @@ def manage_post(request):
 @login_required
 @permissions_required([POST_DELETE_PERMISSION])
 def delete_post(request, id):
-    print("POSTID:", id)
     post = get_object_or_404(Post, pk=id)
 
     if request.method == "POST":
         post.delete()
         return redirect("post_list")
-    else:
-        print("asndkadbasbk")
 
     # Si no es una solicitud POST, muestra un mensaje de confirmación
     ctx = new_ctx(request, {"post": post})
     return render(request, "pages/post_confirm_delete.html", ctx)
+
+
+# Vista para editar un post
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
+def edit_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+    if request.method == "POST":
+        form = NewPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect("post_list")
+
+    form = NewPostForm(instance=post)
+    return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))

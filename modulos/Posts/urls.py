@@ -7,5 +7,5 @@ urlpatterns = [
     path("<int:id>/", view_post, name="post_detail"),
     path("create/", create_post, name="post_create"),
     path("delete/<int:id>/", delete_post, name="delete_post"),
-    # path("category_edit/<int:category_id>/", category_edit, name="category_edit"),
+    path("edit/<int:id>/", edit_post, name="edit_post"),
 ]

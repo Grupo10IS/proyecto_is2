@@ -107,7 +107,7 @@ def category_delete(request, category_id):
     return render(request, "category_confirm_delete.html", ctx)
 
 
-# Vista para editar un usuario existente
+# Vista para editar una categoria existente
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
 def category_edit(request, category_id):
