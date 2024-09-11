@@ -21,12 +21,13 @@
                             <td>{{ post.status }}</td>
                             <td>{{ post.creation_date }}</td>
                             <td class="actions">
-                                {% if post.status="Borrador" %}
-                                <a href="{% url 'edit_post' post.id %}" class="btn btn-sm btn-primary" style="background-color: black;
-                                                                          border-color: black;
-                                                                          color:white">Editar</a>
+                                {% if post.status == "Borrador" %}
+                                    <a href="{% url 'edit_post' post.id %}"
+                                       class="btn btn-sm btn-primary"
+                                       style="background-color: black;
+                                              border-color: black;
+                                              color:white">Editar</a>
                                 {% endif %}
-                                
                                 <a href="{% url 'delete_post' post.id %}"
                                    class="btn btn-sm btn-danger"
                                    style="background-color: black;
