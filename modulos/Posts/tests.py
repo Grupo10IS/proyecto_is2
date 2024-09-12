@@ -111,3 +111,39 @@ def test_create_post_view(client):
     assert Post.objects.filter(
         title="New Test Post"
     ).exists(), "Post should exist in the database after creation."
+
+
+@pytest.mark.django_db
+def test_post_manage_view(client):
+    """
+    Test the create post view for different user permissions and form validation.
+    """
+    url = reverse("post_list")
+
+    # Test access to create post view without login
+    response = client.get(url)
+    assert (
+        response.status_code == 302
+    ), "Should redirect to login page when not logged in."
+
+    # Create user and log in
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    client.login(username="testuser", password="password")
+
+    # Test access to create post view without permission
+    response = client.get(url)
+    assert (
+        response.status_code == 403
+    ), "User without permission should get 403 Forbidden."
+
+    # Assign permission and test access
+    user.user_permissions.add(Permission.objects.get(codename=POST_CREATE_PERMISSION))
+    response = client.get(url)
+    assert (
+        response.status_code == 200
+    ), "User with permission should access the view successfully."
+    assert "pages/post_list.html" in [
+        t.name for t in response.templates
+    ], "Template 'post_list.html' should be used."

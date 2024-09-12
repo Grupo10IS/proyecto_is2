@@ -56,7 +56,7 @@ class CategoryDetailView(DetailView):
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
 def category_create(request):
     if request.method == "POST":
-        form = CategoryCreationForm(request.POST)
+        form = CategoryCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("category_list")
@@ -107,13 +107,13 @@ def category_delete(request, category_id):
     return render(request, "category_confirm_delete.html", ctx)
 
 
-# Vista para editar un usuario existente
+# Vista para editar una categoria existente
 @login_required
 @permissions_required([permissions.CATEGORY_MANAGE_PERMISSION])
 def category_edit(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     if request.method == "POST":
-        form = CategoryCreationForm(request.POST, instance=category)
+        form = CategoryCreationForm(request.POST, request.FILES, instance=category)
         if form.is_valid():
             # Verifica si la categoría está siendo cambiada a inactiva y tiene posts asociados
             if (

@@ -9,9 +9,19 @@
                     Crear Categoria
                 {% endif %}
             </h1>
-            <form method="post" class="needs-validation">
+            <form method="post" enctype="multipart/form-data" class="needs-validation">
                 {% csrf_token %}
+                
+                <!-- Mostrar la imagen si ya existe -->
+                {% if form.instance.image %}
+                    <div class="form-group mb-3">
+                        <label>Imagen actual:</label>
+                        <img src="{{ form.instance.image.url }}" alt="{{ form.instance.name }}" style="max-width: 150px;">
+                    </div>
+                {% endif %}
+                
                 {{ form.as_p }}
+                
                 <div class="mt-4">
                     <button type="submit"
                             class="btn btn-primary"

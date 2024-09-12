@@ -44,5 +44,13 @@ class Category(models.Model):
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default=GRATIS)
 
+    # Campo nuevo para la imagen de la categoría
+    image = models.ImageField(
+        upload_to="categories/",
+        blank=True,
+        null=True,
+        verbose_name="Imagen de la categoría",
+    )
+
     def __str__(self):
         return self.name  # Returns the category name for display
