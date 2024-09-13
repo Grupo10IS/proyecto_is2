@@ -288,7 +288,7 @@ header {
 }
 
 .actions .edit-btn:hover {
-    background-color: ##000000;
+    background-color: #000000;
 }
 
 .actions .delete-btn {
@@ -558,3 +558,76 @@ footer {
 #burguerSideBar {
     color: white;
 }
+/*Para el diseño responsive del login*/
+@media (max-width: 768px) {
+    .navbar-middle {
+        font-size: 40px;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-right .subscribe, .navbar-right .login {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .user-list-container, .user-form-container, .delete-user-container, .group-management-container {
+        padding: 15px;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .save-button, .cancel-button, .delete-button {
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+}
+/* Diseño Responsivo para el footer */
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    footer .col-md-4 {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    footer ul {
+        justify-content: center;
+        padding: 0;
+    }
+
+    footer li {
+        margin: 0 10px;
+    }
+}
+/* para pantallas aun mas pequeñas */
+@media (max-width: 480px) {
+    .navbar-middle {
+        font-size: 35px;
+    }
+    .navbar-right {
+        flex-direction: column;
+        align-items: center;
+    }
+    .user-list-container, .user-form-container, .delete-user-container, .group-management-container {
+        width: 95%;
+    }
+    .save-button, .cancel-button, .delete-button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+
