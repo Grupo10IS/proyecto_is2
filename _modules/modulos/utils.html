@@ -52,6 +52,12 @@
                 <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;role&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
                 <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;role&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;delete&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
+                <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;create&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
+                <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;edit&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
+                <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;edit&quot;</span><span class="p">)</span>
 
     <span class="c1"># TODO: listar solo las categorias de interes o las mas votadas capaz</span>
     <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>

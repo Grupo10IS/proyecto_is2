@@ -42,14 +42,19 @@
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s1">&#39;Categories&#39;</span><span class="p">,</span> <span class="s1">&#39;0005_alter_category_description_alter_category_name_and_more&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Categories&quot;</span><span class="p">,</span> <span class="s2">&quot;0005_alter_category_description_alter_category_name_and_more&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span>
-            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;categories/&#39;</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Imagen de la categoría&#39;</span><span class="p">),</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span>
+                <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">upload_to</span><span class="o">=</span><span class="s2">&quot;categories/&quot;</span><span class="p">,</span>
+                <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Imagen de la categoría&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span></div>
 
