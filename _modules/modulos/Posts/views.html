@@ -145,9 +145,23 @@
         <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
     <span class="n">permisos</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
-    <span class="n">perm</span> <span class="o">=</span> <span class="s2">&quot;create&quot;</span> <span class="ow">in</span> <span class="n">permisos</span> <span class="ow">or</span> <span class="s2">&quot;edit&quot;</span> <span class="ow">in</span> <span class="n">permisos</span>
 
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts&quot;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span> <span class="s2">&quot;perm&quot;</span><span class="p">:</span> <span class="n">perm</span><span class="p">})</span>
+    <span class="c1"># Definición de permisos en variables booleanas</span>
+    <span class="n">perm_create</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_CREATE_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
+    <span class="n">perm_edit</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_EDIT_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
+    <span class="n">perm_delete</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_DELETE_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
+
+    <span class="c1"># Definición de contexto basado en permisos</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;posts&quot;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span>
+            <span class="s2">&quot;perm_create&quot;</span><span class="p">:</span> <span class="n">perm_create</span><span class="p">,</span>
+            <span class="s2">&quot;perm_edit&quot;</span><span class="p">:</span> <span class="n">perm_edit</span><span class="p">,</span>
+            <span class="s2">&quot;perm_delete&quot;</span><span class="p">:</span> <span class="n">perm_delete</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 
 
