@@ -6,25 +6,33 @@
             <h1 class="display-4 fst-italic mb-4">Categorías</h1>
             <div class="row">
                 {% for category in categories %}
-                <!-- Usar clases responsivas de Bootstrap para adaptarse a pantallas pequeñas -->
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card h-100">
-                        <!-- Imagen de la categoría ocupando la parte superior -->
-                        {% if category.image %}
-                            <img src="{{ category.image.url }}" class="card-img-top" alt="{{ category.name }}" style="height: 250px; object-fit: cover;">
-                        {% else %}
-                            <img src="{% static 'images/makex.png' %}" class="card-img-top" alt="Logo MakeX" style="height: 250px; object-fit: cover;">
-                        {% endif %}
-                        
-                        <div class="card-body">
-                            <h5 class="card-title">{{ category.name }}</h5>
-                            <p class="card-text">{{ category.description }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{% url 'category_detail' category.id %}" class="btn btn-primary btn-sm">Ver más</a>
+                    <!-- Usar clases responsivas de Bootstrap para adaptarse a pantallas pequeñas -->
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <div class="card h-100">
+                            <!-- Imagen de la categoría ocupando la parte superior -->
+                            {% if category.image %}
+                                <img src="{{ category.image.url }}"
+                                     class="card-img-top"
+                                     alt="{{ category.name }}"
+                                     style="height: 250px;
+                                            object-fit: cover">
+                            {% else %}
+                                <img src="{% static 'images/makex.png' %}"
+                                     class="card-img-top"
+                                     alt="Logo MakeX"
+                                     style="height: 250px;
+                                            object-fit: cover">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ category.name }}</h5>
+                                <p class="card-text">{{ category.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'category_detail' category.id %}"
+                                       class="btn btn-primary btn-sm">Ver más</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
