@@ -1,12 +1,15 @@
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseBadRequest
-from django.shortcuts import HttpResponse, get_object_or_404, get_object_or_404, redirect, render
-
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from modulos.Authorization.roles import ADMIN
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import (
     POST_CREATE_PERMISSION,
     POST_DELETE_PERMISSION,
+    POST_EDIT_PERMISSION,
 )
+
 from modulos.Categories.models import Category
 from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
@@ -89,9 +92,17 @@ def create_post(request):
 
 # Vista para listar posts
 @login_required
-@permissions_required([POST_CREATE_PERMISSION])
+@permissions_required(
+    [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
+)
 def manage_post(request):
-    posts = Post.objects.filter(author=request.user)
+    # Verifica si el usuario pertenece al grupo 'Administrador'
+    is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
+
+    if is_admin:
+        posts = Post.objects.all()
+    else:
+        posts = Post.objects.filter(author=request.user)
     ctx = new_ctx(request, {"posts": posts})
     return render(request, "pages/post_list.html", ctx)
 
@@ -113,7 +124,7 @@ def delete_post(request, id):
 
 # Vista para editar un post
 @login_required
-@permissions_required([POST_CREATE_PERMISSION])
+@permissions_required([POST_EDIT_PERMISSION, POST_CREATE_PERMISSION])
 def edit_post(request, id):
     post = get_object_or_404(Post, pk=id)
     if request.method == "POST":

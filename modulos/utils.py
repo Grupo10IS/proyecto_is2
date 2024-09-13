@@ -16,6 +16,9 @@ def new_ctx(req, params):
                 sitios.append("category")
             if "role" in perm and perm not in sitios:
                 sitios.append("role")
+            if "delete" in perm and perm not in sitios:
+                sitios.append("delete")
+                
 
     # TODO: listar solo las categorias de interes o las mas votadas capaz
     base = {

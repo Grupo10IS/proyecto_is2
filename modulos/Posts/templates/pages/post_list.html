@@ -28,11 +28,11 @@
                                               border-color: black;
                                               color:white">Editar</a>
                                 {% endif %}
-                                <a href="{% url 'delete_post' post.id %}"
-                                   class="btn btn-sm btn-danger"
-                                   style="background-color: black;
+                                {% if "delete" in permisos %}
+                                <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-danger" style="background-color: black;
                                           border-color: black;
                                           color:white">Eliminar</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
