@@ -11,13 +11,8 @@ from modulos.Authorization import permissions
 from modulos.Authorization.decorators import permissions_required
 from modulos.utils import new_ctx
 
-from .forms import (
-    CustomUserChangeForm,
-    CustomUserCreationForm,
-    ProfileForm,
-    UserGroupForm,
-    CustomUserEditForm,
-)
+from .forms import (CustomUserChangeForm, CustomUserCreationForm,
+                    CustomUserEditForm, ProfileForm, UserGroupForm)
 from .models import UserProfile
 
 

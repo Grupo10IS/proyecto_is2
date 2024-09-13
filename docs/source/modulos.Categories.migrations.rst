@@ -36,6 +36,22 @@ modulos.Categories.migrations.0004\_category\_status\_category\_tipo module
    :undoc-members:
    :show-inheritance:
 
+modulos.Categories.migrations.0005\_alter\_category\_description\_alter\_category\_name\_and\_more module
+---------------------------------------------------------------------------------------------------------
+
+.. automodule:: modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Categories.migrations.0006\_category\_image module
+----------------------------------------------------------
+
+.. automodule:: modulos.Categories.migrations.0006_category_image
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

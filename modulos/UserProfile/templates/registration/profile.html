@@ -8,18 +8,10 @@
                     <h2 class="display-6 fst-italic text-center mb-4">Tu Perfil</h2>
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="mb-3">
-                            {{ u_form.username|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ u_form.email|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ p_form.phone_number|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ p_form.address|as_crispy_field }}
-                        </div>
+                        <div class="mb-3">{{ u_form.username|as_crispy_field }}</div>
+                        <div class="mb-3">{{ u_form.email|as_crispy_field }}</div>
+                        <div class="mb-3">{{ p_form.phone_number|as_crispy_field }}</div>
+                        <div class="mb-3">{{ p_form.address|as_crispy_field }}</div>
                         <div class="mb-3">
                             <label for="groups" class="form-label">Roles asignados:</label>
                             <ul class="list">
@@ -29,7 +21,8 @@
                         <button type="submit"
                                 class="btn btn-primary btn-block w-100"
                                 style="background-color: black;
-                                       border-color: black;color:white">Guardar cambios</button>
+                                       border-color: black;
+                                       color:white">Guardar cambios</button>
                     </form>
                 </div>
             </div>

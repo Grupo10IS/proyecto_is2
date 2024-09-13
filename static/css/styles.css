@@ -13,6 +13,66 @@ main {
     flex: 1;
 }
 
+.btn-primary {
+    background-color: black;
+    border-color: black;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #4a4a4a;
+    /* Cambia el color de fondo en hover a un gris más claro */
+    border-color: #4a4a4a;
+    /* Asegúrate de que el borde también cambie */
+    color: white;
+    /* Mantener el color del texto en blanco */
+    transform: scale(0.98);
+    /* Suavemente reducir el tamaño al hacer hover */
+}
+
+/*MarkDown*/
+
+/* Estilos para las imágenes dentro de los enlaces generados por Markdown */
+a img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+a img:hover {
+    transform: scale(0.97);
+    transition: transform 0.3s ease;
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+
+.lightbox-content {
+    margin-top: 10%;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
 /*Home Posts*/
 .fw-bold {
     transition: transform 0.3s ease;
@@ -20,21 +80,20 @@ main {
 }
 
 .fw-bold:hover {
-    color: #333333;
+    color: #454545;
 
 }
 
 .card-container {
     position: relative;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    /* Suavizar el cambio */
     overflow: hidden;
-    /* Asegurarse de que los efectos no se desborden */
+        /* Evitar que los elementos dentro del contenedor se salgan */
 }
 
 .card-container img {
     transition: transform 0.3s ease;
-    /* Suavizar la escala de la imagen */
+        /* Suavizar la escala de la imagen */
 }
 
 .card-container::after {
@@ -43,32 +102,30 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    /* Cubrir todo el ancho del contenedor */
-    height: 100%;
-    /* Cubrir toda la altura del contenedor */
+        /* Cubrir todo el ancho del contenedor */
+            height: 100%;
+            /* Cubrir toda la altura del contenedor */
     background-color: rgba(255, 255, 255, 0);
-    /* Inicia sin color */
     transition: background-color 0.3s ease;
-    /* Transición suave del color */
     z-index: 2;
-    /* Asegurarse de que el overlay esté por encima de la imagen */
+    pointer-events: none;
+        /* Evitar que capture eventos de clic */
 }
 
 .card-container:hover::after {
-    background-color: rgba(255, 255, 255, 0.5);
-    /* Aparece el overlay blanco semitransparente */
+    background-color: rgba(255, 255, 255, 0.39);
+        /* Aparece el overlay */
 }
 
 .card-container:hover img {
     transform: scale(0.98);
-    /* Escala ligeramente la imagen */
+        /* Escalar ligeramente la imagen */
 }
 
 .card-container:hover {
     transform: scale(0.98);
-    /* También escalará toda la tarjeta ligeramente */
+        /* Escalar toda la tarjeta */
 }
-
 
 
 /*navbar*/

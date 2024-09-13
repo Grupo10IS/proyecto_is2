@@ -1,33 +1,36 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <title>CodeMirror: Q mode</title>
-<meta charset="utf-8"/>
+<meta charset="utf-8" />
 <link rel=stylesheet href="../../doc/docs.css">
-
 <link rel="stylesheet" href="../../lib/codemirror.css">
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="q.js"></script>
 <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
 <div id=nav>
-  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
-
-  <ul>
-    <li><a href="../../index.html">Home</a>
-    <li><a href="../../doc/manual.html">Manual</a>
-    <li><a href="https://github.com/codemirror/codemirror">Code</a>
-  </ul>
-  <ul>
-    <li><a href="../index.html">Language modes</a>
-    <li><a class=active href="#">Q</a>
-  </ul>
-</div>
-
-<article>
-<h2>Q mode</h2>
-
-
-<div><textarea id="code" name="code">
+    <a href="http://codemirror.net">
+        <h1>CodeMirror</h1>
+        <img id=logo src="../../doc/logo.png">
+    </a>
+    <ul>
+        <li>
+            <a href="../../index.html">Home</a>
+            <li>
+                <a href="../../doc/manual.html">Manual</a>
+                <li>
+                    <a href="https://github.com/codemirror/codemirror">Code</a>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="../index.html">Language modes</a>
+                        <li>
+                            <a class=active href="#">Q</a>
+                        </ul>
+                    </div>
+                    <article>
+                        <h2>Q mode</h2>
+                        <div>
+                            <textarea id="code" name="code">
 / utilities to quickly load a csv file - for more exhaustive analysis of the csv contents see csvguess.q
 / 2009.09.20 - updated to match latest csvguess.q 
 
@@ -85,17 +88,14 @@ info0:{[file;onlycols]
 	if[count onlycols;info:update t:" ",rule:10 from info where not c in onlycols];
 	info:update sdv:{string(distinct x)except`}peach v from info; 
 	info:update ndv:count each sdv from info;
-	info:update gr:floor 0.5+100*ndv%nas,mw:{max count each x}peach sdv from info where 0<ndv;
-	info:update t:"*",rule:20 from info where mw>.csv.FORCECHARWIDTH; / long values
+	info:update gr:floor 0.5+100*ndv%nas,mw:{max count each x}peach sdv from info where 0<ndv ; info:update t:"*",rule:20 from info where mw>.csv.FORCECHARWIDTH; / long values
 	info:update t:"C "[.csv.DISCARDEMPTY],rule:30,empty:1b from info where t="?",mw=0; / empty columns
 	info:update dchar:{asc distinct raze x}peach sdv from info where t="?";
 	info:update mdot:{max sum each"."=x}peach sdv from info where t="?",{"."in x}each dchar;
 	info:update t:"n",rule:40 from info where t="?",{any x in"0123456789"}each dchar; / vaguely numeric..
 	info:update t:"I",rule:50,ipa:1b from info where t="n",mw within 7 15,mdot=3,{all x in".0123456789"}each dchar,.csv.cancast["I"]peach sdv; / ip-address
 	info:update t:"J",rule:60 from info where t="n",mdot=0,{all x in"+-0123456789"}each dchar,.csv.cancast["J"]peach sdv;
-	info:update t:"I",rule:70 from info where t="J",mw<12,.csv.cancast["I"]peach sdv;
-	info:update t:"H",rule:80 from info where t="I",mw<7,.csv.cancast["H"]peach sdv;
-	info:update t:"F",rule:90 from info where t="n",mdot<2,mw>1,.csv.cancast["F"]peach sdv;
+	info:update t:"I",rule:70 from info where t="J",mw<12,.csv.cancast ["I"]peach sdv; info:update t:"H",rule:80 from info where t="I",mw<7,.csv.cancast["H"]peach sdv; info:update t:"F",rule:90 from info where t="n",mdot<2,mw>1,.csv.cancast["F"]peach sdv;
 	info:update t:"E",rule:100,maybe:1b from info where t="F",mw<9;
 	info:update t:"M",rule:110,maybe:1b from info where t in"nIHEF",mdot<2,mw within 4 7,.csv.cancast["M"]peach sdv; 
 	info:update t:"D",rule:120,maybe:1b from info where t in"nI",mdot in 0 2,mw within 6 11,.csv.cancast["D"]peach sdv; 
@@ -131,14 +131,15 @@ bulkload:{[file;info]
 	.csv.fs2[{[file;loadhdrs;loadfmts] `DATA insert $[count DATA;flip loadhdrs!(loadfmts;.csv.DELIM)0:file;loadhdrs xcol(loadfmts;enlist .csv.DELIM)0:file]}[file;loadhdrs;loadfmts]];
 	count DATA}
 @[.:;"\\l csvutil.custom.q";::]; / save your custom settings in csvutil.custom.q to override those set at the beginning of the file 
-</textarea></div>
-
-    <script>
+</textarea>
+                        </div>
+                        <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
         matchBrackets: true
       });
-    </script>
-
-    <p><strong>MIME type defined:</strong> <code>text/x-q</code>.</p>
-  </article>
+                        </script>
+                        <p>
+                            <strong>MIME type defined:</strong> <code>text/x-q</code>.
+                        </p>
+                    </article>

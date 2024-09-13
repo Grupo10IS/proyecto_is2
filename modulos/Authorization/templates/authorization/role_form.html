@@ -6,10 +6,16 @@
             <form method="post" class="needs-validation">
                 {% csrf_token %}
                 <div class="mb-3">{{ form.as_p }}</div>
-                <button type="submit" class="btn btn-primary" style="background-color: black;
-                border-color: black;color:white">Guardar</button>
-                <a href="{% url 'role_list' %}" class="btn btn-secondary ms-2" style="background-color: black;
-                border-color: black;color:white">Cancelar</a>
+                <button type="submit"
+                        class="btn btn-primary"
+                        style="background-color: black;
+                               border-color: black;
+                               color:white">Guardar</button>
+                <a href="{% url 'role_list' %}"
+                   class="btn btn-secondary ms-2"
+                   style="background-color: black;
+                          border-color: black;
+                          color:white">Cancelar</a>
             </form>
         </div>
     </div>

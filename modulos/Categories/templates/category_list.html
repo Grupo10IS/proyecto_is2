@@ -22,20 +22,30 @@
                             <td>{{ category.tipo }}</td>
                             <td class="actions">
                                 <a href="{% url 'category_edit' category.id %}"
-                                   class="btn btn-sm btn-primary"  style="background-color: black;
-                                   border-color: black;color:white">Editar</a>
+                                   class="btn btn-sm btn-primary"
+                                   style="background-color: black;
+                                          border-color: black;
+                                          color:white">Editar</a>
                                 <a href="{% url 'category_delete' category.id %}"
-                                   class="btn btn-sm btn-danger"  style="background-color: black;
-                                   border-color: black;color:white">Eliminar</a>
+                                   class="btn btn-sm btn-danger"
+                                   style="background-color: black;
+                                          border-color: black;
+                                          color:white">Eliminar</a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'category_create' %}" class="btn btn-primary"  style="background-color: black;
-            border-color: black;color:white">Crear Categoria</a>
-            <a href="{% url 'home' %}" class="btn btn-secondary"  style="background-color: black;
-            border-color: black;color:white">Volver al Inicio</a>
+            <a href="{% url 'category_create' %}"
+               class="btn btn-primary"
+               style="background-color: black;
+                      border-color: black;
+                      color:white">Crear Categoria</a>
+            <a href="{% url 'home' %}"
+               class="btn btn-secondary"
+               style="background-color: black;
+                      border-color: black;
+                      color:white">Volver al Inicio</a>
         </div>
     </div>
 {% endblock %}

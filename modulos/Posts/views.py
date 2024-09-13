@@ -1,8 +1,15 @@
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import HttpResponse, redirect, render
-
+from django.http.response import HttpResponseBadRequest
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from modulos.Authorization.roles import ADMIN
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import POST_CREATE_PERMISSION
+from modulos.Authorization.permissions import (
+    POST_CREATE_PERMISSION,
+    POST_DELETE_PERMISSION,
+    POST_EDIT_PERMISSION,
+)
+
 from modulos.Categories.models import Category
 from modulos.Posts.forms import NewPostForm
 from modulos.Posts.models import Post
@@ -43,23 +50,20 @@ def view_post(request, id):
         context_object_name (str): El nombre de la variable de contexto que representa el objeto 'Post'.
     """
 
-    post = Post.objects.get(id=id)
-    if post != None:
-        # parse tags
-        tags = post.tags.split(",") if post.tags else []
-        tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+    post = get_object_or_404(Post, id=id)
+    # parse tags
+    tags = post.tags.split(",") if post.tags else []
+    tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
 
-        ctx = new_ctx(
-            request,
-            {
-                "post": post,
-                "tags": tags,
-                "categories": Category.objects.all(),
-            },
-        )
-        return render(request, "pages/post_detail.html", context=ctx)
-
-    return HttpResponse("No se encontro el post al que quiere acceder")
+    ctx = new_ctx(
+        request,
+        {
+            "post": post,
+            "tags": tags,
+            "categories": Category.objects.all(),
+        },
+    )
+    return render(request, "pages/post_detail.html", context=ctx)
 
 
 @login_required
@@ -67,11 +71,15 @@ def view_post(request, id):
 def create_post(request):
     if request.method == "POST":
         post = NewPostForm(request.POST, request.FILES)
-        if post.is_valid():
-            p = post.save(commit=False)
-            p.author = request.user
-            p.save()
-            return redirect("/posts/" + str(p.id))
+        if not post.is_valid():
+            print(post.is_valid())
+            print(post.errors)
+            return HttpResponseBadRequest("Datos proporcionados invalidos")
+
+        p = post.save(commit=False)
+        p.author = request.user
+        p.save()
+        return redirect("/posts/" + str(p.id))
 
     ctx = new_ctx(request, {"form": NewPostForm})
 
@@ -80,3 +88,68 @@ def create_post(request):
         "pages/new_post.html",
         context=ctx,
     )
+
+
+# Vista para listar posts
+@login_required
+@permissions_required(
+    [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
+)
+def manage_post(request):
+    # Verifica si el usuario pertenece al grupo 'Administrador'
+    is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
+
+    if is_admin:
+        posts = Post.objects.all()
+    else:
+        posts = Post.objects.filter(author=request.user)
+
+    permisos = request.user.get_all_permissions()
+
+    # Definición de permisos en variables booleanas
+    perm_create = "UserProfile." + POST_CREATE_PERMISSION in permisos
+    perm_edit = "UserProfile." + POST_EDIT_PERMISSION in permisos
+    perm_delete = "UserProfile." + POST_DELETE_PERMISSION in permisos
+
+    # Definición de contexto basado en permisos
+    ctx = new_ctx(
+        request,
+        {
+            "posts": posts,
+            "perm_create": perm_create,
+            "perm_edit": perm_edit,
+            "perm_delete": perm_delete,
+        },
+    )
+
+    return render(request, "pages/post_list.html", ctx)
+
+
+# Vista para eliminar un post
+@login_required
+@permissions_required([POST_DELETE_PERMISSION])
+def delete_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect("post_list")
+
+    # Si no es una solicitud POST, muestra un mensaje de confirmación
+    ctx = new_ctx(request, {"post": post})
+    return render(request, "pages/post_confirm_delete.html", ctx)
+
+
+# Vista para editar un post
+@login_required
+@permissions_required([POST_EDIT_PERMISSION, POST_CREATE_PERMISSION])
+def edit_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+    if request.method == "POST":
+        form = NewPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect("post_list")
+
+    form = NewPostForm(instance=post)
+    return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))

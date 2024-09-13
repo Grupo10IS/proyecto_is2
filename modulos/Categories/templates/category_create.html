@@ -4,11 +4,15 @@
         <h1 class="title mb-4">Crear nueva categoria</h1>
         <div class="card bg-dark border-secondary">
             <div class="card-body">
-                <form method="post">
+                <form method="post"  enctype="multipart/form-data" class="needs-validation">
                     {% csrf_token %}
+                    {{ form.as_p }}
                     <div class="form-group mb-4">{{ form.as_p }}</div>
-                    <button type="submit" class="btn btn-primary"  style="background-color: black;
-                    border-color: black;color:white">Crear</button>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            style="background-color: black;
+                                   border-color: black;
+                                   color:white">Crear</button>
                 </form>
             </div>
         </div>

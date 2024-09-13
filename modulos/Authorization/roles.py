@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import PermissionDenied
-from django.db.models.signals import post_migrate, pre_delete
+from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
 from modulos.Authorization.permissions import *
@@ -19,6 +19,7 @@ default_roles = {
         ROLE_MANAGE_PERMISSION,
         POST_DELETE_PERMISSION,
         CATEGORY_MANAGE_PERMISSION,
+        POST_DELETE_PERMISSION,
     ],
     SUBSCRIBER: [],
     AUTOR: [POST_CREATE_PERMISSION],
@@ -36,12 +37,13 @@ def prevent_default_role_deletion(sender, instance, **kwargs):
         raise PermissionDenied("Este rol no puede ser eliminado.")
 
 
-# NOTE: si da problemas con el orden de los permisos, entonces mover esto
-# al final del archivo de initialize_permissions
-@receiver(post_migrate)
-def create_default_groups(sender, **kwargs):
+# NOTE: esta funcion se utiliza en el comando migrate custom
+def _create_default_groups():
     """
-    Crear los roles por defecto despues de realizar migraciones
+    Crear los roles por defecto configurados en el sistema
+
+    Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo,
+    el cual sobreescribe las funciones por defecto del comando migrate de django.
     """
     for role_name, permissions in default_roles.items():
         role, _ = Group.objects.get_or_create(name=role_name)
@@ -56,4 +58,4 @@ def create_default_groups(sender, **kwargs):
 
         role.save()
 
-    print(f"Created default roles")
+    print(f"- Roles por defecto inicializados correctamente")

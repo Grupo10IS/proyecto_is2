@@ -15,18 +15,22 @@
                     <p class="text-muted">
                         <!-- FIX: anadir los titulos que debe de ser aca -->
                         <small>
-                        Por {{ post.author }} | {{ post.creation_date }} |
+                            Por {{ post.author }} | {{ post.creation_date }} |
                             {% if post.tags %}
-                        {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
+                                {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
                             {% endif %}
                         </small>
                     </p>
                     <!-- Puedes añadir más detalles aquí como categorías o etiquetas -->
                 </div>
                 <!-- Contenido del post -->
-                <div id="content" class="markdown-content"></div>
+                <div id="content" class="markdown-content">{{ post.content|safe }}</div>
             </div>
         </div>
+    </div>
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close">&times;</span>
+        <img id="lightboxImage" class="lightbox-content">
     </div>
     <!-- Include the Marked.js library -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -35,5 +39,23 @@
         document.getElementById('content').innerHTML =
             marked.parse("{{ post.content|escapejs }}");
         hljs.highlightAll();
+    </script>
+    <script>
+        // Selecciona todos los enlaces que contienen imágenes en el contenido del post
+        document.querySelectorAll('#content a img').forEach(img => {
+            img.parentElement.addEventListener('click', function (event) {
+                event.preventDefault();  // Evita que el enlace redirija
+                openLightbox(img.src);  // Abre el lightbox con la imagen clicada
+            });
+        });
+    
+        function openLightbox(src) {
+            document.getElementById("lightbox").style.display = "block";
+            document.getElementById("lightboxImage").src = src;
+        }
+    
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
     </script>
 {% endblock %}

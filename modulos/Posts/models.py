@@ -14,11 +14,19 @@ class Post(models.Model):
 
     STATUS_CHOICES = [(DRAFT, DRAFT), (REJECTED, REJECTED), (PUBLISHED, PUBLISHED)]
 
-    title = models.CharField(max_length=80)
-    image = models.ImageField(upload_to="posts_images/", blank=True, null=True)
-    content = MDTextField(name="content")
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=DRAFT)
-    creation_date = models.DateTimeField(default=now)
-    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
-    tags = models.CharField(name="tags", max_length=80, blank=True)
+    title = models.CharField(max_length=80, verbose_name="Titulo")
+    image = models.ImageField(
+        upload_to="posts_images/", verbose_name="Portada", blank=True, null=True
+    )
+    content = MDTextField(name="content", verbose_name="Contenido")
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, null=True, verbose_name="Categoria"
+    )
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=DRAFT, verbose_name="Status"
+    )
+    creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    author = models.ForeignKey(
+        UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
+    )
+    tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")

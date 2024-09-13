@@ -33,29 +33,27 @@
         color: #777 !important;
     }
 </style>
-
 <div class="wmd-wrapper"  id="{{ id }}-wmd-wrapper">
-  <textarea {{ final_attrs|safe }}>{{ value }}</textarea>
+    <textarea {{ final_attrs|safe }}>{{ value }}</textarea>
 </div>
-
 {% if config.language == 'en' %}
-<script src="{% static 'mdeditor/languages/en.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/en.js' %}"></script>
 {% elif config.language == 'de' %}
-<script src="{% static 'mdeditor/languages/de.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/de.js' %}"></script>
 {% elif config.language == 'pt_BR' %}
-<script src="{% static 'mdeditor/languages/pt_BR.js' %}"></script>
+    <script src="{% static 'mdeditor/languages/pt_BR.js' %}"></script>
 {% endif %}
 <script type="text/javascript">
 
     $(function () {
         editormd("{{ id }}-wmd-wrapper", {
-            watch: {{ config.watch|lower }}, // 关闭实时预览
+            watch: {{ config.watch|lower }}, 
             lineNumbers: {{ config.lineNumbers|lower }},
             lineWrapping: {{ config.lineWrapping|lower }},
             width: "{{ config.width }}",
             height: {{ config.height }},
             placeholder: '{{ config.placeholder }}',
-            // 当有多个mdeditor时，全屏后，其他mdeditor仍然显示，解决此问题。
+           
             onfullscreen : function() {
                 this.editor.css("border-radius", 0).css("z-index", 9999);
             },
@@ -67,12 +65,12 @@
             },
             syncScrolling: "single",
             path: "{% static  'mdeditor/js/lib' %}" + "/",
-            // theme
+            
             theme : "{{ config.theme|safe }}",
             previewTheme : "{{ config.preview_theme|safe }}",
             editorTheme : "{{ config.editor_theme }}",
 
-            saveHTMLToTextarea: true, // editor.md 有问题没有测试成功
+            saveHTMLToTextarea: true,
             toolbarAutoFixed: {{ config.toolbar_autofixed|lower }},
             searchReplace: {{ config.search_replace|lower }},
             emoji: {{ config.emoji|lower }},
