@@ -105,9 +105,23 @@ def manage_post(request):
         posts = Post.objects.filter(author=request.user)
 
     permisos = request.user.get_all_permissions()
-    perm = "create" in permisos or "edit" in permisos
 
-    ctx = new_ctx(request, {"posts": posts, "perm": perm})
+    # Definición de permisos en variables booleanas
+    perm_create = "UserProfile." + POST_CREATE_PERMISSION in permisos
+    perm_edit = "UserProfile." + POST_EDIT_PERMISSION in permisos
+    perm_delete = "UserProfile." + POST_DELETE_PERMISSION in permisos
+
+    # Definición de contexto basado en permisos
+    ctx = new_ctx(
+        request,
+        {
+            "posts": posts,
+            "perm_create": perm_create,
+            "perm_edit": perm_edit,
+            "perm_delete": perm_delete,
+        },
+    )
+
     return render(request, "pages/post_list.html", ctx)
 
 

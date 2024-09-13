@@ -21,7 +21,7 @@
                             <td>{{ post.status }}</td>
                             <td>{{ post.creation_date }}</td>
                             <td class="actions">
-                                {% if post.status == "Borrador" and perm%}
+                                {% if perm_create or perm_edit%}
                                     <a href="{% url 'edit_post' post.id %}"
                                        class="btn btn-sm btn-primary"
                                        style="background-color: black;
@@ -38,7 +38,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% if "create" in permisos %}
+            {% if perm_create %}
             <a href="{% url 'post_create' %}"
                class="btn btn-primary"
                style="background-color: black;
