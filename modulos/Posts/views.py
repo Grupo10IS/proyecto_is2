@@ -103,7 +103,11 @@ def manage_post(request):
         posts = Post.objects.all()
     else:
         posts = Post.objects.filter(author=request.user)
-    ctx = new_ctx(request, {"posts": posts})
+
+    permisos = request.user.get_all_permissions()
+    perm = "create" in permisos or "edit" in permisos
+
+    ctx = new_ctx(request, {"posts": posts, "perm": perm})
     return render(request, "pages/post_list.html", ctx)
 
 
