@@ -2,6 +2,24 @@ from modulos.Categories.models import Category
 
 
 def new_ctx(req, params):
+    """
+    Creates a wrapper context dictionary for rendering templates, based on user permissions 
+    and additional parameters. It merges a given custom context passed as parameter with
+    the common context for the rest of the pages and views.
+
+    Args:
+        req (HttpRequest): The HTTP request object containing user information.
+        params (dict): Additional parameters to be included in the context.
+
+    Returns:
+        dict: A dictionary containing the context for rendering templates, including user permissions
+        and a list of categories.
+
+    Example:
+        >>> base = {"form": OurForm, "data": OurData}
+        >>> ctx = new_ctx(request, base)
+        >>> return render(req, "template", ctx)
+    """
     sitios = []
     if req.user.is_authenticated:
         permisos = req.user.get_all_permissions()

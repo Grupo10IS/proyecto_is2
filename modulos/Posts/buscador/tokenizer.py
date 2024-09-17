@@ -13,7 +13,6 @@ TOKEN_BEFORE = "before"
 TOKEN_FILTER = "#"
 TOKEN_NEGACION = "!"
 TOKEN_SEPARATOR = ":"
-TOKEN_COMMA = ","
 
 # Tipos de tokens
 TOKEN_TEXT = "text"  # Texto que puede tener múltiples palabras
@@ -28,14 +27,12 @@ PALABRAS_CLAVE = {
     TOKEN_TAGS: TOKEN_TAGS,
     TOKEN_AFTER: TOKEN_AFTER,
     TOKEN_BEFORE: TOKEN_BEFORE,
-    TOKEN_NEGACION: TOKEN_NEGACION,
 }
 
 CARACTERES_ESPECIALES = {
     TOKEN_FILTER: TOKEN_FILTER,
     TOKEN_NEGACION: TOKEN_NEGACION,
     TOKEN_SEPARATOR: TOKEN_SEPARATOR,
-    TOKEN_COMMA: TOKEN_COMMA,
 }
 
 
@@ -49,6 +46,8 @@ def resolve_type(text: str):
     Returns:
         str: Tipo de token correspondiente.
     """
+    text = text.strip()
+
     if text in PALABRAS_CLAVE:
         return PALABRAS_CLAVE[text]
 
@@ -98,6 +97,8 @@ class Lexer:
     curr_char = ""  # Carácter actual procesado
     parsing_string = ""  # Cadena que se está analizando
 
+    tokens: list[Token]
+
     def _pick_char(self):
         """
         Obtiene el siguiente carácter a procesar sin avanzar el lexer.
@@ -134,11 +135,11 @@ class Lexer:
         while is_letter(self.curr_char):
             self._advance_lexer()
 
-        value = self.parsing_string[start : self.curr_position].strip()
+        value = self.parsing_string[start : self.curr_position]
 
         return Token(resolve_type(value), value)
 
-    def generate_tokens(self) -> list[Token]:
+    def _generate_raw_tokens(self):
         """
         Analiza la cadena completa y genera una lista de tokens.
 
@@ -160,7 +161,86 @@ class Lexer:
                 t = self._parse_text()
                 result.append(t)
 
-        return result
+        self.tokens = result
+
+    def _squash_text_tokens(self):
+        token_count = -1
+        new_list: list[Token] = []
+
+        for token in self.tokens:
+            if token.t_type != TOKEN_TEXT:
+                new_list.append(token)
+                token_count += 1
+
+                # si contamos con 2 tokens de texto seguidos
+            elif (
+                token_count > -1  # revisar que ya se haya insertado un token
+                and new_list[token_count].t_type == TOKEN_TEXT
+                and token.t_type == TOKEN_TEXT
+            ):
+                new_list[token_count].t_value += token.t_value
+
+                # si es el primer token de texto en ser insertado depues de un filtro o al inicio
+            else:
+                new_list.append(token)
+                token_count += 1
+
+        self.tokens = new_list
+
+    def _sanitize_tokens(self):
+        curr_position = 0
+        new_list: list[Token] = []
+
+        while curr_position < len(self.tokens):
+            # si encontramos un token de filtro revisar que tenga la sintaxis correcta.
+            # Transformar a token de texto si es que no se sigue la sintaxis
+            # "# identificador [!]:"
+            if self.tokens[curr_position].t_type == TOKEN_FILTER:
+                if (
+                    curr_position + 2 < len(self.tokens)
+                    and self.tokens[curr_position + 2].t_type == TOKEN_SEPARATOR
+                    and self.tokens[curr_position + 1].t_type in PALABRAS_CLAVE
+                ):
+                    # solo anadir el token de "palabra clave"
+                    new_list.append(self.tokens[curr_position + 1])
+                    curr_position += 3
+                    continue
+
+                if (
+                    curr_position + 3 < len(self.tokens)
+                    and self.tokens[curr_position + 2].t_type == TOKEN_NEGACION
+                    and self.tokens[curr_position + 3].t_type == TOKEN_SEPARATOR
+                    and self.tokens[curr_position + 1].t_type in PALABRAS_CLAVE
+                ):
+                    # solo anadir el token de "palabra clave" y el de negacion
+                    new_list.append(self.tokens[curr_position + 1])
+                    new_list.append(self.tokens[curr_position + 2])
+                    curr_position += 4
+                    continue
+
+                # si la sintaxis NO fue correcta, cambiamos el token a
+                # un token de tipo texto
+                self.tokens[curr_position].t_type = TOKEN_TEXT
+
+            # Unir los tokens en un solo token de texto hasta el siguiente token de filtro
+            value = ""
+            while (
+                curr_position < len(self.tokens)
+                and self.tokens[curr_position].t_type != TOKEN_FILTER
+            ):
+                value += self.tokens[curr_position].t_value
+                curr_position += 1
+
+            new_list.append(Token(TOKEN_TEXT, value))
+
+        self.tokens = new_list
+
+    def tokenize(self):
+        self._generate_raw_tokens()
+        self._sanitize_tokens()
+        self._squash_text_tokens()
+
+        return self.tokens
 
     def __init__(self, s) -> None:
         """
