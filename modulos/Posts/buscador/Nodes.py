@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Q
 
 from modulos.Posts.buscador.tokenizer import *
@@ -46,50 +48,79 @@ class NodeCategoria(Node):
     n_type = "categoria"
 
     def _generate_query(self, qb: QueryBuilder):
-        # TODO: cambiar el query builder para agregar negaciones
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Denver")
+        if self.negation:
+            qb.add_exclude(category__name__icontains=self.value)
+        else:
+            qb.add_filter(category__name__icontains=self.value)
 
 
 class NodeTitulo(Node):
     n_type = "titulo"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        if self.negation:
+            qb.add_exclude(title__icontains=self.value)
+        else:
+            qb.add_filter(title__icontains=self.value)
 
 
 class NodeContenido(Node):
     n_type = "contenido"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        if self.negation:
+            qb.add_exclude(content__icontains=self.value)
+        else:
+            qb.add_filter(content__icontains=self.value)
 
 
 class NodeAutor(Node):
     n_type = "autor"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        if self.negation:
+            qb.add_exclude(author__username__icontains=self.value)
+        else:
+            qb.add_filter(author__username__icontains=self.value)
 
 
 class NodeTags(Node):
     n_type = "tags"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        tags = self.value.split(",")
+        for tag in tags:
+            if self.negation:
+                qb.add_exclude(tags__icontains=tag)
+            else:
+                qb.add_filter(tags__icontains=tag)
 
 
 class NodeAfter(Node):
     n_type = "after"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        # NOTE: negacion no tiene efecto sobre after
+        try:
+            fecha = datetime.strptime(self.value, "%d/%m/%Y")
+            qb.add_filter(fecha__gte=fecha)
+        except ValueError:
+            # Formato de fecha invalido
+            return None
 
 
 class NodeBefore(Node):
     n_type = "before"
 
     def _generate_query(self, qb: QueryBuilder):
-        qb.add_filter(title__icontains="django").add_filter(author__name="John Doe")
+        # NOTE: negacion no tiene efecto sobre before
+        fecha = datetime.strptime(self.value, "%d/%m/%Y")
+        try:
+            fecha = datetime.strptime(self.value, "%d/%m/%Y")
+            qb.add_filter(fecha__lte=fecha)
+        except ValueError:
+            # Formato de fecha invalido
+            return None
 
 
 NODES_TABLE = {

@@ -1,6 +1,7 @@
 import pytest
 
 from modulos.Categories.models import Category
+from modulos.Posts.buscador import buscador
 from modulos.Posts.buscador.Nodes import (Node, NodeCategoria, NodeTags,
                                           NodeTitulo, QueryBuilder)
 from modulos.Posts.buscador.parser import Parser
@@ -368,13 +369,13 @@ def test_node_generation():
     # Recorre cada caso de prueba
     count = 0
     for input_text, expected_nodes in test_cases:
-# Crear una nueva instancia de Lexer y Parser para cada caso de prueba
+        # Crear una nueva instancia de Lexer y Parser para cada caso de prueba
         lexer = Lexer(input_text)
         tokens = lexer.tokenize()
-        
+
         # Crear una nueva instancia de Parser para cada caso de prueba
         parser = Parser(tokens)
-        
+
         # Parsear los tokens
         result = parser.parse()
 
@@ -412,3 +413,60 @@ def test_node_generation():
 
         count += 1
 
+
+# ----------------------------
+# Test ast -> query generator
+# ----------------------------
+
+
+def test_ast_to_query_generator(prepare):
+    ## Test case numero 1 ###
+    post1, post2, post3 = prepare
+
+    qb = buscador.generate_query_set("Django")
+    results = qb.execute()
+
+    assert post1 in results
+    assert post2 in results
+    assert post3 in results
+    assert len(results) == 3
+
+    ## Test case numero 2 ###
+    post1, post2, post3 = prepare
+
+    qb = buscador.generate_query_set("Tips")
+    results = qb.execute()
+
+    assert post3 in results
+    assert not post2 in results
+    assert not post1 in results
+
+    ## Test case numero 3 ###
+    post1, post2, post3 = prepare
+
+    qb = buscador.generate_query_set("Tips #autor: alice")
+    results = qb.execute()
+
+    assert not post3 in results
+    assert not post2 in results
+    assert not post1 in results
+
+    ## Test case numero 4 ###
+    post1, post2, post3 = prepare
+
+    qb = buscador.generate_query_set("#autor!: alice")
+    results = qb.execute()
+
+    assert post3 in results
+    assert post2 in results
+    assert not post1 in results
+
+    ## Test case numero 5 ###
+    post1, post2, post3 = prepare
+
+    qb = buscador.generate_query_set("Tips #categoria: Django")
+    results = qb.execute()
+
+    assert post3 in results
+    assert not post2 in results
+    assert not post1 in results
