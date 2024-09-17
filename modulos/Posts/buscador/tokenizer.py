@@ -99,46 +99,6 @@ class Lexer:
 
     tokens: list[Token]
 
-    def _pick_char(self):
-        """
-        Obtiene el siguiente carácter a procesar sin avanzar el lexer.
-
-        Returns:
-            str: Próximo carácter de la cadena.
-        """
-        if self.curr_position >= len(self.parsing_string):
-            return 0
-
-        return self.parsing_string[self.curr_position + 1]
-
-    def _advance_lexer(self):
-        """
-        Avanza el lexer a la siguiente posición de la cadena.
-        """
-        if self.next_position >= len(self.parsing_string):
-            self.curr_char = ""
-        else:
-            self.curr_char = self.parsing_string[self.next_position]
-
-        self.curr_position = self.next_position
-        self.next_position = self.next_position + 1
-
-    def _parse_text(self) -> Token:
-        """
-        Analiza y crea un token de texto (multicaracter) desde la posición actual del lexer.
-
-        Returns:
-            Token: El token creado con su tipo y valor.
-        """
-        start = self.curr_position
-
-        while is_letter(self.curr_char):
-            self._advance_lexer()
-
-        value = self.parsing_string[start : self.curr_position]
-
-        return Token(resolve_type(value), value)
-
     def _generate_raw_tokens(self):
         """
         Analiza la cadena completa y genera una lista de tokens.
@@ -251,6 +211,50 @@ class Lexer:
         """
         self.parsing_string = s
         self._advance_lexer()
+
+    # -------------------
+    # -    Utilities    -
+    # -------------------
+
+    def _pick_char(self):
+        """
+        Obtiene el siguiente carácter a procesar sin avanzar el lexer.
+
+        Returns:
+            str: Próximo carácter de la cadena.
+        """
+        if self.curr_position >= len(self.parsing_string):
+            return 0
+
+        return self.parsing_string[self.curr_position + 1]
+
+    def _advance_lexer(self):
+        """
+        Avanza el lexer a la siguiente posición de la cadena.
+        """
+        if self.next_position >= len(self.parsing_string):
+            self.curr_char = ""
+        else:
+            self.curr_char = self.parsing_string[self.next_position]
+
+        self.curr_position = self.next_position
+        self.next_position = self.next_position + 1
+
+    def _parse_text(self) -> Token:
+        """
+        Analiza y crea un token de texto (multicaracter) desde la posición actual del lexer.
+
+        Returns:
+            Token: El token creado con su tipo y valor.
+        """
+        start = self.curr_position
+
+        while is_letter(self.curr_char):
+            self._advance_lexer()
+
+        value = self.parsing_string[start : self.curr_position]
+
+        return Token(resolve_type(value), value)
 
     def __str__(self):
         return (

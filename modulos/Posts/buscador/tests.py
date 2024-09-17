@@ -1,7 +1,9 @@
 import pytest
 
 from modulos.Categories.models import Category
-from modulos.Posts.buscador.parser import QueryBuilder
+from modulos.Posts.buscador.Nodes import (Node, NodeCategoria, NodeTags,
+                                          NodeTitulo, QueryBuilder)
+from modulos.Posts.buscador.parser import Parser
 from modulos.Posts.buscador.tokenizer import (TOKEN_BEFORE, TOKEN_CATEGORIA,
                                               TOKEN_FILTER, TOKEN_NEGACION,
                                               TOKEN_SEPARATOR, TOKEN_TAGS,
@@ -21,6 +23,17 @@ def test_raw_token_generation():
         (
             " titulo vacio",
             [Token(TOKEN_TEXT, " titulo vacio")],
+        ),
+        (
+            "#categoria:#titulo:",
+            [
+                Token(TOKEN_FILTER, "#"),
+                Token(TOKEN_CATEGORIA, "categoria"),
+                Token(TOKEN_SEPARATOR, ":"),
+                Token(TOKEN_FILTER, "#"),
+                Token(TOKEN_TITULO, "titulo"),
+                Token(TOKEN_SEPARATOR, ":"),
+            ],
         ),
         (
             "titulo # categoria  : nada",
@@ -112,6 +125,13 @@ def test_token_sanitization():
         (
             " titulo vacio",
             [Token(TOKEN_TEXT, " titulo vacio")],
+        ),
+        (
+            "#categoria:#titulo:",
+            [
+                Token(TOKEN_CATEGORIA, "categoria"),
+                Token(TOKEN_TITULO, "titulo"),
+            ],
         ),
         (
             "titulo # categoria nada",
@@ -308,5 +328,87 @@ def test_add_not_filter(prepare):
 
 
 # ---------------
-# Test del Parser
+# Test del parser
 # ---------------
+
+
+def test_node_generation():
+    # Define los casos de prueba
+    test_cases: list[tuple[str, list[Node]]] = [
+        (
+            " titulo vacio",
+            [NodeTitulo("titulo vacio", False)],
+        ),
+        (
+            "titulo # categoria nada",
+            [NodeTitulo("titulo # categoria nada", False)],
+        ),
+        (
+            "Golang #tags: 1,2,3",
+            [
+                NodeTitulo("Golang", False),
+                NodeTags("1,2,3", False),
+            ],
+        ),
+        (
+            "#titulo!: nuevo # nuevo personal",
+            [
+                NodeTitulo("nuevo # nuevo personal", True),
+            ],
+        ),
+        (
+            "#titulo!: nuevo # categoria : personal",
+            [
+                NodeTitulo("nuevo", True),
+                NodeCategoria("personal", False),
+            ],
+        ),
+    ]
+
+    # Recorre cada caso de prueba
+    count = 0
+    for input_text, expected_nodes in test_cases:
+# Crear una nueva instancia de Lexer y Parser para cada caso de prueba
+        lexer = Lexer(input_text)
+        tokens = lexer.tokenize()
+        
+        # Crear una nueva instancia de Parser para cada caso de prueba
+        parser = Parser(tokens)
+        
+        # Parsear los tokens
+        result = parser.parse()
+
+        # Verifica que el número de tokens coincida
+        if len(result) != len(expected_nodes):
+            for t in result:
+                print(t)
+            assert f"TC: {count} \tExpected {len(expected_nodes)} tokens, but got {len(result)}."
+
+        # Verifica que cada token coincida con el esperado
+        for i in range(len(result)):
+            if result[i].value != expected_nodes[i].value:
+                print(f"\nExpected Node {i}: \n{expected_nodes[i]}\n")
+                print(f"Got: \n{result[i]}\n")
+
+                assert (
+                    False
+                ), f"TC: {count} \tExpected Node value {expected_nodes[i].value}, but got {result[i].value}."
+
+            if result[i].negation != expected_nodes[i].negation:
+                print(f"\nExpected token {i}: \n{expected_nodes[i]}\n")
+                print(f"Got: \n{result[i]}")
+
+                assert (
+                    False
+                ), f"TC: {count} \tExpected token type {expected_nodes[i].negation}, but got {result[i].negation}."
+
+            if result[i].n_type != expected_nodes[i].n_type:
+                print(f"\nExpected node {i}: \n{expected_nodes[i]}\n")
+                print(f"Got: \n{result[i]}")
+
+                assert (
+                    False
+                ), f"TC: {count} \tExpected token type {expected_nodes[i].n_type}, but got {result[i].n_type}."
+
+        count += 1
+
