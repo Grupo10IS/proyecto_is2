@@ -1,4 +1,5 @@
 from modulos.Categories.models import Category
+from modulos.Posts.forms import SearchPostForm
 
 
 def new_ctx(req, params):
@@ -39,6 +40,7 @@ def new_ctx(req, params):
     base = {
         "categories": Category.objects.all(),
         "permisos": sitios,
+        "post_search_input": SearchPostForm
     }
     base.update(params)
 
