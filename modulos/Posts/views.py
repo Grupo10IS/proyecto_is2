@@ -1,17 +1,15 @@
-from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
-from modulos.Authorization.roles import ADMIN
+
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import (
     POST_CREATE_PERMISSION,
     POST_DELETE_PERMISSION,
-    POST_EDIT_PERMISSION,
 )
-
 from modulos.Categories.models import Category
-from modulos.Posts.forms import NewPostForm
+from modulos.Posts.buscador import buscador
+from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
 
@@ -92,36 +90,10 @@ def create_post(request):
 
 # Vista para listar posts
 @login_required
-@permissions_required(
-    [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
-)
+@permissions_required([POST_CREATE_PERMISSION])
 def manage_post(request):
-    # Verifica si el usuario pertenece al grupo 'Administrador'
-    is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
-
-    if is_admin:
-        posts = Post.objects.all()
-    else:
-        posts = Post.objects.filter(author=request.user)
-
-    permisos = request.user.get_all_permissions()
-
-    # Definición de permisos en variables booleanas
-    perm_create = "UserProfile." + POST_CREATE_PERMISSION in permisos
-    perm_edit = "UserProfile." + POST_EDIT_PERMISSION in permisos
-    perm_delete = "UserProfile." + POST_DELETE_PERMISSION in permisos
-
-    # Definición de contexto basado en permisos
-    ctx = new_ctx(
-        request,
-        {
-            "posts": posts,
-            "perm_create": perm_create,
-            "perm_edit": perm_edit,
-            "perm_delete": perm_delete,
-        },
-    )
-
+    posts = Post.objects.filter(author=request.user)
+    ctx = new_ctx(request, {"posts": posts})
     return render(request, "pages/post_list.html", ctx)
 
 
@@ -142,7 +114,7 @@ def delete_post(request, id):
 
 # Vista para editar un post
 @login_required
-@permissions_required([POST_EDIT_PERMISSION, POST_CREATE_PERMISSION])
+@permissions_required([POST_CREATE_PERMISSION])
 def edit_post(request, id):
     post = get_object_or_404(Post, pk=id)
     if request.method == "POST":
@@ -153,3 +125,18 @@ def edit_post(request, id):
 
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
+
+
+def search_post(request):
+    form = SearchPostForm(request.GET)
+
+    if form.is_valid():
+        input = form.cleaned_data["input"]
+        results = buscador.generate_query_set(input).execute()
+
+        ctx = new_ctx(request, {"posts": results[:10]})
+        return render(request, "pages/home.html", context=ctx)
+
+    else:
+        # O redirige a donde sea apropiado si no hay búsqueda
+        return redirect("home")
