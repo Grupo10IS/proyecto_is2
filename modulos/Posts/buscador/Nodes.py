@@ -103,7 +103,7 @@ class NodeAfter(Node):
         # NOTE: negacion no tiene efecto sobre after
         try:
             fecha = datetime.strptime(self.value, "%d/%m/%Y")
-            qb.add_filter(fecha__gte=fecha)
+            qb.add_filter(creation_date__gte=fecha)
         except ValueError:
             # Formato de fecha invalido
             return None
@@ -117,7 +117,7 @@ class NodeBefore(Node):
         fecha = datetime.strptime(self.value, "%d/%m/%Y")
         try:
             fecha = datetime.strptime(self.value, "%d/%m/%Y")
-            qb.add_filter(fecha__lte=fecha)
+            qb.add_filter(creation_date__lte=fecha)
         except ValueError:
             # Formato de fecha invalido
             return None
