@@ -82,7 +82,9 @@ def user_has_access_to_category(user, category):
 
     elif (
         category.tipo == category.SUSCRIPCION
-        and user.groups.filter(name=SUBSCRIBER).exists()
+        and user.groups.filter(
+            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER]
+        ).exists()
     ):
         return True
 
