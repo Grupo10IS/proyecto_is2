@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   modulos.Posts.buscador
    modulos.Posts.migrations
 
 Submodules
