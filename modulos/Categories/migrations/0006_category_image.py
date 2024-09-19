@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Categories', '0005_alter_category_description_alter_category_name_and_more'),
+        ("Categories", "0005_alter_category_description_alter_category_name_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='categories/', verbose_name='Imagen de la categoría'),
+            model_name="category",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="categories/",
+                verbose_name="Imagen de la categoría",
+            ),
         ),
     ]
