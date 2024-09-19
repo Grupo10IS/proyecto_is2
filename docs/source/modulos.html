@@ -183,6 +183,16 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador.Nodes">modulos.Posts.buscador.Nodes module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador.buscador">modulos.Posts.buscador.buscador module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador.parser">modulos.Posts.buscador.parser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador.tests">modulos.Posts.buscador.tests module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador.tokenizer">modulos.Posts.buscador.tokenizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.buscador.html#module-modulos.Posts.buscador">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0001_initial">modulos.Posts.migrations.0001_initial module</a></li>
@@ -214,6 +224,12 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.NewPostForm.base_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.base_fields</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.NewPostForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.declared_fields</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.NewPostForm.media"><code class="docutils literal notranslate"><span class="pre">NewPostForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.SearchPostForm"><code class="docutils literal notranslate"><span class="pre">SearchPostForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.SearchPostForm.base_fields"><code class="docutils literal notranslate"><span class="pre">SearchPostForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.SearchPostForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">SearchPostForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.forms.SearchPostForm.media"><code class="docutils literal notranslate"><span class="pre">SearchPostForm.media</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -255,6 +271,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>
 </li>
@@ -458,7 +475,24 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.utils.new_ctx">
 <span class="sig-prename descclassname"><span class="pre">modulos.utils.</span></span><span class="sig-name descname"><span class="pre">new_ctx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/utils.html#new_ctx"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.utils.new_ctx" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates a wrapper context dictionary for rendering templates, based on user permissions 
+and additional parameters. It merges a given custom context passed as parameter with
+the common context for the rest of the pages and views.</p>
+<dl>
+<dt>Args:</dt><dd><p>req (HttpRequest): The HTTP request object containing user information.
+params (dict): Additional parameters to be included in the context.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: A dictionary containing the context for rendering templates, including user permissions
+and a list of categories.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">OurForm</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">OurData</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s2">&quot;template&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-modulos">
@@ -518,6 +552,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>

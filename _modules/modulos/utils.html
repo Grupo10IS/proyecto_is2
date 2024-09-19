@@ -33,11 +33,30 @@
             
   <h1>Código fuente para modulos.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">SearchPostForm</span>
 
 
 <div class="viewcode-block" id="new_ctx">
 <a class="viewcode-back" href="../../docs/source/modulos.html#modulos.utils.new_ctx">[documentos]</a>
 <span class="k">def</span> <span class="nf">new_ctx</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a wrapper context dictionary for rendering templates, based on user permissions </span>
+<span class="sd">    and additional parameters. It merges a given custom context passed as parameter with</span>
+<span class="sd">    the common context for the rest of the pages and views.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        req (HttpRequest): The HTTP request object containing user information.</span>
+<span class="sd">        params (dict): Additional parameters to be included in the context.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing the context for rendering templates, including user permissions</span>
+<span class="sd">        and a list of categories.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; base = {&quot;form&quot;: OurForm, &quot;data&quot;: OurData}</span>
+<span class="sd">        &gt;&gt;&gt; ctx = new_ctx(request, base)</span>
+<span class="sd">        &gt;&gt;&gt; return render(req, &quot;template&quot;, ctx)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sitios</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">permisos</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
@@ -63,6 +82,7 @@
     <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
         <span class="s2">&quot;permisos&quot;</span><span class="p">:</span> <span class="n">sitios</span><span class="p">,</span>
+        <span class="s2">&quot;post_search_input&quot;</span><span class="p">:</span> <span class="n">SearchPostForm</span>
     <span class="p">}</span>
     <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
@@ -105,6 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modulos.Posts.buscador.tokenizer &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=9c9b61ad"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/translations.js?v=d190bf04"></script>
+    <link rel="index" title="Índice" href="../../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para modulos.Posts.buscador.tokenizer</h1><div class="highlight"><pre>
+<span></span><span class="c1">### TOKEN TYPES ###</span>
+
+<span class="c1"># Palabras clave</span>
+<span class="n">TOKEN_CATEGORIA</span> <span class="o">=</span> <span class="s2">&quot;categoria&quot;</span>
+<span class="n">TOKEN_TITULO</span> <span class="o">=</span> <span class="s2">&quot;titulo&quot;</span>
+<span class="n">TOKEN_CONTENIDO</span> <span class="o">=</span> <span class="s2">&quot;contenido&quot;</span>
+<span class="n">TOKEN_AUTOR</span> <span class="o">=</span> <span class="s2">&quot;autor&quot;</span>
+<span class="n">TOKEN_TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
+<span class="n">TOKEN_AFTER</span> <span class="o">=</span> <span class="s2">&quot;after&quot;</span>
+<span class="n">TOKEN_BEFORE</span> <span class="o">=</span> <span class="s2">&quot;before&quot;</span>
+
+<span class="c1"># Operadores</span>
+<span class="n">TOKEN_FILTER</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span>
+<span class="n">TOKEN_NEGACION</span> <span class="o">=</span> <span class="s2">&quot;!&quot;</span>
+<span class="n">TOKEN_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span>
+
+<span class="c1"># Tipos de tokens</span>
+<span class="n">TOKEN_TEXT</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>  <span class="c1"># Texto que puede tener múltiples palabras</span>
+<span class="n">TOKEN_INVALIDO</span> <span class="o">=</span> <span class="s2">&quot;invalido&quot;</span>  <span class="c1"># Token inválido</span>
+
+<span class="c1"># Listado de palabras clave y operadores reconocidos</span>
+<span class="n">PALABRAS_CLAVE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">TOKEN_CATEGORIA</span><span class="p">:</span> <span class="n">TOKEN_CATEGORIA</span><span class="p">,</span>
+    <span class="n">TOKEN_TITULO</span><span class="p">:</span> <span class="n">TOKEN_TITULO</span><span class="p">,</span>
+    <span class="n">TOKEN_CONTENIDO</span><span class="p">:</span> <span class="n">TOKEN_CONTENIDO</span><span class="p">,</span>
+    <span class="n">TOKEN_AUTOR</span><span class="p">:</span> <span class="n">TOKEN_AUTOR</span><span class="p">,</span>
+    <span class="n">TOKEN_TAGS</span><span class="p">:</span> <span class="n">TOKEN_TAGS</span><span class="p">,</span>
+    <span class="n">TOKEN_AFTER</span><span class="p">:</span> <span class="n">TOKEN_AFTER</span><span class="p">,</span>
+    <span class="n">TOKEN_BEFORE</span><span class="p">:</span> <span class="n">TOKEN_BEFORE</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">CARACTERES_ESPECIALES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">TOKEN_FILTER</span><span class="p">:</span> <span class="n">TOKEN_FILTER</span><span class="p">,</span>
+    <span class="n">TOKEN_NEGACION</span><span class="p">:</span> <span class="n">TOKEN_NEGACION</span><span class="p">,</span>
+    <span class="n">TOKEN_SEPARATOR</span><span class="p">:</span> <span class="n">TOKEN_SEPARATOR</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="resolve_type">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.resolve_type">[documentos]</a>
+<span class="k">def</span> <span class="nf">resolve_type</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determina el tipo de token según el texto proporcionado.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): Texto que representa un posible token.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Tipo de token correspondiente.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">PALABRAS_CLAVE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PALABRAS_CLAVE</span><span class="p">[</span><span class="n">text</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">CARACTERES_ESPECIALES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CARACTERES_ESPECIALES</span><span class="p">[</span><span class="n">text</span><span class="p">]</span>
+
+    <span class="c1"># Por defecto, todo se considera un token de texto.</span>
+    <span class="k">return</span> <span class="n">TOKEN_TEXT</span></div>
+
+
+
+<div class="viewcode-block" id="is_letter">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.is_letter">[documentos]</a>
+<span class="k">def</span> <span class="nf">is_letter</span><span class="p">(</span><span class="n">ch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Comprueba si un carácter es una letra o un guion bajo.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ch (str): Carácter a verificar.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True si el carácter es una letra o un guion bajo, False en caso contrario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">CARACTERES_ESPECIALES</span> <span class="ow">and</span> <span class="n">ch</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Token">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Token">[documentos]</a>
+<span class="k">class</span> <span class="nc">Token</span><span class="p">:</span>
+    <span class="n">t_type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">t_value</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Token(t_type=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">t_type</span><span class="si">}</span><span class="s2">&#39;, t_value=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">t_value</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+
+<div class="viewcode-block" id="Token.__init__">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Token.__init__">[documentos]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor para inicializar un nuevo token.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t (str): Tipo del token.</span>
+<span class="sd">            value (str): Valor asociado al token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_type</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_value</span> <span class="o">=</span> <span class="n">value</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Lexer">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer">[documentos]</a>
+<span class="k">class</span> <span class="nc">Lexer</span><span class="p">:</span>
+    <span class="n">curr_position</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Posición actual del lexer en la cadena</span>
+    <span class="n">next_position</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Próxima posición del lexer en la cadena</span>
+
+    <span class="n">curr_char</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Carácter actual procesado</span>
+    <span class="n">parsing_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Cadena que se está analizando</span>
+
+    <span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_generate_raw_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analiza la cadena completa y genera una lista de tokens.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Token]: Lista de tokens encontrados en la cadena de entrada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="c1"># Caracteres especiales</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span> <span class="ow">in</span> <span class="n">CARACTERES_ESPECIALES</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">resolve_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_advance_lexer</span><span class="p">()</span>
+
+            <span class="c1"># Tokens multi carácter</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_text</span><span class="p">()</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_squash_text_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">token_count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">new_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">t_type</span> <span class="o">!=</span> <span class="n">TOKEN_TEXT</span><span class="p">:</span>
+                <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+                <span class="n">token_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># si contamos con 2 tokens de texto seguidos</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="n">token_count</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># revisar que ya se haya insertado un token</span>
+                <span class="ow">and</span> <span class="n">new_list</span><span class="p">[</span><span class="n">token_count</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_TEXT</span>
+                <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_TEXT</span>
+            <span class="p">):</span>
+                <span class="n">new_list</span><span class="p">[</span><span class="n">token_count</span><span class="p">]</span><span class="o">.</span><span class="n">t_value</span> <span class="o">+=</span> <span class="n">token</span><span class="o">.</span><span class="n">t_value</span>
+
+                <span class="c1"># si es el primer token de texto en ser insertado depues de un filtro o al inicio</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+                <span class="n">token_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">new_list</span>
+
+    <span class="k">def</span> <span class="nf">_sanitize_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">curr_position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">new_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="n">curr_position</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">):</span>
+            <span class="c1"># si encontramos un token de filtro revisar que tenga la sintaxis correcta.</span>
+            <span class="c1"># Transformar a token de texto si es que no se sigue la sintaxis</span>
+            <span class="c1"># &quot;# identificador [!]:&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_FILTER</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">curr_position</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_SEPARATOR</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="ow">in</span> <span class="n">PALABRAS_CLAVE</span>
+                <span class="p">):</span>
+                    <span class="c1"># solo anadir el token de &quot;palabra clave&quot;</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="n">curr_position</span> <span class="o">+=</span> <span class="mi">3</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">curr_position</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_NEGACION</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">==</span> <span class="n">TOKEN_SEPARATOR</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="ow">in</span> <span class="n">PALABRAS_CLAVE</span>
+                <span class="p">):</span>
+                    <span class="c1"># solo anadir el token de &quot;palabra clave&quot; y el de negacion</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+                    <span class="n">curr_position</span> <span class="o">+=</span> <span class="mi">4</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># si la sintaxis NO fue correcta, cambiamos el token a</span>
+                <span class="c1"># un token de tipo texto</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">=</span> <span class="n">TOKEN_TEXT</span>
+
+            <span class="c1"># Unir los tokens en un solo token de texto hasta el siguiente token de filtro</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">while</span> <span class="p">(</span>
+                <span class="n">curr_position</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span><span class="p">]</span><span class="o">.</span><span class="n">t_type</span> <span class="o">!=</span> <span class="n">TOKEN_FILTER</span>
+            <span class="p">):</span>
+                <span class="n">value</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">curr_position</span><span class="p">]</span><span class="o">.</span><span class="n">t_value</span>
+                <span class="n">curr_position</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">TOKEN_TEXT</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">new_list</span>
+
+<div class="viewcode-block" id="Lexer.tokenize">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer.tokenize">[documentos]</a>
+    <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_raw_tokens</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_tokens</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_squash_text_tokens</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span></div>
+
+
+<div class="viewcode-block" id="Lexer.__init__">
+<a class="viewcode-back" href="../../../../docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer.__init__">[documentos]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa el lexer con la cadena de entrada.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            s (str): Cadena que se va a analizar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_advance_lexer</span><span class="p">()</span></div>
+
+
+    <span class="c1"># -------------------</span>
+    <span class="c1"># -    Utilities    -</span>
+    <span class="c1"># -------------------</span>
+
+    <span class="k">def</span> <span class="nf">_pick_char</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene el siguiente carácter a procesar sin avanzar el lexer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Próximo carácter de la cadena.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_advance_lexer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Avanza el lexer a la siguiente posición de la cadena.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_position</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">next_position</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_position</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_parse_text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Token</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analiza y crea un token de texto (multicaracter) desde la posición actual del lexer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Token: El token creado con su tipo y valor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span>
+
+        <span class="k">while</span> <span class="n">is_letter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_advance_lexer</span><span class="p">()</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">Token</span><span class="p">(</span><span class="n">resolve_type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Lexer State:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  Current Position: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_position</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  Next Position: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">next_position</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  Current Char: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_char</span><span class="si">}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  Parsing String: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parsing_string</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Proyecto IS2 grupo 6</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modules.html">modulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.html">modulos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/source/modulos.mdeditor.html">modulos.mdeditor package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Grupo 6 IS2.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
