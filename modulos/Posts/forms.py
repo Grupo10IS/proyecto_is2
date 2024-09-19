@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import CharField, Form, ModelForm
 
 from .models import Post  # Ensure you have imported the Post model
 
@@ -36,3 +36,18 @@ class NewPostForm(ModelForm):
                 attrs={"class": "custom-file-input"}  # Custom class for the file input
             ),
         }
+
+
+class SearchPostForm(Form):
+    input = CharField(
+        max_length=120,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control-sm",
+                "id": "search-input",
+                "placeholder": "Search ...",
+                "aria-label": "Search",
+                "style": "display: none",
+            }
+        ),
+    )
