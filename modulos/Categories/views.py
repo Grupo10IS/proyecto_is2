@@ -22,14 +22,32 @@ class CategoryCreateView(generic.CreateView):
         return new_ctx(self.request, context)
 
 
+# views.py de categories
+
 class CategoryListView(ListView):
     model = Category
-    template_name = "categories_list.html"
+    template_name = "categories_list.html"  # Plantilla por defecto
     context_object_name = "categories"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Verificar si se pasó el parámetro 'premium' en la URL
+        premium_only = self.request.GET.get("premium", "false").lower() == "true"
+
+        # Filtrar categorías por tipo PREMIUM si el parámetro es true
+        if premium_only:
+            queryset = queryset.filter(tipo=Category.PREMIUM)
+        return queryset
+
+    def get_template_names(self):
+        # Cambiar a la plantilla 'categories_premium.html' si el parámetro 'premium' es true
+        premium_only = self.request.GET.get("premium", "false").lower() == "true"
+        if premium_only:
+            return ["categories_premium.html"]
+        return ["categories_list.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Agregar más contexto
         return new_ctx(self.request, context)
 
 
