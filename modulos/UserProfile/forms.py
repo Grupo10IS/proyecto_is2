@@ -145,3 +145,4 @@ class CustomPasswordResetForm(PasswordResetForm):
                     html_email_template_name=html_email_template_name,
                     extra_email_context=extra_email_context,
                 )
+

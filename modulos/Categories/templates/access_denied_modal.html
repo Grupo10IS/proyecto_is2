@@ -12,7 +12,7 @@
         {% if category.tipo == category.PREMIUM %}
             {% if user.is_authenticated %}
                 <!-- User is logged in and the category is PREMIUM -->
-                <a href="{% url 'home' %}" class="btn btn-warning">Quiero suscribirme</a>
+                <a href="{% url 'payment_view' category.id %}" class="btn btn-warning">Quiero suscribirme</a>
             {% else %}
                 <!-- User is not logged in -->
                 <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Iniciar sesión</a>
