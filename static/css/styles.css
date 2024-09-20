@@ -127,6 +127,31 @@ a img:hover {
         /* Escalar toda la tarjeta */
 }
 
+/*Categorias */
+
+/* Estilo general para la etiqueta */
+.badge-type {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Estilo para categoría Gratis */
+.gratis {
+    background-color: rgb(4, 102, 4);
+}
+
+/* Estilo para categoría Suscripcion */
+.suscripcion {
+    background-color: rgb(93, 1, 93);
+}
+
+/* Estilo para categoría Premium */
+.premium {
+    background-color: goldenrod;
+    /* Cambia el color del texto para contraste */
+}
 
 /*navbar*/
 header {

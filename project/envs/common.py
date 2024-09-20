@@ -150,13 +150,16 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # Enviar correos
+# Configuración de SendGrid
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.sendgrid.net"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "EMAIL_HOST_USER"  # Esto es literal, no cambies 'apikey'
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = "groupmakex@gmail.com"
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.sendgrid.net")
+EMAIL_PORT = config("EMAIL_PORT", default=587)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_HOST_USER = config(
+    "EMAIL_HOST_USER", default="apikey"
+)  # Debe ser literalmente 'apikey'
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  # Tu API Key de SendGrid
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="groupmakex@gmail.com")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/media/"
