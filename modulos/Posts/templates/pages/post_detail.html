@@ -91,4 +91,25 @@
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <script src="{% static 'posts/favorite_button.js' %}"></script>
+    <div class="row justify-content-center mt-4">
+        <div class="col-10">
+            <div class="content-wrapper">
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = 'https://www.makexfp.com/post/{{ post.id }}/';
+            this.page.identifier ='/posts/{{ post.id }}/';
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://makexfp-com.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 {% endblock %}
