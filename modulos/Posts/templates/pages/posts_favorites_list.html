@@ -1,0 +1,27 @@
+{% extends "register_base.html" %}
+{% block content %}
+<div class="container">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <h1 class="display-6 fst-italic mb-4">Contenido Favorito</h1>
+        <table class="table table-hover table-striped">
+            <thead class="table-dark fst-italic">
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts_favorites %}
+                <tr onclick="location.href='{% url 'post_detail' post.id %}'" style="cursor:pointer">
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.category }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'home' %}" class="btn btn-secondary" style="background-color: black;
+                      border-color: black;
+                      color:white">Volver al Inicio</a>
+    </div>
+</div>
+{% endblock %}

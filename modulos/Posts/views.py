@@ -1,15 +1,13 @@
-from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
-from modulos.Authorization.roles import ADMIN
-from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (
-    POST_CREATE_PERMISSION,
-    POST_DELETE_PERMISSION,
-    POST_EDIT_PERMISSION,
-)
 
+from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.permissions import (POST_CREATE_PERMISSION,
+                                               POST_DELETE_PERMISSION,
+                                               POST_EDIT_PERMISSION)
+from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
@@ -56,12 +54,16 @@ def view_post(request, id):
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
 
+    # verifica si el post esta como favorito para el usuario actual
+    es_favorito = post.favorites.filter(id=request.user.id).exists()
+    print("QUE?", es_favorito)
     ctx = new_ctx(
         request,
         {
             "post": post,
             "tags": tags,
             "categories": Category.objects.all(),
+            "es_favorito": es_favorito,
         },
     )
     return render(request, "pages/post_detail.html", context=ctx)
@@ -169,3 +171,22 @@ def search_post(request):
     else:
         # O redirige a donde sea apropiado si no hay búsqueda
         return redirect("home")
+
+
+def favorite_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+
+    if post.favorites.filter(id=request.user.id).exists():
+        post.favorites.remove(request.user)
+    else:
+        post.favorites.add(request.user)
+
+    return HttpResponse(status=204)
+
+
+def favorite_list(request):
+    posts_favorites = Post.objects.filter(favorites=request.user)
+
+    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
+    return render(request, "pages/posts_favorites_list.html", ctx)
+
