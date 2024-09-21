@@ -98,3 +98,58 @@
     border-top: 1px solid #eaecef;
     margin: 1rem 0;
 }
+
+
+
+/* Estilo del botón estrella */
+.favorite-star {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+/* Estilo del ícono de estrella */
+.favorite-star .star-icon {
+    width: 50px;
+    height: 50px;
+    stroke: #aaa;
+    /* Color gris inicial */
+    fill: none;
+    transition: stroke 0.3s, fill 0.3s;
+}
+
+/* Cambia al pasar el ratón (hover) */
+.favorite-star:hover .star-icon {
+    stroke: #ffa500;
+    /* Color naranja */
+}
+
+/* Efecto visual cuando está activo (clicado) */
+.favorite-star.active .star-icon {
+    stroke: #ffa500;
+    /* Borde naranja */
+    fill: #ffa500;
+    /* Relleno amarillo */
+    animation: shine 0.4s ease-out;
+}
+
+/* Efecto de brillo al hacer clic */
+@keyframes shine {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0px 0px 0px rgba(255, 165, 0, 0.7));
+    }
+
+    50% {
+        transform: scale(1.2);
+        filter: drop-shadow(0px 0px 10px rgba(255, 165, 0, 0.7));
+    }
+
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0px 0px 0px rgba(255, 165, 0, 0.7));
+    }
+}

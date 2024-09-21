@@ -21,7 +21,7 @@
                             <td>{{ post.status }}</td>
                             <td>{{ post.creation_date }}</td>
                             <td class="actions">
-                                {% if perm_create or perm_edit%}
+                                {% if perm_create or perm_edit %}
                                     <a href="{% url 'edit_post' post.id %}"
                                        class="btn btn-sm btn-primary"
                                        style="background-color: black;
@@ -29,9 +29,11 @@
                                               color:white">Editar</a>
                                 {% endif %}
                                 {% if "delete" in permisos %}
-                                <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-danger" style="background-color: black;
-                                          border-color: black;
-                                          color:white">Eliminar</a>
+                                    <a href="{% url 'delete_post' post.id %}"
+                                       class="btn btn-sm btn-danger"
+                                       style="background-color: black;
+                                              border-color: black;
+                                              color:white">Eliminar</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -39,11 +41,11 @@
                 </tbody>
             </table>
             {% if perm_create %}
-            <a href="{% url 'post_create' %}"
-               class="btn btn-primary"
-               style="background-color: black;
-                      border-color: black;
-                      color:white">Crear Post</a>
+                <a href="{% url 'post_create' %}"
+                   class="btn btn-primary"
+                   style="background-color: black;
+                          border-color: black;
+                          color:white">Crear Post</a>
             {% endif %}
             <a href="{% url 'home' %}"
                class="btn btn-secondary"

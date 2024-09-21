@@ -24,6 +24,15 @@
                 </div>
                 <!-- Contenido del post -->
                 <div id="content" class="markdown-content">{{ post.content|safe }}</div>
+                <!-- Botón de estrella -->
+                <a title="{% if es_favorito %}Eliminar de favoritos {% else %}Agregar a favoritos{% endif %}"
+                    class="favorite-star {% if es_favorito %}active{% endif %}" id="favorite-star" onclick="toggleStar()"
+                    href="{% url 'post_favorite' post.id %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="star-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2" />
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
@@ -57,4 +66,5 @@
             document.getElementById("lightbox").style.display = "none";
         }
     </script>
+    <script src="{% static 'posts/favorite_button.js' %}"></script>
 {% endblock %}
