@@ -14,3 +14,7 @@ class UserProfile(AbstractUser):
     )
 
     pagos = models.ManyToManyField(Category, through=Payment, related_name="users_paid")
+    receive_notifications = models.BooleanField(
+        default=False,
+        verbose_name="Desea recibir notificaciones sobre nuevas publicaciones?",
+    )

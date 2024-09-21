@@ -9,6 +9,7 @@ from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.models import Category
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
+from modulos.Pagos.models import Payment
 
 
 class CategoryCreateView(generic.CreateView):
@@ -50,7 +51,6 @@ class CategoryListView(ListView):
         context = super().get_context_data(**kwargs)
         return new_ctx(self.request, context)
 
-
 class CategoryDetailView(DetailView):
     model = Category
     template_name = "category_detail.html"
@@ -58,50 +58,67 @@ class CategoryDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         category = self.get_object()
+        user = request.user
 
-        # Check if the user has access to this category
-        if not user_has_access_to_category(request.user, category):
-            # If the category is 'Suscripcion', show the subscription modal
-            if category.tipo == category.SUSCRIPCION:
+        # Permitir acceso a categorías gratuitas sin autenticación
+        if category.tipo == category.GRATIS:
+            return super().get(request, *args, **kwargs)
+
+        # Para categorías de suscripción y premium, verificar acceso del usuario
+        if user.is_authenticated:
+            if not user_has_access_to_category(user, category):
+                # Para categorías premium, verificar pago completado
+                if category.tipo == category.PREMIUM:
+                    if not Payment.objects.filter(
+                        user=user, category=category, status="completed"
+                    ).exists():
+                        return render(
+                            request,
+                            "access_denied_modal.html",
+                            {
+                                "category": category,
+                                "modal_message": "Para poder ingresar a esta categoría debes suscribirte pagando 1$.",
+                            },
+                        )
+                # Para categorías de suscripción, mostrar mensaje de acceso restringido
+                elif category.tipo == category.SUSCRIPCION:
+                    return render(
+                        request,
+                        "access_denied_modal.html",
+                        {
+                            "category": category,
+                            "modal_message": "Para poder ingresar a esta categoría debes ser suscriptor de nuestra web.",
+                        },
+                    )
+                else:
+                    return render(
+                        request,
+                        "access_denied_modal.html",
+                        {
+                            "category": category,
+                            "modal_message": "No tienes acceso a esta categoría.",
+                        },
+                    )
+        else:
+            # Usuario no autenticado, mostrar mensaje de acceso restringido para premium o suscripción
+            if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
                 return render(
                     request,
                     "access_denied_modal.html",
                     {
                         "category": category,
-                        "modal_message": "Para poder ingresar a esta categoría debes ser suscriptor de nuestra web. Por favor, inicia sesión o crea una cuenta.",
+                        "modal_message": "Para poder ingresar a esta categoría debes iniciar sesión o registrarte.",
                     },
                 )
-            # If the category is 'Premium', check if the user is logged in
-            elif category.tipo == category.PREMIUM:
-                if request.user.is_authenticated:
-                    # If the user is logged in but doesn't have access, show payment option
-                    return render(
-                        request,
-                        "access_denied_modal.html",
-                        {
-                            "category": category,
-                            "modal_message": "Para poder ingresar a esta categoría debes de suscribirte pagando 1$.",
-                        },
-                    )
-                else:
-                    # If the user is not logged in, prompt them to log in or sign up
-                    return render(
-                        request,
-                        "access_denied_modal.html",
-                        {
-                            "category": category,
-                            "modal_message": "Debes iniciar sesión o registrarte para poder suscribirte a esta categoría premium.",
-                        },
-                    )
 
-        # If the user has access, proceed with the normal detail view
+        # Si el usuario tiene acceso, renderizar el detalle de la categoría
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Add related posts to the context
         category = self.get_object()
+
+        # Filtrar publicaciones relacionadas
         context["posts"] = Post.objects.filter(category=category)
         return new_ctx(self.request, context)
 

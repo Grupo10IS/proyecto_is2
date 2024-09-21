@@ -9,13 +9,15 @@ from modulos.Authorization.permissions import (
     POST_DELETE_PERMISSION,
     POST_EDIT_PERMISSION,
 )
-
+from modulos.UserProfile.models import UserProfile
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
-
+from modulos.Authorization.permissions import user_has_access_to_category
+from modulos.Pagos.models import Payment
+from django.contrib.auth.models import AnonymousUser
 
 def home_view(req):
     """
@@ -38,21 +40,51 @@ def home_view(req):
 
 
 def view_post(request, id):
-    """
-    Vista de detalle de publicación 'PostDetailView'.
-
-    Esta vista muestra los detalles de un solo objeto 'Post'.
-    Utiliza el modelo 'Post' para recuperar la instancia específica que se va a mostrar y
-    utiliza la plantilla 'posts/post_detail.html' para renderizar el contenido.
-
-    Attributes:
-        model (Model): El modelo utilizado por la vista ('Post').
-        template_name (str): La plantilla HTML utilizada para renderizar el detalle de la publicación.
-        context_object_name (str): El nombre de la variable de contexto que representa el objeto 'Post'.
-    """
-
     post = get_object_or_404(Post, id=id)
-    # parse tags
+    user = request.user
+    category = post.category
+
+    # Si el usuario no está autenticado
+    if isinstance(user, AnonymousUser):
+        # Mostrar modal de acceso denegado para categorías premium y de suscripción
+        if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
+            return render(
+                request,
+                "access_denied_modal.html",
+                {
+                    "category": category,
+                    "modal_message": "Para poder ver esta publicación debes iniciar sesión o registrarte.",
+                },
+            )
+
+    # Si el usuario está autenticado, verificar acceso a la categoría del post
+    if user.is_authenticated and not user_has_access_to_category(user, category):
+        if category.tipo == category.PREMIUM:
+            # Verificar si el usuario ha completado un pago para esta categoría
+            if not Payment.objects.filter(
+                user=user, category=category, status="completed"
+            ).exists():
+                # Mostrar mensaje de pago necesario para ver el post
+                return render(
+                    request,
+                    "access_denied_modal.html",
+                    {
+                        "category": category,
+                        "modal_message": "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.",
+                    },
+                )
+        elif category.tipo == category.SUSCRIPCION:
+            # Mostrar mensaje de suscripción necesaria
+            return render(
+                request,
+                "access_denied_modal.html",
+                {
+                    "category": category,
+                    "modal_message": "Para poder ver esta publicación debes ser suscriptor de nuestra web.",
+                },
+            )
+
+    # Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle del post
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
 
