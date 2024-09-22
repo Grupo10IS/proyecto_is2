@@ -68,22 +68,6 @@ modulos.Posts.migrations.0008\_alter\_post\_author\_alter\_post\_category\_and\_
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.migrations.0009\_post\_favorite module
-----------------------------------------------------
-
-.. automodule:: modulos.Posts.migrations.0009_post_favorite
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-modulos.Posts.migrations.0010\_remove\_post\_favorite\_post\_favorites module
------------------------------------------------------------------------------
-
-.. automodule:: modulos.Posts.migrations.0010_remove_post_favorite_post_favorites
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
