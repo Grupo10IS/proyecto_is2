@@ -40,7 +40,7 @@
 <a class="viewcode-back" href="../../docs/source/modulos.html#modulos.utils.new_ctx">[documentos]</a>
 <span class="k">def</span> <span class="nf">new_ctx</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates a wrapper context dictionary for rendering templates, based on user permissions </span>
+<span class="sd">    Creates a wrapper context dictionary for rendering templates, based on user permissions</span>
 <span class="sd">    and additional parameters. It merges a given custom context passed as parameter with</span>
 <span class="sd">    the common context for the rest of the pages and views.</span>
 
@@ -82,7 +82,7 @@
     <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
         <span class="s2">&quot;permisos&quot;</span><span class="p">:</span> <span class="n">sitios</span><span class="p">,</span>
-        <span class="s2">&quot;post_search_input&quot;</span><span class="p">:</span> <span class="n">SearchPostForm</span>
+        <span class="s2">&quot;post_search_input&quot;</span><span class="p">:</span> <span class="n">SearchPostForm</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
