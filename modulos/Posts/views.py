@@ -18,6 +18,7 @@ from modulos.utils import new_ctx
 from modulos.Authorization.permissions import user_has_access_to_category
 from modulos.Pagos.models import Payment
 from django.contrib.auth.models import AnonymousUser
+from django.views.generic import TemplateView
 
 def home_view(req):
     """
@@ -34,7 +35,7 @@ def home_view(req):
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
     """
 
-    ctx = new_ctx(req, {"posts": Post.objects.all()[:10]})
+    ctx = new_ctx(req, {"posts": Post.objects.all()[:20]})
 
     return render(req, "pages/home.html", context=ctx)
 
@@ -201,3 +202,18 @@ def search_post(request):
     else:
         # O redirige a donde sea apropiado si no hay búsqueda
         return redirect("home")
+
+
+class ContenidosView(TemplateView):
+    template_name = "pages/list_contenidos.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener todas las categorías
+        categories = Category.objects.all()
+        # Crear un diccionario para almacenar los posts por categoría
+        posts_by_category = {
+            category: Post.objects.filter(category=category) for category in categories
+        }
+        context["posts_by_category"] = posts_by_category
+        return context

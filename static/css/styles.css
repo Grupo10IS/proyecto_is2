@@ -74,6 +74,38 @@ a img:hover {
     cursor: pointer;
 }
 /*Home Posts*/
+.post-featured {
+    position: relative;
+    border-radius: 8px;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    /* Ocupar la mitad derecha */
+    background-size: cover;
+    filter: blur(5px);
+    /* Aplicar difuminado */
+    z-index: 1;
+    /* Detrás del contenido */
+}
+
+.text-container {
+    padding-left: 15px;
+    /* Ajustar el padding para texto */
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Fondo semitransparente para texto */
+    border-radius: 8px;
+    /* Bordes redondeados */
+}
+
+.post-featured {
+    background-color: rgba(255, 255, 255, 0.8);
+}
 .fw-bold {
     transition: transform 0.3s ease;
     color: #000000;
