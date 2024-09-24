@@ -1,12 +1,16 @@
 from os import getenv
 
-# Cargar configuraciones compartidas entre dev y produccion
+# Cargar configuraciones compartidas entre dev y producción
 from .envs.common import *
 
-# Cargar la configuracion especifica de produccion si es que la variable de entorno
-# PRODUCTION_DEPLOY esta seteada a true.
+# Cargar la configuración específica de producción si DJANGO_ENV está seteada a "production".
+import os
+print(f"DJANGO_ENV is: {os.getenv('DJANGO_ENV')}")
 
-if getenv("PRODUCTION_DEPLOY") == "true":
+if getenv("DJANGO_ENV") == "production":
     from .envs.prod import *
+    print("Modo Producción")
 else:
     from .envs.dev import *
+    print("Modo Desarrollo")
+
