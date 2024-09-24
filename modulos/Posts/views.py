@@ -236,6 +236,7 @@ def search_post(request):
     return redirect("home")
 
 
+@login_required
 def favorite_post(request, id):
     """
     Vista para marcar o desmarcar un post como favorito.
@@ -264,6 +265,7 @@ def favorite_post(request, id):
     return HttpResponse(status=204)  # Devuelve un código de estado 204
 
 
+@login_required
 def favorite_list(request):
     """
     Vista para listar los posts favoritos del usuario.

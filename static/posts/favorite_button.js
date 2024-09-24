@@ -25,13 +25,19 @@
  * </button>
  */
 function toggleStar() {
+
     const starBtn = document.getElementById('favorite-star');
+    const textElement = document.getElementById('favorite-text'); // Obtiene el span que contiene el texto
+
     if (starBtn.classList.contains('active')) {
         starBtn.classList.remove('active');
         starBtn.title = "Agregar a favoritos";
+        textElement.textContent = 'Agregar a favoritos';
     }
     else {
         starBtn.classList.toggle('active');
         starBtn.title = "Eliminar de favoritos";
+        textElement.textContent = 'Eliminar de favoritos';
     }
+
 }

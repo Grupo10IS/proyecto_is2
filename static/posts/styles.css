@@ -103,6 +103,9 @@
 
 /* Estilo del botón estrella */
 .favorite-star {
+    text-decoration: none;
+    color: grey;
+        /* Quita el subrayado */
     background: none;
     border: none;
     outline: none;
@@ -124,7 +127,11 @@
 /* Cambia al pasar el ratón (hover) */
 .favorite-star:hover .star-icon {
     stroke: #ffa500;
-    /* Color naranja */
+}
+/* Cambia al pasar el ratón (hover) */
+.favorite-star:hover{
+    stroke: #ffa500;
+    color: rgba(114, 73, 38, 0.559);
 }
 
 /* Efecto visual cuando está activo (clicado) */
