@@ -232,6 +232,33 @@ def search_post(request):
         )  # Crea el contexto con los resultados
         return render(request, "pages/home.html", context=ctx)
 
+    # Redirige a la vista de inicio si no hay búsqueda válida
+    return redirect("home")
+
+
+@login_required
+def favorite_post(request, id):
+    """
+    Vista para marcar o desmarcar un post como favorito.
+
+    Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos
+    del usuario actual.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+        id (int): El ID del post a marcar como favorito.
+
+    Returns:
+        HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).
+    """
+    post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
+
+    if post.favorites.filter(
+        id=request.user.id
+    ).exists():  # Verifica si el post ya es favorito
+        post.favorites.remove(
+            request.user
+        )  # Elimina al usuario de la lista de favoritos
     else:
         # O redirige a donde sea apropiado si no hay búsqueda
         return redirect("home")
