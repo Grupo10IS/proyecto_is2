@@ -9,10 +9,18 @@ from modulos.UserProfile.models import UserProfile
 # Create your models here.
 class Post(models.Model):
     DRAFT = "Borrador"
+    PENDING_REVIEW = "Esperando revision"
+    PENDING_PUBLICATION = "Esperando publicacion"
     PUBLISHED = "Publicado"
-    REJECTED = "Rechazado"
+    INACTIVE = "INACTIVE"
 
-    STATUS_CHOICES = [(DRAFT, DRAFT), (REJECTED, REJECTED), (PUBLISHED, PUBLISHED)]
+    STATUS_CHOICES = [
+        (DRAFT, DRAFT),
+        (PENDING_REVIEW, PENDING_REVIEW),
+        (PENDING_PUBLICATION, PENDING_PUBLICATION),
+        (PUBLISHED, PUBLISHED),
+        (INACTIVE, INACTIVE),
+    ]
 
     title = models.CharField(max_length=80, verbose_name="Titulo")
     image = models.ImageField(
@@ -23,10 +31,17 @@ class Post(models.Model):
         Category, on_delete=models.PROTECT, null=True, verbose_name="Categoria"
     )
     status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default=DRAFT, verbose_name="Status"
+        max_length=30, choices=STATUS_CHOICES, default=DRAFT, verbose_name="Status"
     )
     creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion"
+    )
+    scheduled_publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion agendada"
+    )
     author = models.ForeignKey(
         UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
     )
+    # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")

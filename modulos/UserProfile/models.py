@@ -22,3 +22,6 @@ class UserProfile(AbstractUser):
     phone_number = models.CharField(
         max_length=15, verbose_name="Número de teléfono", blank=True
     )
+
+    def has_perm(self, perm: str, obj=None) -> bool:
+        return super().has_perm("UserProfile." + perm, obj)

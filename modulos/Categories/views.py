@@ -45,9 +45,8 @@ class CategoryDetailView(DetailView):
 
         # Obtener los posts relacionados a esta categoría
         category = self.get_object()
-        context["posts"] = Post.objects.filter(
-            category=category
-        )  # Filtrar los posts por categoría
+        context["posts"] = Post.objects.filter(category=category, status=Post.PUBLISHED)
+
         return new_ctx(self.request, context)
 
 
