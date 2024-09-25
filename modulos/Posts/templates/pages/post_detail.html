@@ -18,6 +18,10 @@
                             {% if post.tags %}
                                 {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
                             {% endif %}
+                            <div class="d-flex justify-content-between align-items-center mb-3"></div>
+                                <!-- Botón de Reportar -->
+                                <button class="btn btn-outline-danger" id="reportButton">Reportar</button>
+                            </div>
                         </small>
                     </p>
                     <!-- Puedes añadir más detalles aquí como categorías o etiquetas -->
@@ -27,6 +31,55 @@
             </div>
         </div>
     </div>
+    <script>
+        const loginUrl = "{% url 'login' %}";  // URL de inicio de sesión
+
+        const isAuthenticated = {% if user.is_authenticated %}true{% else %} false{% endif %};
+
+        document.getElementById('reportButton').addEventListener('click', function () {
+            if (isAuthenticated) {
+                var myModal = new bootstrap.Modal(document.getElementById('reportModal'));
+                myModal.show();
+            } else {
+                window.location.href = loginUrl;  // Redirige a la URL de inicio de sesión
+            }
+        });
+    </script>
+    <!-- Modal de Reporte -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Reportar Contenido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportForm">
+                        <div class="mb-3">
+                            <label for="reportReason" class="form-label">Motivo del reporte</label>
+                            <select class="form-select" id="reportReason" onchange="toggleCustomReason(this)">
+                                <option value="" disabled selected>Selecciona un motivo</option>
+                                <option value="Spam">Spam</option>
+                                <option value="Inapropiado">Contenido inapropiado</option>
+                                <option value="Violencia">Violencia</option>
+                                <option value="Discriminación">Discriminación</option>
+                                <option value="Otro">Otro (especificar)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="customReasonDiv" style="display: none;">
+                            <label for="customReason" class="form-label">Especifica el motivo</label>
+                            <textarea class="form-control" id="customReason" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="submitReport()">Enviar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'posts/reports.js' %}"></script>
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close">&times;</span>
         <img id="lightboxImage" class="lightbox-content">
