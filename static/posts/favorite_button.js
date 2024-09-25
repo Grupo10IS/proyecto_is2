@@ -24,7 +24,7 @@
  *   ★
  * </button>
  */
-function toggleStar() {
+/*function toggleStar() {
 
     const starBtn = document.getElementById('favorite-star');
     const textElement = document.getElementById('favorite-text'); // Obtiene el span que contiene el texto
@@ -40,4 +40,47 @@ function toggleStar() {
         textElement.textContent = 'Eliminar de favoritos';
     }
 
+}*/
+function toggleStar() {
+    const starBtn = document.getElementById('favorite-star');
+    const textElement = document.getElementById('favorite-text');
+    const postId = starBtn.dataset.postId;
+
+    fetch(`/posts/${postId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    }).then(response => {
+        if (response.ok) {
+            if (starBtn.classList.contains('active')) {
+                starBtn.classList.remove('active');
+                starBtn.title = "Agregar a favoritos";
+                textElement.textContent = 'Agregar a favoritos';
+            } else {
+                starBtn.classList.add('active');
+                starBtn.title = "Eliminar de favoritos";
+                textElement.textContent = 'Eliminar de favoritos';
+            }
+        }
+    });
 }
+
+// Función para obtener el token CSRF
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Si este cookie string comienza con el nombre que buscamos
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+

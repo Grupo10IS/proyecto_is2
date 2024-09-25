@@ -260,8 +260,9 @@ def favorite_post(request, id):
             request.user
         )  # Elimina al usuario de la lista de favoritos
     else:
-        # O redirige a donde sea apropiado si no hay búsqueda
-        return redirect("home")
+        post.favorites.add(request.user)  # Agrega al usuario a la lista de favoritos
+
+    return HttpResponse(status=204)  # Devuelve un código de estado 20
 
 
 @login_required
