@@ -262,3 +262,28 @@ def favorite_post(request, id):
     else:
         # O redirige a donde sea apropiado si no hay búsqueda
         return redirect("home")
+
+
+@login_required
+def favorite_list(request):
+    """
+    Vista para listar los posts favoritos del usuario.
+
+    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+
+    Returns:
+        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
+    """
+    posts_favorites = Post.objects.filter(
+        favorites=request.user
+    )  # Obtiene los posts favoritos del usuario
+
+    ctx = new_ctx(
+        request, {"posts_favorites": posts_favorites}
+    )  # Crea el contexto con los posts favoritos
+    return render(
+        request, "pages/posts_favorites_list.html", ctx
+    )  # Renderiza la plantilla correspondiente
