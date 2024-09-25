@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from modulos.Authorization.permissions import *
 from modulos.Categories.models import Category
-from modulos.Posts.models import Post
+from modulos.Posts.models import Post, Revision
 
 
 @pytest.mark.django_db
@@ -171,3 +171,52 @@ def test_post_manage_view(client):
     assert "pages/post_list.html" in [
         t.name for t in response.templates
     ], "Template 'post_list.html' should be used."
+
+
+@pytest.mark.django_db
+def test_review_post_view(client):
+    """
+    Test the review post view for post revision creation
+    """
+    # Create user and login
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    client.login(username="testuser", password="password")
+    user.user_permissions.add(Permission.objects.get(codename=POST_EDIT_PERMISSION))
+
+    # Create a post with valid data and status not DRAFT
+    category = Category.objects.create(name="test_category", description="descripcion")
+    post = Post.objects.create(
+        title="New Test Post",
+        content="Content for new test post",
+        category=category,
+        status=Post.PUBLISHED,  # Important: Set status to something other than DRAFT
+        version=1,
+        author=user,
+    )
+
+    # Verify post exists
+    assert Post.objects.filter(
+        title="New Test Post"
+    ).exists(), "Post should exist in the database after creation."
+
+    # Now, simulate editing the post
+    url = reverse("edit_post", args=[post.id])
+    data = {
+        "title": "Updated Test Post",
+        "content": "Updated content for test post",
+        "category": category.id,
+    }
+    client.post(url, data)
+
+    # Verify that the post is updated
+    post.refresh_from_db()
+    assert post.title == "Updated Test Post", "Post title should be updated"
+
+    # Verify that a revision was created
+    assert Revision.objects.filter(post_id=post.id).exists(), "A revision should be created"
+    revision = Revision.objects.get(post_id=post.id)
+    assert (
+        revision.version == post.version - 1
+    ), "Revision version should be one less than the updated post version"

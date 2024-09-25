@@ -11,13 +11,14 @@ from modulos.Authorization.permissions import (POST_APPROVE_PERMISSION,
                                                POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
-                                               POST_EDIT_PERMISSION,
-                                               POST_PUBLISH_PERMISSION, POST_REJECT_PERMISSION, POST_REVIEW_PERMISSION)
+                                               POST_PUBLISH_PERMISSION,
+                                               POST_REJECT_PERMISSION,
+                                               POST_REVIEW_PERMISSION)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
-from modulos.Posts.models import Post
+from modulos.Posts.models import NewRevision, Post, Revision
 from modulos.utils import new_ctx
 
 
@@ -89,11 +90,6 @@ def create_post(request):
             return HttpResponseBadRequest("Datos proporcionados invalidos")
 
         p = form.save(commit=False)
-        if "save_draft" in request.POST:
-            p.status = Post.DRAFT
-        elif "submit_review" in request.POST:
-            p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
-
         p.author = request.user
         p.save()
 
@@ -150,24 +146,31 @@ def delete_post(request, id):
     return render(request, "pages/post_confirm_delete.html", ctx)
 
 
-# Vista para editar un post
 @login_required
 @permissions_required([POST_EDIT_PERMISSION])
 def edit_post(request, id):
+    """
+    Cuando se realiza una modificacion de un post y el mismo se encuentra en cualquier estado
+    que no sea borrador, entonces se guarda una revision del estado anterior del post a modo de historial de
+    cambios.
+    """
     post = get_object_or_404(Post, pk=id)
     if request.method == "POST":
         form = NewPostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            p = form.save(commit=False)
+        if not form.is_valid():
+            return HttpResponseBadRequest("Datos proporcionados invalidos")
 
-            if "save_draft" in request.POST:
-                p.status = Post.DRAFT
-            elif "submit_review" in request.POST:
-                p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
+        post = form.save(commit=False)
 
-            p.save()
+        # actualizar la version y generar una revision si no es un borrador
+        if post.status != Post.DRAFT:
+            revision = NewRevision(post)
+            revision.save()
+            post.version += 1
 
-            return redirect("post_list")
+        post.save()
+
+        return redirect("post_list")
 
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
@@ -182,7 +185,6 @@ def search_post(request):
 
         ctx = new_ctx(request, {"posts": results[:10]})
         return render(request, "pages/home.html", context=ctx)
-
     else:
         # O redirige a donde sea apropiado si no hay búsqueda
         return redirect("home")
@@ -227,6 +229,8 @@ def reject_post(request, id):
     post = get_object_or_404(Post, id=id)
     post.status = Post.DRAFT
     post.save()
+    # FIX: generar revision cuando se realiza un rechazo, ademas de hacer una suerte de form
+    # para poder anadir comentarios al rechazo.
     return redirect("kanban_board")
 
 
@@ -252,7 +256,7 @@ def kanban_board(request):
                 "pending_review": pending_review,
                 "pending_publication": pending_publication,
                 "published": recently_published,
-                # permisos para mostrar los botones
+                # permisos para mostrar las acciones sobre las publicaciones
                 "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
                 "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
                 "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),

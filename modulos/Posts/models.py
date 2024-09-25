@@ -43,5 +43,26 @@ class Post(models.Model):
     author = models.ForeignKey(
         UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
     )
-    # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
+
+    version = models.IntegerField(default=0)
+
+
+class Revision(Post):
+    post_id = models.IntegerField(null=False)
+
+def NewRevision(post: Post) -> Revision:
+    return Revision(
+        title=post.title,
+        image=post.image,
+        content=post.content,
+        category=post.category,
+        status=post.status,
+        creation_date=post.creation_date,
+        publication_date=post.publication_date,
+        scheduled_publication_date=post.scheduled_publication_date,
+        author=post.author,
+        tags=post.tags,
+        version=post.version,
+        post_id=post.id,
+    )

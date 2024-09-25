@@ -21,7 +21,6 @@ class Category(models.Model):
         TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo 'PREMIUM' y 'GRATIS'.
     """
 
-    # FIX: STRING MAGICOS YA OTRA VEZ
     ACTIVO = "Activo"
     INACTIVO = "Inactivo"
 
