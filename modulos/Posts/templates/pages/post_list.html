@@ -21,6 +21,9 @@
                             <td>{{ post.status }}</td>
                             <td>{{ post.creation_date }}</td>
                             <td class="actions">
+                                <a href="{% url 'post_versions' post.id %}" class="btn btn-sm btn-danger" style="background-color: black;
+                                    border-color: black;
+                                    color:white">Versiones</a>
                                 {% if perm_create or perm_edit%}
                                     <a href="{% url 'edit_post' post.id %}"
                                        class="btn btn-sm btn-primary"

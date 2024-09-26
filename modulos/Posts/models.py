@@ -48,17 +48,39 @@ class Post(models.Model):
     version = models.IntegerField(default=0)
 
 
-class Revision(Post):
+class Version(models.Model):
     post_id = models.IntegerField(null=False)
+    title = models.CharField(max_length=80, verbose_name="Titulo")
+    image = models.ImageField(
+        upload_to="posts_images/", verbose_name="Portada", blank=True, null=True
+    )
+    content = MDTextField(name="content", verbose_name="Contenido", null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, null=True, verbose_name="Categoria"
+    )
+    status = models.CharField(max_length=30, verbose_name="Status")
+    creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion"
+    )
+    scheduled_publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion agendada"
+    )
+    author = models.ForeignKey(
+        UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
+    )
+    tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
 
-def NewRevision(post: Post) -> Revision:
-    return Revision(
+    version = models.IntegerField(default=0)
+
+
+def NewVersion(post: Post) -> Version:
+    return Version(
         title=post.title,
         image=post.image,
         content=post.content,
         category=post.category,
         status=post.status,
-        creation_date=post.creation_date,
         publication_date=post.publication_date,
         scheduled_publication_date=post.scheduled_publication_date,
         author=post.author,

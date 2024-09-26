@@ -1,5 +1,8 @@
+import difflib
+import logging
 from datetime import timedelta
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
@@ -18,7 +21,7 @@ from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
-from modulos.Posts.models import NewRevision, Post, Revision
+from modulos.Posts.models import NewVersion, Post, Version
 from modulos.utils import new_ctx
 
 
@@ -151,26 +154,28 @@ def delete_post(request, id):
 def edit_post(request, id):
     """
     Cuando se realiza una modificacion de un post y el mismo se encuentra en cualquier estado
-    que no sea borrador, entonces se guarda una revision del estado anterior del post a modo de historial de
+    que no sea borrador, entonces se guarda una version del estado anterior del post a modo de historial de
     cambios.
     """
     post = get_object_or_404(Post, pk=id)
+
     if request.method == "POST":
+        version = NewVersion(post)
+
         form = NewPostForm(request.POST, request.FILES, instance=post)
-        if not form.is_valid():
-            return HttpResponseBadRequest("Datos proporcionados invalidos")
 
-        post = form.save(commit=False)
-
-        # actualizar la version y generar una revision si no es un borrador
-        if post.status != Post.DRAFT:
-            revision = NewRevision(post)
-            revision.save()
+        if form.is_valid():
+            form.save()
             post.version += 1
+            post.save()
 
-        post.save()
+            # Guardar la revisión solo si el post no es un borrador
+            if post.status != Post.DRAFT:
+                version.save()
 
-        return redirect("post_list")
+            return redirect("post_list")
+        else:
+            print(f"Formulario inválido")
 
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
@@ -264,3 +269,40 @@ def kanban_board(request):
             },
         ),
     )
+
+
+@login_required
+def post_versions_list(request, id):
+    get_object_or_404(Post, pk=id)
+
+    versions = Version.objects.filter(post_id=id)
+    ctx = new_ctx(request, {"versions": versions})
+
+    return render(request, "pages/post_versions_list.html", ctx)
+
+
+@login_required
+def post_version_detail(request, post_id, version):
+    original = get_object_or_404(Post, pk=post_id)
+    version = get_object_or_404(Version, version=version, post_id=original.id)
+
+    post_content = original.content.splitlines()
+    version_content = version.content.splitlines()
+
+    diff = difflib.unified_diff(
+        version_content,
+        post_content,
+        fromfile="Comparacion.md",
+        tofile="Comparacion.md",
+        lineterm="",
+    )
+
+    diff = "\n".join(list(diff))
+
+    # Pasamos el diff a la plantilla
+    ctx = new_ctx(
+        request,
+        {"original": original, "version": version, "diff_content": diff},
+    )
+
+    return render(request, "pages/post_version_detail.html", ctx)

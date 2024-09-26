@@ -84,26 +84,3 @@
     {% block expand_nav %}
     {% endblock expand_nav %}
 </header>
-<script>
-    function resaltarPalabrasClave() {
-        const input = document.querySelector('#id_input');
-        const regex = /#(\w+):/g; // Expresión regular para encontrar palabras clave
-
-        function resaltarTexto() {
-            const valor = input.value;
-            const resultado = valor.replace(regex, '<span class="text-primary">$&</span>');
-            input.innerHTML = resultado;
-        }
-
-        // Escuchar cambios en el input
-        input.addEventListener(input, resaltarTexto);
-
-        // Resaltar inicialmente si hay texto
-        resaltarTexto();
-    }
-
-    // Llamar la función cuando el DOM esté cargado
-    document.addEventListener('DOMContentLoaded', function() {
-        resaltarPalabrasClave();
-    });
-</script>

@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from modulos.Authorization.permissions import *
 from modulos.Categories.models import Category
-from modulos.Posts.models import Post, Revision
+from modulos.Posts.models import Post, Version
 
 
 @pytest.mark.django_db
@@ -176,7 +176,7 @@ def test_post_manage_view(client):
 @pytest.mark.django_db
 def test_review_post_view(client):
     """
-    Test the review post view for post revision creation
+    Test the review post view for post version creation
     """
     # Create user and login
     user = get_user_model().objects.create_user(
@@ -214,9 +214,9 @@ def test_review_post_view(client):
     post.refresh_from_db()
     assert post.title == "Updated Test Post", "Post title should be updated"
 
-    # Verify that a revision was created
-    assert Revision.objects.filter(post_id=post.id).exists(), "A revision should be created"
-    revision = Revision.objects.get(post_id=post.id)
+    # Verify that a version was created
+    assert Version.objects.filter(post_id=post.id).exists(), "A version should be created"
+    version = Version.objects.get(post_id=post.id)
     assert (
-        revision.version == post.version - 1
-    ), "Revision version should be one less than the updated post version"
+        version.version == post.version - 1
+    ), "version version should be one less than the updated post version"
