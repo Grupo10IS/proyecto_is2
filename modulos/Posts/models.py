@@ -88,3 +88,9 @@ def NewVersion(post: Post) -> Version:
         version=post.version,
         post_id=post.id,
     )
+
+
+class Log(models.Model):
+    creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    message = models.CharField(max_length=800, verbose_name="description")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)

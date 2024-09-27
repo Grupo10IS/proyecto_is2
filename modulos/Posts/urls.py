@@ -18,5 +18,5 @@ urlpatterns = [
     # -- historial y estadisticas
     path("<int:id>/versions", post_versions_list, name="post_versions"),
     path("<int:post_id>/versions/<int:version>/", post_version_detail, name="post_version_detail"),
-    # path("<int:id>/logs", post_logs_view, name="post_logs"),
+    path("<int:id>/logs", post_log_list, name="post_log_list"),
 ]

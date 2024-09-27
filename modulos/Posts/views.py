@@ -10,7 +10,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (POST_APPROVE_PERMISSION,
+from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
+                                               POST_APPROVE_PERMISSION,
                                                POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
@@ -21,7 +22,7 @@ from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
-from modulos.Posts.models import NewVersion, Post, Version
+from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
 
 
@@ -240,6 +241,7 @@ def reject_post(request, id):
 
 
 @login_required
+@permissions_required([KANBAN_VIEW_PERMISSION])
 def kanban_board(request):
     # Filtrar los posts según el estado
     drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
@@ -272,6 +274,7 @@ def kanban_board(request):
 
 
 @login_required
+@permissions_required([POST_REVIEW_PERMISSION])
 def post_versions_list(request, id):
     get_object_or_404(Post, pk=id)
 
@@ -282,8 +285,13 @@ def post_versions_list(request, id):
 
 
 @login_required
+@permissions_required([POST_REVIEW_PERMISSION])
 def post_version_detail(request, post_id, version):
     original = get_object_or_404(Post, pk=post_id)
+
+    if not request.user.has_perm(POST_REVIEW_PERMISSION) or original.author != request.user:
+        return HttpResponseForbidden("No tienes permisos para acceder a las versiones de este post")
+
     version = get_object_or_404(Version, version=version, post_id=original.id)
 
     post_content = original.content.splitlines()
@@ -306,3 +314,15 @@ def post_version_detail(request, post_id, version):
     )
 
     return render(request, "pages/post_version_detail.html", ctx)
+
+
+@login_required
+def post_log_list(request, id):
+    post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+        return HttpResponseForbidden("No tienes permisos para acceder a los logs de este post")
+
+    logs = Log.objects.filter(post=post).order_by("-creation_date")
+
+    return render(request, "pages/logs_list.html", new_ctx(request, {"logs": logs}))

@@ -16,3 +16,7 @@ class PostsConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "modulos.Posts"
+
+    def ready(self):
+        import modulos.Posts.signals
+
