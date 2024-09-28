@@ -258,3 +258,54 @@ def test_delete_post_view(client):
     assert not Post.objects.filter(
         id=post.id
     ).exists(), "El post debería haber sido eliminado."
+
+
+@pytest.mark.django_db
+def test_edit_post(client):
+    """
+    Test para la vista de edición de un post.
+    Verifica que un post existente se puede editar correctamente.
+    """
+    # Crea una categoría para el post
+    category = Category.objects.create(
+        name="Categoría de Prueba", description="Descripción de prueba"
+    )
+
+    # Crea un post asociado a la categoría
+    post = Post.objects.create(
+        title="Post a Editar", content="Contenido a editar", category=category
+    )
+
+    # Crea un usuario y asigna permisos
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    user.user_permissions.add(Permission.objects.get(codename=POST_EDIT_PERMISSION))
+
+    # Inicia sesión con el usuario creado
+    client.login(username="testuser", password="password")
+
+    # Obtiene la URL para editar el post
+    url = reverse("edit_post", args=[post.id])
+
+    # Datos para actualizar el post
+    data = {
+        "title": "Título editado",
+        "content": "Contenido editado",  
+        "category": category.id,  
+    }
+
+    # Realiza la solicitud POST para editar el post
+    response = client.post(url, data)
+
+    # Verifica que se redirigió correctamente
+    assert response.status_code == 302  
+
+    # Refresca el post desde la base de datos
+    post.refresh_from_db()
+
+    # Verifica que el post se haya actualizado correctamente
+    assert post.title == "Título editado"
+    assert (
+        post.content == "Contenido editado"
+    )  
