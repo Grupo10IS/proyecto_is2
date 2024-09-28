@@ -20,35 +20,34 @@
  *   en el botón que representa el favorito (estrellas o similar).
  * 
  * Ejemplo:
- * <button id="favorite-star" onclick="toggleStar()">
+ * <button id="favorite-star" onclick="toggleStar('{{ csrf_token }}')">
  *   ★
  * </button>
+ * 
+ * @param {string} csrftoken - El token CSRF para la protección contra ataques CSRF.
  */
-
 function toggleStar(csrftoken) {
     const starBtn = document.getElementById('favorite-star');
     const textElement = document.getElementById('favorite-text');
-    const postId = starBtn.dataset.postId;
+    const postId = starBtn.dataset.postId; // Obtiene el ID del post desde el atributo data-post-id del botón
 
     fetch(`/posts/${postId}/`, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': csrftoken,
+            'X-CSRFToken': csrftoken, // Envia el token CSRF en la cabecera
             'Content-Type': 'application/json',
         },
     }).then(response => {
         if (response.ok) {
             if (starBtn.classList.contains('active')) {
-                starBtn.classList.remove('active');
-                starBtn.title = "Agregar a favoritos";
-                textElement.textContent = 'Agregar a favoritos';
+                starBtn.classList.remove('active'); // Elimina la clase 'active' si ya está presente
+                starBtn.title = "Agregar a favoritos"; // Actualiza el tooltip
+                textElement.textContent = 'Agregar a favoritos'; // Cambia el texto del elemento asociado
             } else {
-                starBtn.classList.add('active');
-                starBtn.title = "Eliminar de favoritos";
-                textElement.textContent = 'Eliminar de favoritos';
+                starBtn.classList.add('active'); // Añade la clase 'active' si no está presente
+                starBtn.title = "Eliminar de favoritos"; // Actualiza el tooltip
+                textElement.textContent = 'Eliminar de favoritos'; // Cambia el texto del elemento asociado
             }
         }
     });
 }
-
-
