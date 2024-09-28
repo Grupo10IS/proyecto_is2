@@ -86,31 +86,3 @@
     {% block expand_nav %}
     {% endblock expand_nav %}
 </header>
-<script>
-    function resaltarPalabrasClave() {
-        const input = document.querySelector('#id_input');
-        const regex = /#(\w+):/g; // Expresión regular para encontrar palabras clave
-    
-        if (input) {
-            function resaltarTexto() {
-                const valor = input.value;
-                const resultado = valor.replace(regex, '<span class="text-primary">$&</span>');
-                input.value = resultado; // Use value instead of innerHTML for input fields
-            }
-    
-            // Escuchar cambios en el input (event type should be 'input')
-            input.addEventListener('input', resaltarTexto);
-    
-            // Resaltar inicialmente si hay texto
-            resaltarTexto();
-        } else {
-            console.warn("El elemento con ID #id_input no se encontró en el DOM.");
-        }
-    }
-    
-    // Llamar la función cuando el DOM esté cargado
-    document.addEventListener('DOMContentLoaded', function() {
-        resaltarPalabrasClave();
-    });
-    
-</script>
