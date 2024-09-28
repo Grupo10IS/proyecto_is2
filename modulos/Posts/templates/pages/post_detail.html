@@ -23,7 +23,7 @@
                                 <a title="{% if es_favorito %}Eliminar de favoritos{% else %}Agregar a favoritos{% endif %}"
                                    class="favorite-star {% if es_favorito %}active{% endif %} d-flex align-items-center"
                                    id="favorite-star"
-                                   onclick="{% if user.is_authenticated %}toggleStar(){% endif %}"
+                                   onclick="{% if user.is_authenticated %}toggleStar('{{ csrf_token }}'){% endif %}"
                                    data-post-id="{{ post.id }}"
                                    href="{% url 'post_favorite' post.id %}">
                                     <!-- Ícono SVG (estrella) -->
