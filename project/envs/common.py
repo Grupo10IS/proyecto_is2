@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "modulos.Posts.apps.PostsConfig",
     "modulos.Authorization.apps.AuthorizationConfig",
     "modulos.Categories.apps.CategoriesConfig",
+    "modulos.Reports.apps.ReportsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
