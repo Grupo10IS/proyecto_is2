@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,11 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -140,17 +138,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "UserProfile.UserProfile"
 LOGIN_REDIRECT_URL = "/user/profile/"
 LOGIN_URL = "/users/login"
-
-
 LOGOUT_REDIRECT_URL = "home"  # Redirigir a la página de inicio después del logout
 
+# mdeditor
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+MEDIA_URL = "/media/"
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Bootstrap library
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-
-# Enviar correos
-# Configuración de SendGrid
+# SendGrid (correo electronico)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.sendgrid.net")
 EMAIL_PORT = config("EMAIL_PORT", default=587)
@@ -158,14 +156,11 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_HOST_USER = config(
     "EMAIL_HOST_USER", default="apikey"
 )  # Debe ser literalmente 'apikey'
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  # Tu API Key de SendGrid
+EMAIL_HOST_PASSWORD = config(
+    "EMAIL_HOST_PASSWORD", default="default"
+)  # Tu API Key de SendGrid
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="groupmakex@gmail.com")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
-MEDIA_URL = "/media/"
-X_FRAME_OPTIONS = "SAMEORIGIN"
-
-
-# stripe
-STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
+# stripe (pagos)
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="stripe")
+STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="stripe")

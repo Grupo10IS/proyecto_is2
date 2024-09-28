@@ -13,7 +13,6 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @login_required
 def payment_view(request, category_id):
-    print(">>> Entrando a la vista 'payment_view'")
     category = Category.objects.get(id=category_id)
     user = request.user
 
@@ -26,7 +25,6 @@ def payment_view(request, category_id):
             metadata={"category_id": category.id, "user_id": user.id},
         )
         client_secret = intent.client_secret
-        print(f"PaymentIntent creado correctamente. Client Secret: {client_secret}")
 
         # Crear un nuevo registro de pago con estado 'pending'
         Payment.objects.create(
@@ -38,16 +36,13 @@ def payment_view(request, category_id):
         )
 
     except Exception as e:
-        print(f"Error creando PaymentIntent: {str(e)}")
         return render(request, "payment_error.html", {"error": str(e)})
 
     if request.method == "POST":
-        print(">>> POST request recibido, procesando formularios.")
         profile_form = UserProfileForm(request.POST, instance=user)
         payment_form = PaymentForm(request.POST)
 
         if profile_form.is_valid() and payment_form.is_valid():
-            print(">>> Formulario de perfil es válido. Guardando datos.")
             # Guardar el perfil del usuario actualizado
             profile_form.save()
 
@@ -57,9 +52,6 @@ def payment_view(request, category_id):
                 # Redirigir a la página de éxito
                 return redirect("payment_success", category_id=category.id)
             else:
-                print(
-                    f"Error: El estado del PaymentIntent no es 'succeeded', es: {intent.status}"
-                )
                 return render(
                     request,
                     "payment_form.html",
@@ -74,8 +66,6 @@ def payment_view(request, category_id):
                 )
         else:
             # Si hay un error en el formulario, mostrar los errores
-            print(f"Errores en el formulario de perfil: {profile_form.errors}")
-            print(f"Errores en el formulario de pago: {payment_form.errors}")
             return render(
                 request,
                 "payment_form.html",
@@ -89,11 +79,9 @@ def payment_view(request, category_id):
             )
 
     else:  # GET request
-        print(">>> GET request recibido. Mostrando el formulario inicial.")
         profile_form = UserProfileForm(instance=user)
         payment_form = PaymentForm(initial={"amount": 5.00})
 
-    print(">>> Renderizando el formulario de pago con el client_secret.")
     return render(
         request,
         "payment_form.html",
@@ -127,7 +115,6 @@ def payment_success(request, category_id):
             # Redirigir a la página de éxito
             return render(request, "payment_success.html", {"category": category})
         else:
-            print(f"El PaymentIntent no ha sido exitoso. Estado: {intent.status}")
             return render(
                 request,
                 "payment_error.html",
@@ -137,7 +124,6 @@ def payment_success(request, category_id):
             )
 
     except Payment.DoesNotExist:
-        print("Error: No se encontró el pago en la base de datos.")
         return render(
             request,
             "payment_error.html",
