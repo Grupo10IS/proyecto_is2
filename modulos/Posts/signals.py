@@ -1,16 +1,23 @@
+from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.mail import send_mail
-from .models import Post
-from modulos.UserProfile.models import UserProfile
+
 from modulos.Authorization.permissions import user_has_access_to_category
+from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
+from modulos.UserProfile.models import UserProfile
+
+from .models import Post
 
 
 @receiver(post_save, sender=Post)
 def send_notification_to_users(sender, instance, created, **kwargs):
     if created:
-        category = instance.category
+        # solo notificar los posts que sean publicados, no los borradores y demas
+        if instance.status != Post.PUBLISHED:
+            return
+
+        category = Category.objects.get(instance.category)
 
         # Filtrar usuarios que desean recibir notificaciones y tienen acceso a la categoría
         recipients = UserProfile.objects.filter(

@@ -43,7 +43,7 @@ def home_view(req):
 def view_post(request, id):
     post = get_object_or_404(Post, id=id)
     user = request.user
-    category = post.category
+    category = get_object_or_404(Category, pk=post.category.id)
 
     # Si el usuario no está autenticado
     if isinstance(user, AnonymousUser):
