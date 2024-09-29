@@ -17,7 +17,7 @@ def send_notification_to_users(sender, instance, created, **kwargs):
         if instance.status != Post.PUBLISHED:
             return
 
-        category = Category.objects.get(instance.category)
+        category = instance.category
 
         # Filtrar usuarios que desean recibir notificaciones y tienen acceso a la categoría
         recipients = UserProfile.objects.filter(
