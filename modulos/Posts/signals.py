@@ -1,11 +1,10 @@
-from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-from modulos.Authorization.permissions import user_has_access_to_category
-from modulos.Categories.models import Category
-from modulos.Pagos.models import Payment
+from django.core.mail import send_mail
+from .models import Post
 from modulos.UserProfile.models import UserProfile
+from modulos.Authorization.permissions import user_has_access_to_category
+from modulos.Pagos.models import Payment
 
 from .models import Post
 

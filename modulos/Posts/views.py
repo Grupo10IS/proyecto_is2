@@ -40,52 +40,47 @@ def home_view(req):
     return render(req, "pages/home.html", context=ctx)
 
 
+from django.utils.html import strip_tags
+
 def view_post(request, id):
     post = get_object_or_404(Post, id=id)
     user = request.user
     category = get_object_or_404(Category, pk=post.category.id)
 
-    # Si el usuario no está autenticado
-    if isinstance(user, AnonymousUser):
-        # Mostrar modal de acceso denegado para categorías premium y de suscripción
-        if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes iniciar sesión o registrarte.",
-                },
-            )
+    # Si el usuario no está autenticado, mostrar la previsualización
+    if isinstance(user, AnonymousUser) or (
+        user.is_authenticated and not user_has_access_to_category(user, category)
+    ):
+        preview_content = post.content.split()[
+            :50
+        ]  # Truncar a las primeras 50 palabras
+        preview_content = " ".join(preview_content) + "..."
+        modal_message = None
 
-    # Si el usuario está autenticado, verificar acceso a la categoría del post
-    if user.is_authenticated and not user_has_access_to_category(user, category):
-        if category.tipo == category.PREMIUM:
-            # Verificar si el usuario ha completado un pago para esta categoría
-            if not Payment.objects.filter(
-                user=user, category=category, status="completed"
-            ).exists():
-                # Mostrar mensaje de pago necesario para ver el post
-                return render(
-                    request,
-                    "access_denied_modal.html",
-                    {
-                        "category": category,
-                        "modal_message": "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.",
-                    },
-                )
+        # Mensaje diferente según el tipo de categoría
+        if isinstance(user, AnonymousUser):
+            modal_message = (
+                "Para poder ver esta publicación debes iniciar sesión o registrarte."
+            )
+        elif category.tipo == category.PREMIUM:
+            modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$."
         elif category.tipo == category.SUSCRIPCION:
-            # Mostrar mensaje de suscripción necesaria
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes ser suscriptor de nuestra web.",
-                },
+            modal_message = (
+                "Para poder ver esta publicación debes ser suscriptor de nuestra web."
             )
 
-    # Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle del post
+        return render(
+            request,
+            "pages/post_preview.html",
+            {
+                "post": post,
+                "category": category,
+                "preview_content": preview_content,
+                "modal_message": modal_message,
+            },
+        )
+
+    # Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle completo del post
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
 
@@ -98,7 +93,6 @@ def view_post(request, id):
         },
     )
     return render(request, "pages/post_detail.html", context=ctx)
-
 
 @login_required
 @permissions_required([POST_CREATE_PERMISSION])
