@@ -67,6 +67,12 @@
                            href="{% url 'post_list' %}"
                            role="button">Gestion de Contenido</a>
                     {% endif %}
+                    {% if has_kanban_access %}
+                        <a class="nav-link text-start"
+                           style="color:white"
+                           href="{% url 'kanban_board' %}"
+                           role="button">Tablero de publicacion</a>
+                    {% endif %}
                 </nav>
             {% endif %}
         {% endif %}

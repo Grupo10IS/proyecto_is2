@@ -1,13 +1,20 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
-from django.http.response import HttpResponseBadRequest
+from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (POST_CREATE_PERMISSION,
+from modulos.Authorization.permissions import (POST_APPROVE_PERMISSION,
+                                               POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
+                                               POST_PUBLISH_PERMISSION,
+                                               POST_REJECT_PERMISSION,
+                                               POST_REVIEW_PERMISSION,
                                                user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
@@ -15,11 +22,9 @@ from modulos.Pagos.models import Payment
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Post
+from modulos.UserProfile.models import UserProfile
 from modulos.utils import new_ctx
-from modulos.Authorization.permissions import user_has_access_to_category
-from modulos.Pagos.models import Payment
-from django.contrib.auth.models import AnonymousUser
-from django.views.generic import TemplateView
+
 
 def home_view(req):
     """
@@ -34,7 +39,7 @@ def home_view(req):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
     """
-    ctx = new_ctx(req, {"posts": Post.objects.all()[:20]})
+    ctx = new_ctx(req, {"posts": Post.objects.filter(status=Post.PUBLISHED)[:20]})
     return render(req, "pages/home.html", context=ctx)
 
 
@@ -53,19 +58,20 @@ def view_post(request, id):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'posts/post_detail.html'.
     """
-    post = get_object_or_404(Post, id=id)  # Obtiene el post o devuelve un error 404
-    tags = (
-        post.tags.split(",") if post.tags else []
-    )  # Divide las etiquetas en una lista
-    tags = [tag.strip() for tag in tags]  # Elimina espacios en blanco
+    post = get_object_or_404(Post, id=id)
 
-    es_favorito = post.favorites.filter(
-        id=request.user.id
-    ).exists()  # Verifica si el post es favorito del usuario actual
+    # Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos
+    if (
+        post.status != Post.PUBLISHED
+        and post.author != request.user
+        and not request.user.has_perm(POST_REVIEW_PERMISSION)
+    ):
+        return HttpResponseBadRequest("No tienes permiso para ver esta publicación.")
+
+    # administrar acceso a categorias moderadas o de pago
     user = request.user
     category = get_object_or_404(Category, pk=post.category.id)
 
-    # Si el usuario no está autenticado
     if isinstance(user, AnonymousUser):
         # Mostrar modal de acceso denegado para categorías premium y de suscripción
         if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
@@ -105,9 +111,12 @@ def view_post(request, id):
                 },
             )
 
-    # Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle del post
+    # parse tags
     tags = post.tags.split(",") if post.tags else []
-    tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+    tags = [tag.strip() for tag in tags]
+
+    # Verifica si el post es favorito del usuario actual
+    es_favorito = post.favorites.filter(id=request.user.id).exists()
 
     ctx = new_ctx(
         request,
@@ -138,21 +147,27 @@ def create_post(request):
         HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.
     """
     if request.method == "POST":
-        post = NewPostForm(
-            request.POST, request.FILES
-        )  # Inicializa el formulario con los datos enviados
-        if not post.is_valid():  # Verifica la validez del formulario
+        form = NewPostForm(request.POST, request.FILES)
+        if not form.is_valid():
             return HttpResponseBadRequest("Datos proporcionados invalidos")
 
-        p = post.save(
-            commit=False
-        )  # Guarda el post sin hacer commit a la base de datos
-        p.author = request.user  # Asigna el autor al post
-        p.save()  # Guarda el post en la base de datos
-        return redirect("/posts/" + str(p.id))  # Redirige a la vista del post creado
+        p = form.save(commit=False)
+        if "save_draft" in request.POST:
+            p.status = Post.DRAFT
+        elif "submit_review" in request.POST:
+            p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
 
-    ctx = new_ctx(request, {"form": NewPostForm})  # Crea el contexto con el formulario
-    return render(request, "pages/new_post.html", context=ctx)
+        p.author = request.user
+        p.save()
+
+        return redirect("/posts/" + str(p.id))
+
+    ctx = new_ctx(request, {"form": NewPostForm})
+    return render(
+        request,
+        "pages/new_post.html",
+        context=ctx,
+    )
 
 
 @login_required
@@ -172,37 +187,29 @@ def manage_post(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
     """
-    is_admin = Group.objects.filter(
-        name=ADMIN, user=request.user
-    ).exists()  # Verifica si el usuario es administrador
-    posts = (
-        Post.objects.all() if is_admin else Post.objects.filter(author=request.user)
-    )  # Obtiene los posts correspondientes
+    is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
+    posts = Post.objects.all() if is_admin else Post.objects.filter(author=request.user)
 
-    permisos = (
-        request.user.get_all_permissions()
-    )  # Obtiene todos los permisos del usuario
+    # Obtiene todos los permisos del usuario
+    permisos = request.user.get_all_permissions()
 
-    # Definición de permisos en variables booleanas
     perm_create = "UserProfile." + POST_CREATE_PERMISSION in permisos
     perm_edit = "UserProfile." + POST_EDIT_PERMISSION in permisos
     perm_delete = "UserProfile." + POST_DELETE_PERMISSION in permisos
 
-    # Definición de contexto basado en permisos
     ctx = new_ctx(
         request,
         {
             "posts": posts,
-            "perm_create": perm_create,
-            "perm_edit": perm_edit,
-            "perm_delete": perm_delete,
+            "perm_create": request.user.has_perm(POST_CREATE_PERMISSION),
+            "perm_edit": request.user.has_perm(POST_EDIT_PERMISSION),
+            "perm_delete": request.user.has_perm(POST_DELETE_PERMISSION),
         },
     )
     return render(request, "pages/post_list.html", ctx)
 
 
 @login_required
-@permissions_required([POST_DELETE_PERMISSION])
 def delete_post(request, id):
     """
     Vista para eliminar un post.
@@ -217,7 +224,10 @@ def delete_post(request, id):
     Returns:
         HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
     """
-    post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
+    post: Post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_DELETE_PERMISSION) and post.author != request.user:
+        return HttpResponseForbidden("No tienes permiso para eliminar este post.")
 
     if request.method == "POST":
         post.delete()  # Elimina el post
@@ -229,7 +239,7 @@ def delete_post(request, id):
 
 
 @login_required
-@permissions_required([POST_EDIT_PERMISSION, POST_CREATE_PERMISSION])
+@permissions_required([POST_EDIT_PERMISSION])
 def edit_post(request, id):
     """
     Vista para editar un post existente.
@@ -244,18 +254,22 @@ def edit_post(request, id):
     Returns:
         HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.
     """
-    post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
+    post = get_object_or_404(Post, pk=id)
     if request.method == "POST":
-        form = NewPostForm(
-            request.POST, request.FILES, instance=post
-        )  # Inicializa el formulario con el post existente
-        if form.is_valid():  # Verifica la validez del formulario
-            form.save()  # Guarda los cambios en el post
-            return redirect("post_list")  # Redirige a la lista de posts
+        form = NewPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            p = form.save(commit=False)
 
-    form = NewPostForm(
-        instance=post
-    )  # Si no es un POST, muestra el formulario con los datos del post
+            if "save_draft" in request.POST:
+                p.status = Post.DRAFT
+            elif "submit_review" in request.POST:
+                p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
+
+            p.save()
+
+            return redirect("post_list")
+
+    form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
 
@@ -332,6 +346,80 @@ def favorite_list(request):
     posts_favorites = Post.objects.filter(favorites=request.user)
     ctx = new_ctx(request, {"posts_favorites": posts_favorites})
     return render(request, "pages/posts_favorites_list.html", ctx)
+
+
+# --------------------
+# Flujo de publicacion
+# --------------------
+
+
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
+def send_to_review(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.status = Post.PENDING_REVIEW
+    post.save()
+    return redirect("kanban_board")
+
+
+@login_required
+@permissions_required([POST_APPROVE_PERMISSION])
+def aprove_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.status = Post.PENDING_PUBLICATION
+    post.save()
+    return redirect("kanban_board")
+
+
+@login_required
+@permissions_required([POST_PUBLISH_PERMISSION])
+def publish_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.status = Post.PUBLISHED
+    post.publication_date = timezone.now()
+    post.save()
+    return redirect("kanban_board")
+
+
+@login_required
+@permissions_required([POST_REJECT_PERMISSION])
+def reject_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.status = Post.DRAFT
+    post.save()
+    return redirect("kanban_board")
+
+
+@login_required
+def kanban_board(request):
+    # Filtrar los posts según el estado
+    drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
+    pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
+    pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
+    recently_published = Post.objects.filter(
+        status=Post.PUBLISHED,
+        publication_date__gte=timezone.now() - timedelta(days=5),
+    )
+
+    # Pasar las publicaciones a la plantilla para organizarlas en el tablero
+    return render(
+        request,
+        "pages/kanban_board.html",
+        new_ctx(
+            request,
+            {
+                "drafts": drafts,
+                "pending_review": pending_review,
+                "pending_publication": pending_publication,
+                "published": recently_published,
+                # permisos para mostrar los botones
+                "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
+                "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
+                "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),
+                "can_reject": request.user.has_perm(POST_REJECT_PERMISSION),
+            },
+        ),
+    )
 
 
 class ContenidosView(TemplateView):

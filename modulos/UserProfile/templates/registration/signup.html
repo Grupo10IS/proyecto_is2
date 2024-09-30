@@ -13,19 +13,15 @@
                         <form method="POST">
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="id_username" class="form-label">Nombre de usuario</label>
                                 {{ form.username|as_crispy_field }}
                             </div>
                             <div class="mb-3">
-                                <label for="id_email" class="form-label">Correo electrónico</label>
                                 {{ form.email|as_crispy_field }}
                             </div>
                             <div class="mb-3">
-                                <label for="id_password1" class="form-label">Contraseña</label>
                                 {{ form.password1|as_crispy_field }}
                             </div>
                             <div class="mb-3">
-                                <label for="id_password2" class="form-label">Confirmar contraseña</label>
                                 {{ form.password2|as_crispy_field }}
                             </div>
                             <button type="submit"

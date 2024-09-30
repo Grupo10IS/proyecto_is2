@@ -13,6 +13,9 @@ class UserProfile(AbstractUser):
         max_length=15, verbose_name="Número de teléfono", blank=True
     )
 
+    def has_perm(self, perm: str, obj=None) -> bool:
+        return super().has_perm("UserProfile." + perm, obj)
+
     pagos = models.ManyToManyField(Category, through=Payment, related_name="users_paid")
     receive_notifications = models.BooleanField(
         default=False,

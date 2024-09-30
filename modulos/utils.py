@@ -1,3 +1,4 @@
+from modulos.Authorization.permissions import KANBAN_VIEW_PERMISSION
 from modulos.Categories.models import Category
 from modulos.Posts.forms import SearchPostForm
 
@@ -22,10 +23,14 @@ def new_ctx(req, params):
         >>> return render(req, "template", ctx)
     """
     sitios = []
+    kanban_permission = False
     if req.user.is_authenticated:
-        permisos = req.user.get_all_permissions()
+        kanban_permission = req.user.has_perm(KANBAN_VIEW_PERMISSION)
 
-        # Itera sobre los permisos
+        # Para poder listar permisos "parecidos", en vez de tener que buscar por permisos especificos.
+        # Esto ya que para ver el panel de control solo se necesita saber si se contiene
+        # ciertos permisos, no permisos especificos
+        permisos = req.user.get_all_permissions()
         for perm in permisos:
             if "user" in perm and perm not in sitios:
                 sitios.append("user")
@@ -47,6 +52,7 @@ def new_ctx(req, params):
         "categories": Category.objects.all(),
         "permisos": sitios,
         "post_search_input": SearchPostForm,
+        "has_kanban_access": kanban_permission,
     }
     base.update(params)
 

@@ -117,9 +117,8 @@ class CategoryDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = self.get_object()
+        context["posts"] = Post.objects.filter(category=category, status=Post.PUBLISHED)
 
-        # Filtrar publicaciones relacionadas
-        context["posts"] = Post.objects.filter(category=category)
         return new_ctx(self.request, context)
 
 

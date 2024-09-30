@@ -20,20 +20,34 @@ def test_home_view(client):
     assert response.status_code == 200
     assert "pages/home.html" in [t.name for t in response.templates]
     assert "posts" in response.context
-    assert len(response.context["posts"]) == 0
+    ps_len = len(response.context["posts"])
+    assert ps_len == 0, f"Expected 0 posts, got {ps_len}"
 
     # Test home view with existing posts
-    category = Category.objects.create(name="hola")
+    categoria = Category.objects.create(name="hola")
     Post.objects.create(
-        title="Test Post 1", content="Content of test post 1", category=category
+        title="Test Post 1",
+        content="Content of test post 1",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
     Post.objects.create(
-        title="Test Post 2", content="Content of test post 2", category=category
+        title="Test Post 2",
+        content="Content of test post 2",
+        status=Post.DRAFT,
+        category=categoria,
+    )
+    Post.objects.create(
+        title="Test Post 3",
+        content="Content of test post 3",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
 
     response = client.get(url)
     assert response.status_code == 200
-    assert len(response.context["posts"]) == 2
+    ps_len = len(response.context["posts"])
+    assert ps_len == 2, f"Expected 2 posts, got {ps_len}"
 
 
 @pytest.mark.django_db
@@ -46,6 +60,7 @@ def test_view_post(client):
         title="Test Post",
         content="Content of test post",
         tags="tag1, tag2",
+        status=Post.PUBLISHED,
         category=category,
     )
 
@@ -62,6 +77,19 @@ def test_view_post(client):
     url = reverse("post_detail", args=[999])
     response = client.get(url)
     assert response.status_code == 404
+
+    post = Post.objects.create(
+        title="Test Post",
+        content="Content of test post",
+        tags="tag1, tag2",
+        status=Post.DRAFT,
+        category=category,
+    )
+
+    # Test post detail view on a draft post without permission
+    url = reverse("post_detail", args=[post.id])
+    response = client.get(url)
+    assert response.status_code == 400
 
 
 @pytest.mark.django_db
