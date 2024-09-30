@@ -202,6 +202,193 @@
         <span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span>
     <span class="p">],</span> <span class="s2">&quot;Template &#39;post_list.html&#39; should be used.&quot;</span></div>
 
+
+
+<div class="viewcode-block" id="test_favorite_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_favorite_post">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_favorite_post</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test para marcar y desmarcar un post como favorito.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post Favorito&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido del post favorito&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">categoria</span>
+    <span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Test agregar post a favoritos</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_favorite&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span><span class="p">,</span> <span class="s2">&quot;Debería retornar 204 al marcar como favorito.&quot;</span>
+    <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;El post debería estar en la lista de favoritos.&quot;</span>
+
+    <span class="c1"># Test quitar post de favoritos</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería retornar 204 al desmarcar como favorito.&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;El post no debería estar en la lista de favoritos.&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="test_favorite_list_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_favorite_list_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_favorite_list_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test para listar los posts favoritos del usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">post1</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post 1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido del post 1&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">categoria</span>
+    <span class="p">)</span>
+    <span class="n">post2</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post 2&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido del post 2&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">categoria</span>
+    <span class="p">)</span>
+
+    <span class="n">post1</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>  <span class="c1"># Marcar post1 como favorito</span>
+    <span class="n">post2</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>  <span class="c1"># Marcar post2 como favorito</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_favorite_list&quot;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 al acceder a la lista de favoritos.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;posts_favorites&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>
+    <span class="p">),</span> <span class="s2">&quot;El contexto debería contener &#39;posts_favorites&#39;.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts_favorites&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería mostrar 2 posts favoritos.&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="test_search_post_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_search_post_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_search_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test para buscar publicaciones.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
+    <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post de prueba&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido de prueba&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">categoria</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Probar una búsqueda no válida</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_search&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;?input=&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería redirigir a la vista de inicio si no hay búsqueda válida.&quot;</span>
+
+    <span class="c1"># Probar una búsqueda válida</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_search&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;?input=Post de prueba&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 al buscar un post existente.&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Debería encontrar 1 post.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s2">&quot;Post de prueba&quot;</span>
+    <span class="p">),</span> <span class="s2">&quot;El post encontrado debería ser el correcto.&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="test_delete_post_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_delete_post_view">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_delete_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test para eliminar un post.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a Eliminar&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a eliminar&quot;</span>
+    <span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">))</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;delete_post&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 al acceder a la vista de confirmación de eliminación.&quot;</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">,</span> <span class="s2">&quot;Debería redirigir después de eliminar el post.&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;El post debería haber sido eliminado.&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="test_edit_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_edit_post">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_edit_post</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test para la vista de edición de un post.</span>
+<span class="sd">    Verifica que un post existente se puede editar correctamente.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Crea una categoría para el post</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Categoría de Prueba&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Descripción de prueba&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Crea un post asociado a la categoría</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a Editar&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a editar&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Crea un usuario y asigna permisos</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">))</span>
+
+    <span class="c1"># Inicia sesión con el usuario creado</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Obtiene la URL para editar el post</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;edit_post&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+
+    <span class="c1"># Datos para actualizar el post</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Título editado&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Contenido editado&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Realiza la solicitud POST para editar el post</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Verifica que se redirigió correctamente</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+
+    <span class="c1"># Refresca el post desde la base de datos</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+
+    <span class="c1"># Verifica que el post se haya actualizado correctamente</span>
+    <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s2">&quot;Título editado&quot;</span>
+    <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="s2">&quot;Contenido editado&quot;</span></div>
+
 </pre></div>
 
           </div>

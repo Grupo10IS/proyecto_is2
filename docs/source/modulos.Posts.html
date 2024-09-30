@@ -216,6 +216,14 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_category.populate_default_category"><code class="docutils literal notranslate"><span class="pre">populate_default_category()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_post_favorites">modulos.Posts.migrations.0010_post_favorites module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -419,6 +427,22 @@ object the first time, the query is executed.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Post.favorites">
+<span class="sig-name descname"><span class="pre">favorites</span></span><a class="headerlink" href="#modulos.Posts.models.Post.favorites" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="modulos.Posts.models.Post.get_next_by_creation_date">
 <span class="sig-name descname"><span class="pre">get_next_by_creation_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">creation_date&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Posts.models.Post.get_next_by_creation_date" title="Link to this definition">¶</a></dt>
@@ -494,6 +518,31 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_delete_post_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_delete_post_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_delete_post_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_delete_post_view" title="Link to this definition">¶</a></dt>
+<dd><p>Test para eliminar un post.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_edit_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_edit_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_edit_post" title="Link to this definition">¶</a></dt>
+<dd><p>Test para la vista de edición de un post.
+Verifica que un post existente se puede editar correctamente.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_favorite_list_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_favorite_list_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_favorite_list_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_favorite_list_view" title="Link to this definition">¶</a></dt>
+<dd><p>Test para listar los posts favoritos del usuario.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_favorite_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_favorite_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_favorite_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_favorite_post" title="Link to this definition">¶</a></dt>
+<dd><p>Test para marcar y desmarcar un post como favorito.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.tests.test_home_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_home_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_home_view" title="Link to this definition">¶</a></dt>
 <dd><p>Test the home view to check if posts are displayed correctly.</p>
@@ -503,6 +552,12 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="modulos.Posts.tests.test_post_manage_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_post_manage_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_post_manage_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_post_manage_view" title="Link to this definition">¶</a></dt>
 <dd><p>Test the create post view for different user permissions and form validation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.tests.test_search_post_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.tests.</span></span><span class="sig-name descname"><span class="pre">test_search_post_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/tests.html#test_search_post_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.tests.test_search_post_view" title="Link to this definition">¶</a></dt>
+<dd><p>Test para buscar publicaciones.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -534,12 +589,39 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.favorite_list">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">favorite_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#favorite_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.favorite_list" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para listar los posts favoritos del usuario.</p>
+<p>Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla “pages/posts_favorites_list.html”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.favorite_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">favorite_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#favorite_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.favorite_post" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para marcar o desmarcar un post como favorito.</p>
+<p>Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos
+del usuario actual.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.
+id (int): El ID del post a marcar como favorito.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.home_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#home_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.home_view" title="Link to this definition">¶</a></dt>
 <dd><p>Vista de inicio “home_view”.</p>
-<p>Esta vista verifica si el usuario está autenticado y obtiene todos sus permisos.
-Dependiendo de los permisos del usuario, agrega nombres específicos a la lista “sitios” para
-determinar qué secciones o funcionalidades se deben mostrar en la página de inicio.</p>
+<p>Esta vista verifica si el usuario está autenticado y obtiene los 10 últimos posts.
+Se utiliza la plantilla “pages/home.html” para mostrar la información al usuario.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>req (HttpRequest): El objeto de solicitud HTTP.</p>
 </dd>
@@ -551,12 +633,35 @@ determinar qué secciones o funcionalidades se deben mostrar en la página de in
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.search_post">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">search_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#search_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.search_post" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista para buscar publicaciones.</p>
+<p>Esta vista maneja la búsqueda de posts utilizando un formulario. Si el formulario es válido,
+se generan los resultados y se muestran en la plantilla correspondiente.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>HttpResponse: Redirección a la vista de inicio si no se realiza una búsqueda válida</dt><dd><p>o renderización de los resultados de búsqueda.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.view_post">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">view_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#view_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.view_post" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista de detalle de publicación “PostDetailView”.</p>
+<p>Esta vista muestra los detalles de un solo objeto “Post”.
+Utiliza el modelo “Post” para recuperar la instancia específica y renderiza el contenido
+utilizando la plantilla “posts/post_detail.html”.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.
+id (int): El ID del post a mostrar.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla “posts/post_detail.html”.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-modulos.Posts">
@@ -648,6 +753,7 @@ determinar qué secciones o funcionalidades se deben mostrar en la página de in
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.category_id"><code class="docutils literal notranslate"><span class="pre">Post.category_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.content"><code class="docutils literal notranslate"><span class="pre">Post.content</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.creation_date"><code class="docutils literal notranslate"><span class="pre">Post.creation_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.favorites"><code class="docutils literal notranslate"><span class="pre">Post.favorites</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_next_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_next_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_previous_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_previous_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_status_display"><code class="docutils literal notranslate"><span class="pre">Post.get_status_display()</span></code></a></li>
@@ -667,8 +773,13 @@ determinar qué secciones o funcionalidades se deben mostrar en la página de in
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.tests">modulos.Posts.tests module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_create_post_view"><code class="docutils literal notranslate"><span class="pre">test_create_post_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_delete_post_view"><code class="docutils literal notranslate"><span class="pre">test_delete_post_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_edit_post"><code class="docutils literal notranslate"><span class="pre">test_edit_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_favorite_list_view"><code class="docutils literal notranslate"><span class="pre">test_favorite_list_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_favorite_post"><code class="docutils literal notranslate"><span class="pre">test_favorite_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_home_view"><code class="docutils literal notranslate"><span class="pre">test_home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_post_manage_view"><code class="docutils literal notranslate"><span class="pre">test_post_manage_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_search_post_view"><code class="docutils literal notranslate"><span class="pre">test_search_post_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.tests.test_view_post"><code class="docutils literal notranslate"><span class="pre">test_view_post()</span></code></a></li>
 </ul>
 </li>
@@ -679,6 +790,8 @@ determinar qué secciones o funcionalidades se deben mostrar en la página de in
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.views.ContenidosView.template_name"><code class="docutils literal notranslate"><span class="pre">ContenidosView.template_name</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>

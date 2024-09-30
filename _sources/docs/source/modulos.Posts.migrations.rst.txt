@@ -76,6 +76,14 @@ modulos.Posts.migrations.0009\_alter\_post\_category module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0010\_post\_favorites module
+-----------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0010_post_favorites
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
