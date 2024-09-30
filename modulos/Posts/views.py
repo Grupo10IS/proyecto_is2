@@ -16,7 +16,10 @@ from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
-
+from modulos.Authorization.permissions import user_has_access_to_category
+from modulos.Pagos.models import Payment
+from django.contrib.auth.models import AnonymousUser
+from django.views.generic import TemplateView
 
 def home_view(req):
     """
