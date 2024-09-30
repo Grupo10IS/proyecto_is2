@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from modulos.Authorization.permissions import *
 from modulos.Categories.models import Category
-from modulos.Posts.models import Post
+from modulos.Posts.models import Post, Version
 
 
 @pytest.mark.django_db

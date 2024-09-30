@@ -45,7 +45,56 @@ class Post(models.Model):
     )
     # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
+    version = models.IntegerField(default=0)
 
     favorites = models.ManyToManyField(
         UserProfile, related_name="favorite_posts", verbose_name="Favoritos"
     )
+
+
+class Version(models.Model):
+    post_id = models.IntegerField(null=False)
+    title = models.CharField(max_length=80, verbose_name="Titulo")
+    image = models.ImageField(
+        upload_to="posts_images/", verbose_name="Portada", blank=True, null=True
+    )
+    content = MDTextField(name="content", verbose_name="Contenido", null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, null=True, verbose_name="Categoria"
+    )
+    status = models.CharField(max_length=30, verbose_name="Status")
+    creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion"
+    )
+    scheduled_publication_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de publicacion agendada"
+    )
+    author = models.ForeignKey(
+        UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
+    )
+    tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
+
+    version = models.IntegerField(default=0)
+
+
+def NewVersion(post: Post) -> Version:
+    return Version(
+        title=post.title,
+        image=post.image,
+        content=post.content,
+        category=post.category,
+        status=post.status,
+        publication_date=post.publication_date,
+        scheduled_publication_date=post.scheduled_publication_date,
+        author=post.author,
+        tags=post.tags,
+        version=post.version,
+        post_id=post.id,
+    )
+
+
+class Log(models.Model):
+    creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
+    message = models.CharField(max_length=800, verbose_name="description")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)

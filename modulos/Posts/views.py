@@ -1,14 +1,16 @@
+import difflib
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (POST_APPROVE_PERMISSION,
+from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
+                                               POST_APPROVE_PERMISSION,
                                                POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
@@ -21,8 +23,7 @@ from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
-from modulos.Posts.models import Post
-from modulos.UserProfile.models import UserProfile
+from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
 
 
@@ -190,12 +191,10 @@ def manage_post(request):
     is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
     posts = Post.objects.all() if is_admin else Post.objects.filter(author=request.user)
 
-    # Obtiene todos los permisos del usuario
-    permisos = request.user.get_all_permissions()
-
-    perm_create = "UserProfile." + POST_CREATE_PERMISSION in permisos
-    perm_edit = "UserProfile." + POST_EDIT_PERMISSION in permisos
-    perm_delete = "UserProfile." + POST_DELETE_PERMISSION in permisos
+    if is_admin:
+        posts = Post.objects.all()
+    else:
+        posts = Post.objects.filter(author=request.user)
 
     ctx = new_ctx(
         request,
@@ -226,15 +225,18 @@ def delete_post(request, id):
     """
     post: Post = get_object_or_404(Post, pk=id)
 
-    if not request.user.has_perm(POST_DELETE_PERMISSION) and post.author != request.user:
+    if (
+        not request.user.has_perm(POST_DELETE_PERMISSION)
+        and post.author != request.user
+    ):
         return HttpResponseForbidden("No tienes permiso para eliminar este post.")
 
     if request.method == "POST":
-        post.delete()  # Elimina el post
-        return redirect("post_list")  # Redirige a la lista de posts
+        post.delete()
+        return redirect("post_list")
 
     # Si no es una solicitud POST, muestra un mensaje de confirmación
-    ctx = new_ctx(request, {"post": post})  # Crea el contexto con el post a eliminar
+    ctx = new_ctx(request, {"post": post})
     return render(request, "pages/post_confirm_delete.html", ctx)
 
 
@@ -247,6 +249,10 @@ def edit_post(request, id):
     Esta vista carga el formulario con los datos del post y procesa la actualización
     si se envían nuevos datos.
 
+    Cuando se realiza una modificacion de un post y el mismo se encuentra en cualquier estado
+    que no sea borrador, entonces se guarda una version del estado anterior del post a modo de historial de
+    cambios.
+
     Args:
         request (HttpRequest): El objeto de solicitud HTTP.
         id (int): El ID del post a editar.
@@ -255,19 +261,24 @@ def edit_post(request, id):
         HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.
     """
     post = get_object_or_404(Post, pk=id)
+
     if request.method == "POST":
+
         form = NewPostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            p = form.save(commit=False)
 
-            if "save_draft" in request.POST:
-                p.status = Post.DRAFT
-            elif "submit_review" in request.POST:
-                p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
+        if not form.is_valid():
+            # FIX: mostrar errores en el editor
+            return HttpResponseBadRequest(f"Formulario inválido")
 
-            p.save()
+        # guardar version anterior del post
+        version = NewVersion(post)
+        version.save()
 
-            return redirect("post_list")
+        post.save()
+        post.version += 1
+        post.save()
+
+        return redirect("post_list")
 
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
@@ -327,30 +338,106 @@ def favorite_post(request, id):
     else:
         post.favorites.remove(request.user)
 
-    return HttpResponse(status=204)  # Devuelve un código de estado 20
-
-
-@login_required
-def favorite_list(request):
-    """
-    Vista para listar los posts favoritos del usuario.
-
-    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
-    """
-    posts_favorites = Post.objects.filter(favorites=request.user)
-    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
-    return render(request, "pages/posts_favorites_list.html", ctx)
-
+    return HttpResponse(status=204)
 
 # --------------------
 # Flujo de publicacion
 # --------------------
+
+
+@login_required
+@permissions_required([KANBAN_VIEW_PERMISSION])
+def kanban_board(request):
+    # Filtrar los posts según el estado
+    drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
+    pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
+    pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
+    recently_published = Post.objects.filter(
+        status=Post.PUBLISHED,
+        publication_date__gte=timezone.now() - timedelta(days=5),
+    )
+
+    # Pasar las publicaciones a la plantilla para organizarlas en el tablero
+    return render(
+        request,
+        "pages/kanban_board.html",
+        new_ctx(
+            request,
+            {
+                "drafts": drafts,
+                "pending_review": pending_review,
+                "pending_publication": pending_publication,
+                "published": recently_published,
+                # permisos para mostrar las acciones sobre las publicaciones
+                "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
+                "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
+                "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),
+                "can_reject": request.user.has_perm(POST_REJECT_PERMISSION),
+            },
+        ),
+    )
+
+
+@login_required
+@permissions_required([POST_REVIEW_PERMISSION])
+def post_versions_list(request, id):
+    get_object_or_404(Post, pk=id)
+
+    versions = Version.objects.filter(post_id=id)
+    ctx = new_ctx(request, {"versions": versions})
+
+    return render(request, "pages/post_versions_list.html", ctx)
+
+
+@login_required
+@permissions_required([POST_REVIEW_PERMISSION])
+def post_version_detail(request, post_id, version):
+    original = get_object_or_404(Post, pk=post_id)
+
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        or original.author != request.user
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a las versiones de este post"
+        )
+
+    version = get_object_or_404(Version, version=version, post_id=original.id)
+
+    post_content = original.content.splitlines()
+    version_content = version.content.splitlines()
+
+    diff = difflib.unified_diff(
+        version_content,
+        post_content,
+        fromfile="Comparacion.md",
+        tofile="Comparacion.md",
+        lineterm="",
+    )
+
+    diff = "\n".join(list(diff))
+
+    # Pasamos el diff a la plantilla
+    ctx = new_ctx(
+        request,
+        {"original": original, "version": version, "diff_content": diff},
+    )
+
+    return render(request, "pages/post_version_detail.html", ctx)
+
+
+@login_required
+def post_log_list(request, id):
+    post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a los logs de este post"
+        )
+
+    logs = Log.objects.filter(post=post).order_by("-creation_date")
+
+    return render(request, "pages/logs_list.html", new_ctx(request, {"logs": logs}))
 
 
 @login_required
@@ -390,36 +477,27 @@ def reject_post(request, id):
     return redirect("kanban_board")
 
 
-@login_required
-def kanban_board(request):
-    # Filtrar los posts según el estado
-    drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
-    pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
-    pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
-    recently_published = Post.objects.filter(
-        status=Post.PUBLISHED,
-        publication_date__gte=timezone.now() - timedelta(days=5),
-    )
+# --------------------
+#      Varios
+# --------------------
 
-    # Pasar las publicaciones a la plantilla para organizarlas en el tablero
-    return render(
-        request,
-        "pages/kanban_board.html",
-        new_ctx(
-            request,
-            {
-                "drafts": drafts,
-                "pending_review": pending_review,
-                "pending_publication": pending_publication,
-                "published": recently_published,
-                # permisos para mostrar los botones
-                "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
-                "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
-                "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),
-                "can_reject": request.user.has_perm(POST_REJECT_PERMISSION),
-            },
-        ),
-    )
+
+@login_required
+def favorite_list(request):
+    """
+    Vista para listar los posts favoritos del usuario.
+
+    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+
+    Returns:
+        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
+    """
+    posts_favorites = Post.objects.filter(favorites=request.user)
+    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
+    return render(request, "pages/posts_favorites_list.html", ctx)
 
 
 class ContenidosView(TemplateView):
