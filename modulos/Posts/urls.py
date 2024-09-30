@@ -9,4 +9,6 @@ urlpatterns = [
     path("delete/<int:id>/", delete_post, name="delete_post"),
     path("edit/<int:id>/", edit_post, name="edit_post"),
     path("search", search_post, name="post_search"),
+    path("<int:id>", favorite_post, name="post_favorite"),
+    path("favorites", favorite_list, name="post_favorite_list"),
 ]
