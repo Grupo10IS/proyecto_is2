@@ -45,3 +45,7 @@ class Post(models.Model):
     )
     # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
+
+    favorites = models.ManyToManyField(
+        UserProfile, related_name="favorite_posts", verbose_name="Favoritos"
+    )

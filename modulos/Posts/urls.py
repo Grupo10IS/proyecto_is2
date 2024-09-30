@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import *
 
 urlpatterns = [
@@ -15,4 +16,7 @@ urlpatterns = [
     path("posts/publish/<int:id>/", publish_post, name="publish_post"),
     path("posts/reject/<int:id>/", reject_post, name="reject_post"),
     path("kanban/", kanban_board, name="kanban_board"),
+    # -- estadisticas --
+    path("<int:id>", favorite_post, name="post_favorite"),
+    path("favorites", favorite_list, name="post_favorite_list"),
 ]
