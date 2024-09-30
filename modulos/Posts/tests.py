@@ -23,8 +23,13 @@ def test_home_view(client):
     assert len(response.context["posts"]) == 0
 
     # Test home view with existing posts
-    Post.objects.create(title="Test Post 1", content="Content of test post 1")
-    Post.objects.create(title="Test Post 2", content="Content of test post 2")
+    category = Category.objects.create(name="hola")
+    Post.objects.create(
+        title="Test Post 1", content="Content of test post 1", category=category
+    )
+    Post.objects.create(
+        title="Test Post 2", content="Content of test post 2", category=category
+    )
 
     response = client.get(url)
     assert response.status_code == 200
@@ -36,8 +41,12 @@ def test_view_post(client):
     """
     Test the post detail view with an existing post and a non-existent post.
     """
+    category = Category.objects.create(name="hola")
     post = Post.objects.create(
-        title="Test Post", content="Content of test post", tags="tag1, tag2"
+        title="Test Post",
+        content="Content of test post",
+        tags="tag1, tag2",
+        category=category,
     )
 
     # Test post detail view with an existing post

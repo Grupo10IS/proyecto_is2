@@ -9,7 +9,7 @@ document.getElementById('search-icon').addEventListener('click', function() {
         searchInput.classList.remove('show');
         setTimeout(function() {
             searchInput.style.display = 'none';
-        }, 400);  // Tiempo igual al de la transición en CSS
+        }, 100);  // Tiempo igual al de la transición en CSS
     }
 });
 
