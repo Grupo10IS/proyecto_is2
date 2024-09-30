@@ -52,6 +52,22 @@ modulos.Categories.migrations.0006\_category\_image module
    :undoc-members:
    :show-inheritance:
 
+modulos.Categories.migrations.0007\_alter\_category\_tipo module
+----------------------------------------------------------------
+
+.. automodule:: modulos.Categories.migrations.0007_alter_category_tipo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Categories.migrations.0008\_alter\_category\_description module
+-----------------------------------------------------------------------
+
+.. automodule:: modulos.Categories.migrations.0008_alter_category_description
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

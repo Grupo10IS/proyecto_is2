@@ -296,7 +296,10 @@ def prepare(db):
         title="Advanced Django", author=user2, category=category, status=Post.DRAFT
     )
     post3 = Post.objects.create(
-        title="Django Tips", author=user3, category=category, status=Post.REJECTED
+        title="Django Tips",
+        author=user3,
+        category=category,
+        status=Post.PENDING_PUBLICATION,
     )
 
     return post1, post2, post3

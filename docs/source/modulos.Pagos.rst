@@ -1,4 +1,4 @@
-modulos.Posts package
+modulos.Pagos package
 =====================
 
 Subpackages
@@ -7,72 +7,63 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   modulos.Posts.buscador
-   modulos.Posts.migrations
+   modulos.Pagos.migrations
 
 Submodules
 ----------
 
-modulos.Posts.admin module
+modulos.Pagos.admin module
 --------------------------
 
-.. automodule:: modulos.Posts.admin
+.. automodule:: modulos.Pagos.admin
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.apps module
+modulos.Pagos.apps module
 -------------------------
 
-.. automodule:: modulos.Posts.apps
+.. automodule:: modulos.Pagos.apps
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.forms module
+modulos.Pagos.forms module
 --------------------------
 
-.. automodule:: modulos.Posts.forms
+.. automodule:: modulos.Pagos.forms
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.models module
+modulos.Pagos.models module
 ---------------------------
 
-.. automodule:: modulos.Posts.models
+.. automodule:: modulos.Pagos.models
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.signals module
-----------------------------
-
-.. automodule:: modulos.Posts.signals
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-modulos.Posts.tests module
+modulos.Pagos.tests module
 --------------------------
 
-.. automodule:: modulos.Posts.tests
+.. automodule:: modulos.Pagos.tests
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.urls module
+modulos.Pagos.urls module
 -------------------------
 
-.. automodule:: modulos.Posts.urls
+.. automodule:: modulos.Pagos.urls
    :members:
    :undoc-members:
    :show-inheritance:
 
-modulos.Posts.views module
+modulos.Pagos.views module
 --------------------------
 
-.. automodule:: modulos.Posts.views
+.. automodule:: modulos.Pagos.views
    :members:
    :undoc-members:
    :show-inheritance:
@@ -80,7 +71,7 @@ modulos.Posts.views module
 Module contents
 ---------------
 
-.. automodule:: modulos.Posts
+.. automodule:: modulos.Pagos
    :members:
    :undoc-members:
    :show-inheritance:

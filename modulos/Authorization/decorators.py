@@ -25,7 +25,7 @@ def permissions_required(perms: list[str]):
 
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
-            if any(request.user.has_perm("UserProfile." + p) for p in perms):
+            if any(request.user.has_perm(p) for p in perms):
                 # TODO: redireccionar a una pagina linda
                 return view_func(request, *args, **kwargs)
 

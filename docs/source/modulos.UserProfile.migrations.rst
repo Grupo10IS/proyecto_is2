@@ -44,6 +44,30 @@ modulos.UserProfile.migrations.0005\_userprofile\_address\_userprofile\_phone\_n
    :undoc-members:
    :show-inheritance:
 
+modulos.UserProfile.migrations.0006\_userprofile\_pagos module
+--------------------------------------------------------------
+
+.. automodule:: modulos.UserProfile.migrations.0006_userprofile_pagos
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.UserProfile.migrations.0007\_userprofile\_receive\_notifications module
+-------------------------------------------------------------------------------
+
+.. automodule:: modulos.UserProfile.migrations.0007_userprofile_receive_notifications
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.UserProfile.migrations.0008\_alter\_userprofile\_receive\_notifications module
+--------------------------------------------------------------------------------------
+
+.. automodule:: modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

@@ -5,8 +5,8 @@ from django.core.management.commands.migrate import Command as MigrateCommand
 from django.db import DEFAULT_DB_ALIAS, connections
 from django.db.migrations.executor import MigrationExecutor
 
-from modulos.Authorization.permissions import _initialize_permissions
-from modulos.Authorization.roles import _create_default_groups
+from modulos.Authorization.permissions import initialize_permissions
+from modulos.Authorization.roles import create_default_groups
 
 
 # The code is from django/core/management/commands/migrate.py
@@ -29,8 +29,8 @@ class Command(MigrateCommand):
             print("\n--------------------------------")
             print(" Inicializando permisos y roles ")
             print("--------------------------------")
-            _initialize_permissions()
-            _create_default_groups()
+            initialize_permissions()
+            create_default_groups()
         else:
             print("No se pudieron inicializar los roles y permisos.")
             print(
