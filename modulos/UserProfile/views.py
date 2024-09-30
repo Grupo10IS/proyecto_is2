@@ -95,16 +95,19 @@ def profile_view(request):
     Returns:
         HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla 'registration/profile.html'.
     """
+    # No es necesario usar user_profile = request.user.userprofile
+    user_profile = request.user
+
     if request.method == "POST":
         u_form = CustomUserChangeForm(request.POST, instance=request.user)
-        p_form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        p_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            return redirect("profile")
+            return redirect("profile")  # Redirige a la misma página después de guardar
     else:
         u_form = CustomUserChangeForm(instance=request.user)
-        p_form = ProfileForm(instance=request.user)
+        p_form = ProfileForm(instance=user_profile)
 
     context = new_ctx(
         request,

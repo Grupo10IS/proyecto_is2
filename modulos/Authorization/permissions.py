@@ -1,8 +1,7 @@
 from os import _exit
-
+from modulos.Pagos.models import Payment
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-
 from modulos.UserProfile.models import UserProfile
 
 #####
@@ -67,6 +66,7 @@ def initialize_permissions():
     Esta funcion es llamada dentro del comando custom "migrate" ubicado dentro del mismo modulo,
     el cual sobreescribe las funciones por defecto del comando migrate de django.
     """
+
     for perm in permissions:
         try:
             Permission.objects.update_or_create(
@@ -79,3 +79,37 @@ def initialize_permissions():
             _exit(1)
 
     print(f"- Permisos incializados correctamente")
+
+
+def user_has_access_to_category(user, category):
+    """
+    Checks if the user has access to the given category.
+    """
+    # Verificar si la categoría es gratuita
+    if category.tipo == category.GRATIS:
+        return True
+
+    # Verificar si el usuario tiene un pago exitoso para esta categoría
+    if Payment.objects.filter(
+        user=user, category=category, status="succeeded"
+    ).exists():
+        return True
+
+    # Verificar si el usuario pertenece a grupos con acceso a la categoría
+    from modulos.Authorization.roles import ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER
+
+    if (
+        category.tipo == category.SUSCRIPCION
+        and user.groups.filter(
+            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER]
+        ).exists()
+    ):
+        return True
+
+    if (
+        category.tipo == category.PREMIUM
+        and user.groups.filter(name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR]).exists()
+    ):
+        return True
+
+    return False

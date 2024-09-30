@@ -24,14 +24,24 @@ def test_home_view(client):
     assert ps_len == 0, f"Expected 0 posts, got {ps_len}"
 
     # Test home view with existing posts
+    categoria = Category.objects.create(name="hola")
     Post.objects.create(
-        title="Test Post 1", content="Content of test post 1", status=Post.PUBLISHED
+        title="Test Post 1",
+        content="Content of test post 1",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
     Post.objects.create(
-        title="Test Post 2", content="Content of test post 2", status=Post.DRAFT
+        title="Test Post 2",
+        content="Content of test post 2",
+        status=Post.DRAFT,
+        category=categoria,
     )
     Post.objects.create(
-        title="Test Post 3", content="Content of test post 3", status=Post.PUBLISHED
+        title="Test Post 3",
+        content="Content of test post 3",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
 
     response = client.get(url)
@@ -45,11 +55,13 @@ def test_view_post(client):
     """
     Test the post detail view with an existing post and a non-existent post.
     """
+    category = Category.objects.create(name="hola")
     post = Post.objects.create(
         title="Test Post",
         content="Content of test post",
         tags="tag1, tag2",
         status=Post.PUBLISHED,
+        category=category,
     )
 
     # Test post detail view with an existing post

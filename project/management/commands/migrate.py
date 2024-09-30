@@ -5,8 +5,8 @@ from django.core.management.commands.migrate import Command as MigrateCommand
 from django.db import DEFAULT_DB_ALIAS, connections
 from django.db.migrations.executor import MigrationExecutor
 
-from modulos.Authorization.permissions import initialize_permissions
-from modulos.Authorization.roles import create_default_groups
+from modulos.Authorization.permissions import _initialize_permissions
+from modulos.Authorization.roles import _create_default_groups
 
 
 # The code is from django/core/management/commands/migrate.py
@@ -24,7 +24,7 @@ class Command(MigrateCommand):
         print("Corriendo migraciones")
         super().handle(*args, **options)
         if is_database_synchronized():
-            initialize_permissions()
-            create_default_groups()
+            _initialize_permissions()
+            _create_default_groups()
         else:
             print("No se pudieron generar los usuarios por defecto")
