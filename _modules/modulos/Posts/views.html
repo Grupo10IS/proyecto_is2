@@ -43,13 +43,16 @@
     <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
     <span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span>
 <span class="p">)</span>
-
+<span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">NewPostForm</span><span class="p">,</span> <span class="n">SearchPostForm</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Post</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
-
+<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="n">user_has_access_to_category</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AnonymousUser</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
 
 <div class="viewcode-block" id="home_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.home_view">[documentos]</a>
@@ -68,7 +71,7 @@
 <span class="sd">        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla &#39;pages/home.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts&quot;</span><span class="p">:</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]})</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts&quot;</span><span class="p">:</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mi">20</span><span class="p">]})</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s2">&quot;pages/home.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span></div>
 
@@ -77,21 +80,51 @@
 <div class="viewcode-block" id="view_post">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.view_post">[documentos]</a>
 <span class="k">def</span> <span class="nf">view_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vista de detalle de publicación &#39;PostDetailView&#39;.</span>
-
-<span class="sd">    Esta vista muestra los detalles de un solo objeto &#39;Post&#39;.</span>
-<span class="sd">    Utiliza el modelo &#39;Post&#39; para recuperar la instancia específica que se va a mostrar y</span>
-<span class="sd">    utiliza la plantilla &#39;posts/post_detail.html&#39; para renderizar el contenido.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        model (Model): El modelo utilizado por la vista (&#39;Post&#39;).</span>
-<span class="sd">        template_name (str): La plantilla HTML utilizada para renderizar el detalle de la publicación.</span>
-<span class="sd">        context_object_name (str): El nombre de la variable de contexto que representa el objeto &#39;Post&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
-    <span class="c1"># parse tags</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="c1"># Si el usuario no está autenticado</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">AnonymousUser</span><span class="p">):</span>
+        <span class="c1"># Mostrar modal de acceso denegado para categorías premium y de suscripción</span>
+        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="ow">in</span> <span class="p">[</span><span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                    <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;Para poder ver esta publicación debes iniciar sesión o registrarte.&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Si el usuario está autenticado, verificar acceso a la categoría del post</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">user_has_access_to_category</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">:</span>
+            <span class="c1"># Verificar si el usuario ha completado un pago para esta categoría</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="c1"># Mostrar mensaje de pago necesario para ver el post</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                    <span class="n">request</span><span class="p">,</span>
+                    <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                        <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">:</span>
+            <span class="c1"># Mostrar mensaje de suscripción necesaria</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                    <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;Para poder ver esta publicación debes ser suscriptor de nuestra web.&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle del post</span>
     <span class="n">tags</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">tags</span> <span class="k">else</span> <span class="p">[]</span>
     <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>  <span class="c1"># Remove leading/trailing whitespace</span>
 
@@ -212,6 +245,27 @@
         <span class="c1"># O redirige a donde sea apropiado si no hay búsqueda</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span></div>
 
+
+
+<div class="viewcode-block" id="ContenidosView">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.ContenidosView">[documentos]</a>
+<span class="k">class</span> <span class="nc">ContenidosView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;pages/list_contenidos.html&quot;</span>
+
+<div class="viewcode-block" id="ContenidosView.get_context_data">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.ContenidosView.get_context_data">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Obtener todas las categorías</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="c1"># Crear un diccionario para almacenar los posts por categoría</span>
+        <span class="n">posts_by_category</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">category</span><span class="p">:</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span>
+        <span class="p">}</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts_by_category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">posts_by_category</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+</div>
+
 </pre></div>
 
           </div>
@@ -248,6 +302,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

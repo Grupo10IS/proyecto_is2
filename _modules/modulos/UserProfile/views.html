@@ -146,16 +146,19 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        HttpResponse: Respuesta HTTP con el contenido renderizado de la plantilla &#39;registration/profile.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No es necesario usar user_profile = request.user.userprofile</span>
+    <span class="n">user_profile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">u_form</span> <span class="o">=</span> <span class="n">CustomUserChangeForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-        <span class="n">p_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">p_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user_profile</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">u_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">p_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
             <span class="n">u_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">p_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;profile&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;profile&quot;</span><span class="p">)</span>  <span class="c1"># Redirige a la misma página después de guardar</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">u_form</span> <span class="o">=</span> <span class="n">CustomUserChangeForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-        <span class="n">p_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">p_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user_profile</span><span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
@@ -319,6 +322,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

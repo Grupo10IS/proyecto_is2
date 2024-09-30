@@ -36,13 +36,14 @@
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">generic</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">DetailView</span><span class="p">,</span> <span class="n">ListView</span>
-
+<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="n">user_has_access_to_category</span>
 <span class="kn">from</span> <span class="nn">modulos.Authorization</span> <span class="kn">import</span> <span class="n">permissions</span>
 <span class="kn">from</span> <span class="nn">modulos.Authorization.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.forms</span> <span class="kn">import</span> <span class="n">CategoryCreationForm</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Post</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
 
 
 <div class="viewcode-block" id="CategoryCreateView">
@@ -62,42 +63,122 @@
 
 
 
+<span class="c1"># views.py de categories</span>
+
 <div class="viewcode-block" id="CategoryListView">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView">[documentos]</a>
 <span class="k">class</span> <span class="nc">CategoryListView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Category</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;categories_list.html&quot;</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;categories_list.html&quot;</span>  <span class="c1"># Plantilla por defecto</span>
     <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;categories&quot;</span>
+
+<div class="viewcode-block" id="CategoryListView.get_queryset">
+<a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.get_queryset">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>
+        <span class="c1"># Verificar si se pasó el parámetro &#39;premium&#39; en la URL</span>
+        <span class="n">premium_only</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+
+        <span class="c1"># Filtrar categorías por tipo PREMIUM si el parámetro es true</span>
+        <span class="k">if</span> <span class="n">premium_only</span><span class="p">:</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">Category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div>
+
+
+<div class="viewcode-block" id="CategoryListView.get_template_names">
+<a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.get_template_names">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_template_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Cambiar a la plantilla &#39;categories_premium.html&#39; si el parámetro &#39;premium&#39; es true</span>
+        <span class="n">premium_only</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+        <span class="k">if</span> <span class="n">premium_only</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;categories_premium.html&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;categories_list.html&quot;</span><span class="p">]</span></div>
+
 
 <div class="viewcode-block" id="CategoryListView.get_context_data">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryListView.get_context_data">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="c1"># Agregar más contexto</span>
         <span class="k">return</span> <span class="n">new_ctx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 </div>
-
 
 
 <div class="viewcode-block" id="CategoryDetailView">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView">[documentos]</a>
 <span class="k">class</span> <span class="nc">CategoryDetailView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Category</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;category_detail.html&quot;</span>  <span class="c1"># Asegúrate de tener un template con este nombre</span>
-    <span class="p">)</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;category_detail.html&quot;</span>
     <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;category&quot;</span>
+
+<div class="viewcode-block" id="CategoryDetailView.get">
+<a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="c1"># Permitir acceso a categorías gratuitas sin autenticación</span>
+        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">GRATIS</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Para categorías de suscripción y premium, verificar acceso del usuario</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">user_has_access_to_category</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+                <span class="c1"># Para categorías premium, verificar pago completado</span>
+                <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                        <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                            <span class="n">request</span><span class="p">,</span>
+                            <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                                <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                                <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;Para poder ingresar a esta categoría debes suscribirte pagando 1$.&quot;</span><span class="p">,</span>
+                            <span class="p">},</span>
+                        <span class="p">)</span>
+                <span class="c1"># Para categorías de suscripción, mostrar mensaje de acceso restringido</span>
+                <span class="k">elif</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                        <span class="n">request</span><span class="p">,</span>
+                        <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                            <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;Para poder ingresar a esta categoría debes ser suscriptor de nuestra web.&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                        <span class="n">request</span><span class="p">,</span>
+                        <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                            <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;No tienes acceso a esta categoría.&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Usuario no autenticado, mostrar mensaje de acceso restringido para premium o suscripción</span>
+            <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="ow">in</span> <span class="p">[</span><span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                    <span class="n">request</span><span class="p">,</span>
+                    <span class="s2">&quot;access_denied_modal.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                        <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="s2">&quot;Para poder ingresar a esta categoría debes iniciar sesión o registrarte.&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Si el usuario tiene acceso, renderizar el detalle de la categoría</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="CategoryDetailView.get_context_data">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView.get_context_data">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="c1"># Obtener los posts relacionados a esta categoría</span>
         <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
-        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="n">category</span><span class="o">=</span><span class="n">category</span>
-        <span class="p">)</span>  <span class="c1"># Filtrar los posts por categoría</span>
+
+        <span class="c1"># Filtrar publicaciones relacionadas</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_ctx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 </div>
 
@@ -224,6 +305,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

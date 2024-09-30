@@ -139,6 +139,63 @@
 </dd></dl>
 
 </section>
+<section id="module-modulos.UserProfile.migrations.0006_userprofile_pagos">
+<span id="modulos-userprofile-migrations-0006-userprofile-pagos-module"></span><h2>modulos.UserProfile.migrations.0006_userprofile_pagos module<a class="headerlink" href="#module-modulos.UserProfile.migrations.0006_userprofile_pagos" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0006_userprofile_pagos.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.migrations.0006_userprofile_pagos.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/migrations/0006_userprofile_pagos.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Categories',</span> <span class="pre">'0007_alter_category_tipo'),</span> <span class="pre">('Pagos',</span> <span class="pre">'0001_initial'),</span> <span class="pre">('UserProfile',</span> <span class="pre">'0005_userprofile_address_userprofile_phone_number')]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='userprofile',</span> <span class="pre">name='pagos',</span> <span class="pre">field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.UserProfile.migrations.0007_userprofile_receive_notifications">
+<span id="modulos-userprofile-migrations-0007-userprofile-receive-notifications-module"></span><h2>modulos.UserProfile.migrations.0007_userprofile_receive_notifications module<a class="headerlink" href="#module-modulos.UserProfile.migrations.0007_userprofile_receive_notifications" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.migrations.0007_userprofile_receive_notifications.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/migrations/0007_userprofile_receive_notifications.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('UserProfile',</span> <span class="pre">'0006_userprofile_pagos')]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='userprofile',</span> <span class="pre">name='receive_notifications',</span> <span class="pre">field=&lt;django.db.models.fields.BooleanField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications">
+<span id="modulos-userprofile-migrations-0008-alter-userprofile-receive-notifications-module"></span><h2>modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications module<a class="headerlink" href="#module-modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/migrations/0008_alter_userprofile_receive_notifications.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('UserProfile',</span> <span class="pre">'0007_userprofile_receive_notifications')]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userprofile',</span> <span class="pre">name='receive_notifications',</span> <span class="pre">field=&lt;django.db.models.fields.BooleanField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-modulos.UserProfile.migrations">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-modulos.UserProfile.migrations" title="Link to this heading">¶</a></h2>
 </section>
@@ -179,6 +236,8 @@
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
@@ -224,6 +283,30 @@
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.migrations.0005_userprofile_address_userprofile_phone_number.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0005_userprofile_address_userprofile_phone_number.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0005_userprofile_address_userprofile_phone_number.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.migrations.0006_userprofile_pagos">modulos.UserProfile.migrations.0006_userprofile_pagos module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.migrations.0007_userprofile_receive_notifications">modulos.UserProfile.migrations.0007_userprofile_receive_notifications module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications">modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
 </ul>

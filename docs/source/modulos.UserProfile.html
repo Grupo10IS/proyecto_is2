@@ -96,6 +96,30 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0006_userprofile_pagos">modulos.UserProfile.migrations.0006_userprofile_pagos module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0006_userprofile_pagos.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0007_userprofile_receive_notifications">modulos.UserProfile.migrations.0007_userprofile_receive_notifications module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0007_userprofile_receive_notifications.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications">modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -333,7 +357,7 @@ is saved manually at a later time. Return the model instance.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['phone_number',</span> <span class="pre">'address']</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['phone_number',</span> <span class="pre">'address',</span> <span class="pre">'receive_notifications']</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.Meta.fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -346,7 +370,7 @@ is saved manually at a later time. Return the model instance.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.forms.ProfileForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'address':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.base_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'address':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'receive_notifications':</span> <span class="pre">&lt;django.forms.fields.BooleanField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.UserProfile.forms.ProfileForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -406,17 +430,8 @@ is saved manually at a later time. Return the model instance.</p>
 <span id="modulos-userprofile-models-module"></span><h2>modulos.UserProfile.models module<a class="headerlink" href="#module-modulos.UserProfile.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive_notifications</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
-<p>Modelo de perfil de usuario “UserProfile”.</p>
-<p>Este modelo extiende de <cite>AbstractUser</cite> para agregar campos adicionales al perfil del usuario.
-Incluye campos para dirección, correo electrónico y número de teléfono.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><p>address (CharField): Dirección del usuario, con un máximo de 80 caracteres. Puede estar vacío.
-email (EmailField): Correo electrónico del usuario, que debe ser único y no puede estar vacío.
-phone_number (CharField): Número de teléfono del usuario, con un máximo de 15 caracteres. Puede estar vacío.</p>
-</dd>
-</dl>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.DoesNotExist" title="Link to this definition">¶</a></dt>
@@ -541,10 +556,41 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.pagos">
+<span class="sig-name descname"><span class="pre">pagos</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.pagos" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.password">
 <span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.password" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.payment_set">
+<span class="sig-name descname"><span class="pre">payment_set</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.payment_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -567,6 +613,13 @@ many-to-one relation.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
 <p>Most of the implementation is delegated to a dynamically defined manager
 class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.receive_notifications">
+<span class="sig-name descname"><span class="pre">receive_notifications</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.receive_notifications" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -737,6 +790,8 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
@@ -826,9 +881,12 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.last_login"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_login</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.last_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.pagos"><code class="docutils literal notranslate"><span class="pre">UserProfile.pagos</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.payment_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.payment_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.post_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.post_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.receive_notifications"><code class="docutils literal notranslate"><span class="pre">UserProfile.receive_notifications</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 </ul>

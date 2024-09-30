@@ -75,7 +75,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.models">modulos.Authorization.models module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.permissions">modulos.Authorization.permissions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.permissions">modulos.Authorization.permissions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.permissions.user_has_access_to_category"><code class="docutils literal notranslate"><span class="pre">user_has_access_to_category()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.roles">modulos.Authorization.roles module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.roles.prevent_default_role_deletion"><code class="docutils literal notranslate"><span class="pre">prevent_default_role_deletion()</span></code></a></li>
 </ul>
@@ -95,6 +98,8 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0004_category_status_category_tipo">modulos.Categories.migrations.0004_category_status_category_tipo module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more">modulos.Categories.migrations.0005_alter_category_description_alter_category_name_and_more module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0006_category_image">modulos.Categories.migrations.0006_category_image module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0007_alter_category_tipo">modulos.Categories.migrations.0007_alter_category_tipo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0008_alter_category_description">modulos.Categories.migrations.0008_alter_category_description module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -129,6 +134,7 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.INACTIVO"><code class="docutils literal notranslate"><span class="pre">Category.INACTIVO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Category.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.PREMIUM"><code class="docutils literal notranslate"><span class="pre">Category.PREMIUM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.SUSCRIPCION"><code class="docutils literal notranslate"><span class="pre">Category.SUSCRIPCION</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.TIPO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.TIPO_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.description"><code class="docutils literal notranslate"><span class="pre">Category.description</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.get_status_display"><code class="docutils literal notranslate"><span class="pre">Category.get_status_display()</span></code></a></li>
@@ -137,9 +143,11 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.image"><code class="docutils literal notranslate"><span class="pre">Category.image</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.name"><code class="docutils literal notranslate"><span class="pre">Category.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.objects"><code class="docutils literal notranslate"><span class="pre">Category.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.payment_set"><code class="docutils literal notranslate"><span class="pre">Category.payment_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.post_set"><code class="docutils literal notranslate"><span class="pre">Category.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.status"><code class="docutils literal notranslate"><span class="pre">Category.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.tipo"><code class="docutils literal notranslate"><span class="pre">Category.tipo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.models.Category.users_paid"><code class="docutils literal notranslate"><span class="pre">Category.users_paid</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -164,6 +172,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView.context_object_name"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.context_object_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView.get"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.get()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.get_context_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView.model"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryDetailView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.template_name</span></code></a></li>
@@ -172,6 +181,8 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView"><code class="docutils literal notranslate"><span class="pre">CategoryListView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.context_object_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.context_object_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.get_queryset"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.get_template_names"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_template_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.model"><code class="docutils literal notranslate"><span class="pre">CategoryListView.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Categories.html#modulos.Categories.views.CategoryListView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.template_name</span></code></a></li>
 </ul>
@@ -179,6 +190,74 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Categories.html#module-modulos.Categories">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0001_initial">modulos.Pagos.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0002_payment_status">modulos.Pagos.migrations.0002_payment_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#module-modulos.Pagos.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.admin">modulos.Pagos.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.apps">modulos.Pagos.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig"><code class="docutils literal notranslate"><span class="pre">PagosConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">PagosConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig.name"><code class="docutils literal notranslate"><span class="pre">PagosConfig.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.forms">modulos.Pagos.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.PaymentForm"><code class="docutils literal notranslate"><span class="pre">PaymentForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.Meta"><code class="docutils literal notranslate"><span class="pre">PaymentForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PaymentForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">PaymentForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.media"><code class="docutils literal notranslate"><span class="pre">PaymentForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm"><code class="docutils literal notranslate"><span class="pre">UserProfileForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm.Meta"><code class="docutils literal notranslate"><span class="pre">UserProfileForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm.base_fields"><code class="docutils literal notranslate"><span class="pre">UserProfileForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">UserProfileForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm.media"><code class="docutils literal notranslate"><span class="pre">UserProfileForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.models">modulos.Pagos.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment"><code class="docutils literal notranslate"><span class="pre">Payment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Payment.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Payment.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.amount"><code class="docutils literal notranslate"><span class="pre">Payment.amount</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.category"><code class="docutils literal notranslate"><span class="pre">Payment.category</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.category_id"><code class="docutils literal notranslate"><span class="pre">Payment.category_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.date_paid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.get_next_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_next_by_date_paid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.get_previous_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_previous_by_date_paid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.id"><code class="docutils literal notranslate"><span class="pre">Payment.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.objects"><code class="docutils literal notranslate"><span class="pre">Payment.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.status"><code class="docutils literal notranslate"><span class="pre">Payment.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.stripe_payment_id"><code class="docutils literal notranslate"><span class="pre">Payment.stripe_payment_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.user"><code class="docutils literal notranslate"><span class="pre">Payment.user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.models.Payment.user_id"><code class="docutils literal notranslate"><span class="pre">Payment.user_id</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.tests">modulos.Pagos.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a><ul>
@@ -203,6 +282,7 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0006_alter_post_creation_date">modulos.Posts.migrations.0006_alter_post_creation_date module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0007_post_image">modulos.Posts.migrations.0007_post_image module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more">modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_category">modulos.Posts.migrations.0009_alter_post_category module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -214,6 +294,7 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.apps.PostsConfig"><code class="docutils literal notranslate"><span class="pre">PostsConfig</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.apps.PostsConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">PostsConfig.default_auto_field</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.apps.PostsConfig.name"><code class="docutils literal notranslate"><span class="pre">PostsConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.apps.PostsConfig.ready"><code class="docutils literal notranslate"><span class="pre">PostsConfig.ready()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -261,6 +342,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.signals">modulos.Posts.signals module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.send_notification_to_users"><code class="docutils literal notranslate"><span class="pre">send_notification_to_users()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.tests">modulos.Posts.tests module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.tests.test_create_post_view"><code class="docutils literal notranslate"><span class="pre">test_create_post_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.tests.test_home_view"><code class="docutils literal notranslate"><span class="pre">test_home_view()</span></code></a></li>
@@ -270,6 +355,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView"><code class="docutils literal notranslate"><span class="pre">ContenidosView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ContenidosView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView.template_name"><code class="docutils literal notranslate"><span class="pre">ContenidosView.template_name</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
@@ -292,6 +382,9 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0003_alter_userprofile_email">modulos.UserProfile.migrations.0003_alter_userprofile_email module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0004_remove_userprofile_direccion">modulos.UserProfile.migrations.0004_remove_userprofile_direccion module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0005_userprofile_address_userprofile_phone_number">modulos.UserProfile.migrations.0005_userprofile_address_userprofile_phone_number module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0006_userprofile_pagos">modulos.UserProfile.migrations.0006_userprofile_pagos module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0007_userprofile_receive_notifications">modulos.UserProfile.migrations.0007_userprofile_receive_notifications module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications">modulos.UserProfile.migrations.0008_alter_userprofile_receive_notifications module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -377,9 +470,12 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.last_login"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_login</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.last_name"><code class="docutils literal notranslate"><span class="pre">UserProfile.last_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.logentry_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.logentry_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.pagos"><code class="docutils literal notranslate"><span class="pre">UserProfile.pagos</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.password"><code class="docutils literal notranslate"><span class="pre">UserProfile.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.payment_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.payment_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.post_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.post_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.receive_notifications"><code class="docutils literal notranslate"><span class="pre">UserProfile.receive_notifications</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 </ul>
@@ -533,6 +629,7 @@ and a list of categories.</p>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.html">modulos.UserProfile package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.mdeditor.html">modulos.mdeditor package</a></li>
@@ -551,6 +648,8 @@ and a list of categories.</p>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

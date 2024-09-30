@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modulos.Pagos.views &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=9c9b61ad"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/translations.js?v=d190bf04"></script>
+    <link rel="index" title="Índice" href="../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para modulos.Pagos.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
+<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.forms</span> <span class="kn">import</span> <span class="n">PaymentForm</span><span class="p">,</span> <span class="n">UserProfileForm</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">import</span> <span class="nn">stripe</span>
+
+<span class="c1"># Configura tu clave secreta de Stripe</span>
+<span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
+
+
+<div class="viewcode-block" id="payment_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_view">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">payment_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Crear el PaymentIntent y obtener el client_secret</span>
+        <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">amount</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># 500 centavos, equivale a 5 reales para Stripe equivale a 1 dólar americano</span>
+            <span class="n">currency</span><span class="o">=</span><span class="s2">&quot;BRL&quot;</span><span class="p">,</span>  <span class="c1"># Cambiar a BRL</span>
+            <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">],</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;category_id&quot;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">},</span>
+        <span class="p">)</span>
+        <span class="n">client_secret</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="n">client_secret</span>
+
+        <span class="c1"># Crear un nuevo registro de pago con estado &#39;pending&#39;</span>
+        <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+            <span class="n">amount</span><span class="o">=</span><span class="mf">5.00</span><span class="p">,</span>  <span class="c1"># Ajustar el monto según sea necesario</span>
+            <span class="n">stripe_payment_id</span><span class="o">=</span><span class="n">intent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>  <span class="c1"># Almacenar el PaymentIntent ID</span>
+            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span>  <span class="c1"># Inicialmente en &#39;pending&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">profile_form</span> <span class="o">=</span> <span class="n">UserProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">payment_form</span> <span class="o">=</span> <span class="n">PaymentForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">profile_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">payment_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># Guardar el perfil del usuario actualizado</span>
+            <span class="n">profile_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="c1"># Verificar el estado del PaymentIntent antes de redirigir</span>
+            <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">intent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
+                <span class="c1"># Redirigir a la página de éxito</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;payment_success&quot;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                    <span class="n">request</span><span class="p">,</span>
+                    <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+                        <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
+                        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                        <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
+                        <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>
+                        <span class="s2">&quot;payment_error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Si hay un error en el formulario, mostrar los errores</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+                    <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
+                    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                    <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
+                    <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># GET request</span>
+        <span class="n">profile_form</span> <span class="o">=</span> <span class="n">UserProfileForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">payment_form</span> <span class="o">=</span> <span class="n">PaymentForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">5.00</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+            <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+            <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>  <span class="c1"># Pasar siempre el client_secret</span>
+            <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>  <span class="c1"># Pasar la clave pública de Stripe</span>
+        <span class="p">},</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="payment_success">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_success">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">payment_success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Recuperar el PaymentIntent desde la base de datos</span>
+        <span class="n">payment</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span>
+            <span class="s2">&quot;date_paid&quot;</span>
+        <span class="p">)</span>
+        <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">stripe_payment_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
+            <span class="c1"># Actualizar el estado del pago en la base de datos</span>
+            <span class="n">payment</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+            <span class="n">payment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="c1"># Redirigir a la página de éxito</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;payment_success.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">Payment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se encontró el pago en la base de datos.&quot;</span><span class="p">},</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Proyecto IS2 grupo 6</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modules.html">modulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.html">modulos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.html">modulos.UserProfile package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.html">modulos.mdeditor package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Grupo 6 IS2.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -34,8 +34,6 @@
   <h1>Código fuente para modulos.Categories.models</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
-
-<span class="c1"># Create your models here.</span>
 <div class="viewcode-block" id="Category">
 <a class="viewcode-back" href="../../../docs/source/modulos.Categories.html#modulos.Categories.forms.Category">[documentos]</a>
 <span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -54,14 +52,14 @@
 
 <span class="sd">    Choices:</span>
 <span class="sd">        ESTADO_CHOICES: Lista de opciones para el estado de la categoría, incluyendo &#39;ACTIVO&#39; e &#39;INACTIVO&#39;.</span>
-<span class="sd">        TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo &#39;PREMIUM&#39; y &#39;GRATIS&#39;.</span>
+<span class="sd">        TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo &#39;PREMIUM&#39;, &#39;SUSCRIPCION&#39; y &#39;GRATIS&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># FIX: STRING MAGICOS YA OTRA VEZ</span>
     <span class="n">ACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Activo&quot;</span>
     <span class="n">INACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Inactivo&quot;</span>
 
     <span class="n">PREMIUM</span> <span class="o">=</span> <span class="s2">&quot;Premium&quot;</span>
+    <span class="n">SUSCRIPCION</span> <span class="o">=</span> <span class="s2">&quot;Suscripcion&quot;</span>
     <span class="n">GRATIS</span> <span class="o">=</span> <span class="s2">&quot;Gratis&quot;</span>
 
     <span class="n">ESTADO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
@@ -72,13 +70,15 @@
     <span class="n">TIPO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">PREMIUM</span><span class="p">,</span> <span class="n">PREMIUM</span><span class="p">),</span>
         <span class="p">(</span><span class="n">GRATIS</span><span class="p">,</span> <span class="n">GRATIS</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">SUSCRIPCION</span><span class="p">,</span> <span class="n">SUSCRIPCION</span><span class="p">),</span>
     <span class="p">]</span>
+
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Nombre&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descricion&quot;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descripción&quot;</span><span class="p">)</span>
     <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ESTADO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ACTIVO</span><span class="p">)</span>
-    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">GRATIS</span><span class="p">)</span>
+    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">GRATIS</span><span class="p">)</span>
 
     <span class="c1"># Campo nuevo para la imagen de la categoría</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span>
@@ -127,6 +127,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

@@ -91,6 +91,22 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0007_alter_category_tipo">modulos.Categories.migrations.0007_alter_category_tipo module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0007_alter_category_tipo.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0007_alter_category_tipo.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0007_alter_category_tipo.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0008_alter_category_description">modulos.Categories.migrations.0008_alter_category_description module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0008_alter_category_description.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0008_alter_category_description.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0008_alter_category_description.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -190,7 +206,7 @@ status (CharField): Estado de la categoría, con opciones definidas por <cite>ES
 </dl>
 </dd>
 <dt>Choices:</dt><dd><p>ESTADO_CHOICES: Lista de opciones para el estado de la categoría, incluyendo “ACTIVO” e “INACTIVO”.
-TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PREMIUM” y “GRATIS”.</p>
+TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PREMIUM”, “SUSCRIPCION” y “GRATIS”.</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -231,8 +247,13 @@ TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PRE
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.SUSCRIPCION">
+<span class="sig-name descname"><span class="pre">SUSCRIPCION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Suscripcion'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.SUSCRIPCION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.TIPO_CHOICES">
-<span class="sig-name descname"><span class="pre">TIPO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Premium',</span> <span class="pre">'Premium'),</span> <span class="pre">('Gratis',</span> <span class="pre">'Gratis')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.TIPO_CHOICES" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">TIPO_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Premium',</span> <span class="pre">'Premium'),</span> <span class="pre">('Gratis',</span> <span class="pre">'Gratis'),</span> <span class="pre">('Suscripcion',</span> <span class="pre">'Suscripcion')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.TIPO_CHOICES" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -279,6 +300,21 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.payment_set">
+<span class="sig-name descname"><span class="pre">payment_set</span></span><a class="headerlink" href="#modulos.Categories.models.Category.payment_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.post_set">
 <span class="sig-name descname"><span class="pre">post_set</span></span><a class="headerlink" href="#modulos.Categories.models.Category.post_set" title="Link to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the reverse side of a
@@ -305,6 +341,22 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">tipo</span></span><a class="headerlink" href="#modulos.Categories.models.Category.tipo" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.users_paid">
+<span class="sig-name descname"><span class="pre">users_paid</span></span><a class="headerlink" href="#modulos.Categories.models.Category.users_paid" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 </dd></dl>
@@ -386,6 +438,11 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="modulos.Categories.views.CategoryDetailView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/views.html#CategoryDetailView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.views.CategoryDetailView.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="modulos.Categories.views.CategoryDetailView.get_context_data">
 <span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/views.html#CategoryDetailView.get_context_data"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.views.CategoryDetailView.get_context_data" title="Link to this definition">¶</a></dt>
 <dd><p>Insert the single object into the context dict.</p>
@@ -417,6 +474,21 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="modulos.Categories.views.CategoryListView.get_context_data">
 <span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/views.html#CategoryListView.get_context_data"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.views.CategoryListView.get_context_data" title="Link to this definition">¶</a></dt>
 <dd><p>Get the context for this view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Categories.views.CategoryListView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/views.html#CategoryListView.get_queryset"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.views.CategoryListView.get_queryset" title="Link to this definition">¶</a></dt>
+<dd><p>Return the list of items for this view.</p>
+<p>The return value must be an iterable and may be an instance of
+<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Categories.views.CategoryListView.get_template_names">
+<span class="sig-name descname"><span class="pre">get_template_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Categories/views.html#CategoryListView.get_template_names"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Categories.views.CategoryListView.get_template_names" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of template names to be used for the request. Must return
+a list. May not be called if render_to_response is overridden.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -505,6 +577,7 @@ object the first time, the query is executed.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.INACTIVO"><code class="docutils literal notranslate"><span class="pre">Category.INACTIVO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Category.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.PREMIUM"><code class="docutils literal notranslate"><span class="pre">Category.PREMIUM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.SUSCRIPCION"><code class="docutils literal notranslate"><span class="pre">Category.SUSCRIPCION</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.TIPO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.TIPO_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.description"><code class="docutils literal notranslate"><span class="pre">Category.description</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.get_status_display"><code class="docutils literal notranslate"><span class="pre">Category.get_status_display()</span></code></a></li>
@@ -513,9 +586,11 @@ object the first time, the query is executed.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.image"><code class="docutils literal notranslate"><span class="pre">Category.image</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.name"><code class="docutils literal notranslate"><span class="pre">Category.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.objects"><code class="docutils literal notranslate"><span class="pre">Category.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.payment_set"><code class="docutils literal notranslate"><span class="pre">Category.payment_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.post_set"><code class="docutils literal notranslate"><span class="pre">Category.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.status"><code class="docutils literal notranslate"><span class="pre">Category.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.tipo"><code class="docutils literal notranslate"><span class="pre">Category.tipo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.users_paid"><code class="docutils literal notranslate"><span class="pre">Category.users_paid</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -540,6 +615,7 @@ object the first time, the query is executed.</p>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView.context_object_name"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.context_object_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView.get"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.get()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.get_context_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView.model"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryDetailView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryDetailView.template_name</span></code></a></li>
@@ -548,6 +624,8 @@ object the first time, the query is executed.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Categories.views.CategoryListView"><code class="docutils literal notranslate"><span class="pre">CategoryListView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.context_object_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.context_object_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.get_queryset"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.get_template_names"><code class="docutils literal notranslate"><span class="pre">CategoryListView.get_template_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.model"><code class="docutils literal notranslate"><span class="pre">CategoryListView.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.views.CategoryListView.template_name"><code class="docutils literal notranslate"><span class="pre">CategoryListView.template_name</span></code></a></li>
 </ul>
@@ -558,6 +636,8 @@ object the first time, the query is executed.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>

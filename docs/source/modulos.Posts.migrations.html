@@ -196,6 +196,30 @@
 </dd></dl>
 
 </section>
+<section id="module-modulos.Posts.migrations.0009_alter_post_category">
+<span id="modulos-posts-migrations-0009-alter-post-category-module"></span><h2>modulos.Posts.migrations.0009_alter_post_category module<a class="headerlink" href="#module-modulos.Posts.migrations.0009_alter_post_category" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0009_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0009_alter_post_category.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Categories',</span> <span class="pre">'0008_alter_category_description'),</span> <span class="pre">('Posts',</span> <span class="pre">'0008_alter_post_author_alter_post_category_and_more')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RunPython</span> <span class="pre">&lt;function</span> <span class="pre">populate_default_category&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='category',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.populate_default_category">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0009_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">populate_default_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_editor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0009_alter_post_category.html#populate_default_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.populate_default_category" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
 <section id="module-modulos.Posts.migrations">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-modulos.Posts.migrations" title="Link to this heading">¶</a></h2>
 </section>
@@ -236,6 +260,8 @@
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.migrations.html">modulos.Pagos.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.Posts.migrations package</a><ul>
@@ -303,6 +329,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0009_alter_post_category">modulos.Posts.migrations.0009_alter_post_category module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.populate_default_category"><code class="docutils literal notranslate"><span class="pre">populate_default_category()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations">Module contents</a></li>
