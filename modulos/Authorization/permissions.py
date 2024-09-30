@@ -1,7 +1,9 @@
 from os import _exit
-from modulos.Pagos.models import Payment
+
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+
+from modulos.Pagos.models import Payment
 from modulos.UserProfile.models import UserProfile
 
 #####
@@ -96,7 +98,8 @@ def user_has_access_to_category(user, category):
         return True
 
     # Verificar si el usuario pertenece a grupos con acceso a la categoría
-    from modulos.Authorization.roles import ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER
+    from modulos.Authorization.roles import (ADMIN, AUTOR, EDITOR, PUBLISHER,
+                                             SUBSCRIBER)
 
     if (
         category.tipo == category.SUSCRIPCION

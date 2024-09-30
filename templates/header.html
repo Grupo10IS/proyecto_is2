@@ -13,7 +13,9 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
                 id="headerContent">
                 <li>
-                    <a href="{% url 'contenidos' %}" class="nav-link px-2 " style="color:white">Contenidos</a>
+                    <a href="{% url 'contenidos' %}"
+                       class="nav-link px-2 "
+                       style="color:white">Contenidos</a>
                 </li>
                 <li>
                     <a href="{% url 'categories_list' %}"
@@ -78,11 +80,10 @@
                 </div>
                 <!-- Cambiar el enlace de suscripción en el encabezado -->
                 <a href="{% url 'categories_list' %}?premium=true" class="subscribe">Suscribite por $1</a>
-
                 <div>{% include 'burguer.html' %}</div>
             </div>
         </div>
-    </div> 
+    </div>
     {% block expand_nav %}
     {% endblock expand_nav %}
     <script src="{% static 'js/dropdown.js' %}"></script>

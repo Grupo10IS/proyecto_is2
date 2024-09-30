@@ -83,6 +83,7 @@ def test_view_post(client):
         content="Content of test post",
         tags="tag1, tag2",
         status=Post.DRAFT,
+        category=category,
     )
 
     # Test post detail view on a draft post without permission
