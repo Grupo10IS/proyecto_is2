@@ -1,7 +1,5 @@
 from django.db import models
 
-
-# Create your models here.
 class Category(models.Model):
     """
     Modelo de categoría 'Category'.
@@ -18,13 +16,14 @@ class Category(models.Model):
 
     Choices:
         ESTADO_CHOICES: Lista de opciones para el estado de la categoría, incluyendo 'ACTIVO' e 'INACTIVO'.
-        TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo 'PREMIUM' y 'GRATIS'.
+        TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo 'PREMIUM', 'SUSCRIPCION' y 'GRATIS'.
     """
 
     ACTIVO = "Activo"
     INACTIVO = "Inactivo"
 
     PREMIUM = "Premium"
+    SUSCRIPCION = "Suscripcion"
     GRATIS = "Gratis"
 
     ESTADO_CHOICES = [
@@ -35,13 +34,15 @@ class Category(models.Model):
     TIPO_CHOICES = [
         (PREMIUM, PREMIUM),
         (GRATIS, GRATIS),
+        (SUSCRIPCION, SUSCRIPCION),
     ]
+
     name = models.CharField(
         max_length=80, verbose_name="Nombre", blank=False, null=False
     )
-    description = models.TextField(blank=True, null=True, verbose_name="Descricion")
+    description = models.TextField(blank=True, null=True, verbose_name="Descripción")
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
-    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default=GRATIS)
+    tipo = models.CharField(max_length=15, choices=TIPO_CHOICES, default=GRATIS)
 
     # Campo nuevo para la imagen de la categoría
     image = models.ImageField(

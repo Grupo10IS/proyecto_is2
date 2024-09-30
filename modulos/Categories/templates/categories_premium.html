@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-4 fst-italic mb-4">Categorías Premium</h1>
+            <p class="lead my-3">Cada categoría tiene un costo de tan solo 1$, que esperas para obtener los mejores contenidos!</p>
+            <div class="row">
+                {% if categories %}
+                    {% for category in categories %}
+                        <!-- Usar clases responsivas de Bootstrap para adaptarse a pantallas pequeñas -->
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card h-100">
+                                <!-- Imagen de la categoría ocupando la parte superior -->
+                                {% if category.image %}
+                                    <img src="{{ category.image.url }}"
+                                         class="card-img-top"
+                                         alt="{{ category.name }}"
+                                         style="height: 250px; object-fit: cover">
+                                {% else %}
+                                    <img src="{% static 'images/makex.png' %}"
+                                         class="card-img-top"
+                                         alt="Logo MakeX"
+                                         style="height: 250px; object-fit: cover">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ category.name }}</h5>
+                                    <p class="card-text">{{ category.description }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{% url 'category_detail' category.id %}"
+                                           class="btn btn-primary btn-sm">Ver más</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay categorías premium disponibles en este momento.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

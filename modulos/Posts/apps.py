@@ -19,4 +19,3 @@ class PostsConfig(AppConfig):
 
     def ready(self):
         import modulos.Posts.signals
-

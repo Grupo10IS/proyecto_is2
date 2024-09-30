@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path("", manage_post, name="post_list"),
+    path("list/", ContenidosView.as_view(), name="contenidos"),
     path("<int:id>/", view_post, name="post_detail"),
     path("create/", create_post, name="post_create"),
     path("<int:id>/delete", delete_post, name="delete_post"),
@@ -19,4 +20,7 @@ urlpatterns = [
     path("<int:id>/versions", post_versions_list, name="post_versions"),
     path("<int:post_id>/versions/<int:version>/", post_version_detail, name="post_version_detail"),
     path("<int:id>/logs", post_log_list, name="post_log_list"),
+    # -- miscelanea --
+    path("<int:id>", favorite_post, name="post_favorite"),
+    path("favorites", favorite_list, name="post_favorite_list"),
 ]

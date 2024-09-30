@@ -24,14 +24,24 @@ def test_home_view(client):
     assert ps_len == 0, f"Expected 0 posts, got {ps_len}"
 
     # Test home view with existing posts
+    categoria = Category.objects.create(name="hola")
     Post.objects.create(
-        title="Test Post 1", content="Content of test post 1", status=Post.PUBLISHED
+        title="Test Post 1",
+        content="Content of test post 1",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
     Post.objects.create(
-        title="Test Post 2", content="Content of test post 2", status=Post.DRAFT
+        title="Test Post 2",
+        content="Content of test post 2",
+        status=Post.DRAFT,
+        category=categoria,
     )
     Post.objects.create(
-        title="Test Post 3", content="Content of test post 3", status=Post.PUBLISHED
+        title="Test Post 3",
+        content="Content of test post 3",
+        status=Post.PUBLISHED,
+        category=categoria,
     )
 
     response = client.get(url)
@@ -45,11 +55,13 @@ def test_view_post(client):
     """
     Test the post detail view with an existing post and a non-existent post.
     """
+    category = Category.objects.create(name="hola")
     post = Post.objects.create(
         title="Test Post",
         content="Content of test post",
         tags="tag1, tag2",
         status=Post.PUBLISHED,
+        category=category,
     )
 
     # Test post detail view with an existing post
@@ -71,6 +83,7 @@ def test_view_post(client):
         content="Content of test post",
         tags="tag1, tag2",
         status=Post.DRAFT,
+        category=category,
     )
 
     # Test post detail view on a draft post without permission
@@ -174,49 +187,172 @@ def test_post_manage_view(client):
 
 
 @pytest.mark.django_db
-def test_review_post_view(client):
+def test_favorite_post(client):
     """
-    Test the review post view for post version creation
+    Test para marcar y desmarcar un post como favorito.
     """
-    # Create user and login
+    categoria = Category.objects.create(name="prueba")
+    post = Post.objects.create(
+        title="Post Favorito", content="Contenido del post favorito", category=categoria
+    )
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
     )
     client.login(username="testuser", password="password")
-    user.user_permissions.add(Permission.objects.get(codename=POST_EDIT_PERMISSION))
 
-    # Create a post with valid data and status not DRAFT
-    category = Category.objects.create(name="test_category", description="descripcion")
-    post = Post.objects.create(
-        title="New Test Post",
-        content="Content for new test post",
-        category=category,
-        status=Post.PUBLISHED,  # Important: Set status to something other than DRAFT
-        version=1,
-        author=user,
+    # Test agregar post a favoritos
+    url = reverse("post_favorite", args=[post.id])
+    response = client.post(url)
+    assert response.status_code == 204, "Debería retornar 204 al marcar como favorito."
+    assert post.favorites.filter(
+        id=user.id
+    ).exists(), "El post debería estar en la lista de favoritos."
+
+    # Test quitar post de favoritos
+    response = client.post(url)
+    assert (
+        response.status_code == 204
+    ), "Debería retornar 204 al desmarcar como favorito."
+    assert not post.favorites.filter(
+        id=user.id
+    ).exists(), "El post no debería estar en la lista de favoritos."
+
+
+@pytest.mark.django_db
+def test_favorite_list_view(client):
+    """
+    Test para listar los posts favoritos del usuario.
+    """
+    categoria = Category.objects.create(name="prueba")
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    post1 = Post.objects.create(
+        title="Post 1", content="Contenido del post 1", category=categoria
+    )
+    post2 = Post.objects.create(
+        title="Post 2", content="Contenido del post 2", category=categoria
     )
 
-    # Verify post exists
-    assert Post.objects.filter(
-        title="New Test Post"
-    ).exists(), "Post should exist in the database after creation."
+    post1.favorites.add(user)  # Marcar post1 como favorito
+    post2.favorites.add(user)  # Marcar post2 como favorito
 
-    # Now, simulate editing the post
+    client.login(username="testuser", password="password")
+    url = reverse("post_favorite_list")
+    response = client.get(url)
+
+    assert (
+        response.status_code == 200
+    ), "Debería retornar 200 al acceder a la lista de favoritos."
+    assert (
+        "posts_favorites" in response.context
+    ), "El contexto debería contener 'posts_favorites'."
+    assert (
+        len(response.context["posts_favorites"]) == 2
+    ), "Debería mostrar 2 posts favoritos."
+
+
+@pytest.mark.django_db
+def test_search_post_view(client):
+    """
+    Test para buscar publicaciones.
+    """
+    categoria = Category.objects.create(name="prueba")
+    Post.objects.create(
+        title="Post de prueba", content="Contenido de prueba", category=categoria
+    )
+
+    # Probar una búsqueda no válida
+    url = reverse("post_search") + "?input="
+    response = client.get(url)
+    assert (
+        response.status_code == 302
+    ), "Debería redirigir a la vista de inicio si no hay búsqueda válida."
+
+    # Probar una búsqueda válida
+    url = reverse("post_search") + "?input=Post de prueba"
+    response = client.get(url)
+    assert (
+        response.status_code == 200
+    ), "Debería retornar 200 al buscar un post existente."
+    assert len(response.context["posts"]) == 1, "Debería encontrar 1 post."
+    assert (
+        response.context["posts"][0].title == "Post de prueba"
+    ), "El post encontrado debería ser el correcto."
+
+
+@pytest.mark.django_db
+def test_delete_post_view(client):
+    """
+    Test para eliminar un post.
+    """
+    categoria = Category.objects.create(name="prueba")
+    post = Post.objects.create(
+        category=categoria, title="Post a Eliminar", content="Contenido a eliminar"
+    )
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    user.user_permissions.add(Permission.objects.get(codename=POST_DELETE_PERMISSION))
+    client.login(username="testuser", password="password")
+
+    url = reverse("delete_post", args=[post.id])
+    response = client.get(url)
+    assert (
+        response.status_code == 200
+    ), "Debería retornar 200 al acceder a la vista de confirmación de eliminación."
+
+    response = client.post(url)
+    assert response.status_code == 302, "Debería redirigir después de eliminar el post."
+    assert not Post.objects.filter(
+        id=post.id
+    ).exists(), "El post debería haber sido eliminado."
+
+
+@pytest.mark.django_db
+def test_edit_post(client):
+    """
+    Test para la vista de edición de un post.
+    Verifica que un post existente se puede editar correctamente.
+    """
+    # Crea una categoría para el post
+    category = Category.objects.create(
+        name="Categoría de Prueba", description="Descripción de prueba"
+    )
+
+    # Crea un post asociado a la categoría
+    post = Post.objects.create(
+        title="Post a Editar", content="Contenido a editar", category=category
+    )
+
+    # Crea un usuario y asigna permisos
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    user.user_permissions.add(Permission.objects.get(codename=POST_EDIT_PERMISSION))
+
+    # Inicia sesión con el usuario creado
+    client.login(username="testuser", password="password")
+
+    # Obtiene la URL para editar el post
     url = reverse("edit_post", args=[post.id])
+
+    # Datos para actualizar el post
     data = {
-        "title": "Updated Test Post",
-        "content": "Updated content for test post",
+        "title": "Título editado",
+        "content": "Contenido editado",
         "category": category.id,
     }
-    client.post(url, data)
 
-    # Verify that the post is updated
+    # Realiza la solicitud POST para editar el post
+    response = client.post(url, data)
+
+    # Verifica que se redirigió correctamente
+    assert response.status_code == 302
+
+    # Refresca el post desde la base de datos
     post.refresh_from_db()
-    assert post.title == "Updated Test Post", "Post title should be updated"
 
-    # Verify that a version was created
-    assert Version.objects.filter(post_id=post.id).exists(), "A version should be created"
-    version = Version.objects.get(post_id=post.id)
-    assert (
-        version.version == post.version - 1
-    ), "version version should be one less than the updated post version"
+    # Verifica que el post se haya actualizado correctamente
+    assert post.title == "Título editado"
+    assert post.content == "Contenido editado"

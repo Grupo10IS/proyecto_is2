@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Error en el Pago</h2>
+<p>Lo sentimos, ha ocurrido un error durante el procesamiento del pago.</p>
+<p>{{ error }}</p>
+<a href="{% url 'categories_list' %}" class="btn btn-danger">Volver</a>
+{% endblock %}

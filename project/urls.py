@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path, re_path
-
+from modulos.Pagos import urls as pagos_urls
 from modulos.Authorization import urls as roles_urls
 from modulos.Categories import urls as category_urls
 from modulos.Posts import urls as posts_urls
@@ -15,6 +15,7 @@ urlpatterns = [
     path("categories/", include(category_urls)),
     path("posts/", include(posts_urls)),
     re_path(r"mdeditor/", include("modulos.mdeditor.urls")),
+    path("pagos/", include(pagos_urls)),
 ]
 
 if settings.DEBUG:
