@@ -108,6 +108,14 @@ modulos.Posts.migrations.0013\_post\_favorites module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0014\_post\_version\_log\_version module
+-----------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0014_post_version_log_version
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
