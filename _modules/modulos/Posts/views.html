@@ -32,17 +32,19 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.Posts.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span></span><span class="kn">import</span> <span class="nn">difflib</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AnonymousUser</span><span class="p">,</span> <span class="n">Group</span>
 <span class="kn">from</span> <span class="nn">django.http.response</span> <span class="kn">import</span> <span class="n">HttpResponseBadRequest</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span><span class="p">,</span> <span class="n">HttpResponse</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Authorization.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
-<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+                                               <span class="n">POST_APPROVE_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span>
@@ -55,8 +57,7 @@
 <span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">NewPostForm</span><span class="p">,</span> <span class="n">SearchPostForm</span>
-<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Post</span>
-<span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Log</span><span class="p">,</span> <span class="n">NewVersion</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">Version</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 
 
@@ -230,12 +231,10 @@
     <span class="n">is_admin</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ADMIN</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
     <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_admin</span> <span class="k">else</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
-    <span class="c1"># Obtiene todos los permisos del usuario</span>
-    <span class="n">permisos</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
-
-    <span class="n">perm_create</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_CREATE_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
-    <span class="n">perm_edit</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_EDIT_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
-    <span class="n">perm_delete</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">POST_DELETE_PERMISSION</span> <span class="ow">in</span> <span class="n">permisos</span>
+    <span class="k">if</span> <span class="n">is_admin</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
     <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
@@ -268,15 +267,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span><span class="p">:</span> <span class="n">Post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">)</span> <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
         <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span><span class="s2">&quot;No tienes permiso para eliminar este post.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># Elimina el post</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>  <span class="c1"># Redirige a la lista de posts</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
 
     <span class="c1"># Si no es una solicitud POST, muestra un mensaje de confirmación</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">})</span>  <span class="c1"># Crea el contexto con el post a eliminar</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_confirm_delete.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
 
@@ -290,6 +292,10 @@
 <span class="sd">    Esta vista carga el formulario con los datos del post y procesa la actualización</span>
 <span class="sd">    si se envían nuevos datos.</span>
 
+<span class="sd">    Cuando se realiza una modificacion de un post y el mismo se encuentra en cualquier estado</span>
+<span class="sd">    que no sea borrador, entonces se guarda una version del estado anterior del post a modo de historial de</span>
+<span class="sd">    cambios.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
 <span class="sd">        id (int): El ID del post a editar.</span>
@@ -298,19 +304,24 @@
 <span class="sd">        HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+
         <span class="n">form</span> <span class="o">=</span> <span class="n">NewPostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;save_draft&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
-            <span class="k">elif</span> <span class="s2">&quot;submit_review&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span>  <span class="c1"># Estado &quot;Pendiente de Revisión&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># FIX: mostrar errores en el editor</span>
+            <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Formulario inválido&quot;</span><span class="p">)</span>
 
-            <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c1"># guardar version anterior del post</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">NewVersion</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+        <span class="n">version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">version</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
 
     <span class="n">form</span> <span class="o">=</span> <span class="n">NewPostForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">}))</span>
@@ -375,34 +386,110 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span>  <span class="c1"># Devuelve un código de estado 20</span></div>
-
-
-
-<div class="viewcode-block" id="favorite_list">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.favorite_list">[documentos]</a>
-<span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">favorite_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vista para listar los posts favoritos del usuario.</span>
-
-<span class="sd">    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla &#39;pages/posts_favorites_list.html&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">posts_favorites</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">favorites</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts_favorites&quot;</span><span class="p">:</span> <span class="n">posts_favorites</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/posts_favorites_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
-
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span></div>
 
 
 <span class="c1"># --------------------</span>
 <span class="c1"># Flujo de publicacion</span>
 <span class="c1"># --------------------</span>
+
+
+<span class="nd">@login_required</span>
+<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">kanban_board</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Filtrar los posts según el estado</span>
+    <span class="n">drafts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">)</span>
+    <span class="n">pending_publication</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">)</span>
+    <span class="n">recently_published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>
+        <span class="n">publication_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Pasar las publicaciones a la plantilla para organizarlas en el tablero</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;pages/kanban_board.html&quot;</span><span class="p">,</span>
+        <span class="n">new_ctx</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;drafts&quot;</span><span class="p">:</span> <span class="n">drafts</span><span class="p">,</span>
+                <span class="s2">&quot;pending_review&quot;</span><span class="p">:</span> <span class="n">pending_review</span><span class="p">,</span>
+                <span class="s2">&quot;pending_publication&quot;</span><span class="p">:</span> <span class="n">pending_publication</span><span class="p">,</span>
+                <span class="s2">&quot;published&quot;</span><span class="p">:</span> <span class="n">recently_published</span><span class="p">,</span>
+                <span class="c1"># permisos para mostrar las acciones sobre las publicaciones</span>
+                <span class="s2">&quot;can_create&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_publish&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_approve&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_reject&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@login_required</span>
+<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">post_versions_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+
+    <span class="n">versions</span> <span class="o">=</span> <span class="n">Version</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;versions&quot;</span><span class="p">:</span> <span class="n">versions</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_versions_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+
+<span class="nd">@login_required</span>
+<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">post_version_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">post_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">original</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
+            <span class="s2">&quot;No tienes permisos para acceder a las versiones de este post&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">version</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Version</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">post_id</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="n">post_content</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="n">version_content</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">unified_diff</span><span class="p">(</span>
+        <span class="n">version_content</span><span class="p">,</span>
+        <span class="n">post_content</span><span class="p">,</span>
+        <span class="n">fromfile</span><span class="o">=</span><span class="s2">&quot;Comparacion.md&quot;</span><span class="p">,</span>
+        <span class="n">tofile</span><span class="o">=</span><span class="s2">&quot;Comparacion.md&quot;</span><span class="p">,</span>
+        <span class="n">lineterm</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+
+    <span class="c1"># Pasamos el diff a la plantilla</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="n">original</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">version</span><span class="p">,</span> <span class="s2">&quot;diff_content&quot;</span><span class="p">:</span> <span class="n">diff</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_version_detail.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="post_log_list">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_log_list">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">post_log_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span> <span class="ow">or</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
+            <span class="s2">&quot;No tienes permisos para acceder a los logs de este post&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-creation_date&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/logs_list.html&quot;</span><span class="p">,</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;logs&quot;</span><span class="p">:</span> <span class="n">logs</span><span class="p">}))</span></div>
+
 
 
 <span class="nd">@login_required</span>
@@ -442,38 +529,29 @@
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;kanban_board&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="kanban_board">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.kanban_board">[documentos]</a>
-<span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">kanban_board</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c1"># Filtrar los posts según el estado</span>
-    <span class="n">drafts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-    <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">)</span>
-    <span class="n">pending_publication</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">)</span>
-    <span class="n">recently_published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>
-        <span class="n">publication_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
-    <span class="p">)</span>
+<span class="c1"># --------------------</span>
+<span class="c1">#      Varios</span>
+<span class="c1"># --------------------</span>
 
-    <span class="c1"># Pasar las publicaciones a la plantilla para organizarlas en el tablero</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
-        <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;pages/kanban_board.html&quot;</span><span class="p">,</span>
-        <span class="n">new_ctx</span><span class="p">(</span>
-            <span class="n">request</span><span class="p">,</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;drafts&quot;</span><span class="p">:</span> <span class="n">drafts</span><span class="p">,</span>
-                <span class="s2">&quot;pending_review&quot;</span><span class="p">:</span> <span class="n">pending_review</span><span class="p">,</span>
-                <span class="s2">&quot;pending_publication&quot;</span><span class="p">:</span> <span class="n">pending_publication</span><span class="p">,</span>
-                <span class="s2">&quot;published&quot;</span><span class="p">:</span> <span class="n">recently_published</span><span class="p">,</span>
-                <span class="c1"># permisos para mostrar los botones</span>
-                <span class="s2">&quot;can_create&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_publish&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_approve&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_reject&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">),</span>
-            <span class="p">},</span>
-        <span class="p">),</span>
-    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="favorite_list">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.favorite_list">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">favorite_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para listar los posts favoritos del usuario.</span>
+
+<span class="sd">    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla &#39;pages/posts_favorites_list.html&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">posts_favorites</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">favorites</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts_favorites&quot;</span><span class="p">:</span> <span class="n">posts_favorites</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/posts_favorites_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
 
 

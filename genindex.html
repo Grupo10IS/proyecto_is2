@@ -45,7 +45,6 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
- | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -101,16 +100,24 @@
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.address">address (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.amount">amount (atributo de modulos.Pagos.models.Payment)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.parser.Parser.ast">ast (atributo de modulos.Posts.buscador.parser.Parser)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.author">author (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.author">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.author_id">author_id (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.author_id">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.apps.AuthorizationConfig">AuthorizationConfig (clase en modulos.Authorization.apps)</a>
 </li>
   </ul></td>
@@ -162,6 +169,8 @@
       <ul>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.category">(atributo de modulos.Posts.models.Post)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.category">(atributo de modulos.Posts.models.Version)</a>
+</li>
       </ul></li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category">Category (clase en modulos.Categories.models)</a>
 </li>
@@ -173,6 +182,8 @@
 
       <ul>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.category_id">(atributo de modulos.Posts.models.Post)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.category_id">(atributo de modulos.Posts.models.Version)</a>
 </li>
       </ul></li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView">CategoryCreateView (clase en modulos.Categories.views)</a>
@@ -206,7 +217,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.content">content (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.content">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView.context_object_name">context_object_name (atributo de modulos.Categories.views.CategoryDetailView)</a>
 
       <ul>
@@ -217,8 +232,14 @@
 </li>
       <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.roles.create_default_groups">create_default_groups() (en el módulo modulos.Authorization.roles)</a>
 </li>
-      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.creation_date">creation_date (atributo de modulos.Posts.models.Post)</a>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.creation_date">creation_date (atributo de modulos.Posts.models.Log)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.creation_date">(atributo de modulos.Posts.models.Post)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.creation_date">(atributo de modulos.Posts.models.Version)</a>
+</li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer.curr_char">curr_char (atributo de modulos.Posts.buscador.tokenizer.Lexer)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.parser.Parser.curr_position">curr_position (atributo de modulos.Posts.buscador.parser.Parser)</a>
@@ -348,6 +369,8 @@
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration.dependencies">(atributo de modulos.Posts.migrations.0013_post_favorites.Migration)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0014_post_version_log_version.Migration.dependencies">(atributo de modulos.Posts.migrations.0014_post_version_log_version.Migration)</a>
+</li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration.dependencies">(atributo de modulos.UserProfile.migrations.0001_initial.Migration)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0002_userprofile_direccion_alter_userprofile_email.Migration.dependencies">(atributo de modulos.UserProfile.migrations.0002_userprofile_direccion_alter_userprofile_email.Migration)</a>
@@ -461,14 +484,26 @@
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.ContenidosView.get_context_data">(método de modulos.Posts.views.ContenidosView)</a>
 </li>
       </ul></li>
-      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_next_by_creation_date">get_next_by_creation_date() (método de modulos.Posts.models.Post)</a>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.get_next_by_creation_date">get_next_by_creation_date() (método de modulos.Posts.models.Log)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_next_by_creation_date">(método de modulos.Posts.models.Post)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.get_next_by_creation_date">(método de modulos.Posts.models.Version)</a>
+</li>
+      </ul></li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.get_next_by_date_joined">get_next_by_date_joined() (método de modulos.UserProfile.models.UserProfile)</a>
 </li>
       <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.get_next_by_date_paid">get_next_by_date_paid() (método de modulos.Pagos.models.Payment)</a>
 </li>
-      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_previous_by_creation_date">get_previous_by_creation_date() (método de modulos.Posts.models.Post)</a>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.get_previous_by_creation_date">get_previous_by_creation_date() (método de modulos.Posts.models.Log)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.get_previous_by_creation_date">(método de modulos.Posts.models.Post)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.get_previous_by_creation_date">(método de modulos.Posts.models.Version)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.get_previous_by_date_joined">get_previous_by_date_joined() (método de modulos.UserProfile.models.UserProfile)</a>
@@ -526,7 +561,11 @@
       <ul>
         <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.id">(atributo de modulos.Pagos.models.Payment)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.id">(atributo de modulos.Posts.models.Log)</a>
+</li>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.id">(atributo de modulos.Posts.models.Post)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.id">(atributo de modulos.Posts.models.Version)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.id">(atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
@@ -536,9 +575,13 @@
       <ul>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.image">(atributo de modulos.Posts.models.Post)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.image">(atributo de modulos.Posts.models.Version)</a>
+</li>
       </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.INACTIVE">INACTIVE (atributo de modulos.Posts.models.Post)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.INACTIVO">INACTIVO (atributo de modulos.Categories.models.Category)</a>
 </li>
       <li><a href="docs/source/modulos.Categories.migrations.html#modulos.Categories.migrations.0001_initial.Migration.initial">initial (atributo de modulos.Categories.migrations.0001_initial.Migration)</a>
@@ -551,8 +594,6 @@
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration.initial">(atributo de modulos.UserProfile.migrations.0001_initial.Migration)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.permissions.initialize_permissions">initialize_permissions() (en el módulo modulos.Authorization.permissions)</a>
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_active">is_active (atributo de modulos.UserProfile.models.UserProfile)</a>
@@ -568,14 +609,6 @@
   </ul></td>
 </tr></table>
 
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.kanban_board">kanban_board() (en el módulo modulos.Posts.views)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -583,9 +616,19 @@
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.last_name">last_name (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
+      <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer">Lexer (clase en modulos.Posts.buscador.tokenizer)</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log">Log (clase en modulos.Posts.models)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer">Lexer (clase en modulos.Posts.buscador.tokenizer)</a>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.DoesNotExist">Log.DoesNotExist</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.MultipleObjectsReturned">Log.MultipleObjectsReturned</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.signals.log_post_change">log_post_change() (en el módulo modulos.Posts.signals)</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.log_set">log_set (atributo de modulos.Posts.models.Post)</a>
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.logentry_set">logentry_set (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
@@ -633,6 +676,8 @@
         <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.UserGroupForm.media">(modulos.UserProfile.forms.UserGroupForm propiedad)</a>
 </li>
       </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.message">message (atributo de modulos.Posts.models.Log)</a>
+</li>
       <li><a href="docs/source/modulos.Categories.migrations.html#modulos.Categories.migrations.0001_initial.Migration">Migration (clase en modulos.Categories.migrations.0001_initial)</a>
 
       <ul>
@@ -679,6 +724,8 @@
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0012_merge_20240930_0143.Migration">(clase en modulos.Posts.migrations.0012_merge_20240930_0143)</a>
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration">(clase en modulos.Posts.migrations.0013_post_favorites)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0014_post_version_log_version.Migration">(clase en modulos.Posts.migrations.0014_post_version_log_version)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration">(clase en modulos.UserProfile.migrations.0001_initial)</a>
 </li>
@@ -872,6 +919,8 @@
         <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0012_merge_20240930_0143">modulos.Posts.migrations.0012_merge_20240930_0143</a>
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0013_post_favorites">modulos.Posts.migrations.0013_post_favorites</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0014_post_version_log_version">modulos.Posts.migrations.0014_post_version_log_version</a>
 </li>
         <li><a href="docs/source/modulos.Posts.html#module-modulos.Posts.models">modulos.Posts.models</a>
 </li>
@@ -1440,6 +1489,13 @@
 </li>
       </ul></li>
       <li>
+    modulos.Posts.migrations.0014_post_version_log_version
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0014_post_version_log_version">module</a>
+</li>
+      </ul></li>
+      <li>
     modulos.Posts.models
 
       <ul>
@@ -1671,6 +1727,8 @@
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.Meta">NewPostForm.Meta (clase en modulos.Posts.forms)</a>
 </li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.NewVersion">NewVersion() (en el módulo modulos.Posts.models)</a>
+</li>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.parser.Parser.next_position">next_position (atributo de modulos.Posts.buscador.parser.Parser)</a>
 
       <ul>
@@ -1704,7 +1762,11 @@
       <ul>
         <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.objects">(atributo de modulos.Pagos.models.Payment)</a>
 </li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.objects">(atributo de modulos.Posts.models.Log)</a>
+</li>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.objects">(atributo de modulos.Posts.models.Post)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.objects">(atributo de modulos.Posts.models.Version)</a>
 </li>
       </ul></li>
       <li><a href="docs/source/modulos.Categories.migrations.html#modulos.Categories.migrations.0001_initial.Migration.operations">operations (atributo de modulos.Categories.migrations.0001_initial.Migration)</a>
@@ -1753,6 +1815,8 @@
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.operations">(atributo de modulos.Posts.migrations.0012_merge_20240930_0143.Migration)</a>
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration.operations">(atributo de modulos.Posts.migrations.0013_post_favorites.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0014_post_version_log_version.Migration.operations">(atributo de modulos.Posts.migrations.0014_post_version_log_version.Migration)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration.operations">(atributo de modulos.UserProfile.migrations.0001_initial.Migration)</a>
 </li>
@@ -1813,13 +1877,15 @@
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PENDING_REVIEW">PENDING_REVIEW (atributo de modulos.Posts.models.Post)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.decorators.permissions_required">permissions_required() (en el módulo modulos.Authorization.decorators)</a>
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.phone_number">phone_number (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_alter_post_category.populate_default_category">populate_default_category() (en el módulo modulos.Posts.migrations.0010_alter_post_category)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.post">post (atributo de modulos.Posts.models.Log)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post">Post (clase en modulos.Posts.models)</a>
 </li>
@@ -1828,6 +1894,14 @@
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.DoesNotExist">Post.DoesNotExist</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.MultipleObjectsReturned">Post.MultipleObjectsReturned</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Log.post_id">post_id (atributo de modulos.Posts.models.Log)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.post_id">(atributo de modulos.Posts.models.Version)</a>
+</li>
+      </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.post_log_list">post_log_list() (en el módulo modulos.Posts.views)</a>
 </li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.post_set">post_set (atributo de modulos.Categories.models.Category)</a>
 
@@ -1850,7 +1924,11 @@
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.ProfileForm.Meta">ProfileForm.Meta (clase en modulos.UserProfile.forms)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.publication_date">publication_date (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.publication_date">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PUBLISHED">PUBLISHED (atributo de modulos.Posts.models.Post)</a>
 </li>
   </ul></td>
@@ -1902,7 +1980,11 @@
 </li>
       </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.scheduled_publication_date">scheduled_publication_date (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.scheduled_publication_date">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.search_post">search_post() (en el módulo modulos.Posts.views)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.forms.SearchPostForm">SearchPostForm (clase en modulos.Posts.forms)</a>
@@ -1921,6 +2003,8 @@
         <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.status">(atributo de modulos.Pagos.models.Payment)</a>
 </li>
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.status">(atributo de modulos.Posts.models.Post)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.status">(atributo de modulos.Posts.models.Version)</a>
 </li>
       </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.STATUS_CHOICES">STATUS_CHOICES (atributo de modulos.Posts.models.Post)</a>
@@ -1946,7 +2030,11 @@
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Token.t_value">t_value (atributo de modulos.Posts.buscador.tokenizer.Token)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.tags">tags (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.tags">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryCreateView.template_name">template_name (atributo de modulos.Categories.views.CategoryCreateView)</a>
 
       <ul>
@@ -2010,7 +2098,11 @@
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.TIPO_CHOICES">TIPO_CHOICES (atributo de modulos.Categories.models.Category)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.title">title (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.title">(atributo de modulos.Posts.models.Version)</a>
 </li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Token">Token (clase en modulos.Posts.buscador.tokenizer)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.tokenizer.Lexer.tokenize">tokenize() (método de modulos.Posts.buscador.tokenizer.Lexer)</a>
@@ -2069,8 +2161,26 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Posts.buscador.html#modulos.Posts.buscador.Nodes.Node.value">value (atributo de modulos.Posts.buscador.Nodes.Node)</a>
 </li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.version">version (atributo de modulos.Posts.models.Post)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.version">(atributo de modulos.Posts.models.Version)</a>
+</li>
+      </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version">Version (clase en modulos.Posts.models)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.DoesNotExist">Version.DoesNotExist</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Version.MultipleObjectsReturned">Version.MultipleObjectsReturned</a>
+</li>
+      <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.version_set">version_set (atributo de modulos.Categories.models.Category)</a>
+
+      <ul>
+        <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.version_set">(atributo de modulos.UserProfile.models.UserProfile)</a>
+</li>
+      </ul></li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.view_post">view_post() (en el módulo modulos.Posts.views)</a>
 </li>
   </ul></td>
