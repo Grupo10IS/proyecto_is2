@@ -1,14 +1,17 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import AnonymousUser, Group
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import (POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
-                                               POST_EDIT_PERMISSION)
+                                               POST_EDIT_PERMISSION,
+                                               user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
+from modulos.Pagos.models import Payment
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Post
@@ -28,7 +31,7 @@ def home_view(req):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
     """
-    ctx = new_ctx(req, {"posts": Post.objects.all()[:10]})
+    ctx = new_ctx(req, {"posts": Post.objects.all()[:20]})
     return render(req, "pages/home.html", context=ctx)
 
 
@@ -56,6 +59,53 @@ def view_post(request, id):
     es_favorito = post.favorites.filter(
         id=request.user.id
     ).exists()  # Verifica si el post es favorito del usuario actual
+    user = request.user
+    category = get_object_or_404(Category, pk=post.category.id)
+
+    # Si el usuario no está autenticado
+    if isinstance(user, AnonymousUser):
+        # Mostrar modal de acceso denegado para categorías premium y de suscripción
+        if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
+            return render(
+                request,
+                "access_denied_modal.html",
+                {
+                    "category": category,
+                    "modal_message": "Para poder ver esta publicación debes iniciar sesión o registrarte.",
+                },
+            )
+
+    # Si el usuario está autenticado, verificar acceso a la categoría del post
+    if user.is_authenticated and not user_has_access_to_category(user, category):
+        if category.tipo == category.PREMIUM:
+            # Verificar si el usuario ha completado un pago para esta categoría
+            if not Payment.objects.filter(
+                user=user, category=category, status="completed"
+            ).exists():
+                # Mostrar mensaje de pago necesario para ver el post
+                return render(
+                    request,
+                    "access_denied_modal.html",
+                    {
+                        "category": category,
+                        "modal_message": "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.",
+                    },
+                )
+        elif category.tipo == category.SUSCRIPCION:
+            # Mostrar mensaje de suscripción necesaria
+            return render(
+                request,
+                "access_denied_modal.html",
+                {
+                    "category": category,
+                    "modal_message": "Para poder ver esta publicación debes ser suscriptor de nuestra web.",
+                },
+            )
+
+    # Si el usuario tiene acceso o la categoría es gratis, mostrar el detalle del post
+    tags = post.tags.split(",") if post.tags else []
+    tags = [tag.strip() for tag in tags]  # Remove leading/trailing whitespace
+
     ctx = new_ctx(
         request,
         {
@@ -65,6 +115,7 @@ def view_post(request, id):
             "es_favorito": es_favorito,
         },
     )
+
     return render(request, "pages/post_detail.html", context=ctx)
 
 
@@ -253,14 +304,11 @@ def favorite_post(request, id):
     """
     post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
 
-    if post.favorites.filter(
-        id=request.user.id
-    ).exists():  # Verifica si el post ya es favorito
-        post.favorites.remove(
-            request.user
-        )  # Elimina al usuario de la lista de favoritos
+    # Si el post ya es favorito lo agrega, si no lo elimina
+    if not post.favorites.filter(id=request.user.id).exists():
+        post.favorites.add(request.user)
     else:
-        post.favorites.add(request.user)  # Agrega al usuario a la lista de favoritos
+        post.favorites.remove(request.user)
 
     return HttpResponse(status=204)  # Devuelve un código de estado 20
 
@@ -278,13 +326,21 @@ def favorite_list(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
     """
-    posts_favorites = Post.objects.filter(
-        favorites=request.user
-    )  # Obtiene los posts favoritos del usuario
+    posts_favorites = Post.objects.filter(favorites=request.user)
+    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
+    return render(request, "pages/posts_favorites_list.html", ctx)
 
-    ctx = new_ctx(
-        request, {"posts_favorites": posts_favorites}
-    )  # Crea el contexto con los posts favoritos
-    return render(
-        request, "pages/posts_favorites_list.html", ctx
-    )  # Renderiza la plantilla correspondiente
+
+class ContenidosView(TemplateView):
+    template_name = "pages/list_contenidos.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener todas las categorías
+        categories = Category.objects.all()
+        # Crear un diccionario para almacenar los posts por categoría
+        posts_by_category = {
+            category: Post.objects.filter(category=category) for category in categories
+        }
+        context["posts_by_category"] = posts_by_category
+        return context

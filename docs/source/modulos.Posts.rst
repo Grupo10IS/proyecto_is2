@@ -45,6 +45,14 @@ modulos.Posts.models module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.signals module
+----------------------------
+
+.. automodule:: modulos.Posts.signals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 modulos.Posts.tests module
 --------------------------
 

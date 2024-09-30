@@ -23,8 +23,13 @@ def test_home_view(client):
     assert len(response.context["posts"]) == 0
 
     # Test home view with existing posts
-    Post.objects.create(title="Test Post 1", content="Content of test post 1")
-    Post.objects.create(title="Test Post 2", content="Content of test post 2")
+    category = Category.objects.create(name="hola")
+    Post.objects.create(
+        title="Test Post 1", content="Content of test post 1", category=category
+    )
+    Post.objects.create(
+        title="Test Post 2", content="Content of test post 2", category=category
+    )
 
     response = client.get(url)
     assert response.status_code == 200
@@ -36,8 +41,12 @@ def test_view_post(client):
     """
     Test the post detail view with an existing post and a non-existent post.
     """
+    category = Category.objects.create(name="hola")
     post = Post.objects.create(
-        title="Test Post", content="Content of test post", tags="tag1, tag2"
+        title="Test Post",
+        content="Content of test post",
+        tags="tag1, tag2",
+        category=category,
     )
 
     # Test post detail view with an existing post
@@ -154,8 +163,9 @@ def test_favorite_post(client):
     """
     Test para marcar y desmarcar un post como favorito.
     """
+    categoria = Category.objects.create(name="prueba")
     post = Post.objects.create(
-        title="Post Favorito", content="Contenido del post favorito"
+        title="Post Favorito", content="Contenido del post favorito", category=categoria
     )
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
@@ -185,11 +195,16 @@ def test_favorite_list_view(client):
     """
     Test para listar los posts favoritos del usuario.
     """
+    categoria = Category.objects.create(name="prueba")
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
     )
-    post1 = Post.objects.create(title="Post 1", content="Contenido del post 1")
-    post2 = Post.objects.create(title="Post 2", content="Contenido del post 2")
+    post1 = Post.objects.create(
+        title="Post 1", content="Contenido del post 1", category=categoria
+    )
+    post2 = Post.objects.create(
+        title="Post 2", content="Contenido del post 2", category=categoria
+    )
 
     post1.favorites.add(user)  # Marcar post1 como favorito
     post2.favorites.add(user)  # Marcar post2 como favorito
@@ -214,7 +229,10 @@ def test_search_post_view(client):
     """
     Test para buscar publicaciones.
     """
-    Post.objects.create(title="Post de prueba", content="Contenido de prueba")
+    categoria = Category.objects.create(name="prueba")
+    Post.objects.create(
+        title="Post de prueba", content="Contenido de prueba", category=categoria
+    )
 
     # Probar una búsqueda no válida
     url = reverse("post_search") + "?input="
@@ -240,7 +258,10 @@ def test_delete_post_view(client):
     """
     Test para eliminar un post.
     """
-    post = Post.objects.create(title="Post a Eliminar", content="Contenido a eliminar")
+    categoria = Category.objects.create(name="prueba")
+    post = Post.objects.create(
+        category=categoria, title="Post a Eliminar", content="Contenido a eliminar"
+    )
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
     )
@@ -291,21 +312,19 @@ def test_edit_post(client):
     # Datos para actualizar el post
     data = {
         "title": "Título editado",
-        "content": "Contenido editado",  
-        "category": category.id,  
+        "content": "Contenido editado",
+        "category": category.id,
     }
 
     # Realiza la solicitud POST para editar el post
     response = client.post(url, data)
 
     # Verifica que se redirigió correctamente
-    assert response.status_code == 302  
+    assert response.status_code == 302
 
     # Refresca el post desde la base de datos
     post.refresh_from_db()
 
     # Verifica que el post se haya actualizado correctamente
     assert post.title == "Título editado"
-    assert (
-        post.content == "Contenido editado"
-    )  
+    assert post.content == "Contenido editado"

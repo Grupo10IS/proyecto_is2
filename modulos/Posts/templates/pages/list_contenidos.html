@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Todos los Contenidos - MakeX
+{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <h1 class="mb-4 fst-italic display-4 ">Todos nuestros contenidos</h1>
+
+    {% for category, posts in posts_by_category.items %}
+        <div class="category-section mb-5">
+            <h2>{{ category.name }}</h2>
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-md-4 mb-4">
+                        <div class="p-4 card h-100 card-container position-relative">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/makex.png' %}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.summary|truncatewords:20 }}</p>
+                                <!-- Añadir 'stretched-link' para hacer clic en cualquier parte -->
+                                <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    {% endfor %}
+    </div>
+    <p class="float-end" ><a href="#" style="color:black">Volver arriba</a></p>
+</div>
+{% endblock content %}

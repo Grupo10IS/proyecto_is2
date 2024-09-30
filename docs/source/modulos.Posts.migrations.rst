@@ -68,6 +68,14 @@ modulos.Posts.migrations.0008\_alter\_post\_author\_alter\_post\_category\_and\_
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0009\_alter\_post\_category module
+-----------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0009_alter_post_category
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
