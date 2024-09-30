@@ -54,11 +54,24 @@
         <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
         <span class="n">CATEGORY_MANAGE_PERMISSION</span><span class="p">,</span>
         <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="n">SUBSCRIBER</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="n">AUTOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">],</span>
-    <span class="n">EDITOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">],</span>
-    <span class="n">PUBLISHER</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_POST_PERMISSION</span><span class="p">,</span> <span class="n">POST_DECLINE_PERMISSION</span><span class="p">],</span>
+    <span class="n">AUTOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">],</span>
+    <span class="n">EDITOR</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_APPROVE_PERMISSION</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">PUBLISHER</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">POST_POST_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_REJECT_PERMISSION</span><span class="p">,</span>
+        <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">POST_PUBLISH_PERMISSION</span><span class="p">,</span>
+    <span class="p">],</span>
 <span class="p">}</span>
 
 
@@ -75,7 +88,9 @@
 
 
 <span class="c1"># NOTE: esta funcion se utiliza en el comando migrate custom</span>
-<span class="k">def</span> <span class="nf">_create_default_groups</span><span class="p">():</span>
+<div class="viewcode-block" id="create_default_groups">
+<a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.roles.create_default_groups">[documentos]</a>
+<span class="k">def</span> <span class="nf">create_default_groups</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Crear los roles por defecto configurados en el sistema</span>
 
@@ -95,7 +110,8 @@
 
         <span class="n">role</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Roles por defecto inicializados correctamente&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Roles por defecto inicializados correctamente&quot;</span><span class="p">)</span></div>
+
 </pre></div>
 
           </div>

@@ -196,44 +196,101 @@
 </dd></dl>
 
 </section>
-<section id="module-modulos.Posts.migrations.0009_alter_post_category">
-<span id="modulos-posts-migrations-0009-alter-post-category-module"></span><h2>modulos.Posts.migrations.0009_alter_post_category module<a class="headerlink" href="#module-modulos.Posts.migrations.0009_alter_post_category" title="Link to this heading">¶</a></h2>
+<section id="module-modulos.Posts.migrations.0009_alter_post_status">
+<span id="modulos-posts-migrations-0009-alter-post-status-module"></span><h2>modulos.Posts.migrations.0009_alter_post_status module<a class="headerlink" href="#module-modulos.Posts.migrations.0009_alter_post_status" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0009_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0009_alter_post_category.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_status.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0009_alter_post_status.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0009_alter_post_status.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_status.Migration" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Categories',</span> <span class="pre">'0008_alter_category_description'),</span> <span class="pre">('Posts',</span> <span class="pre">'0008_alter_post_author_alter_post_category_and_more')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_status.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0008_alter_post_author_alter_post_category_and_more')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_status.Migration.dependencies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.Migration.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RunPython</span> <span class="pre">&lt;function</span> <span class="pre">populate_default_category&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='category',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.operations" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_status.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='status',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_status.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.Posts.migrations.0010_alter_post_category">
+<span id="modulos-posts-migrations-0010-alter-post-category-module"></span><h2>modulos.Posts.migrations.0010_alter_post_category module<a class="headerlink" href="#module-modulos.Posts.migrations.0010_alter_post_category" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_alter_post_category.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0010_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0010_alter_post_category.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0010_alter_post_category.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_alter_post_category.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Categories',</span> <span class="pre">'0008_alter_category_description'),</span> <span class="pre">('Posts',</span> <span class="pre">'0008_alter_post_author_alter_post_category_and_more')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0010_alter_post_category.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_alter_post_category.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RunPython</span> <span class="pre">&lt;function</span> <span class="pre">populate_default_category&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='category',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0010_alter_post_category.Migration.operations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0009_alter_post_category.populate_default_category">
-<span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0009_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">populate_default_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_editor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0009_alter_post_category.html#populate_default_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0009_alter_post_category.populate_default_category" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_alter_post_category.populate_default_category">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0010_alter_post_category.</span></span><span class="sig-name descname"><span class="pre">populate_default_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_editor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0010_alter_post_category.html#populate_default_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0010_alter_post_category.populate_default_category" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-modulos.Posts.migrations.0010_post_favorites">
-<span id="modulos-posts-migrations-0010-post-favorites-module"></span><h2>modulos.Posts.migrations.0010_post_favorites module<a class="headerlink" href="#module-modulos.Posts.migrations.0010_post_favorites" title="Link to this heading">¶</a></h2>
+<section id="module-modulos.Posts.migrations.0011_post_publication_date_and_more">
+<span id="modulos-posts-migrations-0011-post-publication-date-and-more-module"></span><h2>modulos.Posts.migrations.0011_post_publication_date_and_more module<a class="headerlink" href="#module-modulos.Posts.migrations.0011_post_publication_date_and_more" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_post_favorites.Migration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0010_post_favorites.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0010_post_favorites.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0010_post_favorites.Migration" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0011_post_publication_date_and_more.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0011_post_publication_date_and_more.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0011_post_publication_date_and_more.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_post_favorites.Migration.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0009_alter_post_category'),</span> <span class="pre">('UserProfile',</span> <span class="pre">'__first__')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0010_post_favorites.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0009_alter_post_status')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.dependencies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Posts.migrations.0010_post_favorites.Migration.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='favorites',</span> <span class="pre">field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0010_post_favorites.Migration.operations" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='publication_date',</span> <span class="pre">field=&lt;django.db.models.fields.DateTimeField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='scheduled_publication_date',</span> <span class="pre">field=&lt;django.db.models.fields.DateTimeField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='status',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.Posts.migrations.0012_merge_20240930_0143">
+<span id="modulos-posts-migrations-0012-merge-20240930-0143-module"></span><h2>modulos.Posts.migrations.0012_merge_20240930_0143 module<a class="headerlink" href="#module-modulos.Posts.migrations.0012_merge_20240930_0143" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0012_merge_20240930_0143.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0012_merge_20240930_0143.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0012_merge_20240930_0143.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0012_merge_20240930_0143.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0010_alter_post_category'),</span> <span class="pre">('Posts',</span> <span class="pre">'0011_post_publication_date_and_more')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0012_merge_20240930_0143.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modulos.Posts.migrations.0013_post_favorites">
+<span id="modulos-posts-migrations-0013-post-favorites-module"></span><h2>modulos.Posts.migrations.0013_post_favorites module<a class="headerlink" href="#module-modulos.Posts.migrations.0013_post_favorites" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0013_post_favorites.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.migrations.0013_post_favorites.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/migrations/0013_post_favorites.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.migrations.0013_post_favorites.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0013_post_favorites.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0012_merge_20240930_0143'),</span> <span class="pre">('UserProfile',</span> <span class="pre">'__first__')]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0013_post_favorites.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.migrations.0013_post_favorites.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='favorites',</span> <span class="pre">field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Posts.migrations.0013_post_favorites.Migration.operations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -350,19 +407,43 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0009_alter_post_category">modulos.Posts.migrations.0009_alter_post_category module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0009_alter_post_status">modulos.Posts.migrations.0009_alter_post_status module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_status.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_status.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_status.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0009_alter_post_category.populate_default_category"><code class="docutils literal notranslate"><span class="pre">populate_default_category()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0010_post_favorites">modulos.Posts.migrations.0010_post_favorites module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0010_post_favorites.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0010_post_favorites.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0010_post_favorites.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0010_alter_post_category">modulos.Posts.migrations.0010_alter_post_category module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0010_alter_post_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0010_alter_post_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0010_alter_post_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0010_alter_post_category.populate_default_category"><code class="docutils literal notranslate"><span class="pre">populate_default_category()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0011_post_publication_date_and_more">modulos.Posts.migrations.0011_post_publication_date_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0012_merge_20240930_0143">modulos.Posts.migrations.0012_merge_20240930_0143 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.migrations.0013_post_favorites">modulos.Posts.migrations.0013_post_favorites module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.migrations.0013_post_favorites.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0013_post_favorites.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.migrations.0013_post_favorites.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
 </ul>

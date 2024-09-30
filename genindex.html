@@ -45,6 +45,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -200,10 +201,10 @@
         <li><a href="docs/source/modulos.UserProfile.management.commands.html#modulos.UserProfile.management.commands.new_admin.Command">(clase en modulos.UserProfile.management.commands.new_admin)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.ContenidosView">ContenidosView (clase en modulos.Posts.views)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.content">content (atributo de modulos.Posts.models.Post)</a>
 </li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.views.CategoryDetailView.context_object_name">context_object_name (atributo de modulos.Categories.views.CategoryDetailView)</a>
@@ -213,6 +214,8 @@
 </li>
       </ul></li>
       <li><a href="docs/source/modulos.UserProfile.management.commands.html#modulos.UserProfile.management.commands.new_admin.create_admin">create_admin() (en el módulo modulos.UserProfile.management.commands.new_admin)</a>
+</li>
+      <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.roles.create_default_groups">create_default_groups() (en el módulo modulos.Authorization.roles)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.creation_date">creation_date (atributo de modulos.Posts.models.Post)</a>
 </li>
@@ -296,6 +299,8 @@
         <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.apps.UserprofileConfig.default_auto_field">(atributo de modulos.UserProfile.apps.UserprofileConfig)</a>
 </li>
       </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.delete_post">delete_post() (en el módulo modulos.Posts.views)</a>
+</li>
       <li><a href="docs/source/modulos.Categories.migrations.html#modulos.Categories.migrations.0001_initial.Migration.dependencies">dependencies (atributo de modulos.Categories.migrations.0001_initial.Migration)</a>
 
       <ul>
@@ -333,9 +338,15 @@
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration.dependencies">(atributo de modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_category.Migration.dependencies">(atributo de modulos.Posts.migrations.0009_alter_post_category.Migration)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_status.Migration.dependencies">(atributo de modulos.Posts.migrations.0009_alter_post_status.Migration)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration.dependencies">(atributo de modulos.Posts.migrations.0010_post_favorites.Migration)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_alter_post_category.Migration.dependencies">(atributo de modulos.Posts.migrations.0010_alter_post_category.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.dependencies">(atributo de modulos.Posts.migrations.0011_post_publication_date_and_more.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.dependencies">(atributo de modulos.Posts.migrations.0012_merge_20240930_0143.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration.dependencies">(atributo de modulos.Posts.migrations.0013_post_favorites.Migration)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration.dependencies">(atributo de modulos.UserProfile.migrations.0001_initial.Migration)</a>
 </li>
@@ -494,6 +505,8 @@
         <li><a href="docs/source/modulos.UserProfile.management.commands.html#modulos.UserProfile.management.commands.new_admin.Command.handle">(método de modulos.UserProfile.management.commands.new_admin.Command)</a>
 </li>
       </ul></li>
+      <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.has_perm">has_perm() (método de modulos.UserProfile.models.UserProfile)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="docs/source/modulos.UserProfile.management.commands.html#modulos.UserProfile.management.commands.new_admin.has_valid_credentials">has_valid_credentials() (en el módulo modulos.UserProfile.management.commands.new_admin)</a>
@@ -524,6 +537,8 @@
         <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.image">(atributo de modulos.Posts.models.Post)</a>
 </li>
       </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.INACTIVE">INACTIVE (atributo de modulos.Posts.models.Post)</a>
+</li>
       <li><a href="docs/source/modulos.Categories.html#modulos.Categories.models.Category.INACTIVO">INACTIVO (atributo de modulos.Categories.models.Category)</a>
 </li>
       <li><a href="docs/source/modulos.Categories.migrations.html#modulos.Categories.migrations.0001_initial.Migration.initial">initial (atributo de modulos.Categories.migrations.0001_initial.Migration)</a>
@@ -538,6 +553,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.permissions.initialize_permissions">initialize_permissions() (en el módulo modulos.Authorization.permissions)</a>
+</li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_active">is_active (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
       <li><a href="docs/source/modulos.Authorization.management.commands.html#modulos.Authorization.management.commands.migrate.is_database_synchronized">is_database_synchronized() (en el módulo modulos.Authorization.management.commands.migrate)</a>
@@ -547,6 +564,14 @@
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_staff">is_staff (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_superuser">is_superuser (atributo de modulos.UserProfile.models.UserProfile)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.kanban_board">kanban_board() (en el módulo modulos.Posts.views)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -645,9 +670,15 @@
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration">(clase en modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_category.Migration">(clase en modulos.Posts.migrations.0009_alter_post_category)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_status.Migration">(clase en modulos.Posts.migrations.0009_alter_post_status)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration">(clase en modulos.Posts.migrations.0010_post_favorites)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_alter_post_category.Migration">(clase en modulos.Posts.migrations.0010_alter_post_category)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration">(clase en modulos.Posts.migrations.0011_post_publication_date_and_more)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0012_merge_20240930_0143.Migration">(clase en modulos.Posts.migrations.0012_merge_20240930_0143)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration">(clase en modulos.Posts.migrations.0013_post_favorites)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration">(clase en modulos.UserProfile.migrations.0001_initial)</a>
 </li>
@@ -832,9 +863,15 @@
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more">modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_category">modulos.Posts.migrations.0009_alter_post_category</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_status">modulos.Posts.migrations.0009_alter_post_status</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_post_favorites">modulos.Posts.migrations.0010_post_favorites</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_alter_post_category">modulos.Posts.migrations.0010_alter_post_category</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0011_post_publication_date_and_more">modulos.Posts.migrations.0011_post_publication_date_and_more</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0012_merge_20240930_0143">modulos.Posts.migrations.0012_merge_20240930_0143</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0013_post_favorites">modulos.Posts.migrations.0013_post_favorites</a>
 </li>
         <li><a href="docs/source/modulos.Posts.html#module-modulos.Posts.models">modulos.Posts.models</a>
 </li>
@@ -1368,17 +1405,38 @@
 </li>
       </ul></li>
       <li>
-    modulos.Posts.migrations.0009_alter_post_category
+    modulos.Posts.migrations.0009_alter_post_status
 
       <ul>
-        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_category">module</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_status">module</a>
 </li>
       </ul></li>
       <li>
-    modulos.Posts.migrations.0010_post_favorites
+    modulos.Posts.migrations.0010_alter_post_category
 
       <ul>
-        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_post_favorites">module</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_alter_post_category">module</a>
+</li>
+      </ul></li>
+      <li>
+    modulos.Posts.migrations.0011_post_publication_date_and_more
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0011_post_publication_date_and_more">module</a>
+</li>
+      </ul></li>
+      <li>
+    modulos.Posts.migrations.0012_merge_20240930_0143
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0012_merge_20240930_0143">module</a>
+</li>
+      </ul></li>
+      <li>
+    modulos.Posts.migrations.0013_post_favorites
+
+      <ul>
+        <li><a href="docs/source/modulos.Posts.migrations.html#module-modulos.Posts.migrations.0013_post_favorites">module</a>
 </li>
       </ul></li>
       <li>
@@ -1686,9 +1744,15 @@
 </li>
         <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration.operations">(atributo de modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more.Migration)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_category.Migration.operations">(atributo de modulos.Posts.migrations.0009_alter_post_category.Migration)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_status.Migration.operations">(atributo de modulos.Posts.migrations.0009_alter_post_status.Migration)</a>
 </li>
-        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_post_favorites.Migration.operations">(atributo de modulos.Posts.migrations.0010_post_favorites.Migration)</a>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_alter_post_category.Migration.operations">(atributo de modulos.Posts.migrations.0010_alter_post_category.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0011_post_publication_date_and_more.Migration.operations">(atributo de modulos.Posts.migrations.0011_post_publication_date_and_more.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0012_merge_20240930_0143.Migration.operations">(atributo de modulos.Posts.migrations.0012_merge_20240930_0143.Migration)</a>
+</li>
+        <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0013_post_favorites.Migration.operations">(atributo de modulos.Posts.migrations.0013_post_favorites.Migration)</a>
 </li>
         <li><a href="docs/source/modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0001_initial.Migration.operations">(atributo de modulos.UserProfile.migrations.0001_initial.Migration)</a>
 </li>
@@ -1745,13 +1809,17 @@
 </li>
       <li><a href="docs/source/modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.Meta">PaymentForm.Meta (clase en modulos.Pagos.forms)</a>
 </li>
-      <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.decorators.permissions_required">permissions_required() (en el módulo modulos.Authorization.decorators)</a>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PENDING_PUBLICATION">PENDING_PUBLICATION (atributo de modulos.Posts.models.Post)</a>
+</li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PENDING_REVIEW">PENDING_REVIEW (atributo de modulos.Posts.models.Post)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="docs/source/modulos.Authorization.html#modulos.Authorization.decorators.permissions_required">permissions_required() (en el módulo modulos.Authorization.decorators)</a>
+</li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.phone_number">phone_number (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
-      <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0009_alter_post_category.populate_default_category">populate_default_category() (en el módulo modulos.Posts.migrations.0009_alter_post_category)</a>
+      <li><a href="docs/source/modulos.Posts.migrations.html#modulos.Posts.migrations.0010_alter_post_category.populate_default_category">populate_default_category() (en el módulo modulos.Posts.migrations.0010_alter_post_category)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post">Post (clase en modulos.Posts.models)</a>
 </li>
@@ -1781,6 +1849,8 @@
 </li>
       <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.ProfileForm.Meta">ProfileForm.Meta (clase en modulos.UserProfile.forms)</a>
 </li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.publication_date">publication_date (atributo de modulos.Posts.models.Post)</a>
+</li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.PUBLISHED">PUBLISHED (atributo de modulos.Posts.models.Post)</a>
 </li>
   </ul></td>
@@ -1809,13 +1879,11 @@
         <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.apps.UserprofileConfig.ready">(método de modulos.UserProfile.apps.UserprofileConfig)</a>
 </li>
       </ul></li>
-      <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.receive_notifications">receive_notifications (atributo de modulos.UserProfile.models.UserProfile)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.views.CustomLoginView.redirect_authenticated_user">redirect_authenticated_user (atributo de modulos.UserProfile.views.CustomLoginView)</a>
+      <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.receive_notifications">receive_notifications (atributo de modulos.UserProfile.models.UserProfile)</a>
 </li>
-      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.REJECTED">REJECTED (atributo de modulos.Posts.models.Post)</a>
+      <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.views.CustomLoginView.redirect_authenticated_user">redirect_authenticated_user (atributo de modulos.UserProfile.views.CustomLoginView)</a>
 </li>
       <li><a href="docs/source/modulos.mdeditor.html#modulos.mdeditor.widgets.MDEditorWidget.render">render() (método de modulos.mdeditor.widgets.MDEditorWidget)</a>
 </li>
@@ -1833,6 +1901,8 @@
         <li><a href="docs/source/modulos.UserProfile.html#modulos.UserProfile.forms.CustomUserEditForm.save">(método de modulos.UserProfile.forms.CustomUserEditForm)</a>
 </li>
       </ul></li>
+      <li><a href="docs/source/modulos.Posts.html#modulos.Posts.models.Post.scheduled_publication_date">scheduled_publication_date (atributo de modulos.Posts.models.Post)</a>
+</li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.views.search_post">search_post() (en el módulo modulos.Posts.views)</a>
 </li>
       <li><a href="docs/source/modulos.Posts.html#modulos.Posts.forms.SearchPostForm">SearchPostForm (clase en modulos.Posts.forms)</a>

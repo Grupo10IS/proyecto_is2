@@ -161,6 +161,14 @@ def my_view(request):</p>
 <section id="module-modulos.Authorization.permissions">
 <span id="modulos-authorization-permissions-module"></span><h2>modulos.Authorization.permissions module<a class="headerlink" href="#module-modulos.Authorization.permissions" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.permissions.initialize_permissions">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.permissions.</span></span><span class="sig-name descname"><span class="pre">initialize_permissions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/permissions.html#initialize_permissions"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.permissions.initialize_permissions" title="Link to this definition">¶</a></dt>
+<dd><p>Inicializa y crea la lista de permisos disponibles dentro de la bd.</p>
+<p>Esta funcion es llamada dentro del comando custom «migrate» ubicado dentro del mismo modulo,
+el cual sobreescribe las funciones por defecto del comando migrate de django.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Authorization.permissions.user_has_access_to_category">
 <span class="sig-prename descclassname"><span class="pre">modulos.Authorization.permissions.</span></span><span class="sig-name descname"><span class="pre">user_has_access_to_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/permissions.html#user_has_access_to_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.permissions.user_has_access_to_category" title="Link to this definition">¶</a></dt>
 <dd><p>Checks if the user has access to the given category.</p>
@@ -169,6 +177,14 @@ def my_view(request):</p>
 </section>
 <section id="module-modulos.Authorization.roles">
 <span id="modulos-authorization-roles-module"></span><h2>modulos.Authorization.roles module<a class="headerlink" href="#module-modulos.Authorization.roles" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Authorization.roles.create_default_groups">
+<span class="sig-prename descclassname"><span class="pre">modulos.Authorization.roles.</span></span><span class="sig-name descname"><span class="pre">create_default_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/roles.html#create_default_groups"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.roles.create_default_groups" title="Link to this definition">¶</a></dt>
+<dd><p>Crear los roles por defecto configurados en el sistema</p>
+<p>Esta funcion es llamada dentro del comando custom «migrate» ubicado dentro del mismo modulo,
+el cual sobreescribe las funciones por defecto del comando migrate de django.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Authorization.roles.prevent_default_role_deletion">
 <span class="sig-prename descclassname"><span class="pre">modulos.Authorization.roles.</span></span><span class="sig-name descname"><span class="pre">prevent_default_role_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Authorization/roles.html#prevent_default_role_deletion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Authorization.roles.prevent_default_role_deletion" title="Link to this definition">¶</a></dt>
@@ -249,10 +265,12 @@ def my_view(request):</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.models">modulos.Authorization.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.permissions">modulos.Authorization.permissions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.permissions.initialize_permissions"><code class="docutils literal notranslate"><span class="pre">initialize_permissions()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.permissions.user_has_access_to_category"><code class="docutils literal notranslate"><span class="pre">user_has_access_to_category()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Authorization.roles">modulos.Authorization.roles module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.roles.create_default_groups"><code class="docutils literal notranslate"><span class="pre">create_default_groups()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Authorization.roles.prevent_default_role_deletion"><code class="docutils literal notranslate"><span class="pre">prevent_default_role_deletion()</span></code></a></li>
 </ul>
 </li>

@@ -76,10 +76,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.models">modulos.Authorization.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.permissions">modulos.Authorization.permissions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.permissions.initialize_permissions"><code class="docutils literal notranslate"><span class="pre">initialize_permissions()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.permissions.user_has_access_to_category"><code class="docutils literal notranslate"><span class="pre">user_has_access_to_category()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Authorization.html#module-modulos.Authorization.roles">modulos.Authorization.roles module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.roles.create_default_groups"><code class="docutils literal notranslate"><span class="pre">create_default_groups()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Authorization.html#modulos.Authorization.roles.prevent_default_role_deletion"><code class="docutils literal notranslate"><span class="pre">prevent_default_role_deletion()</span></code></a></li>
 </ul>
 </li>
@@ -282,8 +284,11 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0006_alter_post_creation_date">modulos.Posts.migrations.0006_alter_post_creation_date module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0007_post_image">modulos.Posts.migrations.0007_post_image module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more">modulos.Posts.migrations.0008_alter_post_author_alter_post_category_and_more module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_category">modulos.Posts.migrations.0009_alter_post_category module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_post_favorites">modulos.Posts.migrations.0010_post_favorites module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0009_alter_post_status">modulos.Posts.migrations.0009_alter_post_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0010_alter_post_category">modulos.Posts.migrations.0010_alter_post_category module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0011_post_publication_date_and_more">modulos.Posts.migrations.0011_post_publication_date_and_more module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0012_merge_20240930_0143">modulos.Posts.migrations.0012_merge_20240930_0143 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0013_post_favorites">modulos.Posts.migrations.0013_post_favorites module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -320,9 +325,11 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post"><code class="docutils literal notranslate"><span class="pre">Post</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.DRAFT"><code class="docutils literal notranslate"><span class="pre">Post.DRAFT</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Post.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.INACTIVE"><code class="docutils literal notranslate"><span class="pre">Post.INACTIVE</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Post.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.PENDING_PUBLICATION"><code class="docutils literal notranslate"><span class="pre">Post.PENDING_PUBLICATION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.PENDING_REVIEW"><code class="docutils literal notranslate"><span class="pre">Post.PENDING_REVIEW</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.PUBLISHED"><code class="docutils literal notranslate"><span class="pre">Post.PUBLISHED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.REJECTED"><code class="docutils literal notranslate"><span class="pre">Post.REJECTED</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.STATUS_CHOICES"><code class="docutils literal notranslate"><span class="pre">Post.STATUS_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.author"><code class="docutils literal notranslate"><span class="pre">Post.author</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.author_id"><code class="docutils literal notranslate"><span class="pre">Post.author_id</span></code></a></li>
@@ -337,6 +344,8 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.id"><code class="docutils literal notranslate"><span class="pre">Post.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.image"><code class="docutils literal notranslate"><span class="pre">Post.image</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.objects"><code class="docutils literal notranslate"><span class="pre">Post.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.publication_date"><code class="docutils literal notranslate"><span class="pre">Post.publication_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.scheduled_publication_date"><code class="docutils literal notranslate"><span class="pre">Post.scheduled_publication_date</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.status"><code class="docutils literal notranslate"><span class="pre">Post.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.tags"><code class="docutils literal notranslate"><span class="pre">Post.tags</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.models.Post.title"><code class="docutils literal notranslate"><span class="pre">Post.title</span></code></a></li>
@@ -367,9 +376,11 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView.template_name"><code class="docutils literal notranslate"><span class="pre">ContenidosView.template_name</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.delete_post"><code class="docutils literal notranslate"><span class="pre">delete_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.kanban_board"><code class="docutils literal notranslate"><span class="pre">kanban_board()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>
@@ -473,6 +484,7 @@
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_next_by_date_joined()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_previous_by_date_joined()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.groups"><code class="docutils literal notranslate"><span class="pre">UserProfile.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.has_perm"><code class="docutils literal notranslate"><span class="pre">UserProfile.has_perm()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.id"><code class="docutils literal notranslate"><span class="pre">UserProfile.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_active"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_active</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.models.UserProfile.is_staff"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_staff</span></code></a></li>

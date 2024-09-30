@@ -42,14 +42,22 @@
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s1">&#39;Categories&#39;</span><span class="p">,</span> <span class="s1">&#39;0006_category_image&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Categories&quot;</span><span class="p">,</span> <span class="s2">&quot;0006_category_image&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AlterField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tipo&#39;</span><span class="p">,</span>
-            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="s1">&#39;Premium&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Gratis&#39;</span><span class="p">,</span> <span class="s1">&#39;Gratis&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Suscripcion&#39;</span><span class="p">,</span> <span class="s1">&#39;Suscripcion&#39;</span><span class="p">)],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Gratis&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">),</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tipo&quot;</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+                <span class="n">choices</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;Premium&quot;</span><span class="p">,</span> <span class="s2">&quot;Premium&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Gratis&quot;</span><span class="p">,</span> <span class="s2">&quot;Gratis&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Suscripcion&quot;</span><span class="p">,</span> <span class="s2">&quot;Suscripcion&quot;</span><span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Gratis&quot;</span><span class="p">,</span>
+                <span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span></div>
 

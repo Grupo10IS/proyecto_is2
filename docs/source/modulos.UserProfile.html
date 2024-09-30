@@ -514,6 +514,21 @@ instances.</p>
 class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.has_perm">
+<span class="sig-name descname"><span class="pre">has_perm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile.has_perm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.has_perm" title="Link to this definition">¶</a></dt>
+<dd><p>Return True if the user has the specified permission. Query all
+available auth backends, but return immediately if any backend returns
+True. Thus, a user who has permission from a single auth backend is
+assumed to have permission in general. If an object is provided, check
+permissions for that object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.id" title="Link to this definition">¶</a></dt>
@@ -891,6 +906,7 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_next_by_date_joined()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.get_previous_by_date_joined()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.groups"><code class="docutils literal notranslate"><span class="pre">UserProfile.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.has_perm"><code class="docutils literal notranslate"><span class="pre">UserProfile.has_perm()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.id"><code class="docutils literal notranslate"><span class="pre">UserProfile.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.is_active"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_active</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.is_staff"><code class="docutils literal notranslate"><span class="pre">UserProfile.is_staff</span></code></a></li>

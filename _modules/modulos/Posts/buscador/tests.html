@@ -341,7 +341,10 @@
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Advanced Django&quot;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">user2</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
     <span class="p">)</span>
     <span class="n">post3</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Django Tips&quot;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">user3</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">REJECTED</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Django Tips&quot;</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="n">user3</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">post1</span><span class="p">,</span> <span class="n">post2</span><span class="p">,</span> <span class="n">post3</span></div>

@@ -33,9 +33,11 @@
             
   <h1>Código fuente para modulos.Authorization.permissions</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">_exit</span>
-<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
+
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
 <span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+
+<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
 <span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 <span class="c1">#####</span>
@@ -50,8 +52,13 @@
 <span class="n">POST_EDIT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_edit_permission&quot;</span>
 <span class="n">POST_DELETE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_delete_permission&quot;</span>
 <span class="n">POST_POST_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_post_permission&quot;</span>
-<span class="n">POST_POST_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_post_permission&quot;</span>
-<span class="n">POST_DECLINE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_decline_permission&quot;</span>
+
+<span class="c1"># flujo de publicacion</span>
+<span class="n">POST_APPROVE_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_aprobe_permission&quot;</span>
+<span class="n">POST_PUBLISH_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_publish_permission&quot;</span>
+<span class="n">POST_REJECT_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_reject_permission&quot;</span>
+<span class="n">POST_REVIEW_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;post_review_permission&quot;</span>
+<span class="n">KANBAN_VIEW_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;kanban_view_permission&quot;</span>
 
 <span class="c1"># roles</span>
 <span class="n">ROLE_VIEW_PERMISSION</span> <span class="o">=</span> <span class="s2">&quot;role_view_permission&quot;</span>
@@ -68,8 +75,13 @@
     <span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para editar publicaciones&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para eliminar publicaciones&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">POST_POST_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para publicar publicaciones&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">POST_DECLINE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para rechazar publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_POST_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear publicaciones&quot;</span><span class="p">),</span>
+    <span class="c1"># flujo de publicacion</span>
+    <span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para aprobar revisiones de posts&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para rechazar publicaciones&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para publicar publicaciones aprobadas&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para ver publicaciones aun no publicadas&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para acceder al tablero de gestion kanban&quot;</span><span class="p">),</span>
     <span class="c1"># roles</span>
     <span class="p">(</span><span class="n">ROLE_VIEW_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para listar los roles del sistema&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="n">ROLE_MANAGE_PERMISSION</span><span class="p">,</span> <span class="s2">&quot;Permiso para crear y eliminar los roles del sistema&quot;</span><span class="p">),</span>
@@ -83,7 +95,9 @@
 
 
 <span class="c1"># NOTE: esta funcion se utiliza en el comando migrate custom</span>
-<span class="k">def</span> <span class="nf">_initialize_permissions</span><span class="p">():</span>
+<div class="viewcode-block" id="initialize_permissions">
+<a class="viewcode-back" href="../../../docs/source/modulos.Authorization.html#modulos.Authorization.permissions.initialize_permissions">[documentos]</a>
+<span class="k">def</span> <span class="nf">initialize_permissions</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inicializa y crea la lista de permisos disponibles dentro de la bd.</span>
 
@@ -102,7 +116,8 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Permisos incializados correctamente&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Permisos incializados correctamente&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="user_has_access_to_category">
@@ -122,7 +137,8 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="c1"># Verificar si el usuario pertenece a grupos con acceso a la categoría</span>
-    <span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="n">ADMIN</span><span class="p">,</span> <span class="n">PUBLISHER</span><span class="p">,</span> <span class="n">EDITOR</span><span class="p">,</span> <span class="n">AUTOR</span><span class="p">,</span> <span class="n">SUBSCRIBER</span>
+    <span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ADMIN</span><span class="p">,</span> <span class="n">AUTOR</span><span class="p">,</span> <span class="n">EDITOR</span><span class="p">,</span> <span class="n">PUBLISHER</span><span class="p">,</span>
+                                             <span class="n">SUBSCRIBER</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span>
