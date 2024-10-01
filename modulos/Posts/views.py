@@ -51,13 +51,6 @@ def view_post(request, id):
     Esta vista muestra los detalles de un solo objeto 'Post'.
     Utiliza el modelo 'Post' para recuperar la instancia específica y renderiza el contenido
     utilizando la plantilla 'posts/post_detail.html'.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-        id (int): El ID del post a mostrar.
-
-    Returns:
-        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'posts/post_detail.html'.
     """
     post = get_object_or_404(Post, id=id)
 
@@ -71,48 +64,67 @@ def view_post(request, id):
 
     # administrar acceso a categorias moderadas o de pago
     user = request.user
-    category = get_object_or_404(Category, pk=post.category.id)
+    category = post.category
 
-    if isinstance(user, AnonymousUser):
-        # Mostrar modal de acceso denegado para categorías premium y de suscripción
-        if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes iniciar sesión o registrarte.",
-                },
+    # Si la categoría es gratis, mostrar el post completo sin restricción
+    if category.tipo == category.GRATIS:
+        # Mostrar el detalle completo del post
+        tags = post.tags.split(",") if post.tags else []
+        tags = [tag.strip() for tag in tags]
+
+        # Verifica si el post es favorito del usuario actual
+        es_favorito = (
+            post.favorites.filter(id=user.id).exists()
+            if user.is_authenticated
+            else False
+        )
+
+        ctx = new_ctx(
+            request,
+            {
+                "post": post,
+                "tags": tags,
+                "categories": Category.objects.all(),
+                "es_favorito": es_favorito,
+            },
+        )
+
+        return render(request, "pages/post_detail.html", context=ctx)
+
+    # Si el usuario no está autenticado, mostrar la previsualización
+    if isinstance(user, AnonymousUser) or (
+        user.is_authenticated and not user_has_access_to_category(user, category)
+    ):
+        preview_content = post.content.split()[
+            :50
+        ]  # Truncar a las primeras 50 palabras
+        preview_content = " ".join(preview_content) + "..."
+        modal_message = None
+
+        # Mensaje diferente según el tipo de categoría
+        if isinstance(user, AnonymousUser):
+            modal_message = (
+                "Para poder ver esta publicación debes iniciar sesión o registrarte."
             )
-
-    # Si el usuario está autenticado, verificar acceso a la categoría del post
-    if user.is_authenticated and not user_has_access_to_category(user, category):
-        if category.tipo == category.PREMIUM:
-            # Verificar si el usuario ha completado un pago para esta categoría
-            if not Payment.objects.filter(
-                user=user, category=category, status="completed"
-            ).exists():
-                # Mostrar mensaje de pago necesario para ver el post
-                return render(
-                    request,
-                    "access_denied_modal.html",
-                    {
-                        "category": category,
-                        "modal_message": "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.",
-                    },
-                )
+        elif category.tipo == category.PREMIUM:
+            modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$."
         elif category.tipo == category.SUSCRIPCION:
-            # Mostrar mensaje de suscripción necesaria
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes ser suscriptor de nuestra web.",
-                },
+            modal_message = (
+                "Para poder ver esta publicación debes ser suscriptor de nuestra web."
             )
 
-    # parse tags
+        return render(
+            request,
+            "pages/post_preview.html",
+            {
+                "post": post,
+                "category": category,
+                "preview_content": preview_content,
+                "modal_message": modal_message,
+            },
+        )
+
+    # Si el usuario tiene acceso, mostrar el detalle completo del post
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]
 
@@ -485,9 +497,7 @@ def reject_post(request, id):
 @login_required
 def favorite_list(request):
     """
-    Vista para listar los posts favoritos del usuario.
-
-    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.
+    Vista para listar los posts favoritos del usuario y las categorías de interés.
 
     Args:
         request (HttpRequest): El objeto de solicitud HTTP.
@@ -495,8 +505,21 @@ def favorite_list(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
     """
+    # Obtener los posts favoritos
     posts_favorites = Post.objects.filter(favorites=request.user)
-    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
+
+    # Obtener las categorías de los posts favoritos (sin duplicados)
+    categorias_interes = Category.objects.filter(
+        post__favorites=request.user
+    ).distinct()
+
+    ctx = new_ctx(
+        request,
+        {
+            "posts_favorites": posts_favorites,
+            "categorias_interes": categorias_interes,  # Pasar las categorías al contexto
+        },
+    )
     return render(request, "pages/posts_favorites_list.html", ctx)
 
 
@@ -505,11 +528,12 @@ class ContenidosView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Obtener todas las categorías
-        categories = Category.objects.all()
+        # Obtener todas las categorías que tienen al menos un post publicado
+        categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
         # Crear un diccionario para almacenar los posts por categoría
         posts_by_category = {
-            category: Post.objects.filter(category=category) for category in categories
+            category: Post.objects.filter(category=category, status=Post.PUBLISHED)
+            for category in categories
         }
         context["posts_by_category"] = posts_by_category
         return context
