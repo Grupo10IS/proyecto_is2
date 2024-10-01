@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -40,7 +40,24 @@ def home_view(req):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
     """
-    ctx = new_ctx(req, {"posts": Post.objects.filter(status=Post.PUBLISHED)[:20]})
+    try:
+        page = int(req.GET.get("page", 1))
+    except ValueError:
+        page = 1
+
+    if page <= 0:
+        page = 1
+
+    posts = Post.objects.filter(status=Post.PUBLISHED)[20 * (page - 1) : 20 * page]
+
+    ctx = new_ctx(req, {"posts": posts})
+
+    if len(posts) >= 20:
+        ctx.update({"next_page": page + 1})
+
+    if page > 1:
+        ctx.update({"previous_page": page - 1})
+
     return render(req, "pages/home.html", context=ctx)
 
 
@@ -351,6 +368,7 @@ def favorite_post(request, id):
         post.favorites.remove(request.user)
 
     return HttpResponse(status=204)
+
 
 # --------------------
 # Flujo de publicacion

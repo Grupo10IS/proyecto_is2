@@ -53,5 +53,12 @@
                 {% endif %}
             </div>
         </div>
+        {% if previous_page %}
+            <a href="{% url 'categories_list' %}?page={{ previous_page }}"
+               class="float-end">Anterior</a>
+        {% endif %}
+        {% if next_page %}
+            <a href="{% url 'categories_list' %}?page={{ next_page }}" class="float-end">Siguiente</a>
+        {% endif %}
     </div>
 {% endblock %}

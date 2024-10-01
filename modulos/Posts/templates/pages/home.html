@@ -7,17 +7,9 @@
     <div>
         <div class="p-2">
             <!-- Contenido Principal -->
-            <div class="p-4 p-md-5 mb-4 rounded bg-body-secondary position-relative post-featured"
-                style="background-image: 
-                {% if posts and posts.0.image %}
-                    url('{{ posts.0.image.url }}')
-                {% else %}
-                    url('{% static "images/makex.png" %}')
-                {% endif %};
-                background-size: 50% 100%;  /* Tamaño de la imagen al 50% del ancho */
-                background-position: center right;  /* Posicionamiento desde el centro hacia la derecha */
-                background-repeat: no-repeat;">
-                <div class="image-overlay"></div>  <!-- Capa para aplicar difuminado a la imagen -->
+            <div class="p-4 p-md-5 mb-4 rounded bg-body-secondary position-relative post-featured" style="background-image: {% if posts and posts.0.image %} url('{{ posts.0.image.url }}') {% else %} url('{% static "images/makex.png" %}') {% endif %}; background-size: 50% 100%;  /* Tamaño de la imagen al 50% del ancho */ background-position: center right;  /* Posicionamiento desde el centro hacia la derecha */ background-repeat: no-repeat;">
+                <div class="image-overlay"></div>
+                <!-- Capa para aplicar difuminado a la imagen -->
                 <div class="px-0 position-relative text-container" style="z-index: 2;">
                     {% if posts %}
                         <h1 class="display-4 fst-italic">{{ posts.0.title }}</h1>
@@ -70,7 +62,12 @@
                 {% endif %}
             </div>
         </div>
-        <p class="float-end" ><a href="#" style="color:black">Volver arriba</a></p>
-    </div>
+        {% if previous_page %}
+            <a href="{% url 'home' %}?page={{ previous_page }}"
+               class="float-end">Anterior</a>
+        {% endif %}
+        {% if next_page %}
+            <a href="{% url 'home' %}?page={{ next_page }}" class="float-end">Siguiente</a>
+        {% endif %}
+</div>
 {% endblock content %}
-
