@@ -1,73 +1,163 @@
 {% extends "base.html" %}
 {% load static %}
+<!-- Asegúrate de cargar 'static' aquí -->
 {% block title %}
     Inicio - MakeX
 {% endblock title %}
 {% block content %}
-    <div>
-        <div class="p-2">
-            <!-- Contenido Principal -->
-            <div class="p-4 p-md-5 mb-4 rounded bg-body-secondary position-relative post-featured" style="background-image: {% if posts and posts.0.image %} url('{{ posts.0.image.url }}') {% else %} url('{% static "images/makex.png" %}') {% endif %}; background-size: 50% 100%;  /* Tamaño de la imagen al 50% del ancho */ background-position: center right;  /* Posicionamiento desde el centro hacia la derecha */ background-repeat: no-repeat;">
-                <div class="image-overlay"></div>
-                <!-- Capa para aplicar difuminado a la imagen -->
-                <div class="px-0 position-relative text-container" style="z-index: 2;">
-                    {% if posts %}
-                        <h1 class="display-4 fst-italic">{{ posts.0.title }}</h1>
-                        <p class="lead my-3">Nuestro post destacado del día</p>
-                        <p class="lead mb-0">
-                            <a href="{% url 'post_detail' posts.0.id %}" class="fw-bold">Ver más..</a>
-                        </p>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <!-- Post Principal -->
+            <div class="col-md-8">
+                <h1 class="display-6 fst-italic">Post Destacado</h1>
+                {% if post_destacado and post_destacado.id %}
+                    <div class="post-featured p-4 position-relative card-container" 
+                        style="background-image: 
+                            {% if post_destacado and post_destacado.image %}
+                                url('{{ post_destacado.image.url }}')
+                            {% else %}
+                                url('{% static "images/makex.png" %}')
+                            {% endif %};
+                            background-size: cover;
+                            background-position: center;
+                            height:500px;">
+                        
+                        <!-- Texto superpuesto en la parte inferior de la imagen -->
+                        <div class="text-container" style="position: absolute; bottom: 0; background-color: rgba(255, 255, 255, 0.8);">
+                            <h1 class="display-6 fst-italic">
+                                <a href="{% url 'post_detail' post_destacado.id %}" class="text-black stretched-link" style="text-decoration: none;">
+                                    {{ post_destacado.title }}
+                                </a>
+                            </h1>
+                            <p class="lead">{{ post_destacado.content|truncatewords:30 }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No hay un post destacado disponible.</p>
+                {% endif %}
+                
+                <hr style="border: 1px solid #000; margin: 20px 0;">
+
+                <h1 class="display-6 fst-italic">Últimos Posts</h1>
+                <div class="row">
+                    {% if posts_recientes %}
+                        {% for post in posts_recientes %}
+                            <div class="col-md-12 mb-4">
+                                <div class="card h-100 card-container">
+                                    <div class="row g-0">
+                                        <div class="col-md-3">
+                                            {% if post.image %}
+                                                <img src="{{ post.image.url }}"
+                                                     class="card-img"
+                                                     alt="{{ post.title }}"
+                                                     style="height: 100%; object-fit: cover">
+                                            {% else %}
+                                                <img src="{% static 'images/makex.png' %}"
+                                                     class="card-img"
+                                                     alt="{{ post.title }}"
+                                                     style="height: 100%; object-fit: cover">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="card-body">
+                                                <p class="text-muted fst-italic">{{ post.category.name }}</p>
+                                                <h5 class="card-title">
+                                                    <a href="{% url 'post_detail' post.id %}"
+                                                       class="text-black stretched-link">{{ post.title }}</a>
+                                                </h5>
+                                                <p class="card-text">{{ post.content|truncatewords:30|safe }}</p>
+                                                <p class="text-muted">Por: {{ post.author }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     {% else %}
-                        <h1 class="display-4 fst-italic">No hay posts disponibles</h1>
-                        <p class="lead my-3">Por favor, regresa pronto para ver nuestros últimos posts</p>
+                        <p>No hay posts recientes disponibles.</p>
+                    {% endif %}
+                </div>
+                
+
+            </div>
+            <!-- Sección de categorías populares -->
+            <div class="col-md-4">
+                <h1 class="display-6 fst-italic">Categorías Populares</h1>
+                <p class="fst-italic">Las 3 categorías favoritas de los usuarios de MakeX</p>
+                <div class="row">
+                    {% if categorias_populares %}
+                        {% for category in categorias_populares %}
+                            <div class="col-12 mb-3">
+                                <div class="card card-container">
+                                    {% if category.image %}
+                                        <img src="{{ category.image.url }}"
+                                             class="card-img-top"
+                                             alt="{{ category.name }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% else %}
+                                        <img src="{% static 'images/makex.png' %}"
+                                             class="card-img-top"
+                                             alt="{{ category.name }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ category.name }}</h5>
+                                        <p class="card-text">{{ category.description|truncatewords:10 }}</p>
+                                        <a href="{% url 'category_detail' category.id %}" class="stretched-link"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No hay categorías populares disponibles.</p>
+                    {% endif %}
+                </div>
+                <hr style="border: 1px solid #000; margin: 20px 0;">
+                <h1 class="display-6 fst-italic">Posts Populares</h1>
+                <p class="fst-italic">Los 5 posts favoritos de los usuarios de MakeX</p>
+                <div class="row">
+                    {% if posts_populares %}
+                        {% for post in posts_populares %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 card-container">
+                                    {% if post.image %}
+                                        <img src="{{ post.image.url }}"
+                                             class="card-img-top"
+                                             alt="{{ post.title }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% else %}
+                                        <img src="{% static 'images/makex.png' %}"
+                                             class="card-img-top"
+                                             alt="{{ post.title }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ post.title }}</h5>
+                                        <p class="card-text">{{ post.summary|truncatewords:20 }}</p>
+                                        <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No hay posts populares disponibles.</p>
                     {% endif %}
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
-                {% if posts %}
-                    {% for post in posts %}
-                        <div class="col">
-                            <div class="p-4 card h-100 card-container">
-                                <div class="post-category fst-italic mb-2">
-                                    {{ post.category }}  <!-- Muestra la categoría del post -->
-                                </div>
-                                {% if post.image %}
-                                    <!-- Show the uploaded post image -->
-                                    <img src="{{ post.image.url }}"
-                                         class="card-img-top"
-                                         alt="{{ post.title }}"
-                                         width="100"
-                                         height="300">
-                                {% else %}
-                                    <!-- Fallback to a placeholder if no image is uploaded -->
-                                    <img src="{% static 'images/makex.png' %}"
-                                         class="card-img-top "
-                                         alt="{{ post.title }}"
-                                         width="100"
-                                         height="300">
-                                {% endif %}
-                                <div class="card-body">
-                                    <h4 class="card-title">{{ post.title }}</h4>
-                                    <small class="card-text">{{ post.date_created|date:"d M Y" }}</small>
-                                    <p class="card-text mt-3">{{ post.summary|truncatewords:30|safe }}</p>
-                                    <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col text-center">
-                        <p>No hay posts disponibles.</p>
-                    </div>
-                {% endif %}
-            </div>
         </div>
         {% if previous_page %}
-            <a href="{% url 'home' %}?page={{ previous_page }}"
-               class="float-end">Anterior</a>
-        {% endif %}
-        {% if next_page %}
-            <a href="{% url 'home' %}?page={{ next_page }}" class="float-end">Siguiente</a>
-        {% endif %}
-</div>
+        <a href="{% url 'home' %}?page={{ previous_page }}"  style="color:black">Página Anterior</a>
+    {% endif %}
+    {% if next_page %}
+        <a href="{% url 'home' %}?page={{ next_page }}"  style="color:black">Siguiente Página</a>
+    {% endif %}
+        <p class="float-end">
+            <a href="#" style="color:black">Volver arriba</a>
+        </p>
+        
+    </div>
 {% endblock content %}

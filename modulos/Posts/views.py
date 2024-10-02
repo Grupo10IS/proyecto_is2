@@ -9,15 +9,17 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
-                                               POST_APPROVE_PERMISSION,
-                                               POST_CREATE_PERMISSION,
-                                               POST_DELETE_PERMISSION,
-                                               POST_EDIT_PERMISSION,
-                                               POST_PUBLISH_PERMISSION,
-                                               POST_REJECT_PERMISSION,
-                                               POST_REVIEW_PERMISSION,
-                                               user_has_access_to_category)
+from modulos.Authorization.permissions import (
+    KANBAN_VIEW_PERMISSION,
+    POST_APPROVE_PERMISSION,
+    POST_CREATE_PERMISSION,
+    POST_DELETE_PERMISSION,
+    POST_EDIT_PERMISSION,
+    POST_PUBLISH_PERMISSION,
+    POST_REJECT_PERMISSION,
+    POST_REVIEW_PERMISSION,
+    user_has_access_to_category,
+)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
@@ -25,21 +27,63 @@ from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
+from django.db.models import Count
 
+
+from django.db.models import Count
+
+
+from django.core.paginator import Paginator
 
 def home_view(req):
     """
     Vista de inicio 'home_view'.
 
-    Esta vista verifica si el usuario está autenticado y obtiene los 10 últimos posts.
-    Se utiliza la plantilla 'pages/home.html' para mostrar la información al usuario.
-
-    Args:
-        req (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
+    Combina:
+    - Paginación de los posts recientes.
+    - El post destacado.
+    - Categorías populares.
+    - Posts populares.
+    También maneja la búsqueda de posts a través del formulario.
     """
+
+    form = SearchPostForm(req.GET or None)  # Inicializa el formulario de búsqueda
+
+    # Obtener el post con más favoritos
+    post_destacado = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")
+        .first()
+    )
+
+    # Obtener las tres categorías con más posts marcados como favoritos
+    categorias_populares = (
+        Category.objects.filter(post__status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("post__favorites"))
+        .order_by("-favorite_count")[:3]
+    )
+
+    # Obtener los 5 posts más populares (con más favoritos)
+    posts_populares = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")[:5]
+    )
+
+    # Si hay búsqueda activa
+    if form.is_valid() and form.cleaned_data.get("input"):
+        input_search = form.cleaned_data["input"]
+        posts_recientes = buscador.generate_query_set(input_search).execute()
+    else:
+        # Obtener los posts publicados más recientes
+        posts_recientes = Post.objects.filter(status=Post.PUBLISHED).order_by(
+            "-publication_date"
+        )
+
+    # Configuración de paginación (10 posts por página)
+    paginator = Paginator(posts_recientes, 10)
+
     try:
         page = int(req.GET.get("page", 1))
     except ValueError:
@@ -48,15 +92,27 @@ def home_view(req):
     if page <= 0:
         page = 1
 
-    posts = Post.objects.filter(status=Post.PUBLISHED)[20 * (page - 1) : 20 * page]
+    # Obtener los posts de la página actual
+    posts_paginados = paginator.get_page(page)
 
-    ctx = new_ctx(req, {"posts": posts})
+    # Crear el contexto
+    ctx = new_ctx(
+        req,
+        {
+            "post_destacado": post_destacado,
+            "categorias_populares": categorias_populares,
+            "posts_recientes": posts_paginados,  # Los posts paginados o resultados de búsqueda
+            "posts_populares": posts_populares,
+            "form": form,  # Pasar el formulario de búsqueda
+        },
+    )
 
-    if len(posts) >= 20:
-        ctx.update({"next_page": page + 1})
+    # Agregar los enlaces de página siguiente y anterior
+    if posts_paginados.has_next():
+        ctx.update({"next_page": posts_paginados.next_page_number()})
 
-    if page > 1:
-        ctx.update({"previous_page": page - 1})
+    if posts_paginados.has_previous():
+        ctx.update({"previous_page": posts_paginados.previous_page_number()})
 
     return render(req, "pages/home.html", context=ctx)
 
@@ -313,36 +369,63 @@ def edit_post(request, id):
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
 
+from django.db.models import Q
+
 def search_post(request):
     """
     Vista para buscar publicaciones.
 
-    Esta vista maneja la búsqueda de posts utilizando un formulario. Si el formulario es válido,
-    se generan los resultados y se muestran en la plantilla correspondiente.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: Redirección a la vista de inicio si no se realiza una búsqueda válida
-                      o renderización de los resultados de búsqueda.
+    Esta vista maneja la búsqueda de posts utilizando múltiples criterios como título, contenido, categoría, autor y fecha de publicación.
     """
     form = SearchPostForm(
         request.GET
     )  # Inicializa el formulario con los datos de búsqueda
 
     if form.is_valid():  # Verifica la validez del formulario
-        input = form.cleaned_data["input"]  # Obtiene el término de búsqueda
-        results = buscador.generate_query_set(input).execute()  # Realiza la búsqueda
+        input = form.cleaned_data.get(
+            "input"
+        )  # Obtiene el término de búsqueda (si existe)
+        category = form.cleaned_data.get(
+            "category"
+        )  # Obtiene la categoría seleccionada
+        author = form.cleaned_data.get(
+            "author"
+        )  # Obtiene el nombre del autor (si se ingresó)
+        publication_date = form.cleaned_data.get(
+            "publication_date"
+        )  # Obtiene la fecha de publicación (si se ingresó)
+
+        # Construimos el query dinámico utilizando Q objects para combinar los filtros
+        query = Q()
+
+        # Búsqueda por título y contenido
+        if input:
+            query &= Q(title__icontains=input) | Q(content__icontains=input)
+
+        # Filtro por categoría
+        if category:
+            query &= Q(category=category)
+
+        # Filtro por autor
+        if author:
+            query &= Q(
+                author__username__icontains=author
+            )  # Asumiendo que el autor es un campo de Usuario
+
+        # Filtro por fecha de publicación
+        if publication_date:
+            query &= Q(publication_date=publication_date)
+
+        # Ejecutar la consulta y obtener los resultados
+        results = Post.objects.filter(query, status=Post.PUBLISHED).distinct()
 
         ctx = new_ctx(
-            request, {"posts": results[:10]}
-        )  # Crea el contexto con los resultados
-        return render(request, "pages/home.html", context=ctx)
+            request, {"posts": results[:10], "form": form}
+        )  # Pasar el formulario en el contexto también
+        return render(request, "pages/search_results.html", context=ctx)
 
     # Redirige a la vista de inicio si no hay búsqueda válida
     return redirect("home")
-
 
 @login_required
 def favorite_post(request, id):

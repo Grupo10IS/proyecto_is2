@@ -74,6 +74,12 @@ a img:hover {
     cursor: pointer;
 }
 /*Home Posts*/
+/* Ajustar el comportamiento de las columnas para ocupar todo el ancho */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 .post-featured {
     position: relative;
     border-radius: 8px;

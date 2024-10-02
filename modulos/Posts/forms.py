@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import CharField, Form, ModelForm
+from modulos.Categories.models import Category
 
 from .models import Post  # Ensure you have imported the Post model
 
@@ -38,16 +39,39 @@ class NewPostForm(ModelForm):
         }
 
 
-class SearchPostForm(Form):
-    input = CharField(
+class SearchPostForm(forms.Form):
+    input = forms.CharField(
         max_length=120,
+        required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control-sm",
                 "id": "search-input",
                 "placeholder": "Search ...",
                 "aria-label": "Search",
-                "style": "display: none",
+                "style": "display: none;",
             }
         ),
+    )
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control-sm"}),
+        label="Categoría",
+    )
+    author = forms.CharField(
+        max_length=120,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control-sm",
+                "placeholder": "Autor ...",
+            }
+        ),
+        label="Autor",
+    )
+    publication_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date", "class": "form-control-sm"}),
+        label="Fecha de Publicación",
     )

@@ -9,7 +9,7 @@ urlpatterns = [
     path("create/", create_post, name="post_create"),
     path("<int:id>/delete", delete_post, name="delete_post"),
     path("<int:id>/edit/", edit_post, name="edit_post"),
-    path("search", search_post, name="post_search"),
+    path("search/", search_post, name="post_search"),
     # -- vistas de publicacion de contenido --
     path("<int:id>/approve", aprove_post, name="approve_post"),
     path("<int:id>/review", send_to_review, name="send_to_review"),
@@ -18,7 +18,11 @@ urlpatterns = [
     path("kanban/", kanban_board, name="kanban_board"),
     # -- historial y estadisticas
     path("<int:id>/versions", post_versions_list, name="post_versions"),
-    path("<int:post_id>/versions/<int:version>/", post_version_detail, name="post_version_detail"),
+    path(
+        "<int:post_id>/versions/<int:version>/",
+        post_version_detail,
+        name="post_version_detail",
+    ),
     path("<int:id>/logs", post_log_list, name="post_log_list"),
     # -- miscelanea --
     path("<int:id>", favorite_post, name="post_favorite"),

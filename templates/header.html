@@ -30,20 +30,24 @@
             </ul>
             <div class="navbar-right">
                 <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
-                      role="search"
-                      action="{% url 'post_search' %}"
-                      method="get">
-                    {{ post_search_input.input }}
-                    <svg id="search-icon"
-                         xmlns="http://www.w3.org/2000/svg"
-                         width="25"
-                         height="25"
-                         fill="white"
-                         class="bi bi-search"
-                         viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg>
-                </form>
+      role="search"
+      action="{% url 'post_search' %}"
+      method="get">
+    <!-- Campo de entrada de búsqueda generado por Django Forms -->
+    {{ post_search_input.input }}
+    
+    <!-- Icono de búsqueda -->
+    <svg id="search-icon"
+         xmlns="http://www.w3.org/2000/svg"
+         width="25"
+         height="25"
+         fill="white"
+         class="bi bi-search"
+         viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+    </svg>
+</form>
+          
                 <div class="dropdown text-end">
                     <a href="#"
                        class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
@@ -91,5 +95,15 @@
     </div>
     {% block expand_nav %}
     {% endblock expand_nav %}
-    <script src="{% static 'js/dropdown.js' %}"></script>
+    <script src="{% static 'js/dropdown.js' %}">
+        document.getElementById('search-icon').addEventListener('click', function() {
+            var searchInput = document.getElementById('id_input');  // El campo de búsqueda Django tendrá un ID que empieza con 'id_'
+            if (searchInput.style.display === 'none' || searchInput.style.display === '') {
+                searchInput.style.display = 'inline-block';  // Mostrar el input
+                searchInput.focus();  // Poner el foco en el input para que el usuario empiece a escribir
+            } else {
+                searchInput.style.display = 'none';  // Ocultar el input si ya está visible
+            }
+        });
+    </script>
 </header>
