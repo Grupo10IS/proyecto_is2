@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
-
+from django.db.models import Count
 from modulos.Posts.models import Log, Post
 from modulos.UserProfile.models import UserProfile
 from .models import Post
@@ -83,6 +83,7 @@ def send_notification_to_users(sender, instance, **kwargs):
                     fail_silently=False,
                 )
 
+# NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO O RECHAZADO
 
 @receiver(pre_save, sender=Post)
 def send_notification_to_authors(sender, instance, **kwargs):
@@ -153,3 +154,73 @@ def send_notification_to_authors(sender, instance, **kwargs):
                 print(
                     f"Correo enviado al autor {author.username} notificando el rechazo."
                 )
+
+
+# NOTIFICA A LOS AUTORES CUANDO SU POST ESTA NUMERO 1 O ENTRE LOS 5 MAS POPULARES
+
+
+def check_top_posts():
+    """
+    Obtiene el post con más favoritos y los 5 posts más populares.
+    Retorna el post destacado y una lista con los 5 posts más populares.
+    """
+    # Obtener el post destacado (más favoritos)
+    post_destacado = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")
+        .first()
+    )
+
+    # Obtener los 5 posts más populares
+    posts_populares = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")[:5]
+    )
+
+    return post_destacado, posts_populares
+
+
+@receiver(post_save, sender=Post)
+@receiver(
+    m2m_changed, sender=Post.favorites.through
+)  # También cuando se cambian los favoritos
+def notify_top_posts(sender, instance, **kwargs):
+    """
+    Verifica si un post se convierte en destacado o entra al Top 5 posts más populares,
+    y envía una notificación al autor del post.
+    """
+    # Verificar el top 5 y el post destacado
+    post_destacado, posts_populares = check_top_posts()
+
+    author = instance.author
+    if not author:
+        print(f"No se encontró un autor para el post {instance.title}.")
+        return
+
+    # Notificación si el post se convierte en destacado
+    if instance == post_destacado:
+        print(f"El post {instance.title} es el nuevo post destacado.")
+        subject = "¡Tu post es el Post Destacado! 🎉"
+        message = f"Hola {author.username}, tu post '{instance.title}' ha sido seleccionado como el Post Destacado.¡Felicidades!"
+        send_mail(
+            subject,
+            message,
+            "groupmakex@gmail.com",
+            [author.email],
+            fail_silently=False,
+        )
+
+    # Notificación si el post está en el Top 5 de los más populares
+    if instance in posts_populares:
+        print(f"El post {instance.title} ha entrado en el Top 5 de los más populares.")
+        subject = "¡Tu post está en el Top 5 de los más populares! 🎉"
+        message = f"Hola {author.username}, tu post '{instance.title}' está en el Top 5 de los posts más populares.¡Sigue así!"
+        send_mail(
+            subject,
+            message,
+            "groupmakex@gmail.com",
+            [author.email],
+            fail_silently=False,
+        )
