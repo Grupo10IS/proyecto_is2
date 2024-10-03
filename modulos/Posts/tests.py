@@ -262,7 +262,10 @@ def test_search_post_view(client):
     """
     categoria = Category.objects.create(name="prueba")
     Post.objects.create(
-        title="Post de prueba", content="Contenido de prueba", category=categoria
+        title="Post de prueba",
+        content="Contenido de prueba",
+        category=categoria,
+        status=Post.PUBLISHED,  # Asegúrate de que el post esté publicado
     )
 
     # Probar una búsqueda no válida
