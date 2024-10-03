@@ -19,8 +19,10 @@ def test_home_view(client):
     response = client.get(url)
     assert response.status_code == 200
     assert "pages/home.html" in [t.name for t in response.templates]
-    assert "posts_recientes" in response.context
-    ps_len = len(response.context["posts"])
+    assert "posts_recientes" in response.context  # Cambiar 'posts' a 'posts_recientes'
+    ps_len = len(
+        response.context["posts_recientes"]
+    )  # Aquí también ajustar a 'posts_recientes'
     assert ps_len == 0, f"Expected 0 posts, got {ps_len}"
 
     # Test home view with existing posts
@@ -46,7 +48,8 @@ def test_home_view(client):
 
     response = client.get(url)
     assert response.status_code == 200
-    ps_len = len(response.context["posts"])
+    assert "posts_recientes" in response.context
+    ps_len = len(response.context["posts_recientes"])
     assert ps_len == 2, f"Expected 2 posts, got {ps_len}"
 
 
