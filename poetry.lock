@@ -263,16 +263,6 @@ jsbeautifier = "*"
 six = ">=1.13.0"
 
 [[package]]
-name = "decouple"
-version = "0.0.7"
-description = "Decoupling logic"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "decouple-0.0.7.tar.gz", hash = "sha256:c253c1cc62b76e9720a066f334552548c6de1884bc3bdf456ddb62d61b867b09"},
-]
-
-[[package]]
 name = "dill"
 version = "0.3.8"
 description = "serialize all of Python"
@@ -1570,4 +1560,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "5955d063a7926795da8797d99f393ad9c52c414234a3a00f823cac43d9ebb7a8"
+content-hash = "54f5f7d76795cc0387bef995f68ef60115744cdb9132fcb11de38a157d2937e4"
