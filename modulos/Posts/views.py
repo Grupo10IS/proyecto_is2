@@ -381,7 +381,14 @@ def search_post(request):
         request.GET
     )  # Inicializa el formulario con los datos de búsqueda
 
-    if form.is_valid():  # Verifica la validez del formulario
+    # Si el formulario no es válido o no hay búsqueda, redirige a la vista de inicio
+    if not form.is_valid() or not form.cleaned_data.get("input"):
+        return redirect(
+            "home"
+        )  # Redirige a la vista de inicio si no hay búsqueda válida
+
+    # Verifica la validez del formulario
+    if form.is_valid():
         input = form.cleaned_data.get(
             "input"
         )  # Obtiene el término de búsqueda (si existe)
@@ -419,13 +426,13 @@ def search_post(request):
         # Ejecutar la consulta y obtener los resultados
         results = Post.objects.filter(query, status=Post.PUBLISHED).distinct()
 
-        ctx = new_ctx(
-            request, {"posts": results[:10], "form": form}
-        )  # Pasar el formulario en el contexto también
+        # Pasar el formulario y los resultados de búsqueda en el contexto
+        ctx = new_ctx(request, {"posts": results[:10], "form": form})
         return render(request, "pages/search_results.html", context=ctx)
 
     # Redirige a la vista de inicio si no hay búsqueda válida
     return redirect("home")
+
 
 @login_required
 def favorite_post(request, id):

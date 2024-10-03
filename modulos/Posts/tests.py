@@ -19,7 +19,7 @@ def test_home_view(client):
     response = client.get(url)
     assert response.status_code == 200
     assert "pages/home.html" in [t.name for t in response.templates]
-    assert "posts" in response.context
+    assert "posts_recientes" in response.context
     ps_len = len(response.context["posts"])
     assert ps_len == 0, f"Expected 0 posts, got {ps_len}"
 
