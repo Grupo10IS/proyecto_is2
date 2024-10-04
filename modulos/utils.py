@@ -4,7 +4,7 @@ from modulos.Posts.forms import SearchPostForm
 
 def new_ctx(req, params):
     """
-    Creates a wrapper context dictionary for rendering templates, based on user permissions 
+    Creates a wrapper context dictionary for rendering templates, based on user permissions
     and additional parameters. It merges a given custom context passed as parameter with
     the common context for the rest of the pages and views.
 
@@ -46,7 +46,7 @@ def new_ctx(req, params):
     base = {
         "categories": Category.objects.all(),
         "permisos": sitios,
-        "post_search_input": SearchPostForm
+        "post_search_input": SearchPostForm,
     }
     base.update(params)
 

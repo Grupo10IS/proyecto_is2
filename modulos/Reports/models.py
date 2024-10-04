@@ -21,6 +21,6 @@ class Report(models.Model):
     description = models.TextField(
         blank=True, null=True
     )  # Descripción opcional del reporte
-    created_at = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True
     )  # fecha y hora de creacion del reporte

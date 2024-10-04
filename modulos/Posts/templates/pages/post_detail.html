@@ -18,30 +18,81 @@
                             {% if post.tags %}
                                 {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
                             {% endif %}
-                            {% include 'create_report.html' %}
+                            <!-- Botón de Reportar -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <button class="btn btn-outline-danger" id="reportButton" data-login-url="{% url 'login' %}"
+                                    data-is-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+                                    data-report-url="{% url 'create_report' post.id %}">Reportar</button>
+                            </div>
+                            <div id="reportModalContainer">
+                                <!-- Modal de Reportar -->
+                                <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-light">
+                                                <h5 class="modal-title" id="reportModalLabel">Reportar Contenido</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                            
+                                            <div class="modal-body" id="modal-body-content">
+                                                <!-- Aquí se inyectará el contenido desde 'create_report.html' -->
+                                            </div>
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal de reporte exitoso -->
+                                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="successModalLabel">Reporte enviado</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="text-center">
+                                                    <i class="bi bi-check-circle" style="font-size: 48px; color: green;"></i>
+                                                    <p class="mt-3">¡Tu reporte ha sido enviado exitosamente!</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal de que ya reporto este contenido-->
+                                <div class="modal fade" id="existingReportModal" tabindex="-1" aria-labelledby="existingReportModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="existingReportModalLabel">Reporte enviado</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="text-center">
+                                                    <i class="bi bi-check-circle" style="font-size: 48px; color: green;"></i>
+                                                    <p class="mt-3">¡Ya has reportado este contenido!</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </small>
                     </p>
-                    <!-- Puedes añadir más detalles aquí como categorías o etiquetas -->
                 </div>
                 <!-- Contenido del post -->
                 <div id="content" class="markdown-content">{{ post.content|safe }}</div>
             </div>
         </div>
     </div>
-    <script>
-        const loginUrl = "{% url 'login' %}";  // URL de inicio de sesión
-
-        const isAuthenticated = {% if user.is_authenticated %}true{% else %} false{% endif %};
-
-        document.getElementById('reportButton').addEventListener('click', function () {
-            if (isAuthenticated) {
-                var myModal = new bootstrap.Modal(document.getElementById('reportModal'));
-                myModal.show();
-            } else {
-                window.location.href = loginUrl;  // Redirige a la URL de inicio de sesión
-            }
-        });
-    </script>
+    
+    
 
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close">&times;</span>
@@ -94,4 +145,5 @@
         })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <script src="{% static 'posts/reports.js' %}"></script>
 {% endblock %}

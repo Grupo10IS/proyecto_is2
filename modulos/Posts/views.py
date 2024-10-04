@@ -1,15 +1,13 @@
-from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
-from modulos.Authorization.roles import ADMIN
-from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (
-    POST_CREATE_PERMISSION,
-    POST_DELETE_PERMISSION,
-    POST_EDIT_PERMISSION,
-)
 
+from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.permissions import (POST_CREATE_PERMISSION,
+                                               POST_DELETE_PERMISSION,
+                                               POST_EDIT_PERMISSION)
+from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm

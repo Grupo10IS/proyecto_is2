@@ -1,0 +1,32 @@
+{% extends "register_base.html" %}
+{% block content %}
+<div class="container">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <h1 class="display-6 fst-italic mb-4">Reportes del contenido: <b>{{ content_title }}</b></h1>
+        <table class="table table-hover table-striped">
+            <thead class="table-dark fst-italic">
+                <tr>
+                    <th scope="col">Reportado por</th>
+                    <th scope="col">Razón</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.user }}</td>
+                    <td>{{ report.reason }}</td>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.creation_date }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'reports' %}" class="btn btn-secondary" style="background-color: black;
+                      border-color: black;
+                      color:white">Volver atras</a>
+    </div>
+</div>
+{% endblock %}
