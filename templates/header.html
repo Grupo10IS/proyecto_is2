@@ -1,24 +1,31 @@
 {% load static %}
-<header class="p-3 border-bottom">
+<header class="border-bottom">
     <div class="container" id="bodycontent">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1 id="headerTitle">
                 <a href="{% url 'home' %}" class="nav-link px-2">
                     <img src="{% static 'images/logo.png' %}"
                          alt="Makex Logo"
-                         width="120"
-                         height="120">
+                         width="80"
+                         height="80">
                 </a>
             </h1>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
                 id="headerContent">
                 <li>
-                    <a href="#" class="nav-link px-2 " style="color:white">Contenidos</a>
+                    <a href="{% url 'contenidos' %}"
+                       class="nav-link px-2 "
+                       style="color:white">Contenidos</a>
                 </li>
                 <li>
                     <a href="{% url 'categories_list' %}"
                        class="nav-link px-2 "
                        style="color:white">Categorías</a>
+                </li>
+                <li>
+                    <a href="{% url 'post_favorite_list' %}"
+                       class="nav-link px-2 "
+                       style="color:white">Favoritos</a>
                 </li>
             </ul>
             <div class="navbar-right">
@@ -76,34 +83,13 @@
                         {% endif %}
                     </ul>
                 </div>
-                <a href="#" class="subscribe">Subscribite por $1</a>
+                <!-- Cambiar el enlace de suscripción en el encabezado -->
+                <a href="{% url 'categories_list' %}?premium=true" class="subscribe">Suscribite por $1</a>
                 <div>{% include 'burguer.html' %}</div>
             </div>
         </div>
     </div>
     {% block expand_nav %}
     {% endblock expand_nav %}
+    <script src="{% static 'js/dropdown.js' %}"></script>
 </header>
-<script>
-    function resaltarPalabrasClave() {
-        const input = document.querySelector('#id_input');
-        const regex = /#(\w+):/g; // Expresión regular para encontrar palabras clave
-
-        function resaltarTexto() {
-            const valor = input.value;
-            const resultado = valor.replace(regex, '<span class="text-primary">$&</span>');
-            input.innerHTML = resultado;
-        }
-
-        // Escuchar cambios en el input
-        input.addEventListener(input, resaltarTexto);
-
-        // Resaltar inicialmente si hay texto
-        resaltarTexto();
-    }
-
-    // Llamar la función cuando el DOM esté cargado
-    document.addEventListener('DOMContentLoaded', function() {
-        resaltarPalabrasClave();
-    });
-</script>

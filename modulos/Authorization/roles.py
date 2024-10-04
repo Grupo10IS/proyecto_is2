@@ -21,11 +21,24 @@ default_roles = {
         CATEGORY_MANAGE_PERMISSION,
         POST_DELETE_PERMISSION,
         VIEW_REPORTS,
+        POST_REVIEW_PERMISSION,
+        KANBAN_VIEW_PERMISSION,
     ],
     SUBSCRIBER: [],
-    AUTOR: [POST_CREATE_PERMISSION],
-    EDITOR: [POST_EDIT_PERMISSION],
-    PUBLISHER: [POST_POST_PERMISSION, POST_DECLINE_PERMISSION],
+    AUTOR: [POST_CREATE_PERMISSION, KANBAN_VIEW_PERMISSION],
+    EDITOR: [
+        POST_EDIT_PERMISSION,
+        POST_REVIEW_PERMISSION,
+        KANBAN_VIEW_PERMISSION,
+        POST_APPROVE_PERMISSION,
+    ],
+    PUBLISHER: [
+        POST_POST_PERMISSION,
+        POST_REVIEW_PERMISSION,
+        POST_REJECT_PERMISSION,
+        KANBAN_VIEW_PERMISSION,
+        POST_PUBLISH_PERMISSION,
+    ],
 }
 
 
@@ -39,7 +52,7 @@ def prevent_default_role_deletion(sender, instance, **kwargs):
 
 
 # NOTE: esta funcion se utiliza en el comando migrate custom
-def _create_default_groups():
+def create_default_groups():
     """
     Crear los roles por defecto configurados en el sistema
 

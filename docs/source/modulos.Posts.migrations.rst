@@ -68,6 +68,54 @@ modulos.Posts.migrations.0008\_alter\_post\_author\_alter\_post\_category\_and\_
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0009\_alter\_post\_status module
+---------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0009_alter_post_status
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0010\_alter\_post\_category module
+-----------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0010_alter_post_category
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0011\_post\_publication\_date\_and\_more module
+------------------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0011_post_publication_date_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0012\_merge\_20240930\_0143 module
+-----------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0012_merge_20240930_0143
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0013\_post\_favorites module
+-----------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0013_post_favorites
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+modulos.Posts.migrations.0014\_post\_version\_log\_version module
+-----------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0014_post_version_log_version
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

@@ -18,6 +18,38 @@
                             {% if post.tags %}
                                 {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
                             {% endif %}
+                            <!-- Botón de agregar/eliminar de favoritos -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <a title="{% if es_favorito %}Eliminar de favoritos{% else %}Agregar a favoritos{% endif %}"
+                                   class="favorite-star {% if es_favorito %}active{% endif %} d-flex align-items-center"
+                                   id="favorite-star"
+                                   onclick="{% if user.is_authenticated %}toggleStar('{{ csrf_token }}'){% endif %}"
+                                   data-post-id="{{ post.id }}"
+                                   href="{% url 'post_favorite' post.id %}">
+                                    <!-- Ícono SVG (estrella) -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="star-icon"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="2"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         style="width: 20px;
+                                                height: 20px;
+                                                margin-right: 8px">
+                                        <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2" />
+                                    </svg>
+                                    <!-- Texto del botón -->
+                                    <span id="favorite-text">
+                                        {% if es_favorito %}
+                                            Eliminar de favoritos
+                                        {% else %}
+                                            Agregar a favoritos
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </div>
                             <!-- Botón de Reportar -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <button class="btn btn-outline-danger" id="reportButton" data-login-url="{% url 'login' %}"
@@ -88,12 +120,12 @@
                 </div>
                 <!-- Contenido del post -->
                 <div id="content" class="markdown-content">{{ post.content|safe }}</div>
+                <p class="float-end mt-5" ><a href="#" style="color:black">Volver arriba</a>
+                    <a href="{% url 'contenidos' %}" style="color:black">Volver atras</a>
+                </p>
             </div>
         </div>
     </div>
-    
-    
-
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close">&times;</span>
         <img id="lightboxImage" class="lightbox-content">
@@ -124,14 +156,37 @@
             document.getElementById("lightbox").style.display = "none";
         }
     </script>
+    <script src="{% static 'posts/favorite_button.js' %}"></script>
     <div class="row justify-content-center mt-4">
-        <div class="col-10">
-            <div class="content-wrapper">
-                <div id="disqus_thread"></div>
-            </div>
+        <div class="col-10"></div>
+        <!-- Sección de Disqus -->
+        <div id="disqus_thread"></div>
+    </div>
+</div>
+</div>
+<script>
+        var disqus_config = function () {
+            this.page.url = 'https://www.makexfp.com/post/{{ post.id }}/';
+            this.page.identifier ='/posts/{{ post.id }}/';
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://makexfp-com.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="{% static 'posts/favorite_button.js' %}"></script>
+<div class="row justify-content-center mt-4">
+    <div class="col-10">
+        <div class="content-wrapper">
+            <div id="disqus_thread"></div>
         </div>
     </div>
-    <script>
+</div>
+<script>
         var disqus_config = function () {
             this.page.url = 'https://www.makexfp.com/post/{{ post.id }}/';
             this.page.identifier ='/posts/{{ post.id }}/';

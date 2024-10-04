@@ -31,9 +31,7 @@
      id="categoriesOffcanvas"
      aria-labelledby="categoriesOffcanvasLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title"
-            id="categoriesOffcanvasLabel"
-            style="color:white">Menús</h5>
+        
         <button type="button"
                 class="btn-close btn-close-white text-reset "
                 data-bs-dismiss="offcanvas"
@@ -68,6 +66,12 @@
                            style="color:white"
                            href="{% url 'post_list' %}"
                            role="button">Gestion de Contenido</a>
+                    {% endif %}
+                    {% if has_kanban_access %}
+                        <a class="nav-link text-start"
+                           style="color:white"
+                           href="{% url 'kanban_board' %}"
+                           role="button">Tablero de Publicacion</a>
                     {% endif %}
                     <a class="nav-link  text-start"
                        style="color:white"

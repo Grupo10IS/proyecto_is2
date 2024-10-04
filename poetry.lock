@@ -923,6 +923,17 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
+name = "python-decouple"
+version = "3.8"
+description = "Strict separation of settings from code."
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-decouple-3.8.tar.gz", hash = "sha256:ba6e2657d4f376ecc46f77a3a615e058d93ba5e465c01bbe57289bfb7cce680f"},
+    {file = "python_decouple-3.8-py3-none-any.whl", hash = "sha256:d0d45340815b25f4de59c974b855bb38d03151d81b037d9e3f463b0c9f8cbd66"},
+]
+
+[[package]]
 name = "python-http-client"
 version = "3.3.7"
 description = "HTTP REST client, simplified for Python"
@@ -1440,6 +1451,21 @@ files = [
 ]
 
 [[package]]
+name = "stripe"
+version = "10.12.0"
+description = "Python bindings for the Stripe API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "stripe-10.12.0-py2.py3-none-any.whl", hash = "sha256:0c79c1f3a844533c8d30cc283b43afb622aaa402539fca19167a9004fea3471c"},
+    {file = "stripe-10.12.0.tar.gz", hash = "sha256:5abec44548d3814bc1e070aa1852bcb3fc5cc029e947c0f733156eb1f8c87030"},
+]
+
+[package.dependencies]
+requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
+
+[[package]]
 name = "tomlkit"
 version = "0.13.2"
 description = "Style preserving TOML library"
@@ -1534,4 +1560,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "c90bcb7e9610d3b788c1c8526cb8b7726385506d9000213cf7f47bf1a178bc9c"
+content-hash = "54f5f7d76795cc0387bef995f68ef60115744cdb9132fcb11de38a157d2937e4"
