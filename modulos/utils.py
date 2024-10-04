@@ -51,7 +51,7 @@ def new_ctx(req, params):
     base = {
         "categories": Category.objects.all(),
         "permisos": sitios,
-        "post_search_input": SearchPostForm,,
+        "post_search_input": SearchPostForm,
         "has_kanban_access": kanban_permission,
     }
     base.update(params)
