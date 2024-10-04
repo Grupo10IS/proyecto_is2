@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -339,6 +339,7 @@ def favorite_post(request, id):
         post.favorites.remove(request.user)
 
     return HttpResponse(status=204)
+
 
 # --------------------
 # Flujo de publicacion

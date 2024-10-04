@@ -18,7 +18,11 @@ urlpatterns = [
     path("kanban/", kanban_board, name="kanban_board"),
     # -- historial y estadisticas
     path("<int:id>/versions", post_versions_list, name="post_versions"),
-    path("<int:post_id>/versions/<int:version>/", post_version_detail, name="post_version_detail"),
+    path(
+        "<int:post_id>/versions/<int:version>/",
+        post_version_detail,
+        name="post_version_detail",
+    ),
     path("<int:id>/logs", post_log_list, name="post_log_list"),
     # -- miscelanea --
     path("<int:id>", favorite_post, name="post_favorite"),

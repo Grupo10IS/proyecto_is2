@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from modulos.Categories.models import Category  # Importa tu modelo de categoría
+
+from modulos.Categories.models import \
+    Category  # Importa tu modelo de categoría
 
 
 class Payment(models.Model):

@@ -19,8 +19,7 @@
                                             <small>Autor: {{ post.author }}</small>
                                         </a>
                                         <a href="{% url 'send_to_review' post.id %}" class="btn btn-primary">Enviar</a>
-                                        <a href="{% url 'delete_post' post.id %}" class="btn
-                                            btn-primary">eliminar</a>
+                                        <a href="{% url 'delete_post' post.id %}" class="btn btn-primary">eliminar</a>
                                     </li>
                                 {% endfor %}
                             </ul>

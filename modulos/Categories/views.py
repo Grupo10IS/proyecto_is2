@@ -2,14 +2,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.views.generic import DetailView, ListView
-from modulos.Authorization.permissions import user_has_access_to_category
+
 from modulos.Authorization import permissions
 from modulos.Authorization.decorators import permissions_required
+from modulos.Authorization.permissions import user_has_access_to_category
 from modulos.Categories.forms import CategoryCreationForm
 from modulos.Categories.models import Category
+from modulos.Pagos.models import Payment
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
-from modulos.Pagos.models import Payment
 
 
 class CategoryCreateView(generic.CreateView):
@@ -24,6 +25,7 @@ class CategoryCreateView(generic.CreateView):
 
 
 # views.py de categories
+
 
 class CategoryListView(ListView):
     model = Category
@@ -50,6 +52,7 @@ class CategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return new_ctx(self.request, context)
+
 
 class CategoryDetailView(DetailView):
     model = Category

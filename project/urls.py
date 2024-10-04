@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path, re_path
-from modulos.Pagos import urls as pagos_urls
+
 from modulos.Authorization import urls as roles_urls
 from modulos.Categories import urls as category_urls
+from modulos.Pagos import urls as pagos_urls
 from modulos.Posts import urls as posts_urls
 from modulos.Posts.views import home_view
 from modulos.Reports import urls as reports_urls

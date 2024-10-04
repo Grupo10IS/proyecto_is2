@@ -6,15 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Categories', '0007_alter_category_tipo'),
-        ('Pagos', '0001_initial'),
-        ('UserProfile', '0005_userprofile_address_userprofile_phone_number'),
+        ("Categories", "0007_alter_category_tipo"),
+        ("Pagos", "0001_initial"),
+        ("UserProfile", "0005_userprofile_address_userprofile_phone_number"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='pagos',
-            field=models.ManyToManyField(related_name='users_paid', through='Pagos.Payment', to='Categories.category'),
+            model_name="userprofile",
+            name="pagos",
+            field=models.ManyToManyField(
+                related_name="users_paid",
+                through="Pagos.Payment",
+                to="Categories.category",
+            ),
         ),
     ]
