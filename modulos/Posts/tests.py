@@ -268,7 +268,7 @@ def test_search_post_view(client):
         status=Post.PUBLISHED,  # Asegúrate de que el post esté publicado
     )
 
-    # Probar una búsqueda no válida
+    # Probar una búsqueda no válida (sin ningún criterio de búsqueda)
     url = reverse("post_search") + "?input="
     response = client.get(url)
     assert (
