@@ -3,8 +3,10 @@ from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
+from django.core.paginator import Paginator
+from django.db.models import Count
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
+from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -31,16 +33,81 @@ def home_view(req):
     """
     Vista de inicio 'home_view'.
 
-    Esta vista verifica si el usuario está autenticado y obtiene los 10 últimos posts.
-    Se utiliza la plantilla 'pages/home.html' para mostrar la información al usuario.
-
-    Args:
-        req (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/home.html'.
+    Combina:
+    - Paginación de los posts recientes.
+    - El post destacado.
+    - Categorías populares.
+    - Posts populares.
+    También maneja la búsqueda de posts a través del formulario.
     """
-    ctx = new_ctx(req, {"posts": Post.objects.filter(status=Post.PUBLISHED)[:20]})
+
+    form = SearchPostForm(req.GET or None)  # Inicializa el formulario de búsqueda
+
+    # Obtener el post con más favoritos
+    post_destacado = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")
+        .first()
+    )
+
+    # Obtener las tres categorías con más posts marcados como favoritos
+    categorias_populares = (
+        Category.objects.filter(post__status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("post__favorites"))
+        .order_by("-favorite_count")[:3]
+    )
+
+    # Obtener los 5 posts más populares (con más favoritos)
+    posts_populares = (
+        Post.objects.filter(status=Post.PUBLISHED)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")[:5]
+    )
+
+    # Si hay búsqueda activa
+    if form.is_valid() and form.cleaned_data.get("input"):
+        input_search = form.cleaned_data["input"]
+        posts_recientes = buscador.generate_query_set(input_search).execute()
+    else:
+        # Obtener los posts publicados más recientes
+        posts_recientes = Post.objects.filter(status=Post.PUBLISHED).order_by(
+            "-publication_date"
+        )
+
+    # Configuración de paginación (10 posts por página)
+    paginator = Paginator(posts_recientes, 10)
+
+    try:
+        page = int(req.GET.get("page", 1))
+    except ValueError:
+        page = 1
+
+    if page <= 0:
+        page = 1
+
+    # Obtener los posts de la página actual
+    posts_paginados = paginator.get_page(page)
+
+    # Crear el contexto
+    ctx = new_ctx(
+        req,
+        {
+            "post_destacado": post_destacado,
+            "categorias_populares": categorias_populares,
+            "posts_recientes": posts_paginados,  # Los posts paginados o resultados de búsqueda
+            "posts_populares": posts_populares,
+            "form": form,  # Pasar el formulario de búsqueda
+        },
+    )
+
+    # Agregar los enlaces de página siguiente y anterior
+    if posts_paginados.has_next():
+        ctx.update({"next_page": posts_paginados.next_page_number()})
+
+    if posts_paginados.has_previous():
+        ctx.update({"previous_page": posts_paginados.previous_page_number()})
+
     return render(req, "pages/home.html", context=ctx)
 
 
@@ -51,13 +118,6 @@ def view_post(request, id):
     Esta vista muestra los detalles de un solo objeto 'Post'.
     Utiliza el modelo 'Post' para recuperar la instancia específica y renderiza el contenido
     utilizando la plantilla 'posts/post_detail.html'.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-        id (int): El ID del post a mostrar.
-
-    Returns:
-        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'posts/post_detail.html'.
     """
     post = get_object_or_404(Post, id=id)
 
@@ -71,48 +131,67 @@ def view_post(request, id):
 
     # administrar acceso a categorias moderadas o de pago
     user = request.user
-    category = get_object_or_404(Category, pk=post.category.id)
+    category = post.category
 
-    if isinstance(user, AnonymousUser):
-        # Mostrar modal de acceso denegado para categorías premium y de suscripción
-        if category.tipo in [category.PREMIUM, category.SUSCRIPCION]:
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes iniciar sesión o registrarte.",
-                },
+    # Si la categoría es gratis, mostrar el post completo sin restricción
+    if category.tipo == category.GRATIS:
+        # Mostrar el detalle completo del post
+        tags = post.tags.split(",") if post.tags else []
+        tags = [tag.strip() for tag in tags]
+
+        # Verifica si el post es favorito del usuario actual
+        es_favorito = (
+            post.favorites.filter(id=user.id).exists()
+            if user.is_authenticated
+            else False
+        )
+
+        ctx = new_ctx(
+            request,
+            {
+                "post": post,
+                "tags": tags,
+                "categories": Category.objects.all(),
+                "es_favorito": es_favorito,
+            },
+        )
+
+        return render(request, "pages/post_detail.html", context=ctx)
+
+    # Si el usuario no está autenticado, mostrar la previsualización
+    if isinstance(user, AnonymousUser) or (
+        user.is_authenticated and not user_has_access_to_category(user, category)
+    ):
+        preview_content = post.content.split()[
+            :50
+        ]  # Truncar a las primeras 50 palabras
+        preview_content = " ".join(preview_content) + "..."
+        modal_message = None
+
+        # Mensaje diferente según el tipo de categoría
+        if isinstance(user, AnonymousUser):
+            modal_message = (
+                "Para poder ver esta publicación debes iniciar sesión o registrarte."
             )
-
-    # Si el usuario está autenticado, verificar acceso a la categoría del post
-    if user.is_authenticated and not user_has_access_to_category(user, category):
-        if category.tipo == category.PREMIUM:
-            # Verificar si el usuario ha completado un pago para esta categoría
-            if not Payment.objects.filter(
-                user=user, category=category, status="completed"
-            ).exists():
-                # Mostrar mensaje de pago necesario para ver el post
-                return render(
-                    request,
-                    "access_denied_modal.html",
-                    {
-                        "category": category,
-                        "modal_message": "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$.",
-                    },
-                )
+        elif category.tipo == category.PREMIUM:
+            modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$."
         elif category.tipo == category.SUSCRIPCION:
-            # Mostrar mensaje de suscripción necesaria
-            return render(
-                request,
-                "access_denied_modal.html",
-                {
-                    "category": category,
-                    "modal_message": "Para poder ver esta publicación debes ser suscriptor de nuestra web.",
-                },
+            modal_message = (
+                "Para poder ver esta publicación debes ser suscriptor de nuestra web."
             )
 
-    # parse tags
+        return render(
+            request,
+            "pages/post_preview.html",
+            {
+                "post": post,
+                "category": category,
+                "preview_content": preview_content,
+                "modal_message": modal_message,
+            },
+        )
+
+    # Si el usuario tiene acceso, mostrar el detalle completo del post
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]
 
@@ -284,34 +363,59 @@ def edit_post(request, id):
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
 
+from django.db.models import Q
+
+
 def search_post(request):
     """
-    Vista para buscar publicaciones.
-
-    Esta vista maneja la búsqueda de posts utilizando un formulario. Si el formulario es válido,
-    se generan los resultados y se muestran en la plantilla correspondiente.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: Redirección a la vista de inicio si no se realiza una búsqueda válida
-                      o renderización de los resultados de búsqueda.
+    Vista para buscar publicaciones utilizando múltiples filtros.
     """
     form = SearchPostForm(
         request.GET
     )  # Inicializa el formulario con los datos de búsqueda
 
-    if form.is_valid():  # Verifica la validez del formulario
-        input = form.cleaned_data["input"]  # Obtiene el término de búsqueda
-        results = buscador.generate_query_set(input).execute()  # Realiza la búsqueda
+    # Si el formulario no es válido o no se ha proporcionado ningún criterio de búsqueda
+    if not form.is_valid() or (
+        not form.cleaned_data.get("input")
+        and not form.cleaned_data.get("category")
+        and not form.cleaned_data.get("author")
+        and not form.cleaned_data.get("publication_date")
+    ):
+        return redirect("home")  # Redirige si no hay criterios de búsqueda válidos
 
-        ctx = new_ctx(
-            request, {"posts": results[:10]}
-        )  # Crea el contexto con los resultados
-        return render(request, "pages/home.html", context=ctx)
+    # Verifica la validez del formulario
+    if form.is_valid():
+        # Filtros de búsqueda
+        input_search = form.cleaned_data.get("input", "").strip()
+        category = form.cleaned_data.get("category")
+        author = form.cleaned_data.get("author")
+        publication_date = form.cleaned_data.get("publication_date")
 
-    # Redirige a la vista de inicio si no hay búsqueda válida
+        # Construir el query dinámico utilizando Q objects
+        query = Q()
+
+        if input_search:
+            query &= Q(title__icontains=input_search) | Q(
+                content__icontains=input_search
+            )
+
+        if category:
+            query &= Q(category=category)
+
+        if author:
+            query &= Q(author__username__icontains=author)
+
+        if publication_date:
+            query &= Q(publication_date=publication_date)
+
+        # Ejecutar la consulta y obtener los resultados
+        results = Post.objects.filter(query, status=Post.PUBLISHED).distinct()
+
+        # Pasar el formulario y los resultados de búsqueda en el contexto
+        ctx = {"posts": results, "form": form}
+        return render(request, "pages/search_results.html", context=ctx)
+
+    # Si no hay criterios de búsqueda válidos, redirige a la vista de inicio
     return redirect("home")
 
 
@@ -339,6 +443,7 @@ def favorite_post(request, id):
         post.favorites.remove(request.user)
 
     return HttpResponse(status=204)
+
 
 # --------------------
 # Flujo de publicacion
@@ -485,9 +590,7 @@ def reject_post(request, id):
 @login_required
 def favorite_list(request):
     """
-    Vista para listar los posts favoritos del usuario.
-
-    Esta vista obtiene y muestra todos los posts que el usuario ha marcado como favoritos.
+    Vista para listar los posts favoritos del usuario y las categorías de interés.
 
     Args:
         request (HttpRequest): El objeto de solicitud HTTP.
@@ -495,21 +598,82 @@ def favorite_list(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
     """
+    # Obtener los posts favoritos
     posts_favorites = Post.objects.filter(favorites=request.user)
-    ctx = new_ctx(request, {"posts_favorites": posts_favorites})
+
+    # Paginación: 5 posts por página
+    paginator = Paginator(posts_favorites, 5)  # 5 posts por página
+    page_number = request.GET.get("page")  # Obtiene el número de la página actual
+    posts_favorites_paginados = paginator.get_page(page_number)  # Paginación
+
+    # Obtener las categorías de los posts favoritos (sin duplicados)
+    categorias_interes = Category.objects.filter(
+        post__favorites=request.user
+    ).distinct()
+
+    ctx = new_ctx(
+        request,
+        {
+            "posts_favorites": posts_favorites_paginados,  # Pasamos la lista paginada
+            "categorias_interes": categorias_interes,  # Pasar las categorías al contexto
+        },
+    )
     return render(request, "pages/posts_favorites_list.html", ctx)
 
 
-class ContenidosView(TemplateView):
-    template_name = "pages/list_contenidos.html"
+def list_contenidos_view(request):
+    """
+    Vista para listar todos los contenidos por categoría con opción de búsqueda y filtrado.
+    """
+    categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Obtener todas las categorías
-        categories = Category.objects.all()
-        # Crear un diccionario para almacenar los posts por categoría
-        posts_by_category = {
-            category: Post.objects.filter(category=category) for category in categories
-        }
-        context["posts_by_category"] = posts_by_category
-        return context
+    # Inicializa el formulario de búsqueda con los parámetros GET si existen
+    form = SearchPostForm(request.GET or None)
+
+    # Construimos un query dinámico para los filtros
+    posts_query = Post.objects.filter(status=Post.PUBLISHED)
+
+    # Aplicar filtros si el formulario es válido
+    if form.is_valid():
+        # Filtro por palabra clave en el título o contenido
+        input_search = form.cleaned_data.get("input")
+        if input_search:
+            posts_query = posts_query.filter(Q(title__icontains=input_search))
+
+        # Filtro por categoría
+        category = form.cleaned_data.get("category")
+        if category:
+            posts_query = posts_query.filter(category=category)
+
+        # Filtro por autor
+        author = form.cleaned_data.get("author")
+        if author:
+            posts_query = posts_query.filter(author__username__icontains=author)
+
+        # Filtro por fecha de publicación
+        publication_date = form.cleaned_data.get("publication_date")
+        if publication_date:
+            posts_query = posts_query.filter(publication_date=publication_date)
+
+    # Crear un diccionario para almacenar los posts paginados por categoría
+    posts_by_category = {}
+    for category in categories:
+        filtered_posts = posts_query.filter(category=category)
+
+        # Paginación: 6 posts por página para cada categoría
+        paginator = Paginator(filtered_posts, 6)  # 6 posts por página
+        page_number = request.GET.get(
+            f"page_{category.id}", 1
+        )  # Se captura la página de cada categoría
+        page_obj = paginator.get_page(page_number)
+
+        if filtered_posts.exists():
+            posts_by_category[category] = page_obj
+
+    # Crear el contexto y pasarlo a la plantilla
+    ctx = {
+        "posts_by_category": posts_by_category,
+        "form": form,  # Pasar el formulario al contexto
+    }
+
+    return render(request, "pages/list_contenidos.html", ctx)

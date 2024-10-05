@@ -1,54 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h2 class="card-title mb-4">Completa tu pago para acceder a la categoria "{{ category.name }}"</h2>
-                    
-                    <form id="payment-form" method="POST">
-                        {% csrf_token %}
-                        
-                        <!-- Información del perfil -->
-                        <h3>Información del perfil</h3>
-                        <div class="form-group mb-3">
-                            <label for="id_username">Nombre de usuario:</label>
-                            <input type="text" class="form-control" id="id_username" name="username" value="{{ user.username }}" readonly>
-                        </div>
-                   
-                        <div class="form-group mb-3">
-                            <label for="id_email">Correo electrónico:</label>
-                            <input type="text" class="form-control" id="id_email" name="email" value="{{ user.email }}" readonly>
-                        </div>
-
-                        <!-- Campo oculto para el monto -->
-                        <input type="hidden" name="amount" value="500"> <!-- Reemplazar con el monto correcto -->
-
-                        <!-- Stripe Elements para la tarjeta de crédito -->
-                        <h3>Información de la tarjeta</h3>
-                        <div class="form-group mb-3">
-                            <div id="card-element" class="form-control">
-                                <!-- Stripe.js insertará el formulario de la tarjeta aquí -->
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Completa tu pago para acceder a la categoria "{{ category.name }}"</h2>
+                        <form id="payment-form" method="POST">
+                            {% csrf_token %}
+                            <!-- Información del perfil -->
+                            <h3>Información del perfil</h3>
+                            <div class="form-group mb-3">
+                                <label for="id_username">Nombre de usuario:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="id_username"
+                                       name="username"
+                                       value="{{ user.username }}"
+                                       readonly>
                             </div>
-                            <div id="card-errors" class="text-danger mt-2" role="alert"></div>
-                        </div>
-                        
-                        <!-- Botón para enviar -->
-                        <div class="text-center">
-                            <button type="submit" id="submit-button" class="btn btn-primary btn-lg mt-3">Pagar</button>
-                        </div>
-                    </form>
+                            <div class="form-group mb-3">
+                                <label for="id_email">Correo electrónico:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="id_email"
+                                       name="email"
+                                       value="{{ user.email }}"
+                                       readonly>
+                            </div>
+                            <!-- Campo oculto para el monto -->
+                            <input type="hidden" name="amount" value="500">
+                            <!-- Reemplazar con el monto correcto -->
+                            <!-- Stripe Elements para la tarjeta de crédito -->
+                            <h3>Información de la tarjeta</h3>
+                            <div class="form-group mb-3">
+                                <div id="card-element" class="form-control">
+                                    <!-- Stripe.js insertará el formulario de la tarjeta aquí -->
+                                </div>
+                                <div id="card-errors" class="text-danger mt-2" role="alert"></div>
+                            </div>
+                            <!-- Botón para enviar -->
+                            <div class="text-center">
+                                <button type="submit" id="submit-button" class="btn btn-primary btn-lg mt-3">Pagar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Cargar Stripe.js -->
-<script src="https://js.stripe.com/v3/"></script>
-<script>
+    <!-- Cargar Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
     // Inicializar Stripe con la clave pública
     var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
     var elements = stripe.elements();
@@ -98,11 +101,5 @@
             }
         });
     });
-</script>
-
-
-
-{%endblock%}
-
-
-
+    </script>
+{% endblock %}

@@ -1,11 +1,11 @@
+import stripe
 from django.conf import settings
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from modulos.Pagos.models import Payment
+from django.shortcuts import get_object_or_404, redirect, render
+
 from modulos.Categories.models import Category
 from modulos.Pagos.forms import PaymentForm, UserProfileForm
-from django.shortcuts import get_object_or_404
-import stripe
+from modulos.Pagos.models import Payment
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -129,3 +129,20 @@ def payment_success(request, category_id):
             "payment_error.html",
             {"error": "No se encontró el pago en la base de datos."},
         )
+
+
+@login_required
+def purchased_categories_view(request):
+    """
+    Vista para mostrar todas las categorías premium compradas por el usuario.
+    """
+    # Filtrar las categorías compradas por el usuario con pagos completados
+    purchased_categories = Payment.objects.filter(
+        user=request.user, status="completed"
+    ).select_related("category")
+
+    context = {
+        "purchased_categories": purchased_categories,
+    }
+
+    return render(request, "purchased_categories.html", context)

@@ -10,6 +10,7 @@ PUBLISHER = "Publicador"
 EDITOR = "Editor"
 AUTOR = "Autor"
 SUBSCRIBER = "Suscriptor"
+FINANCIAL = "Financiero"
 
 # Roles por defecto y sus permisos
 default_roles = {
@@ -22,6 +23,7 @@ default_roles = {
         POST_DELETE_PERMISSION,
         POST_REVIEW_PERMISSION,
         KANBAN_VIEW_PERMISSION,
+        VIEW_PURCHASED_CATEGORIES,
     ],
     SUBSCRIBER: [],
     AUTOR: [POST_CREATE_PERMISSION, KANBAN_VIEW_PERMISSION],
@@ -38,6 +40,7 @@ default_roles = {
         KANBAN_VIEW_PERMISSION,
         POST_PUBLISH_PERMISSION,
     ],
+    FINANCIAL: [VIEW_PURCHASED_CATEGORIES],
 }
 
 

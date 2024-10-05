@@ -14,8 +14,8 @@ def populate_default_category(apps, schema_editor):
         name="Categoría libre",
         defaults={
             "description": "Esta es una categoria totalmente libre donde encontraras acerca de cualquier topico",
-            "status": "ACTIVO",
-            "tipo": "GRATIS",
+            "status": "Activo",
+            "tipo": "Gratis",
         },
     )
 

@@ -16,12 +16,14 @@
                                     <img src="{{ category.image.url }}"
                                          class="card-img-top"
                                          alt="{{ category.name }}"
-                                         style="height: 250px; object-fit: cover">
+                                         style="height: 250px;
+                                                object-fit: cover">
                                 {% else %}
                                     <img src="{% static 'images/makex.png' %}"
                                          class="card-img-top"
                                          alt="Logo MakeX"
-                                         style="height: 250px; object-fit: cover">
+                                         style="height: 250px;
+                                                object-fit: cover">
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ category.name }}</h5>
