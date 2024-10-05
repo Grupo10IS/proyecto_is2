@@ -55,25 +55,3 @@ class SearchPostForm(forms.Form):
         ),
         label="Buscar",
     )
-    category = forms.ModelChoiceField(
-        queryset=Category.objects.all(),
-        required=False,
-        widget=forms.Select(attrs={"class": "form-control-sm"}),
-        label="Categoría",
-    )
-    author = forms.CharField(
-        max_length=120,
-        required=False,
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control-sm",
-                "placeholder": "Autor...",
-            }
-        ),
-        label="Autor",
-    )
-    publication_date = forms.DateField(
-        required=False,
-        widget=forms.DateInput(attrs={"type": "date", "class": "form-control-sm"}),
-        label="Fecha de Publicación",
-    )

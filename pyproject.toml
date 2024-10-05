@@ -28,6 +28,7 @@ black = "^24.8.0"
 pillow = "^10.4.0"
 stripe = "^10.12.0"
 python-decouple = "^3.8"
+disqus-python = "^0.4.2"
 
 [build-system]
 requires = ["poetry-core"]

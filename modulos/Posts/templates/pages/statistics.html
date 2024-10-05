@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container my-5">
+        <!-- Sección de Información del Post -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h3 class="mb-4">Información del Post</h3>
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark fst-italic">
+                        <tr>
+                            <th scope="col">Campo</th>
+                            <th scope="col">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Título</td>
+                            <td>{{ post.title }}</td>
+                        </tr>
+                        <tr>
+                            <td>Imagen</td>
+                            <td>{% if post.image %}<img src="{{ post.image.url }}" alt="Imagen del post" style="max-width: 120px">{% else %}No disponible{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Categoría</td>
+                            <td>{{ post.category }}</td>
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>{{ post.status }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de Creación</td>
+                            <td>{{ post.creation_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de Publicación</td>
+                            <td>{{ post.publication_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de Publicación Agendada</td>
+                            <td>{{ post.scheduled_publication_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Autor</td>
+                            <td>{{ post.author }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tags</td>
+                            <td>{% for tag in post.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% empty %}No tags{% endfor %}</td>
+                        </tr>
+                        <tr>
+                            <td>Versión</td>
+                            <td>{{ post.version }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="diff-container"></div>
+            </div>
+        </div>
+
+        <!-- Sección de Estadísticas -->
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <h3 class="mb-4">Estadísticas</h3>
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark fst-italic">
+                        <tr>
+                            <th scope="col">Estadística</th>
+                            <th scope="col">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Comentarios</td>
+                            <td>{{ post.comments_count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Likes</td>
+                            <td>{{ post.likes_count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Compartidos</td>
+                            <td>{{ post.shares_count }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Logs -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h3 class="mb-4">Logs</h3>
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark fst-italic">
+                        <tr>
+                            <th scope="col">Fecha de Creación</th>
+                            <th scope="col">Mensaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td>{{ log.creation_date }}</td>
+                                <td>{{ log.message|linebreaksbr }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Versiones -->
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="mb-4">Últimas Versiones</h3>
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark fst-italic">
+                        <tr>
+                            <th scope="col">Versión</th>
+                            <th scope="col">Fecha de creacion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for version in versions %}
+                            <tr>
+                                <td><a href="{% url 'post_version_detail' version.post_id version.version %}">Versión {{ version.id }}</a></td>
+                                <td>{{ version.creation_date }}<br><em>{{ version.description }}</em></td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-muted">No hay versiones disponibles</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'post_versions' post.id %}" class="btn btn-secondary">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

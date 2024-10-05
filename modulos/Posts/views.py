@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from django.utils import timezone
@@ -363,60 +364,19 @@ def edit_post(request, id):
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
 
-from django.db.models import Q
+def enhanced_search(request):
+    form = SearchPostForm(request.GET)
 
+    if not form.is_valid():
+        return redirect("home")
 
-def search_post(request):
-    """
-    Vista para buscar publicaciones utilizando múltiples filtros.
-    """
-    form = SearchPostForm(
-        request.GET
-    )  # Inicializa el formulario con los datos de búsqueda
+    input = form.cleaned_data["input"]
+    results = buscador.generate_query_set(input).execute()
 
-    # Si el formulario no es válido o no se ha proporcionado ningún criterio de búsqueda
-    if not form.is_valid() or (
-        not form.cleaned_data.get("input")
-        and not form.cleaned_data.get("category")
-        and not form.cleaned_data.get("author")
-        and not form.cleaned_data.get("publication_date")
-    ):
-        return redirect("home")  # Redirige si no hay criterios de búsqueda válidos
-
-    # Verifica la validez del formulario
-    if form.is_valid():
-        # Filtros de búsqueda
-        input_search = form.cleaned_data.get("input", "").strip()
-        category = form.cleaned_data.get("category")
-        author = form.cleaned_data.get("author")
-        publication_date = form.cleaned_data.get("publication_date")
-
-        # Construir el query dinámico utilizando Q objects
-        query = Q()
-
-        if input_search:
-            query &= Q(title__icontains=input_search) | Q(
-                content__icontains=input_search
-            )
-
-        if category:
-            query &= Q(category=category)
-
-        if author:
-            query &= Q(author__username__icontains=author)
-
-        if publication_date:
-            query &= Q(publication_date=publication_date)
-
-        # Ejecutar la consulta y obtener los resultados
-        results = Post.objects.filter(query, status=Post.PUBLISHED).distinct()
-
-        # Pasar el formulario y los resultados de búsqueda en el contexto
-        ctx = {"posts": results, "form": form}
-        return render(request, "pages/search_results.html", context=ctx)
-
-    # Si no hay criterios de búsqueda válidos, redirige a la vista de inicio
-    return redirect("home")
+    ctx = new_ctx(
+        request, {"posts": results, "form": SearchPostForm(initial={"input": input})}
+    )
+    return render(request, "pages/search_results.html", context=ctx)
 
 
 @login_required
@@ -442,7 +402,7 @@ def favorite_post(request, id):
     else:
         post.favorites.remove(request.user)
 
-    return HttpResponse(status=204)
+    return redirect("post_detail", id=id)
 
 
 # --------------------
@@ -481,68 +441,6 @@ def kanban_board(request):
             },
         ),
     )
-
-
-@login_required
-@permissions_required([POST_REVIEW_PERMISSION])
-def post_versions_list(request, id):
-    get_object_or_404(Post, pk=id)
-
-    versions = Version.objects.filter(post_id=id)
-    ctx = new_ctx(request, {"versions": versions})
-
-    return render(request, "pages/post_versions_list.html", ctx)
-
-
-@login_required
-@permissions_required([POST_REVIEW_PERMISSION])
-def post_version_detail(request, post_id, version):
-    original = get_object_or_404(Post, pk=post_id)
-
-    if (
-        not request.user.has_perm(POST_REVIEW_PERMISSION)
-        or original.author != request.user
-    ):
-        return HttpResponseForbidden(
-            "No tienes permisos para acceder a las versiones de este post"
-        )
-
-    version = get_object_or_404(Version, version=version, post_id=original.id)
-
-    post_content = original.content.splitlines()
-    version_content = version.content.splitlines()
-
-    diff = difflib.unified_diff(
-        version_content,
-        post_content,
-        fromfile="Comparacion.md",
-        tofile="Comparacion.md",
-        lineterm="",
-    )
-
-    diff = "\n".join(list(diff))
-
-    # Pasamos el diff a la plantilla
-    ctx = new_ctx(
-        request,
-        {"original": original, "version": version, "diff_content": diff},
-    )
-
-    return render(request, "pages/post_version_detail.html", ctx)
-
-
-@login_required
-def post_log_list(request, id):
-    post = get_object_or_404(Post, pk=id)
-
-    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
-        return HttpResponseForbidden(
-            "No tienes permisos para acceder a los logs de este post"
-        )
-
-    logs = Log.objects.filter(post=post).order_by("-creation_date")
-
-    return render(request, "pages/logs_list.html", new_ctx(request, {"logs": logs}))
 
 
 @login_required
@@ -677,3 +575,85 @@ def list_contenidos_view(request):
     }
 
     return render(request, "pages/list_contenidos.html", ctx)
+
+
+# --------------------
+#    Estadisticas
+# --------------------
+
+
+@login_required
+def post_log_list(request, id):
+    post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a los logs de este post"
+        )
+
+    logs = Log.objects.filter(post=post).order_by("-creation_date")
+
+    return render(request, "pages/logs_list.html", new_ctx(request, {"logs": logs}))
+
+
+@login_required
+@permissions_required([POST_REVIEW_PERMISSION])
+def post_versions_list(request, id):
+    get_object_or_404(Post, pk=id)
+
+    versions = Version.objects.filter(post_id=id)
+    ctx = new_ctx(request, {"versions": versions})
+
+    return render(request, "pages/post_versions_list.html", ctx)
+
+
+@login_required
+@permissions_required([POST_REVIEW_PERMISSION])
+def post_version_detail(request, post_id, version):
+    original = get_object_or_404(Post, pk=post_id)
+
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        or original.author != request.user
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a las versiones de este post"
+        )
+
+    version = get_object_or_404(Version, version=version, post_id=original.id)
+
+    post_content = original.content.splitlines()
+    version_content = version.content.splitlines()
+
+    diff = difflib.unified_diff(
+        version_content,
+        post_content,
+        fromfile="Comparacion.md",
+        tofile="Comparacion.md",
+        lineterm="",
+    )
+
+    diff = "\n".join(list(diff))
+
+    # Pasamos el diff a la plantilla
+    ctx = new_ctx(
+        request,
+        {"original": original, "version": version, "diff_content": diff},
+    )
+
+    return render(request, "pages/post_version_detail.html", ctx)
+
+
+@login_required
+def post_statistics(request, id):
+    post = get_object_or_404(Post, pk=id)
+    ctx = new_ctx(
+        request,
+        {
+            "post": post,
+            "logs": Log.objects.filter(post=post),
+            "versions": Version.objects.filter(post_id=post.id),
+        },
+    )
+
+    return render(request, "pages/statistics.html", ctx)
