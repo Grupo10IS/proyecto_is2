@@ -382,13 +382,14 @@ def search_post(request):
     )  # Inicializa el formulario con los datos de búsqueda
 
     # Si el formulario no es válido o no hay búsqueda, redirige a la vista de inicio
-    if not form.is_valid() or not form.cleaned_data.get("input"):
+    if not form.is_valid():
         return redirect(
             "home"
         )  # Redirige a la vista de inicio si no hay búsqueda válida
 
     # Verifica la validez del formulario
     if form.is_valid():
+        # Filtros de búsqueda
         input = form.cleaned_data.get(
             "input"
         )  # Obtiene el término de búsqueda (si existe)
@@ -427,7 +428,7 @@ def search_post(request):
         results = Post.objects.filter(query, status=Post.PUBLISHED).distinct()
 
         # Pasar el formulario y los resultados de búsqueda en el contexto
-        ctx = new_ctx(request, {"posts": results[:10], "form": form})
+        ctx = {"posts": results, "form": form}
         return render(request, "pages/search_results.html", context=ctx)
 
     # Redirige a la vista de inicio si no hay búsqueda válida
@@ -616,6 +617,11 @@ def favorite_list(request):
     # Obtener los posts favoritos
     posts_favorites = Post.objects.filter(favorites=request.user)
 
+    # Paginación: 5 posts por página
+    paginator = Paginator(posts_favorites, 5)  # 5 posts por página
+    page_number = request.GET.get("page")  # Obtiene el número de la página actual
+    posts_favorites_paginados = paginator.get_page(page_number)  # Paginación
+
     # Obtener las categorías de los posts favoritos (sin duplicados)
     categorias_interes = Category.objects.filter(
         post__favorites=request.user
@@ -624,24 +630,66 @@ def favorite_list(request):
     ctx = new_ctx(
         request,
         {
-            "posts_favorites": posts_favorites,
+            "posts_favorites": posts_favorites_paginados,  # Pasamos la lista paginada
             "categorias_interes": categorias_interes,  # Pasar las categorías al contexto
         },
     )
     return render(request, "pages/posts_favorites_list.html", ctx)
 
 
-class ContenidosView(TemplateView):
-    template_name = "pages/list_contenidos.html"
+def list_contenidos_view(request):
+    """
+    Vista para listar todos los contenidos por categoría con opción de búsqueda y filtrado.
+    """
+    categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Obtener todas las categorías que tienen al menos un post publicado
-        categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
-        # Crear un diccionario para almacenar los posts por categoría
-        posts_by_category = {
-            category: Post.objects.filter(category=category, status=Post.PUBLISHED)
-            for category in categories
-        }
-        context["posts_by_category"] = posts_by_category
-        return context
+    # Inicializa el formulario de búsqueda con los parámetros GET si existen
+    form = SearchPostForm(request.GET or None)
+
+    # Construimos un query dinámico para los filtros
+    posts_query = Post.objects.filter(status=Post.PUBLISHED)
+
+    # Aplicar filtros si el formulario es válido
+    if form.is_valid():
+        # Filtro por palabra clave en el título o contenido
+        input_search = form.cleaned_data.get("input")
+        if input_search:
+            posts_query = posts_query.filter(Q(title__icontains=input_search))
+
+        # Filtro por categoría
+        category = form.cleaned_data.get("category")
+        if category:
+            posts_query = posts_query.filter(category=category)
+
+        # Filtro por autor
+        author = form.cleaned_data.get("author")
+        if author:
+            posts_query = posts_query.filter(author__username__icontains=author)
+
+        # Filtro por fecha de publicación
+        publication_date = form.cleaned_data.get("publication_date")
+        if publication_date:
+            posts_query = posts_query.filter(publication_date=publication_date)
+
+    # Crear un diccionario para almacenar los posts paginados por categoría
+    posts_by_category = {}
+    for category in categories:
+        filtered_posts = posts_query.filter(category=category)
+
+        # Paginación: 6 posts por página para cada categoría
+        paginator = Paginator(filtered_posts, 6)  # 6 posts por página
+        page_number = request.GET.get(
+            f"page_{category.id}", 1
+        )  # Se captura la página de cada categoría
+        page_obj = paginator.get_page(page_number)
+
+        if filtered_posts.exists():
+            posts_by_category[category] = page_obj
+
+    # Crear el contexto y pasarlo a la plantilla
+    ctx = {
+        "posts_by_category": posts_by_category,
+        "form": form,  # Pasar el formulario al contexto
+    }
+
+    return render(request, "pages/list_contenidos.html", ctx)

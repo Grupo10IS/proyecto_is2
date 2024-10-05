@@ -224,3 +224,4 @@ def notify_top_posts(sender, instance, **kwargs):
             [author.email],
             fail_silently=False,
         )
+

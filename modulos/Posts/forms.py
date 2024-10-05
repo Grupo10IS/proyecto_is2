@@ -47,11 +47,12 @@ class SearchPostForm(forms.Form):
             attrs={
                 "class": "form-control-sm",
                 "id": "search-input",
-                "placeholder": "Search ...",
+                "placeholder": "Buscar por título o contenido...",
                 "aria-label": "Search",
-                "style": "display: none;",
+                "style": "width: 50%;",
             }
         ),
+        label="Buscar",
     )
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
@@ -65,7 +66,7 @@ class SearchPostForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control-sm",
-                "placeholder": "Autor ...",
+                "placeholder": "Autor...",
             }
         ),
         label="Autor",

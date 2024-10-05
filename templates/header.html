@@ -13,7 +13,7 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
                 id="headerContent">
                 <li>
-                    <a href="{% url 'contenidos' %}"
+                    <a href="{% url 'list_contenidos' %}"
                        class="nav-link px-2 "
                        style="color:white">Contenidos</a>
                 </li>
@@ -29,25 +29,19 @@
                 </li>
             </ul>
             <div class="navbar-right">
-                <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
-      role="search"
-      action="{% url 'post_search' %}"
-      method="get">
-    <!-- Campo de entrada de búsqueda generado por Django Forms -->
-    {{ post_search_input.input }}
-    
-    <!-- Icono de búsqueda -->
-    <svg id="search-icon"
-         xmlns="http://www.w3.org/2000/svg"
-         width="25"
-         height="25"
-         fill="white"
-         class="bi bi-search"
-         viewBox="0 0 16 16">
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-    </svg>
-</form>
-          
+                {% if request.resolver_match.url_name != 'list_contenidos' %}
+                <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'post_search' %}" method="get">
+                    <!-- Campo de entrada de búsqueda que está oculto por defecto -->
+                    <input type="text" id="search-input" name="input" placeholder="Buscar..." style="display: none;" class="form-control">
+                    
+                    <!-- Icono de búsqueda que controla la visibilidad del campo -->
+                    <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </form>
+                
+
+                {% endif %}
                 <div class="dropdown text-end">
                     <a href="#"
                        class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
@@ -66,7 +60,13 @@
                     <ul class="dropdown-menu text-small">
                         {% if user.is_authenticated %}
                             <li>
-                                <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
+                                <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'purchased_categories' %}">Mis Categorias Premium</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -89,21 +89,30 @@
                 </div>
                 <!-- Cambiar el enlace de suscripción en el encabezado -->
                 <a href="{% url 'categories_list' %}?premium=true" class="subscribe">Suscribite por $1</a>
-                <div>{% include 'burguer.html' %}</div>
+                {% if request.resolver_match.url_name != 'list_contenidos' %}
+                    <div>{% include 'burguer.html' %}</div>
+                {% endif %}
             </div>
         </div>
     </div>
     {% block expand_nav %}
     {% endblock expand_nav %}
     <script src="{% static 'js/dropdown.js' %}">
-        document.getElementById('search-icon').addEventListener('click', function() {
-            var searchInput = document.getElementById('id_input');  // El campo de búsqueda Django tendrá un ID que empieza con 'id_'
-            if (searchInput.style.display === 'none' || searchInput.style.display === '') {
-                searchInput.style.display = 'inline-block';  // Mostrar el input
-                searchInput.focus();  // Poner el foco en el input para que el usuario empiece a escribir
-            } else {
-                searchInput.style.display = 'none';  // Ocultar el input si ya está visible
-            }
-        });
+         // Cuando el usuario haga clic en el icono de búsqueda, mostramos el campo de búsqueda
+    document.getElementById('search-icon').addEventListener('click', function() {
+        var searchInput = document.getElementById('search-input');
+        
+        // Verificamos el estado del campo de búsqueda
+        if (searchInput.style.display === 'none' || searchInput.style.display === '') {
+            // Si está oculto, lo mostramos
+            searchInput.style.display = 'inline-block';
+            searchInput.focus();  // Ponemos el foco en el campo para que el usuario pueda escribir de inmediato
+        } else {
+            // Si ya está visible, lo ocultamos
+            searchInput.style.display = 'none';
+        }
+    });
+        
     </script>
 </header>
+

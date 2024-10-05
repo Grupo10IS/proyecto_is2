@@ -129,3 +129,20 @@ def payment_success(request, category_id):
             "payment_error.html",
             {"error": "No se encontró el pago en la base de datos."},
         )
+
+
+@login_required
+def purchased_categories_view(request):
+    """
+    Vista para mostrar todas las categorías premium compradas por el usuario.
+    """
+    # Filtrar las categorías compradas por el usuario con pagos completados
+    purchased_categories = Payment.objects.filter(
+        user=request.user, status="completed"
+    ).select_related("category")
+
+    context = {
+        "purchased_categories": purchased_categories,
+    }
+
+    return render(request, "purchased_categories.html", context)
