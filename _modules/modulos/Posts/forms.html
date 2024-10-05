@@ -35,6 +35,8 @@
 <span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
 <span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">CharField</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">ModelForm</span>
 
+<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>  <span class="c1"># Ensure you have imported the Post model</span>
 
 
@@ -80,18 +82,42 @@
 
 <div class="viewcode-block" id="SearchPostForm">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.SearchPostForm">[documentos]</a>
-<span class="k">class</span> <span class="nc">SearchPostForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
-    <span class="nb">input</span> <span class="o">=</span> <span class="n">CharField</span><span class="p">(</span>
+<span class="k">class</span> <span class="nc">SearchPostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span>
             <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control-sm&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;search-input&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Search ...&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Buscar por título o contenido...&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;aria-label&quot;</span><span class="p">:</span> <span class="s2">&quot;Search&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;display: none&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;width: 50%;&quot;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">),</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Buscar&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control-sm&quot;</span><span class="p">}),</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Categoría&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control-sm&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Autor...&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Autor&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">publication_date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">DateInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control-sm&quot;</span><span class="p">}),</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fecha de Publicación&quot;</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 </pre></div>

@@ -55,8 +55,10 @@
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
     <span class="k">assert</span> <span class="s2">&quot;pages/home.html&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="s2">&quot;posts&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>
-    <span class="n">ps_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="s2">&quot;posts_recientes&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>  <span class="c1"># Cambiar &#39;posts&#39; a &#39;posts_recientes&#39;</span>
+    <span class="n">ps_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts_recientes&quot;</span><span class="p">]</span>
+    <span class="p">)</span>  <span class="c1"># Aquí también ajustar a &#39;posts_recientes&#39;</span>
     <span class="k">assert</span> <span class="n">ps_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected 0 posts, got </span><span class="si">{</span><span class="n">ps_len</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="c1"># Test home view with existing posts</span>
@@ -82,7 +84,8 @@
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
-    <span class="n">ps_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="s2">&quot;posts_recientes&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span>
+    <span class="n">ps_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;posts_recientes&quot;</span><span class="p">])</span>
     <span class="k">assert</span> <span class="n">ps_len</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected 2 posts, got </span><span class="si">{</span><span class="n">ps_len</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
@@ -313,10 +316,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
     <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post de prueba&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido de prueba&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">categoria</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post de prueba&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido de prueba&quot;</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>  <span class="c1"># Asegúrate de que el post esté publicado</span>
     <span class="p">)</span>
 
-    <span class="c1"># Probar una búsqueda no válida</span>
+    <span class="c1"># Probar una búsqueda no válida (sin ningún criterio de búsqueda)</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_search&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;?input=&quot;</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">assert</span> <span class="p">(</span>

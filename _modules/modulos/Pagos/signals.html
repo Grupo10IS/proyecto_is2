@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>modulos.Pagos.forms &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
+    <title>modulos.Pagos.signals &#8212; documentación de Proyecto IS2 grupo 6 - 0.1</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=c058f7c8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
@@ -31,46 +31,46 @@
 
           <div class="body" role="main">
             
-  <h1>Código fuente para modulos.Pagos.forms</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+  <h1>Código fuente para modulos.Pagos.signals</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
-<span class="kn">from</span> <span class="nn">modulos.UserProfile.models</span> <span class="kn">import</span> <span class="n">UserProfile</span>
 
 
-<span class="c1"># Formulario para la información de pago</span>
-<span class="c1"># Formulario para la información de pago</span>
-<div class="viewcode-block" id="PaymentForm">
-<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.forms.PaymentForm">[documentos]</a>
-<span class="k">class</span> <span class="nc">PaymentForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-<div class="viewcode-block" id="PaymentForm.Meta">
-<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.forms.PaymentForm.Meta">[documentos]</a>
-    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">Payment</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;amount&quot;</span><span class="p">]</span>  <span class="c1"># El campo de monto de pago</span>
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">HiddenInput</span><span class="p">()</span>  <span class="c1"># Oculto porque el monto siempre será $5 (o el que sea)</span>
-        <span class="p">}</span></div>
-</div>
+<span class="c1"># Este decorador define una función que será ejecutada cuando se emita la señal post_save para el modelo Payment.</span>
+<div class="viewcode-block" id="send_payment_notification">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.signals.send_payment_notification">[documentos]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Payment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">send_payment_notification</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Envía una notificación por correo electrónico cuando un pago es completado exitosamente.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Verificar si el estado del pago es &#39;completed&#39; y si el objeto ha sido actualizado, no creado</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;completed&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">user_email</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span>
+        <span class="n">category_name</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
 
+        <span class="c1"># Configurar el asunto y el mensaje del correo</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Compra exitosa de la categoría premium </span><span class="si">{</span><span class="n">category_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">👋👋,</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Gracias por comprar el acceso a la categoría premium &#39;</span><span class="si">{</span><span class="n">category_name</span><span class="si">}</span><span class="s2">&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Ahora puedes acceder a los contenidos exclusivos de esta categoría en nuestro sitio!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;¡Gracias por tu compra!😁😁</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Saludos👋,</span><span class="se">\n</span><span class="s2">El equipo de MakeX&quot;</span>
+        <span class="p">)</span>
 
-
-<span class="c1"># Formulario para mostrar el perfil del usuario, con datos autocompletados</span>
-
-
-<div class="viewcode-block" id="UserProfileForm">
-<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm">[documentos]</a>
-<span class="k">class</span> <span class="nc">UserProfileForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-<div class="viewcode-block" id="UserProfileForm.Meta">
-<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.forms.UserProfileForm.Meta">[documentos]</a>
-    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">UserProfile</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">]</span>  <span class="c1"># Agregamos username y email</span>
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
-            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
-        <span class="p">}</span></div>
-</div>
+        <span class="c1"># Enviar el correo electrónico</span>
+        <span class="n">send_mail</span><span class="p">(</span>
+            <span class="n">subject</span><span class="p">,</span>
+            <span class="n">message</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">DEFAULT_FROM_EMAIL</span><span class="p">,</span>  <span class="c1"># Dirección de correo de origen configurada en settings.py</span>
+            <span class="p">[</span><span class="n">user_email</span><span class="p">],</span>  <span class="c1"># Correo del destinatario (usuario que hizo la compra)</span>
+            <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 

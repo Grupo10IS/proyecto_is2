@@ -33,7 +33,8 @@
             
   <h1>Código fuente para modulos.Posts.signals</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
-<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">m2m_changed</span><span class="p">,</span> <span class="n">post_save</span><span class="p">,</span> <span class="n">pre_save</span>
 <span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Log</span><span class="p">,</span> <span class="n">Post</span>
@@ -76,44 +77,219 @@
 
 <div class="viewcode-block" id="send_notification_to_users">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.send_notification_to_users">[documentos]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">pre_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">send_notification_to_users</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Envía una notificación a los usuarios cuando un post cambia a estado &quot;Publicado&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="c1"># Verificar si se realiza un cambio de estado a &quot;PUBLISHED&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">old_instance</span>
+            <span class="ow">and</span> <span class="n">old_instance</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+            <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+        <span class="p">):</span>
+
+            <span class="n">category</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">category</span>
+
+            <span class="n">users</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">receive_notifications</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">:</span>
+                <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                    <span class="n">payment__category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+                    <span class="n">payment__status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+            <span class="k">elif</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">:</span>
+                <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                    <span class="n">is_staff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">is_superuser</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">recipient</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+                <span class="n">subject</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">💯💥&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">recipient</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">👋👋, hay una nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. No te la pierdas!, http://localhost:8000/posts/</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">send_mail</span><span class="p">(</span>
+                        <span class="n">subject</span><span class="p">,</span>
+                        <span class="n">message</span><span class="p">,</span>
+                        <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">recipient</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                        <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar a los usuarios: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span></div>
+
+
+
+<span class="c1"># NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO O RECHAZADO</span>
+
+
+<div class="viewcode-block" id="send_notification_to_authors">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.send_notification_to_authors">[documentos]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">pre_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">send_notification_to_authors</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Envía una notificación al autor cuando su post cambia de estado a &quot;Publicado&quot; o es &quot;Rechazado&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+        <span class="c1"># Obtenemos el estado anterior del post para verificar los cambios</span>
+        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">old_instance</span><span class="p">:</span>
+            <span class="c1"># Verificamos si hay un autor asignado al post</span>
+            <span class="n">author</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">author</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">author</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No se encontró un autor para el post </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">. No se enviará notificación.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="c1"># Notificar al autor si el estado cambió a &quot;Publicado&quot;</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">old_instance</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+                <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+            <span class="p">):</span>
+                <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Tu post ha sido publicado 🎉&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, tu post &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; ha sido publicado exitosamente. ¡Gracias por tu contribución!&quot;</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">send_mail</span><span class="p">(</span>
+                        <span class="n">subject</span><span class="p">,</span>
+                        <span class="n">message</span><span class="p">,</span>
+                        <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                        <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando la pulicacion.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+            <span class="c1"># Notificar al autor si el post ha sido &quot;Rechazado&quot; (cambio a &quot;Borrador&quot;)</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="n">old_instance</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">,</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
+            <span class="p">):</span>
+
+                <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Tu post ha sido rechazado 😕&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, tu post &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; ha sido rechazado y vuelto al estado de borrador. &quot;</span>
+                    <span class="s2">&quot;Por favor, revisa los comentarios o haz los ajustes necesarios antes de volver a enviarlo para revisión.&quot;</span>
+                <span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">send_mail</span><span class="p">(</span>
+                        <span class="n">subject</span><span class="p">,</span>
+                        <span class="n">message</span><span class="p">,</span>
+                        <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                        <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando el rechazo.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span></div>
+
+
+
+<span class="c1"># NOTIFICA A LOS AUTORES CUANDO SU POST ESTA NUMERO 1 O ENTRE LOS 5 MAS POPULARES</span>
+
+
+<div class="viewcode-block" id="check_top_posts">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.check_top_posts">[documentos]</a>
+<span class="k">def</span> <span class="nf">check_top_posts</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Obtiene el post con más favoritos y los 5 posts más populares.</span>
+<span class="sd">    Retorna el post destacado y una lista con los 5 posts más populares.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Obtener el post destacado (más favoritos)</span>
+    <span class="n">post_destacado</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Obtener los 5 posts más populares</span>
+    <span class="n">posts_populares</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">post_destacado</span><span class="p">,</span> <span class="n">posts_populares</span></div>
+
+
+
+<div class="viewcode-block" id="notify_top_posts">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.notify_top_posts">[documentos]</a>
 <span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">send_notification_to_users</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
-        <span class="c1"># solo notificar los posts que sean publicados, no los borradores y demas</span>
-        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">:</span>
-            <span class="k">return</span>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">m2m_changed</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">through</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">notify_top_posts</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verifica si un post se convierte en destacado o entra al Top 5 posts más populares,</span>
+<span class="sd">    y envía una notificación al autor del post.</span>
 
-        <span class="n">category</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">category</span>
+<span class="sd">    También cuando se cambian los favoritos.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Verificar el top 5 y el post destacado</span>
+    <span class="n">post_destacado</span><span class="p">,</span> <span class="n">posts_populares</span> <span class="o">=</span> <span class="n">check_top_posts</span><span class="p">()</span>
 
-        <span class="c1"># Filtrar usuarios que desean recibir notificaciones y tienen acceso a la categoría</span>
-        <span class="n">recipients</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="n">receive_notifications</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Usuarios que desean recibir notificaciones</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">author</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">author</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se encontró un autor para el post </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
 
-        <span class="c1"># Filtrar usuarios que tienen acceso a la categoría del post</span>
-        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">PREMIUM</span><span class="p">:</span>
-            <span class="n">recipients</span> <span class="o">=</span> <span class="n">recipients</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                <span class="n">payment__category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
-                <span class="n">payment__status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>  <span class="c1"># Solo pagos completados</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span><span class="p">:</span>
-            <span class="n">recipients</span> <span class="o">=</span> <span class="n">recipients</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                <span class="n">is_staff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Filtrar usuarios no administradores</span>
-                <span class="n">is_superuser</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Filtrar superusuarios</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="c1"># Notificación si el post se convierte en destacado</span>
+    <span class="k">if</span> <span class="n">instance</span> <span class="o">==</span> <span class="n">post_destacado</span><span class="p">:</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;¡Tu post es el Post Destacado! 🎉&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, tu post &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; ha sido seleccionado como el Post Destacado.¡Felicidades!&quot;</span>
 
-        <span class="c1"># Enviar un correo personalizado a cada destinatario</span>
-        <span class="k">for</span> <span class="n">recipient</span> <span class="ow">in</span> <span class="n">recipients</span><span class="p">:</span>
-            <span class="n">subject</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">recipient</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> 👋👋, hay una nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. No te la pierdas!, http://localhost:8000/posts/</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
-
+        <span class="k">try</span><span class="p">:</span>
             <span class="n">send_mail</span><span class="p">(</span>
                 <span class="n">subject</span><span class="p">,</span>
                 <span class="n">message</span><span class="p">,</span>
-                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>  <span class="c1"># Dirección de remitente</span>
-                <span class="p">[</span><span class="n">recipient</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>  <span class="c1"># Enviar a cada usuario individualmente</span>
+                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
                 <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando la pulicacion.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span>
+
+    <span class="c1"># Notificación si el post está en el Top 5 de los más populares</span>
+    <span class="k">if</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">posts_populares</span><span class="p">:</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;¡Tu post está en el Top 5 de los más populares! 🎉&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, tu post &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; está en el Top 5 de los posts más populares.¡Sigue así!&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">send_mail</span><span class="p">(</span>
+                <span class="n">subject</span><span class="p">,</span>
+                <span class="n">message</span><span class="p">,</span>
+                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando la pulicacion.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span></div>
 
 </pre></div>
 

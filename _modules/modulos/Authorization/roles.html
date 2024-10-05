@@ -44,6 +44,7 @@
 <span class="n">EDITOR</span> <span class="o">=</span> <span class="s2">&quot;Editor&quot;</span>
 <span class="n">AUTOR</span> <span class="o">=</span> <span class="s2">&quot;Autor&quot;</span>
 <span class="n">SUBSCRIBER</span> <span class="o">=</span> <span class="s2">&quot;Suscriptor&quot;</span>
+<span class="n">FINANCIAL</span> <span class="o">=</span> <span class="s2">&quot;Financiero&quot;</span>
 
 <span class="c1"># Roles por defecto y sus permisos</span>
 <span class="n">default_roles</span> <span class="o">=</span> <span class="p">{</span>
@@ -56,6 +57,7 @@
         <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
         <span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span>
         <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+        <span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="n">SUBSCRIBER</span><span class="p">:</span> <span class="p">[],</span>
     <span class="n">AUTOR</span><span class="p">:</span> <span class="p">[</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span> <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">],</span>
@@ -72,6 +74,7 @@
         <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
         <span class="n">POST_PUBLISH_PERMISSION</span><span class="p">,</span>
     <span class="p">],</span>
+    <span class="n">FINANCIAL</span><span class="p">:</span> <span class="p">[</span><span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">],</span>
 <span class="p">}</span>
 
 

@@ -42,16 +42,20 @@
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s1">&#39;Categories&#39;</span><span class="p">,</span> <span class="s1">&#39;0007_alter_category_tipo&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;Pagos&#39;</span><span class="p">,</span> <span class="s1">&#39;0001_initial&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;UserProfile&#39;</span><span class="p">,</span> <span class="s1">&#39;0005_userprofile_address_userprofile_phone_number&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Categories&quot;</span><span class="p">,</span> <span class="s2">&quot;0007_alter_category_tipo&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Pagos&quot;</span><span class="p">,</span> <span class="s2">&quot;0001_initial&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;UserProfile&quot;</span><span class="p">,</span> <span class="s2">&quot;0005_userprofile_address_userprofile_phone_number&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;userprofile&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pagos&#39;</span><span class="p">,</span>
-            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;users_paid&#39;</span><span class="p">,</span> <span class="n">through</span><span class="o">=</span><span class="s1">&#39;Pagos.Payment&#39;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s1">&#39;Categories.category&#39;</span><span class="p">),</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;userprofile&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pagos&quot;</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span>
+                <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;users_paid&quot;</span><span class="p">,</span>
+                <span class="n">through</span><span class="o">=</span><span class="s2">&quot;Pagos.Payment&quot;</span><span class="p">,</span>
+                <span class="n">to</span><span class="o">=</span><span class="s2">&quot;Categories.category&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span></div>
 

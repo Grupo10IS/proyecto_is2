@@ -212,6 +212,7 @@
 <li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig"><code class="docutils literal notranslate"><span class="pre">PagosConfig</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">PagosConfig.default_auto_field</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig.name"><code class="docutils literal notranslate"><span class="pre">PagosConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.apps.PagosConfig.ready"><code class="docutils literal notranslate"><span class="pre">PagosConfig.ready()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -253,11 +254,16 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.signals">modulos.Pagos.signals module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.signals.send_payment_notification"><code class="docutils literal notranslate"><span class="pre">send_payment_notification()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.tests">modulos.Pagos.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.html#modulos.Pagos.views.purchased_categories_view"><code class="docutils literal notranslate"><span class="pre">purchased_categories_view()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.html#module-modulos.Pagos">Module contents</a></li>
@@ -395,7 +401,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.signals">modulos.Posts.signals module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.check_top_posts"><code class="docutils literal notranslate"><span class="pre">check_top_posts()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.log_post_change"><code class="docutils literal notranslate"><span class="pre">log_post_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.notify_top_posts"><code class="docutils literal notranslate"><span class="pre">notify_top_posts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.send_notification_to_authors"><code class="docutils literal notranslate"><span class="pre">send_notification_to_authors()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.signals.send_notification_to_users"><code class="docutils literal notranslate"><span class="pre">send_notification_to_users()</span></code></a></li>
 </ul>
 </li>
@@ -413,15 +422,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.html#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView"><code class="docutils literal notranslate"><span class="pre">ContenidosView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ContenidosView.get_context_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.ContenidosView.template_name"><code class="docutils literal notranslate"><span class="pre">ContenidosView.template_name</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.delete_post"><code class="docutils literal notranslate"><span class="pre">delete_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.list_contenidos_view"><code class="docutils literal notranslate"><span class="pre">list_contenidos_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.post_log_list"><code class="docutils literal notranslate"><span class="pre">post_log_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modulos.Posts.html#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
@@ -549,6 +554,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.html#module-modulos.UserProfile.signals">modulos.UserProfile.signals module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.signals.add_to_default_group"><code class="docutils literal notranslate"><span class="pre">add_to_default_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.signals.notify_new_user"><code class="docutils literal notranslate"><span class="pre">notify_new_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.html#modulos.UserProfile.signals.notify_user_role_change"><code class="docutils literal notranslate"><span class="pre">notify_user_role_change()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.html#module-modulos.UserProfile.urls">modulos.UserProfile.urls module</a></li>

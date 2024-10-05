@@ -708,6 +708,18 @@ el usuario recién creado al grupo predeterminado denominado “SUBSCRIBER”.</
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.signals.notify_new_user">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.signals.</span></span><span class="sig-name descname"><span class="pre">notify_new_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/signals.html#notify_new_user"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.signals.notify_new_user" title="Link to this definition">¶</a></dt>
+<dd><p>Notifica al usuario con un correo de bienvenida cuando crea una cuenta nueva.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.signals.notify_user_role_change">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.signals.</span></span><span class="sig-name descname"><span class="pre">notify_user_role_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk_set</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/signals.html#notify_user_role_change"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.signals.notify_user_role_change" title="Link to this definition">¶</a></dt>
+<dd><p>Notifica al usuario cuando se le asigna o cambia un rol.</p>
+</dd></dl>
+
 </section>
 <section id="module-modulos.UserProfile.urls">
 <span id="modulos-userprofile-urls-module"></span><h2>modulos.UserProfile.urls module<a class="headerlink" href="#module-modulos.UserProfile.urls" title="Link to this heading">¶</a></h2>
@@ -944,6 +956,8 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.signals">modulos.UserProfile.signals module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.signals.add_to_default_group"><code class="docutils literal notranslate"><span class="pre">add_to_default_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.signals.notify_new_user"><code class="docutils literal notranslate"><span class="pre">notify_new_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.signals.notify_user_role_change"><code class="docutils literal notranslate"><span class="pre">notify_user_role_change()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile.urls">modulos.UserProfile.urls module</a></li>

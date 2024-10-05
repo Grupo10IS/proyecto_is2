@@ -87,6 +87,12 @@
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modulos.Pagos'</span></em><a class="headerlink" href="#modulos.Pagos.apps.PagosConfig.name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Pagos.apps.PagosConfig.ready">
+<span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/apps.html#PagosConfig.ready"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.apps.PagosConfig.ready" title="Link to this definition">¶</a></dt>
+<dd><p>Override this method in subclasses to run code when Django starts.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -288,6 +294,15 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 </dd></dl>
 
 </section>
+<section id="module-modulos.Pagos.signals">
+<span id="modulos-pagos-signals-module"></span><h2>modulos.Pagos.signals module<a class="headerlink" href="#module-modulos.Pagos.signals" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.signals.send_payment_notification">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.signals.</span></span><span class="sig-name descname"><span class="pre">send_payment_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/signals.html#send_payment_notification"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.signals.send_payment_notification" title="Link to this definition">¶</a></dt>
+<dd><p>Envía una notificación por correo electrónico cuando un pago es completado exitosamente.</p>
+</dd></dl>
+
+</section>
 <section id="module-modulos.Pagos.tests">
 <span id="modulos-pagos-tests-module"></span><h2>modulos.Pagos.tests module<a class="headerlink" href="#module-modulos.Pagos.tests" title="Link to this heading">¶</a></h2>
 </section>
@@ -305,6 +320,12 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dt class="sig sig-object py" id="modulos.Pagos.views.payment_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">payment_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#payment_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.payment_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.views.purchased_categories_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">purchased_categories_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#purchased_categories_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.purchased_categories_view" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para mostrar todas las categorías premium compradas por el usuario.</p>
+</dd></dl>
 
 </section>
 <section id="module-modulos.Pagos">
@@ -358,6 +379,7 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.apps.PagosConfig"><code class="docutils literal notranslate"><span class="pre">PagosConfig</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.apps.PagosConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">PagosConfig.default_auto_field</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.apps.PagosConfig.name"><code class="docutils literal notranslate"><span class="pre">PagosConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.apps.PagosConfig.ready"><code class="docutils literal notranslate"><span class="pre">PagosConfig.ready()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -399,11 +421,16 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.signals">modulos.Pagos.signals module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.signals.send_payment_notification"><code class="docutils literal notranslate"><span class="pre">send_payment_notification()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.tests">modulos.Pagos.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.purchased_categories_view"><code class="docutils literal notranslate"><span class="pre">purchased_categories_view()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos">Module contents</a></li>
