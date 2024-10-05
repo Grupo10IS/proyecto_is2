@@ -373,54 +373,43 @@ from django.db.models import Q
 
 def search_post(request):
     """
-    Vista para buscar publicaciones.
-
-    Esta vista maneja la búsqueda de posts utilizando múltiples criterios como título, contenido, categoría, autor y fecha de publicación.
+    Vista para buscar publicaciones utilizando múltiples filtros.
     """
     form = SearchPostForm(
         request.GET
     )  # Inicializa el formulario con los datos de búsqueda
 
-    # Si el formulario no es válido o no hay búsqueda, redirige a la vista de inicio
-    if not form.is_valid():
-        return redirect(
-            "home"
-        )  # Redirige a la vista de inicio si no hay búsqueda válida
+    # Si el formulario no es válido o no se ha proporcionado ningún criterio de búsqueda
+    if not form.is_valid() or (
+        not form.cleaned_data.get("input")
+        and not form.cleaned_data.get("category")
+        and not form.cleaned_data.get("author")
+        and not form.cleaned_data.get("publication_date")
+    ):
+        return redirect("home")  # Redirige si no hay criterios de búsqueda válidos
 
     # Verifica la validez del formulario
     if form.is_valid():
         # Filtros de búsqueda
-        input = form.cleaned_data.get(
-            "input"
-        )  # Obtiene el término de búsqueda (si existe)
-        category = form.cleaned_data.get(
-            "category"
-        )  # Obtiene la categoría seleccionada
-        author = form.cleaned_data.get(
-            "author"
-        )  # Obtiene el nombre del autor (si se ingresó)
-        publication_date = form.cleaned_data.get(
-            "publication_date"
-        )  # Obtiene la fecha de publicación (si se ingresó)
+        input_search = form.cleaned_data.get("input", "").strip()
+        category = form.cleaned_data.get("category")
+        author = form.cleaned_data.get("author")
+        publication_date = form.cleaned_data.get("publication_date")
 
-        # Construimos el query dinámico utilizando Q objects para combinar los filtros
+        # Construir el query dinámico utilizando Q objects
         query = Q()
 
-        # Búsqueda por título y contenido
-        if input:
-            query &= Q(title__icontains=input) | Q(content__icontains=input)
+        if input_search:
+            query &= Q(title__icontains=input_search) | Q(
+                content__icontains=input_search
+            )
 
-        # Filtro por categoría
         if category:
             query &= Q(category=category)
 
-        # Filtro por autor
         if author:
-            query &= Q(
-                author__username__icontains=author
-            )  # Asumiendo que el autor es un campo de Usuario
+            query &= Q(author__username__icontains=author)
 
-        # Filtro por fecha de publicación
         if publication_date:
             query &= Q(publication_date=publication_date)
 
@@ -431,7 +420,7 @@ def search_post(request):
         ctx = {"posts": results, "form": form}
         return render(request, "pages/search_results.html", context=ctx)
 
-    # Redirige a la vista de inicio si no hay búsqueda válida
+    # Si no hay criterios de búsqueda válidos, redirige a la vista de inicio
     return redirect("home")
 
 
