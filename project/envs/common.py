@@ -165,3 +165,7 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="groupmakex@gmail.com"
 # stripe (pagos)
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="stripe")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="stripe")
+
+# Disqus (comentarios)
+DISQUS_API_KEY = config("DISQUS_API_KEY", default="disqus_api")
+DISQUS_FORUM = config("DISQUS_FORUM", default="makexfp-com")

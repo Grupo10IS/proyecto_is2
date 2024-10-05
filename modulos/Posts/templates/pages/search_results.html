@@ -29,23 +29,11 @@
         </form>
         <!-- Div flotante para mostrar ayuda -->
         <div id="helpDiv"
-             class="position-fixed top-0 right-0 p-3 bg-white border rounded shadow-lg"
-             style="max-width: 400px;
-                    z-index: 1050;
+             class="my-3 p-3 bg-white border rounded shadow-lg"
+             style="z-index: 1050;
                     overflow-y: auto;
-                    max-height: 90vh;
+                    max-height: 80vh;
                     border-left: 4px solid #17a2b8">
-            <button type="button"
-                    class="close text-danger"
-                    aria-label="Close"
-                    style="position: absolute;
-                           top: 10px;
-                           right: 10px;
-                           font-size: 1.2rem;
-                           border: none"
-                    onclick="hideHelp()">
-                <span aria-hidden="true">&times;</span>
-            </button>
             <div class="mt-3">
                 <h4 class="mb-2 font-weight-bold text-black">
                     Cómo usar la búsqueda avanzada
@@ -58,9 +46,9 @@
                     <li>Los filtros son opcionales dentro de la sintaxis.</li>
                     <li>La cadena de búsqueda no puede estar vacía ni contener solo espacios.</li>
                 </ul>
-                <b>
-                    <h6 class="text-black">Filtros disponibles:</h6>
-                </b>
+                <h5 class="mt-1 text-black">
+                    Filtros disponibles:
+                </h6>
                 <ul class="pl-4 mb-3">
                     <li>
                         <strong>#titulo:</strong> Filtra posts que contengan la frase de búsqueda en el título.
@@ -84,9 +72,9 @@
                         <strong>#before:</strong> Filtra posts creados antes de una fecha específica (dd/mm/yyyy).
                     </li>
                 </ul>
-                <b>
-                    <h6 class="text-black">Uso de negaciones</h6>
-                </b>
+                <h5 class="text-black mt-1">
+                    Uso de negaciones
+                </h6>
                 <p>
                     Se puede usar el operador <code>!</code> para ignorar ciertas búsquedas. Se aplica a los campos título, categoría, autor y contenido.
                 </p>
@@ -95,9 +83,14 @@
                         Ejemplos de uso
                     </h6>
                 </b>
-                <pre class="bg-light p-2 rounded">futbol #categoria!: deportes</pre>
+                <br>
                 Esto listara todos los posts que contengan en su titulo "futbol", que NO contengan "deportes" en su
                 categoria.
+                <pre class="bg-light p-2 rounded">futbol #categoria!: deportes</pre>
+                Esto listara los posts que contengan en su titulo "futbol", que la categoria contenga el nombre
+                "deportes" y que fueron creados antes del 12/08/2024
+                categoria.
+                <pre class="bg-light p-2 rounded">futbol #categoria: deportes #before: 12/08/2024</pre>
             </div>
         </div>
         <!-- Resultados de la búsqueda -->

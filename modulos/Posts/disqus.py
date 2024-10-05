@@ -1,19 +1,32 @@
-from disqusapi import DisqusAPI
+import requests
 from django.conf import settings
 
 
-def get_disqus_stats():
-    disqus = DisqusAPI(settings.DISQUS_SECRET_KEY, settings.DISQUS_PUBLIC_KEY)
+def get_disqus_stats(post_id):
+    # Datos de configuración
+    api_key = settings.DISQUS_API_KEY
+    forum = settings.DISQUS_FORUM
 
-    # Obtenemos los datos del post específico
-    forum = "tu_forum_id"  # Reemplaza con el ID de tu foro en Disqus
-    thread_id = "tu_thread_id"  # Reemplaza con el ID del hilo de comentarios
+    # URL de la API para obtener los comentarios
+    url = f"https://disqus.com/api/3.0/threads/details.json"
+    params = {
+        "api_key": api_key,
+        "forum": forum,
+        "thread:ident": f"posts/{post_id}",
+    }
 
-    stats = disqus.get("threads.details", forum=forum, thread=thread_id)
+    response = requests.get(url, params=params)
+    data = response.json()
 
-    # Extraemos las estadísticas
-    total_comments = stats["total_replies"]
-    likes = stats["likes_count"]
-    dislikes = stats["dislikes_count"]
+    # Verifica si la solicitud fue exitosa
+    if response.status_code == 200:
+        response = data["response"]
 
-    return {"total_comments": total_comments, "likes": likes, "dislikes": dislikes}
+        likes = response["likes"]
+        dislikes = response["dislikes"]
+        comments = response["posts"]
+
+        return {"comments": comments, "likes": likes, "dislikes": dislikes}
+    else:
+        print(f"Cannot get disqus statistics: {response.content}")
+        return {"comments": 0, "likes": 0, "dislikes": 0}

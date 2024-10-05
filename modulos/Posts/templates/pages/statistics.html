@@ -73,15 +73,15 @@
                     <tbody>
                         <tr>
                             <td>Comentarios</td>
-                            <td>{{ post.comments_count }}</td>
+                            <td>{{ disqus.comments }}</td>
                         </tr>
                         <tr>
                             <td>Likes</td>
-                            <td>{{ post.likes_count }}</td>
+                            <td>{{ disqus.likes }}</td>
                         </tr>
                         <tr>
                             <td>Compartidos</td>
-                            <td>{{ post.shares_count }}</td>
+                            <td>{{ disqus.dislikes }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,6 +108,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <a href="{% url 'post_log_list' post.id %}" class="btn btn-primary">Mas</a>
             </div>
         </div>
 
@@ -135,11 +136,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <a href="{% url 'post_versions' post.id %}" class="btn btn-primary">Mas</a>
             </div>
-        </div>
-
-        <div class="mt-4">
-            <a href="{% url 'post_versions' post.id %}" class="btn btn-secondary">Volver a la lista</a>
         </div>
     </div>
 {% endblock %}

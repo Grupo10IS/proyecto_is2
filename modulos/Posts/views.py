@@ -1,7 +1,7 @@
 import difflib
 from datetime import timedelta
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -23,8 +23,8 @@ from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
-from modulos.Pagos.models import Payment
 from modulos.Posts.buscador import buscador
+from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
@@ -645,14 +645,18 @@ def post_version_detail(request, post_id, version):
 
 
 @login_required
+@permission_required([POST_CREATE_PERMISSION])
+# FIX: cambiar los permisos para que solo el autor y algunos puedan ver esas Estadisticas
 def post_statistics(request, id):
     post = get_object_or_404(Post, pk=id)
+
     ctx = new_ctx(
         request,
         {
             "post": post,
-            "logs": Log.objects.filter(post=post),
-            "versions": Version.objects.filter(post_id=post.id),
+            "logs": Log.objects.filter(post=post)[:5],
+            "versions": Version.objects.filter(post_id=post.id)[:5],
+            "disqus": get_disqus_stats(post.id)
         },
     )
 
