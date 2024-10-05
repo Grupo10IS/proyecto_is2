@@ -44,6 +44,14 @@ modulos.Pagos.models module
    :undoc-members:
    :show-inheritance:
 
+modulos.Pagos.signals module
+----------------------------
+
+.. automodule:: modulos.Pagos.signals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 modulos.Pagos.tests module
 --------------------------
 
