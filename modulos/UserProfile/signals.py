@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.db.models.signals import post_save, m2m_changed
-from django.dispatch import receiver
-from modulos.Authorization.roles import SUBSCRIBER
 from django.core.mail import send_mail
-from modulos.UserProfile.models import UserProfile
+from django.db.models.signals import m2m_changed, post_save
+from django.dispatch import receiver
 
+from modulos.Authorization.roles import SUBSCRIBER
+from modulos.UserProfile.models import UserProfile
 
 User = get_user_model()
 

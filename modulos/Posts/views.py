@@ -3,23 +3,23 @@ from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
+from django.core.paginator import Paginator
+from django.db.models import Count
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
-from modulos.Authorization.permissions import (
-    KANBAN_VIEW_PERMISSION,
-    POST_APPROVE_PERMISSION,
-    POST_CREATE_PERMISSION,
-    POST_DELETE_PERMISSION,
-    POST_EDIT_PERMISSION,
-    POST_PUBLISH_PERMISSION,
-    POST_REJECT_PERMISSION,
-    POST_REVIEW_PERMISSION,
-    user_has_access_to_category,
-)
+from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
+                                               POST_APPROVE_PERMISSION,
+                                               POST_CREATE_PERMISSION,
+                                               POST_DELETE_PERMISSION,
+                                               POST_EDIT_PERMISSION,
+                                               POST_PUBLISH_PERMISSION,
+                                               POST_REJECT_PERMISSION,
+                                               POST_REVIEW_PERMISSION,
+                                               user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
@@ -27,13 +27,7 @@ from modulos.Posts.buscador import buscador
 from modulos.Posts.forms import NewPostForm, SearchPostForm
 from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
-from django.db.models import Count
 
-
-from django.db.models import Count
-
-
-from django.core.paginator import Paginator
 
 def home_view(req):
     """
@@ -370,6 +364,7 @@ def edit_post(request, id):
 
 
 from django.db.models import Q
+
 
 def search_post(request):
     """

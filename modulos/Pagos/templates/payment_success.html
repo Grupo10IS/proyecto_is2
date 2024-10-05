@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h2 class="card-title">Pago Completado</h2>
-                    <p>¡Gracias! Tu pago ha sido exitoso. Ahora tienes acceso a la categoría <strong>{{ category.name }}</strong>.</p>
-                    <a href="{% url 'category_detail' category.id %}" class="btn btn-primary">Ir a {{ category.name }}</a>
-                    <a href="{% url 'categories_list' %}" class="btn btn-primary">Volver</a>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">Pago Completado</h2>
+                        <p>
+                            ¡Gracias! Tu pago ha sido exitoso. Ahora tienes acceso a la categoría <strong>{{ category.name }}</strong>.
+                        </p>
+                        <a href="{% url 'category_detail' category.id %}"
+                           class="btn btn-primary">Ir a {{ category.name }}</a>
+                        <a href="{% url 'categories_list' %}" class="btn btn-primary">Volver</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

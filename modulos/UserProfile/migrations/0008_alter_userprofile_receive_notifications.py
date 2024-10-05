@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('UserProfile', '0007_userprofile_receive_notifications'),
+        ("UserProfile", "0007_userprofile_receive_notifications"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userprofile',
-            name='receive_notifications',
-            field=models.BooleanField(default=False, verbose_name='Desea recibir notificaciones sobre nuevas publicaciones?'),
+            model_name="userprofile",
+            name="receive_notifications",
+            field=models.BooleanField(
+                default=False,
+                verbose_name="Desea recibir notificaciones sobre nuevas publicaciones?",
+            ),
         ),
     ]

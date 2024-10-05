@@ -9,21 +9,31 @@
             <table class="table table-hover table-striped">
                 <thead class="table-dark fst-italic">
                     <tr>
-                        <th scope="col">Portada</th> <!-- Nueva columna para la imagen -->
+                        <th scope="col">Portada</th>
+                        <!-- Nueva columna para la imagen -->
                         <th scope="col">Título</th>
                         <th scope="col">Categoría</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for post in posts_favorites %}
-                        <tr onclick="location.href='{% url 'post_detail' post.id %}'" style="cursor:pointer">
+                        <tr onclick="location.href='{% url 'post_detail' post.id %}'"
+                            style="cursor:pointer">
                             <td>
                                 {% if post.image %}
-                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid"
-                                         style="height: 100px; width: 100px; object-fit: cover;">
+                                    <img src="{{ post.image.url }}"
+                                         alt="{{ post.title }}"
+                                         class="img-fluid"
+                                         style="height: 100px;
+                                                width: 100px;
+                                                object-fit: cover">
                                 {% else %}
-                                    <img src="{% static 'images/makex.png' %}" alt="{{ post.title }}" class="img-fluid"
-                                         style="height: 100px; width: 100px; object-fit: cover;">
+                                    <img src="{% static 'images/makex.png' %}"
+                                         alt="{{ post.title }}"
+                                         class="img-fluid"
+                                         style="height: 100px;
+                                                width: 100px;
+                                                object-fit: cover">
                                 {% endif %}
                             </td>
                             <td>{{ post.title }}</td>
@@ -32,42 +42,50 @@
                     {% endfor %}
                 </tbody>
             </table>
-
             <!-- Paginación -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <!-- Enlace a la página anterior -->
                     {% if posts_favorites.has_previous %}
                         <li class="page-item">
-                            <a class="page-link"  style="background-color:black;color:white;" href="?page={{ posts_favorites.previous_page_number }}">Anterior</a>
+                            <a class="page-link"
+                               style="background-color:black;
+                                      color:white"
+                               href="?page={{ posts_favorites.previous_page_number }}">Anterior</a>
                         </li>
                     {% else %}
                         <li class="page-item disabled">
                             <a class="page-link" style="background-color:gray;color:white;" href="#">Anterior</a>
                         </li>
                     {% endif %}
-
                     <!-- Páginas -->
                     {% for num in posts_favorites.paginator.page_range %}
                         <li class="page-item {% if posts_favorites.number == num %}active{% endif %}">
-                            <a class="page-link"  style="background-color:white;color:black;" href="?page={{ num }}">{{ num }}</a>
+                            <a class="page-link"
+                               style="background-color:white;
+                                      color:black"
+                               href="?page={{ num }}">{{ num }}</a>
                         </li>
                     {% endfor %}
-
                     <!-- Enlace a la página siguiente -->
                     {% if posts_favorites.has_next %}
                         <li class="page-item">
-                            <a class="page-link"  style="background-color:black;color:white;" href="?page={{ posts_favorites.next_page_number }}">Siguiente</a>
+                            <a class="page-link"
+                               style="background-color:black;
+                                      color:white"
+                               href="?page={{ posts_favorites.next_page_number }}">Siguiente</a>
                         </li>
                     {% else %}
                         <li class="page-item disabled">
-                            <a class="page-link"  style="background-color:gray;color:white;" href="#">Siguiente</a>
+                            <a class="page-link"
+                               style="background-color:gray;
+                                      color:white"
+                               href="#">Siguiente</a>
                         </li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
-
         <!-- Categorías de Interés -->
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-6 fst-italic mb-4">Categorías de Interés</h1>
@@ -78,19 +96,27 @@
                         <div class="col-md-4 mb-4">
                             <div class="card h-100">
                                 {% if categoria.image %}
-                                    <img src="{{ categoria.image.url }}" class="card-img-top" alt="{{ categoria.name }}"
-                                         style="height: 200px; object-fit: cover;">
+                                    <img src="{{ categoria.image.url }}"
+                                         class="card-img-top"
+                                         alt="{{ categoria.name }}"
+                                         style="height: 200px;
+                                                object-fit: cover">
                                 {% else %}
-                                    <img src="{% static 'images/makex.png' %}" class="card-img-top" alt="{{ categoria.name }}"
-                                         style="height: 200px; object-fit: cover;">
+                                    <img src="{% static 'images/makex.png' %}"
+                                         class="card-img-top"
+                                         alt="{{ categoria.name }}"
+                                         style="height: 200px;
+                                                object-fit: cover">
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ categoria.name }}</h5>
                                     <p class="card-text">
-                                        <strong>Tipo:</strong> {{ categoria.tipo }} <br>
+                                        <strong>Tipo:</strong> {{ categoria.tipo }}
+                                        <br>
                                         <strong>Descripción:</strong> {{ categoria.description|truncatewords:20 }}
                                     </p>
-                                    <a href="{% url 'category_detail' categoria.id %}" class="btn btn-primary">Ver más</a>
+                                    <a href="{% url 'category_detail' categoria.id %}"
+                                       class="btn btn-primary">Ver más</a>
                                 </div>
                             </div>
                         </div>
@@ -100,8 +126,10 @@
                 <p>No tienes categorías de interés todavía.</p>
             {% endif %}
         </div>
-
-        <a href="{% url 'home' %}" class="btn btn-primary mt-5"
-           style="background-color: black; border-color: black; color:white">Volver al Inicio</a>
+        <a href="{% url 'home' %}"
+           class="btn btn-primary mt-5"
+           style="background-color: black;
+                  border-color: black;
+                  color:white">Volver al Inicio</a>
     </div>
 {% endblock %}

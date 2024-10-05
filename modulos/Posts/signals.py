@@ -1,11 +1,13 @@
 from django.core.mail import send_mail
-from django.db.models.signals import post_save, m2m_changed
-from django.dispatch import receiver
 from django.db.models import Count
+from django.db.models.signals import m2m_changed, post_save, pre_save
+from django.dispatch import receiver
+
 from modulos.Posts.models import Log, Post
 from modulos.UserProfile.models import UserProfile
+
 from .models import Post
-from django.db.models.signals import pre_save
+
 
 @receiver(post_save, sender=Post)
 def log_post_change(sender, instance, **kwargs):
@@ -42,9 +44,9 @@ def send_notification_to_users(sender, instance, **kwargs):
     Envía una notificación a los usuarios cuando un post cambia a estado "Publicado".
     """
     if instance.pk:
-        # Obtenemos el estado anterior del post para verificar si el estado ha cambiado a "PUBLISHED"
         old_instance = Post.objects.filter(pk=instance.pk).first()
 
+        # Verificar si se realiza un cambio de estado a "PUBLISHED"
         if (
             old_instance
             and old_instance.status != Post.PUBLISHED
@@ -53,37 +55,41 @@ def send_notification_to_users(sender, instance, **kwargs):
 
             category = instance.category
 
-            recipients = UserProfile.objects.filter(
+            users = UserProfile.objects.filter(
                 receive_notifications=True,
             ).distinct()
 
             if category.tipo == category.PREMIUM:
-
-                recipients = recipients.filter(
+                users = users.filter(
                     payment__category=category,
                     payment__status="completed",
                 ).distinct()
-            elif category.tipo == category.SUSCRIPCION:
 
-                recipients = recipients.filter(
+            elif category.tipo == category.SUSCRIPCION:
+                users = users.filter(
                     is_staff=False,
                     is_superuser=False,
                 ).distinct()
 
-            for recipient in recipients:
-
+            for recipient in users:
                 subject = f"Nueva publicación en la categoría {category.name}💯💥"
                 message = f"Hola {recipient.username}👋👋, hay una nueva publicación en la categoría {category.name}. No te la pierdas!, http://localhost:8000/posts/{instance.id}"
 
-                send_mail(
-                    subject,
-                    message,
-                    "groupmakex@gmail.com",
-                    [recipient.email],
-                    fail_silently=False,
-                )
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        "groupmakex@gmail.com",
+                        [recipient.email],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    print("Ocurrieron errores al notificar a los usuarios: ", e)
+                    return
+
 
 # NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO O RECHAZADO
+
 
 @receiver(pre_save, sender=Post)
 def send_notification_to_authors(sender, instance, **kwargs):
@@ -95,10 +101,6 @@ def send_notification_to_authors(sender, instance, **kwargs):
         old_instance = Post.objects.filter(pk=instance.pk).first()
 
         if old_instance:
-            print(f"Signal ejecutado para el post: {instance.title}")
-            print(f"Estado anterior: {old_instance.status}")
-            print(f"Estado actual: {instance.status}")
-
             # Verificamos si hay un autor asignado al post
             author = instance.author
             if not author:
@@ -107,53 +109,55 @@ def send_notification_to_authors(sender, instance, **kwargs):
                 )
                 return
 
-            print(f"Autor del post: {author.username}")
-            print(f"Email del autor: {author.email}")
-
             # Notificar al autor si el estado cambió a "Publicado"
             if (
                 old_instance.status != Post.PUBLISHED
                 and instance.status == Post.PUBLISHED
             ):
-                print(
-                    f"El post {instance.title} ha sido publicado. Notificando al autor {author.username}."
-                )
                 subject = "Tu post ha sido publicado 🎉"
                 message = f"Hola {author.username}, tu post '{instance.title}' ha sido publicado exitosamente. ¡Gracias por tu contribución!"
-                send_mail(
-                    subject,
-                    message,
-                    "groupmakex@gmail.com",
-                    [author.email],
-                    fail_silently=False,
-                )
-                print(
-                    f"Correo enviado al autor {author.username} notificando la publicación."
-                )
+
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        "groupmakex@gmail.com",
+                        [author.email],
+                        fail_silently=False,
+                    )
+                    print(
+                        f"Correo enviado al autor {author.username} notificando la pulicacion."
+                    )
+                except Exception as e:
+                    print("Ocurrieron errores al notificar al autor del post: ", e)
+                    return
 
             # Notificar al autor si el post ha sido "Rechazado" (cambio a "Borrador")
             elif (
                 old_instance.status in [Post.PENDING_REVIEW, Post.PENDING_PUBLICATION]
                 and instance.status == Post.DRAFT
             ):
-                print(
-                    f"El post {instance.title} ha sido rechazado. Notificando al autor {author.username}."
-                )
+
                 subject = "Tu post ha sido rechazado 😕"
                 message = (
                     f"Hola {author.username}, tu post '{instance.title}' ha sido rechazado y vuelto al estado de borrador. "
                     "Por favor, revisa los comentarios o haz los ajustes necesarios antes de volver a enviarlo para revisión."
                 )
-                send_mail(
-                    subject,
-                    message,
-                    "groupmakex@gmail.com",
-                    [author.email],
-                    fail_silently=False,
-                )
-                print(
-                    f"Correo enviado al autor {author.username} notificando el rechazo."
-                )
+
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        "groupmakex@gmail.com",
+                        [author.email],
+                        fail_silently=False,
+                    )
+                    print(
+                        f"Correo enviado al autor {author.username} notificando el rechazo."
+                    )
+                except Exception as e:
+                    print("Ocurrieron errores al notificar al autor del post: ", e)
+                    return
 
 
 # NOTIFICA A LOS AUTORES CUANDO SU POST ESTA NUMERO 1 O ENTRE LOS 5 MAS POPULARES
@@ -183,13 +187,13 @@ def check_top_posts():
 
 
 @receiver(post_save, sender=Post)
-@receiver(
-    m2m_changed, sender=Post.favorites.through
-)  # También cuando se cambian los favoritos
+@receiver(m2m_changed, sender=Post.favorites.through)
 def notify_top_posts(sender, instance, **kwargs):
     """
     Verifica si un post se convierte en destacado o entra al Top 5 posts más populares,
     y envía una notificación al autor del post.
+
+    También cuando se cambian los favoritos.
     """
     # Verificar el top 5 y el post destacado
     post_destacado, posts_populares = check_top_posts()
@@ -201,27 +205,40 @@ def notify_top_posts(sender, instance, **kwargs):
 
     # Notificación si el post se convierte en destacado
     if instance == post_destacado:
-        print(f"El post {instance.title} es el nuevo post destacado.")
         subject = "¡Tu post es el Post Destacado! 🎉"
         message = f"Hola {author.username}, tu post '{instance.title}' ha sido seleccionado como el Post Destacado.¡Felicidades!"
-        send_mail(
-            subject,
-            message,
-            "groupmakex@gmail.com",
-            [author.email],
-            fail_silently=False,
-        )
+
+        try:
+            send_mail(
+                subject,
+                message,
+                "groupmakex@gmail.com",
+                [author.email],
+                fail_silently=False,
+            )
+            print(
+                f"Correo enviado al autor {author.username} notificando la pulicacion."
+            )
+        except Exception as e:
+            print("Ocurrieron errores al notificar al autor del post: ", e)
+            return
 
     # Notificación si el post está en el Top 5 de los más populares
     if instance in posts_populares:
-        print(f"El post {instance.title} ha entrado en el Top 5 de los más populares.")
         subject = "¡Tu post está en el Top 5 de los más populares! 🎉"
         message = f"Hola {author.username}, tu post '{instance.title}' está en el Top 5 de los posts más populares.¡Sigue así!"
-        send_mail(
-            subject,
-            message,
-            "groupmakex@gmail.com",
-            [author.email],
-            fail_silently=False,
-        )
 
+        try:
+            send_mail(
+                subject,
+                message,
+                "groupmakex@gmail.com",
+                [author.email],
+                fail_silently=False,
+            )
+            print(
+                f"Correo enviado al autor {author.username} notificando la pulicacion."
+            )
+        except Exception as e:
+            print("Ocurrieron errores al notificar al autor del post: ", e)
+            return

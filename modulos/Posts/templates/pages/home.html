@@ -11,23 +11,16 @@
             <div class="col-md-8">
                 <h1 class="display-6 fst-italic">Post Destacado</h1>
                 {% if post_destacado and post_destacado.id %}
-                    <div class="post-featured p-4 position-relative card-container" 
-                        style="background-image: 
-                            {% if post_destacado and post_destacado.image %}
-                                url('{{ post_destacado.image.url }}')
-                            {% else %}
-                                url('{% static "images/makex.png" %}')
-                            {% endif %};
-                            background-size: cover;
-                            background-position: center;
-                            height:500px;">
-                        
+                    <div class="post-featured p-4 position-relative card-container" style="background-image: {% if post_destacado and post_destacado.image %} url('{{ post_destacado.image.url }}') {% else %} url('{% static "images/makex.png" %}') {% endif %}; background-size: cover; background-position: center; height:500px;">
                         <!-- Texto superpuesto en la parte inferior de la imagen -->
-                        <div class="text-container" style="position: absolute; bottom: 0; background-color: rgba(255, 255, 255, 0.8);">
+                        <div class="text-container"
+                             style="position: absolute;
+                                    bottom: 0;
+                                    background-color: rgba(255, 255, 255, 0.8)">
                             <h1 class="display-6 fst-italic">
-                                <a href="{% url 'post_detail' post_destacado.id %}" class="text-black stretched-link" style="text-decoration: none;">
-                                    {{ post_destacado.title }}
-                                </a>
+                                <a href="{% url 'post_detail' post_destacado.id %}"
+                                   class="text-black stretched-link"
+                                   style="text-decoration: none">{{ post_destacado.title }}</a>
                             </h1>
                             <p class="lead">{{ post_destacado.content|truncatewords:30 }}</p>
                         </div>
@@ -35,9 +28,7 @@
                 {% else %}
                     <p>No hay un post destacado disponible.</p>
                 {% endif %}
-                
                 <hr style="border: 1px solid #000; margin: 20px 0;">
-
                 <h1 class="display-6 fst-italic">Últimos Posts</h1>
                 <div class="row">
                     {% if posts_recientes %}
@@ -50,12 +41,14 @@
                                                 <img src="{{ post.image.url }}"
                                                      class="card-img"
                                                      alt="{{ post.title }}"
-                                                     style="height: 100%; object-fit: cover">
+                                                     style="height: 100%;
+                                                            object-fit: cover">
                                             {% else %}
                                                 <img src="{% static 'images/makex.png' %}"
                                                      class="card-img"
                                                      alt="{{ post.title }}"
-                                                     style="height: 100%; object-fit: cover">
+                                                     style="height: 100%;
+                                                            object-fit: cover">
                                             {% endif %}
                                         </div>
                                         <div class="col-md-9">
@@ -77,8 +70,6 @@
                         <p>No hay posts recientes disponibles.</p>
                     {% endif %}
                 </div>
-                
-
             </div>
             <!-- Sección de categorías populares -->
             <div class="col-md-4">
@@ -149,31 +140,38 @@
                 </div>
             </div>
         </div>
-            <!-- Paginación -->
+        <!-- Paginación -->
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <!-- Enlace a la página anterior -->
                 {% if posts_recientes.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" style="background-color:black;color:white;" href="?page={{ posts_recientes.previous_page_number }}">Anterior</a>
+                        <a class="page-link"
+                           style="background-color:black;
+                                  color:white"
+                           href="?page={{ posts_recientes.previous_page_number }}">Anterior</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
                         <a class="page-link" style="background-color:gray;color:white;" href="#">Anterior</a>
                     </li>
                 {% endif %}
-
                 <!-- Páginas -->
                 {% for num in posts_recientes.paginator.page_range %}
                     <li class="page-item {% if posts_recientes.number == num %}active{% endif %}">
-                        <a class="page-link" style="background-color:white;color:black;" href="?page={{ num }}">{{ num }}</a>
+                        <a class="page-link"
+                           style="background-color:white;
+                                  color:black"
+                           href="?page={{ num }}">{{ num }}</a>
                     </li>
                 {% endfor %}
-
                 <!-- Enlace a la página siguiente -->
                 {% if posts_recientes.has_next %}
                     <li class="page-item">
-                        <a class="page-link" style="background-color:black;color:white;" href="?page={{ posts_recientes.next_page_number }}">Siguiente</a>
+                        <a class="page-link"
+                           style="background-color:black;
+                                  color:white"
+                           href="?page={{ posts_recientes.next_page_number }}">Siguiente</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
@@ -182,10 +180,8 @@
                 {% endif %}
             </ul>
         </nav>
-
         <p class="float-end">
             <a href="#" style="color:black">Volver arriba</a>
         </p>
-        
     </div>
 {% endblock content %}

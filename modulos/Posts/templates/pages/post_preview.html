@@ -16,31 +16,25 @@
                         <small>
                             Por {{ post.author }} | {{ post.creation_date|date:"d M Y" }} |
                             {% if post.tags %}
-                                {% for tag in tags %}
-                                    <span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>
-                                {% endfor %}
+                                {% for tag in tags %}<span class="white mx-1"><span class="text-primary">#</span>{{ tag }}</span>{% endfor %}
                             {% endif %}
                         </small>
                     </p>
                 </div>
-
                 <!-- Vista previa del contenido del post -->
                 <div id="content" class="markdown-content">
                     {{ preview_content|safe }}  <!-- Muestra la previsualización -->
                 </div>
-
                 <div class="mt-5 text-center">
                     <p class="text-muted">Este es solo un resumen del contenido completo.</p>
-
                     <!-- Mostrar opciones dependiendo del estado del usuario y la categoría -->
-                    {% if modal_message %}
-                        <p>{{ modal_message }}</p>
-                    {% endif %}
-
+                    {% if modal_message %}<p>{{ modal_message }}</p>{% endif %}
                     <!-- Botones para iniciar sesión o registrarse si no tiene acceso -->
                     {% if not user.is_authenticated %}
-                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Iniciar sesión</a>
-                        <a href="{% url 'signup' %}?next={{ request.path }}" class="btn btn-primary">Registrarme</a>
+                        <a href="{% url 'login' %}?next={{ request.path }}"
+                           class="btn btn-primary">Iniciar sesión</a>
+                        <a href="{% url 'signup' %}?next={{ request.path }}"
+                           class="btn btn-primary">Registrarme</a>
                     {% else %}
                         {% if category.tipo == category.PREMIUM %}
                             <a href="{% url 'payment_view' category.id %}" class="btn btn-warning">Quiero suscribirme</a>

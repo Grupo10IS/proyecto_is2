@@ -1,11 +1,11 @@
+import stripe
 from django.conf import settings
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from modulos.Pagos.models import Payment
+from django.shortcuts import get_object_or_404, redirect, render
+
 from modulos.Categories.models import Category
 from modulos.Pagos.forms import PaymentForm, UserProfileForm
-from django.shortcuts import get_object_or_404
-import stripe
+from modulos.Pagos.models import Payment
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY

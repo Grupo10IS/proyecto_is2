@@ -12,7 +12,8 @@
                         <div class="mb-3">{{ u_form.email|as_crispy_field }}</div>
                         <div class="mb-3">{{ p_form.phone_number|as_crispy_field }}</div>
                         <div class="mb-3">{{ p_form.address|as_crispy_field }}</div>
-                        <div class="mb-3">{{ p_form.receive_notifications|as_crispy_field }}</div> <!-- Checkbox para notificaciones -->
+                        <div class="mb-3">{{ p_form.receive_notifications|as_crispy_field }}</div>
+                        <!-- Checkbox para notificaciones -->
                         <div class="mb-3">
                             <label for="groups" class="form-label">Roles asignados:</label>
                             <ul class="list">
@@ -30,4 +31,3 @@
         </div>
     </div>
 {% endblock content %}
-

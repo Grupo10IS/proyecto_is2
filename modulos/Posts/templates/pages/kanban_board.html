@@ -48,7 +48,8 @@
                                     </li>
                                     <div class="d-flex justify-content-between mt-2 mb-2">
                                         {% if can_approve %}
-                                            <a href="{% url 'approve_post' post.id %}" class="btn btn-sm btn-success">Publicar</a>
+                                            <a href="{% url 'approve_post' post.id %}"
+                                               class="btn btn-sm btn-success">Publicar</a>
                                         {% endif %}
                                         {% if can_reject %}
                                             <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
@@ -76,7 +77,8 @@
                                     </li>
                                     <div class="d-flex justify-content-between mt-2 mb-2">
                                         {% if can_publish %}
-                                            <a href="{% url 'publish_post' post.id %}" class="btn btn-sm btn-success">Publicar</a>
+                                            <a href="{% url 'publish_post' post.id %}"
+                                               class="btn btn-sm btn-success">Publicar</a>
                                         {% endif %}
                                         {% if can_reject %}
                                             <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
