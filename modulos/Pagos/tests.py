@@ -7,7 +7,6 @@ from modulos.Pagos.models import Payment
 
 User = get_user_model()
 
-
 @pytest.mark.django_db
 def test_financial_view_access(client):
     # Crear un usuario financiero con un email único
