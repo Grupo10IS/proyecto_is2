@@ -4,16 +4,15 @@ const loginUrl = reportButton.dataset.loginUrl;
 const isAuthenticated = reportButton.dataset.isAuthenticated === 'true';
 const reportUrl = reportButton.dataset.reportUrl;
 
+
 reportButton.addEventListener('click', function () {
     if (isAuthenticated) {
         // Cargar contenido del formulario en el modal
         fetch(reportUrl)
             .then(response => {
                 if (!response.ok) {
-
                     const existingReportModal = new bootstrap.Modal(document.getElementById('existingReportModal'));
                     existingReportModal.show();
-                    // Si el status no es 2xx, mostramos el error y no continuamos
                     throw new Error(errorData.message);
                 }
                 return response.text(); // Si es exitoso, obtenemos el texto del formulario
@@ -97,6 +96,22 @@ reportButton.addEventListener('click', function () {
     }
 });
 
+function confirmReview(button) {
+    var status = button.getAttribute('data-status');
+    var url = button.getAttribute('data-url');
+
+    // Si el post ya está en revisión, mostrar el modal de "ya en revisión"
+    if (status === 'Esperando revision') {
+        var alreadyInReviewModal = new bootstrap.Modal(document.getElementById('alreadyInReviewModal'));
+        alreadyInReviewModal.show();
+    } else {
+        // Si no, mostrar el modal de confirmación
+        var confirmReviewModal = new bootstrap.Modal(document.getElementById('confirmReviewModal'));
+        var confirmReviewButton = document.getElementById('confirmReviewButton');
+        confirmReviewButton.setAttribute('href', url); // Cambiar el href al URL correcto
+        confirmReviewModal.show();
+    }
+}
 
 
 

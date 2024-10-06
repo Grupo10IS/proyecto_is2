@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, OuterRef, Subquery
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from pyexpat.errors import messages
 
 from modulos.Authorization.decorators import permissions_required
@@ -119,3 +119,27 @@ def report_detail(request, id):
     )
 
     return render(request, "content_report_list.html", ctx)
+
+
+# Vista para enviar a revision
+@login_required
+@permissions_required([VIEW_REPORTS])
+def review(request, id):
+    post = get_object_or_404(Post, id=id)
+
+    # Verifica si el contenido ya está en revisión
+    if post.status == Post.PENDING_REVIEW:
+        return HttpResponseForbidden("Este contenido ya está en revisión.")
+
+    # Actualiza el estado del post a 'En Revisión'
+    post.status = Post.PENDING_REVIEW
+    post.save()
+
+    # Mantenerse en la misma página, recargando el template actual con los datos actualizados
+    # Obtener los posts que tienen reportes y contar cuántos reportes tiene cada uno
+    posts_with_reports = Post.objects.annotate(report_count=Count("reports")).filter(
+        report_count__gt=0
+    )
+    return render(
+        request, "report_list.html", {"posts_with_reports": posts_with_reports}
+    )
