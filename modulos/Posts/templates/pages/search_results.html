@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Resultados de Búsqueda - MakeX
+{% endblock title %}
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="display-6 fst-italic">Resultados de Búsqueda</h1>
+        <!-- Formulario de búsqueda -->
+        <p class="fst-italic mt-4">Filtrar busqueda específica</p>
+        <form method="GET" action="{% url 'post_search' %}" class="mb-4">
+            <div class="form-group mb-2">
+                <label for="category">Categoría:</label>
+                {{ form.category }}
+            </div>
+            <div class="form-group mb-2">
+                <label for="author">Autor:</label>
+                {{ form.author }}
+            </div>
+            <div class="form-group mb-2">
+                <label for="publication_date">Fecha de Publicación:</label>
+                {{ form.publication_date }}
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        <!-- Resultados de la búsqueda -->
+        <div class="row">
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="col-md-12 mb-4">
+                        <div class="card h-100 card-container">
+                            <div class="row g-0">
+                                <!-- Imagen ocupa 1/4 del bloque -->
+                                <div class="col-md-3">
+                                    {% if post.image %}
+                                        <img src="{{ post.image.url }}"
+                                             class="card-img"
+                                             alt="{{ post.title }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% else %}
+                                        <img src="{% static 'images/makex.png' %}"
+                                             class="card-img"
+                                             alt="{{ post.title }}"
+                                             style="height: 100%;
+                                                    object-fit: cover">
+                                    {% endif %}
+                                </div>
+                                <!-- Contenido del post -->
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <!-- Mostrar categoría del post -->
+                                        <p class="text-muted fst-italic">{{ post.category.name }}</p>
+                                        <!-- Título del post con enlace -->
+                                        <h5 class="card-title">
+                                            <a href="{% url 'post_detail' post.id %}"
+                                               class="text-black stretched-link">{{ post.title }}</a>
+                                        </h5>
+                                        <!-- Mostrar las primeras 30 palabras del contenido -->
+                                        <p class="card-text">{{ post.content|truncatewords:30|safe }}</p>
+                                        <!-- Mostrar el autor del post -->
+                                        <p class="text-muted">Por: {{ post.author }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No se encontraron resultados para la búsqueda.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

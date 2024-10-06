@@ -118,9 +118,29 @@ class CategoryDetailView(DetailView):
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        request = self.request
         context = super().get_context_data(**kwargs)
         category = self.get_object()
-        context["posts"] = Post.objects.filter(category=category, status=Post.PUBLISHED)
+
+        try:
+            page = int(request.GET.get("page", 1))
+        except ValueError:
+            page = 1
+
+        if page <= 0:
+            page = 1
+
+        posts = Post.objects.filter(status=Post.PUBLISHED, category=category)[
+            20 * (page - 1) : 20 * page
+        ]
+
+        context["posts"] = posts
+
+        if len(posts) >= 20:
+            context["next_page"] = page + 1
+
+        if page > 1:
+            context["previous_page"] = page - 1
 
         return new_ctx(self.request, context)
 

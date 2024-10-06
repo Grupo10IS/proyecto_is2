@@ -1,103 +1,112 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container-fluid h-100">
-        <div class="row h-100">
-            {% if can_create %}
+    <div class="container">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Tablero Kanban</h1>
+            <div class="row h-100">
+                {% if can_create %}
+                    <div class="col-lg-3 d-flex flex-column">
+                        <div class="card flex-grow-1">
+                            <div class="card-header bg-danger text-white">
+                                <h3 class="h5">Borrador</h3>
+                                <a href="{% url 'post_create' %}" class="btn btn-light">Crear</a>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    {% for post in drafts %}
+                                        <li class="card">
+                                            <a href="{% url 'post_detail' post.id %}" class="btn btn-light">
+                                                {{ post.title }}
+                                                <br>
+                                                <small>Autor: {{ post.author }}</small>
+                                            </a>
+                                        </li>
+                                        <div class="d-flex justify-content-between mt-2 mb-2">
+                                            <a href="{% url 'send_to_review' post.id %}" class="btn btn-success">Enviar</a>
+                                            <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Eliminar</a>
+                                        </div>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="col-lg-3 d-flex flex-column">
                     <div class="card flex-grow-1">
-                        <div class="card-header bg-danger text-white">
-                            <h3 class="h5">Borrador</h3>
-                            <a href="{% url 'post_create' %}" class="btn btn-primary">Crear</a>
+                        <div class="card-header bg-warning text-white">
+                            <h3 class="h5">Pendiente de Revisión</h3>
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled">
-                                {% for post in drafts %}
+                                {% for post in pending_review %}
                                     <li class="card">
-                                        <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">
+                                        <a href="{% url 'post_detail' post.id %}" class="btn btn-light">
                                             {{ post.title }}
                                             <br>
                                             <small>Autor: {{ post.author }}</small>
                                         </a>
-                                        <a href="{% url 'send_to_review' post.id %}" class="btn btn-primary">Enviar</a>
-                                        <a href="{% url 'delete_post' post.id %}" class="btn btn-primary">eliminar</a>
                                     </li>
+                                    <div class="d-flex justify-content-between mt-2 mb-2">
+                                        {% if can_approve %}
+                                            <a href="{% url 'approve_post' post.id %}"
+                                               class="btn btn-sm btn-success">Publicar</a>
+                                        {% endif %}
+                                        {% if can_reject %}
+                                            <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
+                                        {% endif %}
+                                    </div>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
-            {% endif %}
-            <div class="col-lg-3 d-flex flex-column">
-                <div class="card flex-grow-1">
-                    <div class="card-header bg-warning text-dark">
-                        <h3 class="h5">Pendiente de Revisión</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            {% for post in pending_review %}
-                                <li class="card">
-                                    <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">
-                                        {{ post.title }}
-                                        <br>
-                                        <small>Autor: {{ post.author }}</small>
-                                    </a>
-                                    {% if can_approve %}
-                                        <a href="{% url 'approve_post' post.id %}"
-                                           class="btn btn-sm btn-success">Publicar</a>
-                                    {% endif %}
-                                    {% if can_reject %}
-                                        <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 d-flex flex-column">
-                <div class="card flex-grow-1">
-                    <div class="card-header bg-info text-white">
-                        <h3 class="h5">Pendiente de Publicación</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            {% for post in pending_publication %}
-                                <li class="card">
-                                    <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">
-                                        {{ post.title }}
-                                        <br>
-                                        <small>Autor: {{ post.author }}</small>
-                                    </a>
-                                    {% if can_publish %}
-                                        <a href="{% url 'publish_post' post.id %}"
-                                           class="btn btn-sm btn-success">Publicar</a>
-                                    {% endif %}
-                                    {% if can_reject %}
-                                        <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                <div class="col-lg-3 d-flex flex-column">
+                    <div class="card flex-grow-1">
+                        <div class="card-header bg-info text-white">
+                            <h3 class="h5">Pendiente de Publicación</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                {% for post in pending_publication %}
+                                    <li class="card">
+                                        <a href="{% url 'post_detail' post.id %}" class="btn btn-light">
+                                            {{ post.title }}
+                                            <br>
+                                            <small>Autor: {{ post.author }}</small>
+                                        </a>
+                                    </li>
+                                    <div class="d-flex justify-content-between mt-2 mb-2">
+                                        {% if can_publish %}
+                                            <a href="{% url 'publish_post' post.id %}"
+                                               class="btn btn-sm btn-success">Publicar</a>
+                                        {% endif %}
+                                        {% if can_reject %}
+                                            <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 d-flex flex-column">
-                <div class="card flex-grow-1">
-                    <div class="card-header bg-success text-white">
-                        <h3 class="h5">Publicado</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            {% for post in published %}
-                                <li class="card">
-                                    <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">
-                                        {{ post.title }}
-                                        <br>
-                                        <small>Autor: {{ post.author }}</small>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                <div class="col-lg-3 d-flex flex-column">
+                    <div class="card flex-grow-1">
+                        <div class="card-header bg-success text-white">
+                            <h3 class="h5">Publicado</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                {% for post in published %}
+                                    <li class="card mb-2">
+                                        <a href="{% url 'post_detail' post.id %}" class="btn btn-light">
+                                            {{ post.title }}
+                                            <br>
+                                            <small>Autor: {{ post.author }}</small>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

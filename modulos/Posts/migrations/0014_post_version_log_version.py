@@ -7,6 +7,8 @@ from django.db import migrations, models
 
 import modulos.mdeditor.fields
 
+import modulos.mdeditor.fields
+
 
 class Migration(migrations.Migration):
 

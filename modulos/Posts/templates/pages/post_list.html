@@ -1,6 +1,6 @@
 {% extends  "register_base.html" %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-6 fst-italic mb-4">Contenido</h1>
             <table class="table table-hover table-striped">
@@ -45,6 +45,11 @@
                                               border-color: black;
                                               color:white">Eliminar</a>
                                 {% endif %}
+                                <a href="{% url 'post_detail' post.id %}"
+                                   class="btn btn-sm btn-danger"
+                                   style="background-color: black;
+                                          border-color: black;
+                                          color:white">Ver</a>
                             </td>
                         </tr>
                     {% endfor %}

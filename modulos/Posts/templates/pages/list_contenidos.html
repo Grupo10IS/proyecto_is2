@@ -1,47 +1,99 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-    Todos los Contenidos - MakeX
-{% endblock title %}
 {% block content %}
     <div class="container mt-5">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
-            <h1 class="mb-4 fst-italic display-4 ">Todos nuestros contenidos</h1>
-            {% for category, posts in posts_by_category.items %}
-                <div class="category-section mb-5">
-                    <h2>{{ category.name }}</h2>
-                    <div class="row">
-                        {% for post in posts %}
-                            <div class="col-md-4 mb-4">
-                                <div class="p-4 card h-100 card-container position-relative">
-                                    {% if post.image %}
-                                        <img src="{{ post.image.url }}"
-                                             class="card-img-top"
-                                             alt="{{ post.title }}"
-                                             style="height: 200px;
-                                                    object-fit: cover">
-                                    {% else %}
-                                        <img src="{% static 'images/makex.png' %}"
-                                             class="card-img-top"
-                                             alt="{{ post.title }}"
-                                             style="height: 200px;
-                                                    object-fit: cover">
-                                    {% endif %}
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post.title }}</h5>
-                                        <p class="card-text">{{ post.summary|truncatewords:20 }}</p>
-                                        <!-- Añadir 'stretched-link' para hacer clic en cualquier parte -->
-                                        <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
+            <h1 class="mb-4 fst-italic display-4">Todos nuestros contenidos</h1>
+            <!-- Formulario de búsqueda / filtrado -->
+            <p class="fst-italic mt-4">Filtrar contenidos</p>
+            <form method="GET" action="" class="mb-4">
+                <div class="form-group mb-2">
+                    <label for="input">Buscar por título:</label>
+                    {{ form.input }} <!-- Este es el campo de búsqueda -->
+                </div>
+                <div class="form-group mb-2">
+                    <label for="category">Categoría:</label>
+                    {{ form.category }}
+                </div>
+                <div class="form-group mb-2">
+                    <label for="author">Autor:</label>
+                    {{ form.author }}
+                </div>
+                <div class="form-group mb-2">
+                    <label for="publication_date">Fecha de Publicación:</label>
+                    {{ form.publication_date }}
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+            <!-- Lista de contenidos paginados por categoría -->
+            {% if posts_by_category %}
+                {% for category, page_obj in posts_by_category.items %}
+                    <div class="category-section mb-5">
+                        <h2>{{ category.name }}</h2>
+                        <div class="row">
+                            {% for post in page_obj %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="p-4 card h-100 card-container position-relative">
+                                        {% if post.image %}
+                                            <img src="{{ post.image.url }}"
+                                                 class="card-img-top"
+                                                 alt="{{ post.title }}"
+                                                 style="height: 200px;
+                                                        object-fit: cover">
+                                        {% else %}
+                                            <img src="{% static 'images/makex.png' %}"
+                                                 class="card-img-top"
+                                                 alt="{{ post.title }}"
+                                                 style="height: 200px;
+                                                        object-fit: cover">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ post.title }}</h5>
+                                            <p class="card-text">{{ post.summary|truncatewords:20 }}</p>
+                                            <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <!-- Paginación de los contenidos por categoría -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?page_{{ category.id }}={{ page_obj.previous_page_number }}">Anterior</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Anterior</a>
+                                    </li>
+                                {% endif %}
+                                {% for num in page_obj.paginator.page_range %}
+                                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page_{{ category.id }}={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?page_{{ category.id }}={{ page_obj.next_page_number }}">Siguiente</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No se encontraron contenidos con los filtros aplicados.</p>
+            {% endif %}
         </div>
         <p class="float-end">
             <a href="#" style="color:black">Volver arriba</a>
         </p>
     </div>
-{% endblock content %}
+{% endblock %}

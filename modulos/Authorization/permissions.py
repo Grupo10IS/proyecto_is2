@@ -33,6 +33,9 @@ ROLE_MANAGE_PERMISSION = "role_manage_permission"
 # categoria
 CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
+# financiero
+VIEW_PURCHASED_CATEGORIES = "view_purchased_categories"
+
 # reportes de contenido
 VIEW_REPORTS = "view_reports"
 
@@ -56,6 +59,11 @@ permissions = [
     (ROLE_MANAGE_PERMISSION, "Permiso para crear y eliminar los roles del sistema"),
     # categoria
     (CATEGORY_MANAGE_PERMISSION, "Permiso para gestionar categorías"),
+    # financiero
+    (
+        VIEW_PURCHASED_CATEGORIES,
+        "Permiso para ver categorias compradas de todos los suscriptores",
+    ),
     # reportes de contenido
     (VIEW_REPORTS, "Permiso para listar los reportes de contenidos"),
 ]

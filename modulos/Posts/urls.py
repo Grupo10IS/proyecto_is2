@@ -4,12 +4,12 @@ from .views import *
 
 urlpatterns = [
     path("", manage_post, name="post_list"),
-    path("list/", ContenidosView.as_view(), name="contenidos"),
+    path("list/", list_contenidos_view, name="list_contenidos"),
     path("<int:id>/", view_post, name="post_detail"),
     path("create/", create_post, name="post_create"),
     path("<int:id>/delete", delete_post, name="delete_post"),
     path("<int:id>/edit/", edit_post, name="edit_post"),
-    path("search", search_post, name="post_search"),
+    path("search/", search_post, name="post_search"),
     # -- vistas de publicacion de contenido --
     path("<int:id>/approve", aprove_post, name="approve_post"),
     path("<int:id>/review", send_to_review, name="send_to_review"),
