@@ -8,21 +8,25 @@
     <div class="container-fluid">
         <div class="row mb-4">
             <!-- Post Principal -->
-            <div class="col-md-8">
-                <h1 class="display-6 fst-italic">Post Destacado</h1>
+               <!-- Post Principal -->
+            <div class="col-lg-8">
+                <h1 class="display-6 fst-italic mb-4">Post Destacado</h1>
                 {% if post_destacado and post_destacado.id %}
-                    <div class="post-featured p-4 position-relative card-container" style="background-image: {% if post_destacado and post_destacado.image %} url('{{ post_destacado.image.url }}') {% else %} url('{% static "images/makex.png" %}') {% endif %}; background-size: cover; background-position: center; height:500px;">
-                        <!-- Texto superpuesto en la parte inferior de la imagen -->
-                        <div class="text-container"
-                             style="position: absolute;
-                                    bottom: 0;
-                                    background-color: rgba(255, 255, 255, 0.8)">
-                            <h1 class="display-6 fst-italic">
+                    <div class="card card-container bg-dark text-white mb-5"
+                         style="position: relative">
+                        <img src="{% if post_destacado.image %}{{ post_destacado.image.url }}{% else %}{% static 'images/makex.png' %}{% endif %}"
+                             class="card-img"
+                             alt="{{ post_destacado.title }}"
+                             style="object-fit: cover;
+                                    height: 350px">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end"
+                             style="background: rgba(0, 0, 0, 0.4)">
+                            <h2 class="card-title">
                                 <a href="{% url 'post_detail' post_destacado.id %}"
-                                   class="text-black stretched-link"
-                                   style="text-decoration: none">{{ post_destacado.title }}</a>
-                            </h1>
-                            <p class="lead">{{ post_destacado.content|truncatewords:30 }}</p>
+                                   class="text-white stretched-link"
+                                   style="text-decoration: none; text-shadow: 0.7px 0.7px 0px black">{{ post_destacado.title }}</a>
+                            </h2>
+                            <p class="card-text" style="text-shadow: 0.5px 0.5px 0px black">{{ post_destacado.content|truncatewords:25 }}</p>
                         </div>
                     </div>
                 {% else %}
@@ -185,3 +189,40 @@
         </p>
     </div>
 {% endblock content %}
+
+
+
+<!-- Sección de categorías populares -->
+<div class="col-md-4">
+    <h1 class="display-6 fst-italic">Categorías Populares</h1>
+    <p class="fst-italic">Las 3 categorías favoritas de los usuarios de MakeX</p>
+    <div class="row">
+        {% if categorias_populares %}
+            {% for category in categorias_populares %}
+                <div class="col-12 mb-3">
+                    <div class="card card-container">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}"
+                                 class="card-img-top"
+                                 alt="{{ category.name }}"
+                                 style="height: 100%;
+                                        object-fit: cover">
+                        {% else %}
+                            <img src="{% static 'images/makex.png' %}"
+                                 class="card-img-top"
+                                 alt="{{ category.name }}"
+                                 style="height: 100%;
+                                        object-fit: cover">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text">{{ category.description|truncatewords:10 }}</p>
+                            <a href="{% url 'category_detail' category.id %}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay categorías populares disponibles.</p>
+        {% endif %}
+    </div>

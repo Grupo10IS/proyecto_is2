@@ -1,6 +1,11 @@
 from django.urls import path
 
-from .views import payment_success, payment_view, purchased_categories_view
+from .views import (
+    payment_success,
+    payment_view,
+    purchased_categories_view,
+    financial_view,
+)
 
 urlpatterns = [
     path("pay/<int:category_id>/", payment_view, name="payment_view"),
@@ -10,4 +15,5 @@ urlpatterns = [
         purchased_categories_view,
         name="purchased_categories",
     ),
+    path("financial/", financial_view, name="financial_view"),
 ]
