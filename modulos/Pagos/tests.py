@@ -10,25 +10,31 @@ User = get_user_model()
 
 @pytest.mark.django_db
 def test_financial_view_access(client):
-    # Crear un usuario financiero
+    # Crear un usuario financiero con un email único
     financial_user = User.objects.create_user(
-        username="financial", password="financial123"
+        username="financial",
+        email="financial@example.com",  # Asegúrate de que el email es único
+        password="financialpass",
     )
     permission = Permission.objects.get(codename="view_purchased_categories")
     financial_user.user_permissions.add(permission)
 
     # Loguear al usuario financiero
-    client.login(username="financial", password="financial123")
+    client.login(username="financial", password="financialpass")
 
     # Probar que el usuario puede acceder a la vista
     url = reverse("financial_view")
     response = client.get(url)
     assert response.status_code == 200
 
-    # Probar un usuario sin permisos
-    regular_user = User.objects.create_user(username="regular", password="regular123")
-    client.login(username="regular", password="regular123")
+    # Probar un usuario regular sin permisos con un email único
+    regular_user = User.objects.create_user(
+        username="regular",
+        email="regular@example.com",  # Asegúrate de que el email es único
+        password="regularpass",
+    )
+
+    # Probar que el usuario sin permisos no puede acceder a la vista financiera
+    client.login(username="regular", password="regularpass")
     response = client.get(url)
-    assert (
-        response.status_code == 403
-    )  # Debería devolver un Forbidden (403) para usuarios sin permisos
+    assert response.status_code == 403  # Forbidden, el usuario no tiene permisos
