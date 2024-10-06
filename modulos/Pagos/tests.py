@@ -20,7 +20,8 @@ def test_financial_view_access(client):
     financial_user.user_permissions.add(permission)
 
     # Loguear al usuario financiero
-    client.login(username="financial", password="financialpass")
+    login_successful = client.login(username="financial", password="financialpass")
+    assert login_successful, "El login del usuario financiero falló"
 
     # Probar que el usuario puede acceder a la vista financiera
     url = reverse("financial_view")
@@ -35,7 +36,8 @@ def test_financial_view_access(client):
     )
 
     # Loguear al usuario regular sin permisos
-    client.login(username="regular", password="regularpass")
+    login_successful = client.login(username="regular", password="regularpass")
+    assert login_successful, "El login del usuario regular falló"
 
     # Probar que el usuario sin permisos no puede acceder a la vista financiera
     response = client.get(url)
