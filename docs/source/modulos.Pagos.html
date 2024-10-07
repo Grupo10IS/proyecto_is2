@@ -99,6 +99,28 @@
 <section id="module-modulos.Pagos.forms">
 <span id="modulos-pagos-forms-module"></span><h2>modulos.Pagos.forms module<a class="headerlink" href="#module-modulos.Pagos.forms" title="Link to this heading">¶</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Pagos.forms.</span></span><span class="sig-name descname"><span class="pre">PaymentFilterForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/forms.html#PaymentFilterForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentForm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Pagos.forms.</span></span><span class="sig-name descname"><span class="pre">PaymentForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/forms.html#PaymentForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.forms.PaymentForm" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
@@ -303,14 +325,16 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 </dd></dl>
 
 </section>
-<section id="module-modulos.Pagos.tests">
-<span id="modulos-pagos-tests-module"></span><h2>modulos.Pagos.tests module<a class="headerlink" href="#module-modulos.Pagos.tests" title="Link to this heading">¶</a></h2>
-</section>
 <section id="module-modulos.Pagos.urls">
 <span id="modulos-pagos-urls-module"></span><h2>modulos.Pagos.urls module<a class="headerlink" href="#module-modulos.Pagos.urls" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-modulos.Pagos.views">
 <span id="modulos-pagos-views-module"></span><h2>modulos.Pagos.views module<a class="headerlink" href="#module-modulos.Pagos.views" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.views.financial_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">financial_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#financial_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.financial_view" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Pagos.views.payment_success">
 <span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">payment_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#payment_success"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.payment_success" title="Link to this definition">¶</a></dt>
@@ -385,6 +409,12 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.forms">modulos.Pagos.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.forms.PaymentFilterForm"><code class="docutils literal notranslate"><span class="pre">PaymentFilterForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.forms.PaymentFilterForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PaymentFilterForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.forms.PaymentFilterForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">PaymentFilterForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.forms.PaymentFilterForm.media"><code class="docutils literal notranslate"><span class="pre">PaymentFilterForm.media</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.forms.PaymentForm"><code class="docutils literal notranslate"><span class="pre">PaymentForm</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.forms.PaymentForm.Meta"><code class="docutils literal notranslate"><span class="pre">PaymentForm.Meta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.forms.PaymentForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PaymentForm.base_fields</span></code></a></li>
@@ -425,9 +455,9 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.signals.send_payment_notification"><code class="docutils literal notranslate"><span class="pre">send_payment_notification()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.tests">modulos.Pagos.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.financial_view"><code class="docutils literal notranslate"><span class="pre">financial_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.purchased_categories_view"><code class="docutils literal notranslate"><span class="pre">purchased_categories_view()</span></code></a></li>
