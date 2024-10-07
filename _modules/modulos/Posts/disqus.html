@@ -48,7 +48,7 @@
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
         <span class="s2">&quot;forum&quot;</span><span class="p">:</span> <span class="n">forum</span><span class="p">,</span>
-        <span class="s2">&quot;thread:ident&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;posts/</span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;thread:ident&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/posts/</span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
