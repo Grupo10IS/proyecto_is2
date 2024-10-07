@@ -16,7 +16,7 @@
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
     <link rel="next" title="modulos.UserProfile.management package" href="modulos.UserProfile.management.html" />
-    <link rel="prev" title="modulos.Posts.migrations package" href="modulos.Posts.migrations.html" />
+    <link rel="prev" title="modulos.Reports.migrations package" href="modulos.Reports.migrations.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -654,6 +654,21 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.report_set">
+<span class="sig-name descname"><span class="pre">report_set</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.report_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.user_permissions">
 <span class="sig-name descname"><span class="pre">user_permissions</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.user_permissions" title="Link to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -853,6 +868,8 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.html">modulos.Posts package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.buscador.html">modulos.Posts.buscador package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Posts.migrations.html">modulos.Posts.migrations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Reports.html">modulos.Reports package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Reports.migrations.html">modulos.Reports.migrations package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">modulos.UserProfile package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.management.html">modulos.UserProfile.management package</a></li>
@@ -947,6 +964,7 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.phone_number"><code class="docutils literal notranslate"><span class="pre">UserProfile.phone_number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.post_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.post_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.receive_notifications"><code class="docutils literal notranslate"><span class="pre">UserProfile.receive_notifications</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.report_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.report_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.user_permissions"><code class="docutils literal notranslate"><span class="pre">UserProfile.user_permissions</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.username"><code class="docutils literal notranslate"><span class="pre">UserProfile.username</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.version_set"><code class="docutils literal notranslate"><span class="pre">UserProfile.version_set</span></code></a></li>
@@ -993,7 +1011,7 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="modules.html">modulos</a><ul>
   <li><a href="modulos.html">modulos package</a><ul>
-      <li>Previous: <a href="modulos.Posts.migrations.html" title="capítulo anterior">modulos.Posts.migrations package</a></li>
+      <li>Previous: <a href="modulos.Reports.migrations.html" title="capítulo anterior">modulos.Reports.migrations package</a></li>
       <li>Next: <a href="modulos.UserProfile.management.html" title="próximo capítulo">modulos.UserProfile.management package</a></li>
   </ul></li>
   </ul></li>

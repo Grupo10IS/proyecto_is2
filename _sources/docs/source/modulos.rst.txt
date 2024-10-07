@@ -11,6 +11,7 @@ Subpackages
    modulos.Categories
    modulos.Pagos
    modulos.Posts
+   modulos.Reports
    modulos.UserProfile
    modulos.mdeditor
 
