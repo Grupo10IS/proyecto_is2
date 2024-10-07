@@ -1,11 +1,11 @@
 import stripe
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
-
 from modulos.Categories.models import Category
-from modulos.Pagos.forms import PaymentForm, UserProfileForm
+from modulos.Pagos.forms import PaymentForm, UserProfileForm, PaymentFilterForm
 from modulos.Pagos.models import Payment
+from modulos.Authorization.permissions import VIEW_PURCHASED_CATEGORIES
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -146,3 +146,38 @@ def purchased_categories_view(request):
     }
 
     return render(request, "purchased_categories.html", context)
+
+
+@login_required
+@permission_required([VIEW_PURCHASED_CATEGORIES])
+def financial_view(request):
+    form = PaymentFilterForm(request.GET or None)
+
+    # Construimos la query inicial (mostrar todos los pagos completados)
+    payments = Payment.objects.filter(status="completed")
+
+    # Aplicamos filtros si el formulario es válido
+    if form.is_valid():
+        category = form.cleaned_data.get("category")
+        user = form.cleaned_data.get("user")
+        date_from = form.cleaned_data.get("date_from")
+        date_to = form.cleaned_data.get("date_to")
+
+        if category:
+            payments = payments.filter(category=category)
+
+        if user:
+            payments = payments.filter(user=user)
+
+        if date_from:
+            payments = payments.filter(date_paid__gte=date_from)
+
+        if date_to:
+            payments = payments.filter(date_paid__lte=date_to)
+
+    context = {
+        "form": form,
+        "payments": payments,
+    }
+
+    return render(request, "financial_view.html", context)

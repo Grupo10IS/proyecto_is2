@@ -39,7 +39,7 @@
     <div class="offcanvas-body">
         <!-- Panel de Control -->
         {% if user.is_authenticated %}
-            {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos %}
+            {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos  %}
                 <h4>Panel de Control</h4>
                 <nav class="nav nav-pills flex-column mb-5">
                     {% if "user" in permisos %}
@@ -76,6 +76,12 @@
                        style="color:white"
                        href="{% url 'reports' %}"
                        role="button">Reportes</a>
+                    {% if has_financial_acces %}
+                        <a class="nav-link text-start"
+                           style="color:white"
+                           href="{% url 'financial_view' %}"
+                           role="button">Ver Finanzas</a>
+                    {% endif %}
                 </nav>
             {% endif %}
         {% endif %}
@@ -91,3 +97,4 @@
         </nav>
     </div>
 </div>
+
