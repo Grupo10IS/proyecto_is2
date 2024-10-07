@@ -16,21 +16,18 @@
                 <tbody>
                     {% for post in posts %}
                         <tr>
-                            <td>{{ post.title }}</td>
+                            <td>
+                                <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                            </td>
                             <td>{{ post.category }}</td>
                             <td>{{ post.status }}</td>
                             <td>{{ post.creation_date }}</td>
                             <td class="actions">
-                                <a href="{% url 'post_versions' post.id %}"
+                                <a href="{% url 'post_statistics' post.id %}"
                                    class="btn btn-sm btn-danger"
                                    style="background-color: black;
                                           border-color: black;
-                                          color:white">Versiones</a>
-                                <a href="{% url 'post_log_list' post.id %}"
-                                   class="btn btn-sm btn-danger"
-                                   style="background-color: black;
-                                          border-color: black;
-                                          color:white">Logs</a>
+                                          color:white">Detalles</a>
                                 {% if perm_create or perm_edit %}
                                     <a href="{% url 'edit_post' post.id %}"
                                        class="btn btn-sm btn-primary"
@@ -45,11 +42,6 @@
                                               border-color: black;
                                               color:white">Eliminar</a>
                                 {% endif %}
-                                <a href="{% url 'post_detail' post.id %}"
-                                   class="btn btn-sm btn-danger"
-                                   style="background-color: black;
-                                          border-color: black;
-                                          color:white">Ver</a>
                             </td>
                         </tr>
                     {% endfor %}

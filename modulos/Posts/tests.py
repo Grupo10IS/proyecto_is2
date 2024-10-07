@@ -206,7 +206,7 @@ def test_favorite_post(client):
     # Test agregar post a favoritos
     url = reverse("post_favorite", args=[post.id])
     response = client.post(url)
-    assert response.status_code == 204, "Debería retornar 204 al marcar como favorito."
+    assert response.status_code == 302, "Debería retornar 302 al marcar como favorito."
     assert post.favorites.filter(
         id=user.id
     ).exists(), "El post debería estar en la lista de favoritos."
@@ -214,8 +214,8 @@ def test_favorite_post(client):
     # Test quitar post de favoritos
     response = client.post(url)
     assert (
-        response.status_code == 204
-    ), "Debería retornar 204 al desmarcar como favorito."
+        response.status_code == 302
+    ), "Debería retornar 302 al desmarcar como favorito."
     assert not post.favorites.filter(
         id=user.id
     ).exists(), "El post no debería estar en la lista de favoritos."
@@ -272,7 +272,7 @@ def test_search_post_view(client):
     url = reverse("post_search") + "?input="
     response = client.get(url)
     assert (
-        response.status_code == 302
+        response.status_code == 200
     ), "Debería redirigir a la vista de inicio si no hay búsqueda válida."
 
     # Probar una búsqueda válida

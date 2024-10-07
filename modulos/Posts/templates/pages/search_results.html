@@ -10,19 +10,79 @@
         <p class="fst-italic mt-4">Filtrar busqueda específica</p>
         <form method="GET" action="{% url 'post_search' %}" class="mb-4">
             <div class="form-group mb-2">
-                <label for="category">Categoría:</label>
-                {{ form.category }}
+                <label for="category">Busqueda:</label>
+                {{ form.input }}
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm ml-2 rounded-circle p-0 shadow-sm"
+                        style="font-weight: bold;
+                               font-size: 0.9rem;
+                               width: 30px;
+                               height: 30px;
+                               display: inline-flex;
+                               align-items: center;
+                               justify-content: center;
+                               transition: background-color 0.3s ease, transform 0.3s"
+                        onmouseover="this.style.backgroundColor='#17a2b8'; this.style.color='white'; this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.backgroundColor=''; this.style.color=''; this.style.transform='';"
+                        onclick="toggleHelp()">?</button>
             </div>
-            <div class="form-group mb-2">
-                <label for="author">Autor:</label>
-                {{ form.author }}
-            </div>
-            <div class="form-group mb-2">
-                <label for="publication_date">Fecha de Publicación:</label>
-                {{ form.publication_date }}
-            </div>
-            <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
+        <!-- Div flotante para mostrar ayuda -->
+        <div id="helpDiv"
+             class="my-3 p-3 bg-white border rounded shadow-lg"
+             style="z-index: 1050;
+                    overflow-y: auto;
+                    max-height: 80vh;
+                    border-left: 4px solid #17a2b8">
+            <div class="mt-3">
+                <b>
+                    <h4 class="text-black">Busqueda avanzada</h4>
+                </b>
+                Esto listara todos los posts que contengan en su titulo "programacion".
+                <pre class="bg-light p-2 rounded">programacion</pre>
+                Esto listara los posts que contengan en su titulo "futbol", que la categoria contenga el nombre
+                "deportes" y que fueron creados antes del 12/08/2024
+                categoria.
+                <pre class="bg-light p-2 rounded">futbol #categoria: deportes #before: 12/08/2024</pre>
+                Esto listara todos los posts que sean de la categoria "programacion", que NO contengan
+                "javascript" en el titulo, ni dentro del contenido del post.
+                <pre class="bg-light p-2 rounded">#categoria: programacion #contenido!: javascript #titulo!: javascript</pre>
+                Esto listara los posts que contengan en su titulo "futbol", con los tags "messi" y "ronaldo" y
+                que el autor sea "elias".
+                <pre class="bg-light p-2 rounded">futbol #tags: messi, ronaldo #autor: elias</pre>
+                <h4 class="mb-2 font-weight-bold text-black">Sintaxis del buscador</h4>
+                <p class="mb-2">La sintaxis del buscador es:</p>
+                <pre class="bg-light p-2 rounded"> titulo del post [filtros]</pre>
+                <h5 class="mt-1 text-black">Filtros disponibles:</h5>
+                <ul class="pl-4 mb-3">
+                    <li>
+                        <strong>#titulo:</strong> Filtra posts que contengan la frase de búsqueda en el título.
+                    </li>
+                    <li>
+                        <strong>#categoria:</strong> Filtra por categorías que contengan el string de filtrado.
+                    </li>
+                    <li>
+                        <strong>#contenido:</strong> Busca en el cuerpo del contenido.
+                    </li>
+                    <li>
+                        <strong>#autor:</strong> Busca posts con el nombre del autor.
+                    </li>
+                    <li>
+                        <strong>#tags:</strong> Filtra posts que contengan los tags proporcionados (formato: #tags: tag1,tag2,tag3).
+                    </li>
+                    <li>
+                        <strong>#after:</strong> Filtra posts creados después de una fecha específica (dd/mm/yyyy).
+                    </li>
+                    <li>
+                        <strong>#before:</strong> Filtra posts creados antes de una fecha específica (dd/mm/yyyy).
+                    </li>
+                </ul>
+                <h5 class="text-black mt-1">Uso de negaciones</h5>
+                <p>
+                    Se puede usar el operador <code>!</code> para ignorar ciertas búsquedas. Se aplica a los campos título, categoría, autor y contenido.
+                </p>
+            </div>
+        </div>
         <!-- Resultados de la búsqueda -->
         <div class="row">
             {% if posts %}
@@ -59,7 +119,11 @@
                                         <!-- Mostrar las primeras 30 palabras del contenido -->
                                         <p class="card-text">{{ post.content|truncatewords:30|safe }}</p>
                                         <!-- Mostrar el autor del post -->
-                                        <p class="text-muted">Por: {{ post.author }}</p>
+                                        <p class="text-muted">
+                                            <b>Por:</b> {{ post.author }}
+                                            <br class="text-muted">
+                                            <b><span class="text-primary">#</span>Tags</b>: {{ post.tags }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -71,4 +135,29 @@
             {% endif %}
         </div>
     </div>
+    <style>
+        #helpDiv {
+            display: none;
+            z-index: 1030; /* Asegura que el div flote sobre otros elementos */
+        }
+
+        #input:focus + button.btn-outline-info {
+            display: inline-block;
+        }
+
+        #helpDiv.show {
+            display: block;
+        }
+    </style>
+    <script>
+        function toggleHelp() {
+            var helpDiv = document.getElementById('helpDiv');
+            helpDiv.classList.toggle('show');
+        }
+
+        function hideHelp() {
+            var helpDiv = document.getElementById('helpDiv');
+            helpDiv.classList.remove('show');
+        }
+    </script>
 {% endblock content %}

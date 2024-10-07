@@ -38,6 +38,20 @@ utilizando el comando:
 python manage.py  new_admin
 ```
 
+NOTA:
+deberas contar con las siguientes variables de entorno en un archivo `.env` dentro de la raiz
+del proyecto:
+
+```bash
+# stripe
+export STRIPE_SECRET_KEY=stripe
+export STRIPE_PUBLIC_KEY=stripe
+
+# disqus
+export DISQUS_API_KEY=disqus
+export DISQUS_FORUM=disqus (default = 'makexfp-com')
+```
+
 Luego de estos pasos ya podra levantar el servidor con:
 
 ```bash
