@@ -58,7 +58,6 @@ def notify_user_role_change(sender, instance, action, pk_set, **kwargs):
     Notifica al usuario cuando se le asigna o cambia un rol.
     """
     if action == "post_add":
-        print(f"Detectado cambio de roles para el usuario: {instance.username}")
         # Se han añadido roles nuevos
         new_roles = Group.objects.filter(pk__in=pk_set)
 
@@ -72,13 +71,15 @@ def notify_user_role_change(sender, instance, action, pk_set, **kwargs):
                 f"Tu rol en MakeX ha cambiado. Ahora tienes el rol de '{role.name}'.\n"
                 "Si tienes alguna duda, no dudes en contactarnos!"
             )
-            send_mail(
-                subject,
-                message,
-                "groupmakex@gmail.com",
-                [instance.email],
-                fail_silently=False,
-            )
-            print(
-                f"Correo de notificación de cambio de rol enviado a {instance.username} ({instance.email})"
-            )
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    "groupmakex@gmail.com",
+                    [instance.email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print(
+                    f"No se pudo enviar el mail al usuario"
+                )
