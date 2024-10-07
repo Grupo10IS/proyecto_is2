@@ -106,20 +106,28 @@ def user_has_access_to_category(user, category):
         return True
 
     # Verificar si el usuario pertenece a grupos con acceso a la categoría
-    from modulos.Authorization.roles import (ADMIN, AUTOR, EDITOR, PUBLISHER,
-                                             SUBSCRIBER)
+    from modulos.Authorization.roles import (
+        ADMIN,
+        AUTOR,
+        EDITOR,
+        PUBLISHER,
+        SUBSCRIBER,
+        FINANCIAL,
+    )
 
     if (
         category.tipo == category.SUSCRIPCION
         and user.groups.filter(
-            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER]
+            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER, FINANCIAL]
         ).exists()
     ):
         return True
 
     if (
         category.tipo == category.PREMIUM
-        and user.groups.filter(name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR]).exists()
+        and user.groups.filter(
+            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, FINANCIAL]
+        ).exists()
     ):
         return True
 

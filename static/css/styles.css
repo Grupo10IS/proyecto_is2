@@ -8,6 +8,10 @@ body {
     background: linear-gradient(135deg, #a4a4a4, #dddcdc, #f1f1f1, #dddcdc, #a4a4a4);
 }
 
+.nav-link:hover {
+    transform: scale(0.98);
+    transition: transform 0.3s ease;
+}
 /* Para asegurarse de que el contenido principal ocupe el espacio restante */
 main {
     flex: 1;
