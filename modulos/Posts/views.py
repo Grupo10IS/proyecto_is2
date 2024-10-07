@@ -645,18 +645,21 @@ def post_version_detail(request, post_id, version):
 
 
 @login_required
-@permission_required([POST_CREATE_PERMISSION])
-# FIX: cambiar los permisos para que solo el autor y algunos puedan ver esas Estadisticas
 def post_statistics(request, id):
     post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a los logs de este post"
+        )
 
     ctx = new_ctx(
         request,
         {
             "post": post,
-            "logs": Log.objects.filter(post=post)[:5],
-            "versions": Version.objects.filter(post_id=post.id)[:5],
-            "disqus": get_disqus_stats(post.id)
+            "logs": Log.objects.filter(post=post).order_by("-id")[:5],
+            "versions": Version.objects.filter(post_id=post.id).order_by("-id")[:5],
+            "disqus": get_disqus_stats(post.id),
         },
     )
 

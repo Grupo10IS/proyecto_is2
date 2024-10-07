@@ -126,7 +126,7 @@
                     <tbody>
                         {% for version in versions %}
                             <tr>
-                                <td><a href="{% url 'post_version_detail' version.post_id version.version %}">Versión {{ version.id }}</a></td>
+                                <td><a href="{% url 'post_version_detail' version.post_id version.version %}">Versión {{ version.version }}</a></td>
                                 <td>{{ version.creation_date }}<br><em>{{ version.description }}</em></td>
                             </tr>
                         {% empty %}
