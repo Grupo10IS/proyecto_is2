@@ -29,6 +29,14 @@ modulos.Posts.apps module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.disqus module
+---------------------------
+
+.. automodule:: modulos.Posts.disqus
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 modulos.Posts.forms module
 --------------------------
 

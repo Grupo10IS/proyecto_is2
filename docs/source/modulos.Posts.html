@@ -302,6 +302,14 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 </dd></dl>
 
 </section>
+<section id="module-modulos.Posts.disqus">
+<span id="modulos-posts-disqus-module"></span><h2>modulos.Posts.disqus module<a class="headerlink" href="#module-modulos.Posts.disqus" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.disqus.get_disqus_stats">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.disqus.</span></span><span class="sig-name descname"><span class="pre">get_disqus_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/disqus.html#get_disqus_stats"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.disqus.get_disqus_stats" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
 <section id="module-modulos.Posts.forms">
 <span id="modulos-posts-forms-module"></span><h2>modulos.Posts.forms module<a class="headerlink" href="#module-modulos.Posts.forms" title="Link to this heading">¶</a></h2>
 <dl class="py class">
@@ -354,12 +362,12 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.SearchPostForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'author':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'input':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'publication_date':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.SearchPostForm.base_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'input':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.SearchPostForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.SearchPostForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'author':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'input':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'publication_date':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.SearchPostForm.declared_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'input':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.SearchPostForm.declared_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -940,6 +948,11 @@ id (int): El ID del post a eliminar.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.enhanced_search">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">enhanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#enhanced_search"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.enhanced_search" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.favorite_list">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">favorite_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#favorite_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.favorite_list" title="Link to this definition">¶</a></dt>
 <dd><p>Vista para listar los posts favoritos del usuario y las categorías de interés.</p>
@@ -990,10 +1003,9 @@ También maneja la búsqueda de posts a través del formulario.</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.Posts.views.search_post">
-<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">search_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#search_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.search_post" title="Link to this definition">¶</a></dt>
-<dd><p>Vista para buscar publicaciones utilizando múltiples filtros.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="modulos.Posts.views.post_statistics">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_statistics"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_statistics" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.view_post">
@@ -1062,6 +1074,10 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.apps.PostsConfig.ready"><code class="docutils literal notranslate"><span class="pre">PostsConfig.ready()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.disqus">modulos.Posts.disqus module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.disqus.get_disqus_stats"><code class="docutils literal notranslate"><span class="pre">get_disqus_stats()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.forms">modulos.Posts.forms module</a><ul>
@@ -1175,12 +1191,13 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.delete_post"><code class="docutils literal notranslate"><span class="pre">delete_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.enhanced_search"><code class="docutils literal notranslate"><span class="pre">enhanced_search()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.list_contenidos_view"><code class="docutils literal notranslate"><span class="pre">list_contenidos_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_log_list"><code class="docutils literal notranslate"><span class="pre">post_log_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.search_post"><code class="docutils literal notranslate"><span class="pre">search_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_statistics"><code class="docutils literal notranslate"><span class="pre">post_statistics()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>
 </li>
