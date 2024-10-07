@@ -160,3 +160,29 @@
         filter: drop-shadow(0px 0px 0px rgba(255, 165, 0, 0.7));
     }
 }
+/*Reporte de contenido */
+/* Ajustar márgenes y espaciado para los campos de formulario */
+.modal-body .form-select,
+.modal-body .form-control {
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+/* Ajustar el aspecto de los botones */
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+}
+
+.modal-footer .btn-danger {
+    background-color: #dc3545;
+}
+
+/* Centrar el modal */
+.modal-dialog {
+    max-width: 500px;
+}
+
+/* Personalizar el header del modal */
+.modal-header.bg-light {
+    background-color: #f8f9fa;
+}

@@ -36,6 +36,9 @@ CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 # financiero
 VIEW_PURCHASED_CATEGORIES = "view_purchased_categories"
 
+# reportes de contenido
+VIEW_REPORTS = "view_reports"
+
 # NOTE: se utiliza para listar los permisos en la vista
 permissions = [
     # usuarios
@@ -61,6 +64,8 @@ permissions = [
         VIEW_PURCHASED_CATEGORIES,
         "Permiso para ver categorias compradas de todos los suscriptores",
     ),
+    # reportes de contenido
+    (VIEW_REPORTS, "Permiso para listar los reportes de contenidos"),
 ]
 
 #####
