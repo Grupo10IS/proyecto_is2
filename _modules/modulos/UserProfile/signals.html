@@ -100,7 +100,6 @@
 <span class="sd">    Notifica al usuario cuando se le asigna o cambia un rol.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;post_add&quot;</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectado cambio de roles para el usuario: </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># Se han añadido roles nuevos</span>
         <span class="n">new_roles</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk__in</span><span class="o">=</span><span class="n">pk_set</span><span class="p">)</span>
 
@@ -114,16 +113,18 @@
                 <span class="sa">f</span><span class="s2">&quot;Tu rol en MakeX ha cambiado. Ahora tienes el rol de &#39;</span><span class="si">{</span><span class="n">role</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;Si tienes alguna duda, no dudes en contactarnos!&quot;</span>
             <span class="p">)</span>
-            <span class="n">send_mail</span><span class="p">(</span>
-                <span class="n">subject</span><span class="p">,</span>
-                <span class="n">message</span><span class="p">,</span>
-                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
-                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Correo de notificación de cambio de rol enviado a </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">)&quot;</span>
-            <span class="p">)</span></div>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">send_mail</span><span class="p">(</span>
+                    <span class="n">subject</span><span class="p">,</span>
+                    <span class="n">message</span><span class="p">,</span>
+                    <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                    <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No se pudo enviar el mail al usuario&quot;</span>
+                <span class="p">)</span></div>
 
 </pre></div>
 
