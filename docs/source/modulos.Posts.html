@@ -1000,12 +1000,30 @@ También maneja la búsqueda de posts a través del formulario.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.post_log_list">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_log_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_log_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_log_list" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista para listar los registros de un post específico.</p>
+<dl class="simple">
+<dt>Argumentos:</dt><dd><p>request: El objeto de solicitud HTTP.
+id: El ID del post para obtener sus registros.</p>
+</dd>
+<dt>Retorna:</dt><dd><p>Renderiza la página logs_list con los registros del post, o devuelve un
+HttpResponseForbidden si el usuario no tiene permisos o no es el autor del post.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.post_statistics">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_statistics"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_statistics" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Vista para mostrar estadísticas de un post específico.</p>
+<dl class="simple">
+<dt>Argumentos:</dt><dd><p>request: El objeto de solicitud HTTP.
+id: El ID del post para obtener sus estadísticas.</p>
+</dd>
+<dt>Retorna:</dt><dd><p>Renderiza la página statistics con los registros, versiones y estadísticas de Disqus del post.
+Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.view_post">

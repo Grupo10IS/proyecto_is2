@@ -425,35 +425,6 @@
 
 
 
-<div class="viewcode-block" id="favorite_post">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.favorite_post">[documentos]</a>
-<span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">favorite_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vista para marcar o desmarcar un post como favorito.</span>
-
-<span class="sd">    Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos</span>
-<span class="sd">    del usuario actual.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
-<span class="sd">        id (int): El ID del post a marcar como favorito.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>  <span class="c1"># Obtiene el post o devuelve un error 404</span>
-
-    <span class="c1"># Si el post ya es favorito lo agrega, si no lo elimina</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_detail&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span></div>
-
-
-
 <span class="c1"># --------------------</span>
 <span class="c1"># Flujo de publicacion</span>
 <span class="c1"># --------------------</span>
@@ -462,6 +433,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">kanban_board</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar el tablero Kanban con las publicaciones organizadas por estado.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,</span>
+<span class="sd">        pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Filtrar los posts según el estado</span>
     <span class="n">drafts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
     <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">)</span>
@@ -495,6 +476,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">send_to_review</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para enviar una publicación a revisión.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post que se va a enviar a revisión.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Redirige al tablero Kanban una vez que el estado del post se ha actualizado a &#39;Pendiente de Revisión&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span>
     <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -504,6 +495,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">aprove_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para aprobar una publicación y pasarla al estado de &#39;Pendiente de Publicación&#39;.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post que se va a aprobar.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Redirige al tablero Kanban después de cambiar el estado del post a &#39;Pendiente de Publicación&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span>
     <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -513,6 +514,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">publish_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para publicar una publicación.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post que se va a publicar.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Redirige al tablero Kanban una vez que el estado del post se ha actualizado a &#39;Publicado&#39; y se ha registrado la fecha de publicación.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
     <span class="n">post</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
@@ -523,6 +534,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">reject_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para rechazar una publicación y devolverla al estado de &#39;Borrador&#39;.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post que se va a rechazar.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Redirige al tablero Kanban después de cambiar el estado del post a &#39;Borrador&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
     <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -532,6 +553,35 @@
 <span class="c1"># --------------------</span>
 <span class="c1">#      Varios</span>
 <span class="c1"># --------------------</span>
+
+
+<div class="viewcode-block" id="favorite_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.favorite_post">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">favorite_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para marcar o desmarcar un post como favorito.</span>
+
+<span class="sd">    Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos</span>
+<span class="sd">    del usuario actual.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">        id (int): El ID del post a marcar como favorito.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>  <span class="c1"># Obtiene el post o devuelve un error 404</span>
+
+    <span class="c1"># Si el post ya es favorito lo agrega, si no lo elimina</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_detail&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="favorite_list">
@@ -641,6 +691,17 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_log_list">[documentos]</a>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">post_log_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para listar los registros de un post específico.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post para obtener sus registros.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Renderiza la página logs_list con los registros del post, o devuelve un</span>
+<span class="sd">        HttpResponseForbidden si el usuario no tiene permisos o no es el autor del post.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span> <span class="ow">or</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
@@ -657,6 +718,16 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_versions_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para listar todas las versiones de un post específico.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post para obtener sus versiones.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Renderiza la página post_versions_list con las versiones del post.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
     <span class="n">versions</span> <span class="o">=</span> <span class="n">Version</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
@@ -668,6 +739,18 @@
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_version_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar detalles y diferencias entre el contenido actual del post y una versión específica.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        post_id: El ID del post.</span>
+<span class="sd">        version: El número de versión del post para comparar.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Renderiza la página post_version_detail con las diferencias entre el contenido de la versión y el contenido actual del post.</span>
+<span class="sd">        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">original</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">post_id</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span>
@@ -706,6 +789,17 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_statistics">[documentos]</a>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">post_statistics</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar estadísticas de un post específico.</span>
+
+<span class="sd">    Argumentos:</span>
+<span class="sd">        request: El objeto de solicitud HTTP.</span>
+<span class="sd">        id: El ID del post para obtener sus estadísticas.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        Renderiza la página statistics con los registros, versiones y estadísticas de Disqus del post.</span>
+<span class="sd">        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span> <span class="ow">or</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
