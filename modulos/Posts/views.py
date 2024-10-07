@@ -25,7 +25,7 @@ from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
-from modulos.Posts.forms import NewPostForm, SearchPostForm
+from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
 from modulos.Posts.models import Log, NewVersion, Post, Version
 from modulos.utils import new_ctx
 
@@ -576,7 +576,7 @@ def list_contenidos_view(request):
     categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
 
     # Inicializa el formulario de búsqueda con los parámetros GET si existen
-    form = SearchPostForm(request.GET or None)
+    form = PostsListFilter(request.GET or None)
 
     # Construimos un query dinámico para los filtros
     posts_query = Post.objects.filter(status=Post.PUBLISHED)
