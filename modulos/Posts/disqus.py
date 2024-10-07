@@ -12,7 +12,7 @@ def get_disqus_stats(post_id):
     params = {
         "api_key": api_key,
         "forum": forum,
-        "thread:ident": f"posts/{post_id}",
+        "thread:ident": f"/posts/{post_id}/",
     }
 
     response = requests.get(url, params=params)
