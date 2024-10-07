@@ -379,32 +379,6 @@ def enhanced_search(request):
     return render(request, "pages/search_results.html", context=ctx)
 
 
-@login_required
-def favorite_post(request, id):
-    """
-    Vista para marcar o desmarcar un post como favorito.
-
-    Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos
-    del usuario actual.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-        id (int): El ID del post a marcar como favorito.
-
-    Returns:
-        HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).
-    """
-    post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
-
-    # Si el post ya es favorito lo agrega, si no lo elimina
-    if not post.favorites.filter(id=request.user.id).exists():
-        post.favorites.add(request.user)
-    else:
-        post.favorites.remove(request.user)
-
-    return redirect("post_detail", id=id)
-
-
 # --------------------
 # Flujo de publicacion
 # --------------------
@@ -413,6 +387,16 @@ def favorite_post(request, id):
 @login_required
 @permissions_required([KANBAN_VIEW_PERMISSION])
 def kanban_board(request):
+    """
+    Vista para mostrar el tablero Kanban con las publicaciones organizadas por estado.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+
+    Retorna:
+        Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,
+        pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.
+    """
     # Filtrar los posts según el estado
     drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
     pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
@@ -446,6 +430,16 @@ def kanban_board(request):
 @login_required
 @permissions_required([POST_CREATE_PERMISSION])
 def send_to_review(request, id):
+    """
+    Vista para enviar una publicación a revisión.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post que se va a enviar a revisión.
+
+    Retorna:
+        Redirige al tablero Kanban una vez que el estado del post se ha actualizado a 'Pendiente de Revisión'.
+    """
     post = get_object_or_404(Post, id=id)
     post.status = Post.PENDING_REVIEW
     post.save()
@@ -455,6 +449,16 @@ def send_to_review(request, id):
 @login_required
 @permissions_required([POST_APPROVE_PERMISSION])
 def aprove_post(request, id):
+    """
+    Vista para aprobar una publicación y pasarla al estado de 'Pendiente de Publicación'.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post que se va a aprobar.
+
+    Retorna:
+        Redirige al tablero Kanban después de cambiar el estado del post a 'Pendiente de Publicación'.
+    """
     post = get_object_or_404(Post, id=id)
     post.status = Post.PENDING_PUBLICATION
     post.save()
@@ -464,6 +468,16 @@ def aprove_post(request, id):
 @login_required
 @permissions_required([POST_PUBLISH_PERMISSION])
 def publish_post(request, id):
+    """
+    Vista para publicar una publicación.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post que se va a publicar.
+
+    Retorna:
+        Redirige al tablero Kanban una vez que el estado del post se ha actualizado a 'Publicado' y se ha registrado la fecha de publicación.
+    """
     post = get_object_or_404(Post, id=id)
     post.status = Post.PUBLISHED
     post.publication_date = timezone.now()
@@ -474,6 +488,16 @@ def publish_post(request, id):
 @login_required
 @permissions_required([POST_REJECT_PERMISSION])
 def reject_post(request, id):
+    """
+    Vista para rechazar una publicación y devolverla al estado de 'Borrador'.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post que se va a rechazar.
+
+    Retorna:
+        Redirige al tablero Kanban después de cambiar el estado del post a 'Borrador'.
+    """
     post = get_object_or_404(Post, id=id)
     post.status = Post.DRAFT
     post.save()
@@ -483,6 +507,32 @@ def reject_post(request, id):
 # --------------------
 #      Varios
 # --------------------
+
+
+@login_required
+def favorite_post(request, id):
+    """
+    Vista para marcar o desmarcar un post como favorito.
+
+    Esta vista maneja la acción de agregar o quitar un post de la lista de favoritos
+    del usuario actual.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+        id (int): El ID del post a marcar como favorito.
+
+    Returns:
+        HttpResponse: Respuesta HTTP con un código de estado 204 (sin contenido).
+    """
+    post = get_object_or_404(Post, pk=id)  # Obtiene el post o devuelve un error 404
+
+    # Si el post ya es favorito lo agrega, si no lo elimina
+    if not post.favorites.filter(id=request.user.id).exists():
+        post.favorites.add(request.user)
+    else:
+        post.favorites.remove(request.user)
+
+    return redirect("post_detail", id=id)
 
 
 @login_required
@@ -584,6 +634,17 @@ def list_contenidos_view(request):
 
 @login_required
 def post_log_list(request, id):
+    """
+    Vista para listar los registros de un post específico.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post para obtener sus registros.
+
+    Retorna:
+        Renderiza la página logs_list con los registros del post, o devuelve un
+        HttpResponseForbidden si el usuario no tiene permisos o no es el autor del post.
+    """
     post = get_object_or_404(Post, pk=id)
 
     if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
@@ -599,6 +660,16 @@ def post_log_list(request, id):
 @login_required
 @permissions_required([POST_REVIEW_PERMISSION])
 def post_versions_list(request, id):
+    """
+    Vista para listar todas las versiones de un post específico.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post para obtener sus versiones.
+
+    Retorna:
+        Renderiza la página post_versions_list con las versiones del post.
+    """
     get_object_or_404(Post, pk=id)
 
     versions = Version.objects.filter(post_id=id)
@@ -610,6 +681,18 @@ def post_versions_list(request, id):
 @login_required
 @permissions_required([POST_REVIEW_PERMISSION])
 def post_version_detail(request, post_id, version):
+    """
+    Vista para mostrar detalles y diferencias entre el contenido actual del post y una versión específica.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        post_id: El ID del post.
+        version: El número de versión del post para comparar.
+
+    Retorna:
+        Renderiza la página post_version_detail con las diferencias entre el contenido de la versión y el contenido actual del post.
+        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.
+    """
     original = get_object_or_404(Post, pk=post_id)
 
     if (
@@ -646,6 +729,17 @@ def post_version_detail(request, post_id, version):
 
 @login_required
 def post_statistics(request, id):
+    """
+    Vista para mostrar estadísticas de un post específico.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        id: El ID del post para obtener sus estadísticas.
+
+    Retorna:
+        Renderiza la página statistics con los registros, versiones y estadísticas de Disqus del post.
+        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.
+    """
     post = get_object_or_404(Post, pk=id)
 
     if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
