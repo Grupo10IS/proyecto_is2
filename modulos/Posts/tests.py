@@ -362,3 +362,78 @@ def test_edit_post(client):
     # Verifica que el post se haya actualizado correctamente
     assert post.title == "Título editado"
     assert post.content == "Contenido editado"
+
+
+@pytest.mark.django_db
+def test_publish_post(client):
+    """
+    Test the publish post view for different user permissions and category moderation.
+    """
+    # Create user and log in
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+    client.login(username="testuser", password="password")
+
+    # Create a post with a moderated category
+    category = Category.objects.create(moderacion=Category.MODERADA)
+    post = Post.objects.create(
+        title="New Test Post",
+        content="Content for new test post",
+        category=category,
+        author=user,
+    )
+
+    url = reverse("publish_post", args=[post.id])
+
+    # Test access to publish post view without login
+    response = client.get(url)
+    assert (
+        response.status_code == 403
+    ), "Should redirect to login page when not logged in."
+
+    # Test access to publish post view without permission in moderated category
+    response = client.post(url)
+    assert (
+        response.status_code == 403
+    ), "User without permission should get 403 Forbidden in moderated category."
+
+    # Assign publish permission and test access
+    user.user_permissions.add(Permission.objects.get(codename=POST_PUBLISH_PERMISSION))
+    response = client.post(url)
+    assert (
+        response.status_code == 302
+    ), "User with permission should be able to publish the post in moderated category."
+
+    # Verify post is published
+    post.refresh_from_db()
+    assert (
+        post.status == Post.PUBLISHED
+    ), "Post status should be 'PUBLISHED' after publishing."
+    assert (
+        post.publication_date is not None
+    ), "Post should have a publication date after publishing."
+
+    # Test publishing a post in a 'LIBRE' category without permission
+    category_free = Category.objects.create(moderacion=Category.LIBRE)
+    post_free = Post.objects.create(
+        title="Another Test Post",
+        content="Content for another test post",
+        category=category_free,
+        author=user,
+    )
+    url_free = reverse("publish_post", args=[post_free.id])
+
+    response = client.post(url_free)
+    assert (
+        response.status_code == 302
+    ), "User without permission should be able to publish the post in 'LIBRE' category."
+
+    # Verify post is published in 'LIBRE' category
+    post_free.refresh_from_db()
+    assert (
+        post_free.status == Post.PUBLISHED
+    ), "Post in 'LIBRE' category should be published."
+    assert (
+        post_free.publication_date is not None
+    ), "Post should have a publication date after publishing."

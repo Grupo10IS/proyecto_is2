@@ -10,6 +10,7 @@
                         <th scope="col">Descripción</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">Moderacion</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -20,6 +21,7 @@
                             <td>{{ category.description }}</td>
                             <td>{{ category.status }}</td>
                             <td>{{ category.tipo }}</td>
+                            <td>{{ category.moderacion }}</td>
                             <td class="actions">
                                 <a href="{% url 'category_edit' category.id %}"
                                    class="btn btn-sm btn-primary"
