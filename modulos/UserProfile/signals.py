@@ -33,7 +33,6 @@ def notify_new_user(sender, instance, created, **kwargs):
     Notifica al usuario con un correo de bienvenida cuando crea una cuenta nueva.
     """
     if created:
-        print(f"Enviando correo de bienvenida a {instance.username} ({instance.email})")
         # Enviar correo de bienvenida
         subject = "¡Bienvenido a MakeX!"
         message = (
@@ -41,14 +40,16 @@ def notify_new_user(sender, instance, created, **kwargs):
             f"Te damos la bienvenida a MakeX. Has sido asignado al rol de 'Suscriptor'.\n"
             "Disfruta de nuestra plataforma y explora el contenido disponible."
         )
-        send_mail(
-            subject,
-            message,
-            "groupmakex@gmail.com",
-            [instance.email],
-            fail_silently=False,
-        )
-        print(f"Correo de bienvenida enviado a {instance.username} ({instance.email})")
+        try:
+            send_mail(
+                subject,
+                message,
+                "groupmakex@gmail.com",
+                [instance.email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"No se pudo enviar el mail de bienvenida al usuario")
 
 
 # Signal para detectar cambios en los roles del usuario
@@ -62,9 +63,6 @@ def notify_user_role_change(sender, instance, action, pk_set, **kwargs):
         new_roles = Group.objects.filter(pk__in=pk_set)
 
         for role in new_roles:
-            print(
-                f"Notificando al usuario {instance.username} sobre su nuevo rol: {role.name}"
-            )
             subject = "Cambio en tu rol en MakeX"
             message = (
                 f"Hola {instance.username},\n\n"
@@ -80,6 +78,4 @@ def notify_user_role_change(sender, instance, action, pk_set, **kwargs):
                     fail_silently=False,
                 )
             except Exception as e:
-                print(
-                    f"No se pudo enviar el mail al usuario"
-                )
+                print(f"No se pudo enviar el mail de cambio de roles al usuario")
