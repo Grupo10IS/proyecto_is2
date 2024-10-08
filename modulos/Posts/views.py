@@ -115,12 +115,13 @@ def home_view(req):
 def view_post(request, id):
     """
     Vista de detalle de publicación 'PostDetailView'.
-
     Esta vista muestra los detalles de un solo objeto 'Post'.
     Utiliza el modelo 'Post' para recuperar la instancia específica y renderiza el contenido
     utilizando la plantilla 'posts/post_detail.html'.
     """
     post = get_object_or_404(Post, id=id)
+
+    print(f"Post ID: {post.id}, Post Title: {post.title}")
 
     # Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos
     if (
@@ -128,11 +129,14 @@ def view_post(request, id):
         and post.author != request.user
         and not request.user.has_perm(POST_REVIEW_PERMISSION)
     ):
+        print("El usuario no tiene permisos para ver este post.")
         return HttpResponseBadRequest("No tienes permiso para ver esta publicación.")
 
     # administrar acceso a categorias moderadas o de pago
     user = request.user
     category = post.category
+
+    print(f"Category Tipo: {category.tipo}, Category Name: {category.name}")
 
     # Si la categoría es gratis, mostrar el post completo sin restricción
     if category.tipo == category.GRATIS:
@@ -147,6 +151,10 @@ def view_post(request, id):
             else False
         )
 
+        print(
+            f"El usuario tiene acceso a la categoría gratis, es_favorito: {es_favorito}"
+        )
+
         ctx = new_ctx(
             request,
             {
@@ -159,24 +167,23 @@ def view_post(request, id):
 
         return render(request, "pages/post_detail.html", context=ctx)
 
-    # Si el usuario no está autenticado, mostrar la previsualización
-    if isinstance(user, AnonymousUser) or (
-        user.is_authenticated and not user_has_access_to_category(user, category)
-    ):
+    # Si el usuario no está autenticado o no tiene acceso a la categoría
+    if not user.is_authenticated or not user_has_access_to_category(user, category):
+        print(f"User authenticated: {user.is_authenticated}")
+        print(f"User access to category: {user_has_access_to_category(user, category)}")
+
+        # Mostrar vista previa
         preview_content = post.content.split()[
             :50
         ]  # Truncar a las primeras 50 palabras
         preview_content = " ".join(preview_content) + "..."
-        modal_message = None
+        modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido."
 
-        # Mensaje diferente según el tipo de categoría
-        if isinstance(user, AnonymousUser):
-            modal_message = (
-                "Para poder ver esta publicación debes iniciar sesión o registrarte."
-            )
-        elif category.tipo == category.PREMIUM:
+        if category.tipo == category.PREMIUM:
+            print("Categoría PREMIUM, usuario no tiene acceso")
             modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$."
         elif category.tipo == category.SUSCRIPCION:
+            print("Categoría SUSCRIPCIÓN, usuario no tiene acceso")
             modal_message = (
                 "Para poder ver esta publicación debes ser suscriptor de nuestra web."
             )
@@ -193,11 +200,15 @@ def view_post(request, id):
         )
 
     # Si el usuario tiene acceso, mostrar el detalle completo del post
+    print("El usuario tiene acceso a la categoría premium o suscripción.")
+
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]
 
     # Verifica si el post es favorito del usuario actual
     es_favorito = post.favorites.filter(id=request.user.id).exists()
+
+    print(f"Es favorito: {es_favorito}")
 
     ctx = new_ctx(
         request,
