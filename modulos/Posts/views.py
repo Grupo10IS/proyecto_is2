@@ -6,8 +6,10 @@ from django.contrib.auth.models import AnonymousUser, Group
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.query_utils import Q
-from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
+from django.http.response import (HttpResponseBadRequest,
+                                  HttpResponseForbidden, HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from modulos.Authorization.decorators import permissions_required
@@ -25,7 +27,7 @@ from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
-from modulos.Posts.models import Log, Post, Version
+from modulos.Posts.models import Log, Post, RestorePost, Version, new_creation_log, new_edition_log
 from modulos.utils import new_ctx
 
 
@@ -241,7 +243,7 @@ def create_post(request):
         p.author = request.user
         p.save()
 
-        Log.creation_log(post=p, user=request.user)
+        new_creation_log(post=p, user=request.user)
 
         return redirect("/posts/" + str(p.id))
 
@@ -358,7 +360,7 @@ def edit_post(request, id):
         post.save()
 
         # generar un registro en los logs
-        Log.edition_log(old_instance=old_instance, new_instance=post, user=request.user)
+        new_edition_log(old_instance=old_instance, new_instance=post, user=request.user)
 
         return redirect("post_list")
 
@@ -699,7 +701,6 @@ def post_versions_list(request, id):
 
 
 @login_required
-@permissions_required([POST_REVIEW_PERMISSION])
 def post_version_detail(request, post_id, version):
     """
     Vista para mostrar detalles y diferencias entre el contenido actual del post y una versión específica.
@@ -717,7 +718,7 @@ def post_version_detail(request, post_id, version):
 
     if (
         not request.user.has_perm(POST_REVIEW_PERMISSION)
-        or original.author != request.user
+        and original.author != request.user
     ):
         return HttpResponseForbidden(
             "No tienes permisos para acceder a las versiones de este post"
@@ -745,6 +746,37 @@ def post_version_detail(request, post_id, version):
     )
 
     return render(request, "pages/post_version_detail.html", ctx)
+
+
+@login_required
+def post_revert_version(request, post_id, version):
+    """
+    Vista para revertir un post a una versión anterior.
+
+    Argumentos:
+        request: El objeto de solicitud HTTP.
+        post_id: El ID del post que se quiere revertir.
+        version: El número de versión a la que se desea revertir el post.
+
+    Retorna:
+        Redirige a la lista de versiones del post después de haber restaurado la versión seleccionada.
+        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.
+    """
+    original = get_object_or_404(Post, pk=post_id)
+
+    if (
+        not request.user.has_perm(POST_EDIT_PERMISSION)
+        and original.author != request.user
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder a las versiones de este post"
+        )
+
+    version = get_object_or_404(Version, version=version, post_id=original.id)
+
+    RestorePost(original, version)
+
+    return HttpResponseRedirect(reverse("post_versions", kwargs={"id": post_id}))
 
 
 @login_required
