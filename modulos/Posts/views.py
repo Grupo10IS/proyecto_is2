@@ -233,6 +233,7 @@ def create_post(request):
             return HttpResponseBadRequest("Datos proporcionados invalidos")
 
         p = form.save(commit=False)
+
         if "save_draft" in request.POST:
             p.status = Post.DRAFT
         elif "submit_review" in request.POST:
@@ -240,6 +241,8 @@ def create_post(request):
 
         p.author = request.user
         p.save()
+
+        Log.creation_log(post=p, user=request.user)
 
         return redirect("/posts/" + str(p.id))
 
@@ -341,6 +344,7 @@ def edit_post(request, id):
         HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.
     """
     post = get_object_or_404(Post, pk=id)
+    old_instance = get_object_or_404(Post, pk=id)
 
     if request.method == "POST":
 
@@ -350,13 +354,12 @@ def edit_post(request, id):
             # FIX: mostrar errores en el editor
             return HttpResponseBadRequest(f"Formulario inválido")
 
-        # guardar version anterior del post
-        version = NewVersion(post)
-        version.save()
-
-        post.save()
+        # guardar el post con la version actualizada
         post.version += 1
         post.save()
+
+        # generar un registro en los logs
+        Log.edition_log(old_instance=old_instance, new_instance=post, user=request.user)
 
         return redirect("post_list")
 
