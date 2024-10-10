@@ -423,6 +423,84 @@
     <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s2">&quot;Título editado&quot;</span>
     <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="s2">&quot;Contenido editado&quot;</span></div>
 
+
+
+<div class="viewcode-block" id="test_publish_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_publish_post">[documentos]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<span class="k">def</span> <span class="nf">test_publish_post</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test the publish post view for different user permissions and category moderation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create user and log in</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+    <span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create a post with a moderated category</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">moderacion</span><span class="o">=</span><span class="n">Category</span><span class="o">.</span><span class="n">MODERADA</span><span class="p">)</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content for new test post&quot;</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;publish_post&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+
+    <span class="c1"># Test access to publish post view without login</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span>
+    <span class="p">),</span> <span class="s2">&quot;Should redirect to login page when not logged in.&quot;</span>
+
+    <span class="c1"># Test access to publish post view without permission in moderated category</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span>
+    <span class="p">),</span> <span class="s2">&quot;User without permission should get 403 Forbidden in moderated category.&quot;</span>
+
+    <span class="c1"># Assign publish permission and test access</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+    <span class="p">),</span> <span class="s2">&quot;User with permission should be able to publish the post in moderated category.&quot;</span>
+
+    <span class="c1"># Verify post is published</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+    <span class="p">),</span> <span class="s2">&quot;Post status should be &#39;PUBLISHED&#39; after publishing.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">),</span> <span class="s2">&quot;Post should have a publication date after publishing.&quot;</span>
+
+    <span class="c1"># Test publishing a post in a &#39;LIBRE&#39; category without permission</span>
+    <span class="n">category_free</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">moderacion</span><span class="o">=</span><span class="n">Category</span><span class="o">.</span><span class="n">LIBRE</span><span class="p">)</span>
+    <span class="n">post_free</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Another Test Post&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content for another test post&quot;</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">category_free</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">url_free</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;publish_post&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post_free</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url_free</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+    <span class="p">),</span> <span class="s2">&quot;User without permission should be able to publish the post in &#39;LIBRE&#39; category.&quot;</span>
+
+    <span class="c1"># Verify post is published in &#39;LIBRE&#39; category</span>
+    <span class="n">post_free</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">post_free</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span>
+    <span class="p">),</span> <span class="s2">&quot;Post in &#39;LIBRE&#39; category should be published.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">post_free</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">),</span> <span class="s2">&quot;Post should have a publication date after publishing.&quot;</span></div>
+
 </pre></div>
 
           </div>

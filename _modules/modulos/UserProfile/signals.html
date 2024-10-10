@@ -72,7 +72,6 @@
 <span class="sd">    Notifica al usuario con un correo de bienvenida cuando crea una cuenta nueva.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Enviando correo de bienvenida a </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
         <span class="c1"># Enviar correo de bienvenida</span>
         <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;¡Bienvenido a MakeX!&quot;</span>
         <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
@@ -80,14 +79,16 @@
             <span class="sa">f</span><span class="s2">&quot;Te damos la bienvenida a MakeX. Has sido asignado al rol de &#39;Suscriptor&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;Disfruta de nuestra plataforma y explora el contenido disponible.&quot;</span>
         <span class="p">)</span>
-        <span class="n">send_mail</span><span class="p">(</span>
-            <span class="n">subject</span><span class="p">,</span>
-            <span class="n">message</span><span class="p">,</span>
-            <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
-            <span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
-            <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Correo de bienvenida enviado a </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">send_mail</span><span class="p">(</span>
+                <span class="n">subject</span><span class="p">,</span>
+                <span class="n">message</span><span class="p">,</span>
+                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se pudo enviar el mail de bienvenida al usuario&quot;</span><span class="p">)</span></div>
 
 
 
@@ -104,9 +105,6 @@
         <span class="n">new_roles</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk__in</span><span class="o">=</span><span class="n">pk_set</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">new_roles</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Notificando al usuario </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> sobre su nuevo rol: </span><span class="si">{</span><span class="n">role</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
             <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Cambio en tu rol en MakeX&quot;</span>
             <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">,</span><span class="se">\n\n</span><span class="s2">&quot;</span>
@@ -122,9 +120,7 @@
                     <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No se pudo enviar el mail al usuario&quot;</span>
-                <span class="p">)</span></div>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se pudo enviar el mail de cambio de roles al usuario&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 

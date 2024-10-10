@@ -145,7 +145,7 @@
 
     <span class="c1"># Verificar si el usuario tiene un pago exitoso para esta categoría</span>
     <span class="k">if</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;succeeded&quot;</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span>
     <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">return</span> <span class="kc">True</span>
 

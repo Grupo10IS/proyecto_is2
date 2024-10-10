@@ -43,38 +43,6 @@
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
 
 
-<div class="viewcode-block" id="log_post_change">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.log_post_change">[documentos]</a>
-<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">log_post_change</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Señal para generar un nuevo log con cada accion que se realiza sobre un post.</span>
-
-<span class="sd">    Todas las acciones sobre el contenido seran reporatadas y generaran un nuevo log el</span>
-<span class="sd">    cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion</span>
-<span class="sd">    y el usuario que la realizo.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
-        <span class="n">Log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Post creado&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span>
-
-    <span class="n">old_instance</span> <span class="o">=</span> <span class="n">sender</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
-
-    <span class="n">changes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-        <span class="n">field_name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
-        <span class="n">new_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">old_value</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field_name</span> <span class="o">!=</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span>
-                <span class="n">changes</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Campo </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> actualizado.</span><span class="se">\n</span><span class="s2">&quot;</span>
-
-    <span class="k">if</span> <span class="n">changes</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">changes</span><span class="p">)</span>
-        <span class="n">Log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">changes</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
-
-
-
 <div class="viewcode-block" id="send_notification_to_users">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.signals.send_notification_to_users">[documentos]</a>
 <span class="nd">@receiver</span><span class="p">(</span><span class="n">pre_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>

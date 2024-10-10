@@ -107,6 +107,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations.0009_category_moderacion">modulos.Categories.migrations.0009_category_moderacion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0009_category_moderacion.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0009_category_moderacion.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Categories.migrations.html#modulos.Categories.migrations.0009_category_moderacion.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Categories.migrations.html#module-modulos.Categories.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -150,7 +158,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.forms.CategoryCreationForm.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'description',</span> <span class="pre">'status',</span> <span class="pre">'tipo',</span> <span class="pre">'image']</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'description',</span> <span class="pre">'status',</span> <span class="pre">'tipo',</span> <span class="pre">'moderacion',</span> <span class="pre">'image']</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.Meta.fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -161,14 +169,14 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.forms.CategoryCreationForm.Meta.widgets">
-<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'description':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.widgets.ClearableFileInput</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'tipo':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.Meta.widgets" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'description':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.widgets.ClearableFileInput</span> <span class="pre">object&gt;,</span> <span class="pre">'moderacion':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'tipo':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.Meta.widgets" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Categories.forms.CategoryCreationForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'description':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'tipo':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.base_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'description':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'moderacion':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'tipo':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Categories.forms.CategoryCreationForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -235,6 +243,21 @@ TIPO_CHOICES: Lista de opciones para el tipo de la categoría, incluyendo “PRE
 <span class="sig-name descname"><span class="pre">INACTIVO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Inactivo'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.INACTIVO" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.LIBRE">
+<span class="sig-name descname"><span class="pre">LIBRE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Libre'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.LIBRE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.MODERACION_CHOICES">
+<span class="sig-name descname"><span class="pre">MODERACION_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Moderada',</span> <span class="pre">'Moderada'),</span> <span class="pre">('Libre',</span> <span class="pre">'Libre')]</span></em><a class="headerlink" href="#modulos.Categories.models.Category.MODERACION_CHOICES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.MODERADA">
+<span class="sig-name descname"><span class="pre">MODERADA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Moderada'</span></em><a class="headerlink" href="#modulos.Categories.models.Category.MODERADA" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.MultipleObjectsReturned">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#modulos.Categories.models.Category.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
@@ -264,6 +287,11 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.get_moderacion_display">
+<span class="sig-name descname"><span class="pre">get_moderacion_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">moderacion&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Categories.models.Category.get_moderacion_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="modulos.Categories.models.Category.get_status_display">
 <span class="sig-name descname"><span class="pre">get_status_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">status&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Categories.models.Category.get_status_display" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -285,6 +313,13 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">image</span></span><a class="headerlink" href="#modulos.Categories.models.Category.image" title="Link to this definition">¶</a></dt>
 <dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
 assigning the width/height to the width_field/height_field, if appropriate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Categories.models.Category.moderacion">
+<span class="sig-name descname"><span class="pre">moderacion</span></span><a class="headerlink" href="#modulos.Categories.models.Category.moderacion" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -590,15 +625,20 @@ a list. May not be called if render_to_response is overridden.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.ESTADO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.ESTADO_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.GRATIS"><code class="docutils literal notranslate"><span class="pre">Category.GRATIS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.INACTIVO"><code class="docutils literal notranslate"><span class="pre">Category.INACTIVO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.LIBRE"><code class="docutils literal notranslate"><span class="pre">Category.LIBRE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.MODERACION_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.MODERACION_CHOICES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.MODERADA"><code class="docutils literal notranslate"><span class="pre">Category.MODERADA</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Category.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.PREMIUM"><code class="docutils literal notranslate"><span class="pre">Category.PREMIUM</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.SUSCRIPCION"><code class="docutils literal notranslate"><span class="pre">Category.SUSCRIPCION</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.TIPO_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.TIPO_CHOICES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.description"><code class="docutils literal notranslate"><span class="pre">Category.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.get_moderacion_display"><code class="docutils literal notranslate"><span class="pre">Category.get_moderacion_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.get_status_display"><code class="docutils literal notranslate"><span class="pre">Category.get_status_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.get_tipo_display"><code class="docutils literal notranslate"><span class="pre">Category.get_tipo_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.id"><code class="docutils literal notranslate"><span class="pre">Category.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.image"><code class="docutils literal notranslate"><span class="pre">Category.image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.moderacion"><code class="docutils literal notranslate"><span class="pre">Category.moderacion</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.name"><code class="docutils literal notranslate"><span class="pre">Category.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.objects"><code class="docutils literal notranslate"><span class="pre">Category.objects</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Categories.models.Category.payment_set"><code class="docutils literal notranslate"><span class="pre">Category.payment_set</span></code></a></li>
