@@ -106,7 +106,7 @@ def user_has_access_to_category(user, category):
 
     # Verificar si el usuario tiene un pago exitoso para esta categoría
     if Payment.objects.filter(
-        user=user, category=category, status="succeeded"
+        user=user, category=category, status="completed"
     ).exists():
         return True
 
