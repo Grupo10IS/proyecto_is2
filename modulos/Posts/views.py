@@ -1,15 +1,14 @@
 import difflib
 from datetime import timedelta
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.views.generic import TemplateView
 
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
@@ -26,7 +25,7 @@ from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
-from modulos.Posts.models import Log, NewVersion, Post, Version
+from modulos.Posts.models import Log, Post, Version
 from modulos.utils import new_ctx
 
 
@@ -233,6 +232,7 @@ def create_post(request):
             return HttpResponseBadRequest("Datos proporcionados invalidos")
 
         p = form.save(commit=False)
+
         if "save_draft" in request.POST:
             p.status = Post.DRAFT
         elif "submit_review" in request.POST:
@@ -240,6 +240,8 @@ def create_post(request):
 
         p.author = request.user
         p.save()
+
+        Log.creation_log(post=p, user=request.user)
 
         return redirect("/posts/" + str(p.id))
 
@@ -341,6 +343,7 @@ def edit_post(request, id):
         HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.
     """
     post = get_object_or_404(Post, pk=id)
+    old_instance = get_object_or_404(Post, pk=id)
 
     if request.method == "POST":
 
@@ -350,13 +353,12 @@ def edit_post(request, id):
             # FIX: mostrar errores en el editor
             return HttpResponseBadRequest(f"Formulario inválido")
 
-        # guardar version anterior del post
-        version = NewVersion(post)
-        version.save()
-
-        post.save()
+        # guardar el post con la version actualizada
         post.version += 1
         post.save()
+
+        # generar un registro en los logs
+        Log.edition_log(old_instance=old_instance, new_instance=post, user=request.user)
 
         return redirect("post_list")
 
@@ -397,7 +399,6 @@ def kanban_board(request):
         Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,
         pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.
     """
-    # Filtrar los posts según el estado
     drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
     pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
     pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
@@ -405,6 +406,13 @@ def kanban_board(request):
         status=Post.PUBLISHED,
         publication_date__gte=timezone.now() - timedelta(days=5),
     )
+
+    # asignar publicacion directa a aquellas publicaciones cuya categoria es de tipo "libre"
+    for post in drafts:
+        if post.category.moderacion == Category.LIBRE:
+            post.__setattr__("can_publish_directly", True)
+        else:
+            post.__setattr__("can_publish_directly", False)
 
     # Pasar las publicaciones a la plantilla para organizarlas en el tablero
     return render(
@@ -443,6 +451,7 @@ def send_to_review(request, id):
     post = get_object_or_404(Post, id=id)
     post.status = Post.PENDING_REVIEW
     post.save()
+
     return redirect("kanban_board")
 
 
@@ -462,11 +471,11 @@ def aprove_post(request, id):
     post = get_object_or_404(Post, id=id)
     post.status = Post.PENDING_PUBLICATION
     post.save()
+
     return redirect("kanban_board")
 
 
 @login_required
-@permissions_required([POST_PUBLISH_PERMISSION])
 def publish_post(request, id):
     """
     Vista para publicar una publicación.
@@ -479,9 +488,20 @@ def publish_post(request, id):
         Redirige al tablero Kanban una vez que el estado del post se ha actualizado a 'Publicado' y se ha registrado la fecha de publicación.
     """
     post = get_object_or_404(Post, id=id)
+    category = post.category
+
+    if (
+        not request.user.has_perm(POST_PUBLISH_PERMISSION)
+        and not category.moderacion == Category.LIBRE
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para publicar en esta categoria"
+        )
+
     post.status = Post.PUBLISHED
     post.publication_date = timezone.now()
     post.save()
+
     return redirect("kanban_board")
 
 

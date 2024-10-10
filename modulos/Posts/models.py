@@ -45,7 +45,7 @@ class Post(models.Model):
     )
     # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
-    version = models.IntegerField(default=0)
+    version = models.IntegerField(default=1)
 
     favorites = models.ManyToManyField(
         UserProfile, related_name="favorite_posts", verbose_name="Favoritos"
@@ -98,3 +98,37 @@ class Log(models.Model):
     creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
     message = models.CharField(max_length=800, verbose_name="description")
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def creation_log(post, user):
+        Log(
+            post=post,
+            message='El post a sido exitosamente creado por "{user.username}"',
+        ).save()
+
+    def edition_log(old_instance, new_instance, user):
+        """
+        Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.
+
+        Todas los cambios sobre el contenido seran reporatadas y generaran un nuevo log el
+        cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion
+        y el usuario que la realizo.
+
+        Dentro de los mensajes se especificara el nombre de usuario el cual realizo dicho cmabio.
+        """
+        changes = []
+        for field in old_instance._meta.fields:
+            field_name = field.name
+            old_value = getattr(old_instance, field_name)
+            new_value = getattr(new_instance, field_name)
+
+            if old_value != new_value:
+                changes.append(
+                    f'Campo {field_name} actualizado por "{user.username}".\n'
+                )
+
+        if len(changes) != 0:
+            Log(post=new_instance, message="".join(changes)).save()
+
+            # guardar un registro de las versiones del post (solo si existen cambios)
+            version = NewVersion(old_instance)
+            version.save()
