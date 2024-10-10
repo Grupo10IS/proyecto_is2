@@ -116,6 +116,14 @@ modulos.Posts.migrations.0014\_post\_version\_log\_version module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0015\_alter\_post\_version module
+----------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0015_alter_post_version
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

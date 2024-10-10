@@ -68,6 +68,14 @@ modulos.Categories.migrations.0008\_alter\_category\_description module
    :undoc-members:
    :show-inheritance:
 
+modulos.Categories.migrations.0009\_category\_moderacion module
+---------------------------------------------------------------
+
+.. automodule:: modulos.Categories.migrations.0009_category_moderacion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
