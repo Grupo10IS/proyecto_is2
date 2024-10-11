@@ -27,7 +27,8 @@ from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
-from modulos.Posts.models import Log, Post, RestorePost, Version, new_creation_log, new_edition_log
+from modulos.Posts.models import (Log, Post, RestorePost, Version,
+                                  new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
 
 
@@ -214,48 +215,6 @@ def view_post(request, id):
 
 
 @login_required
-@permissions_required([POST_CREATE_PERMISSION])
-def create_post(request):
-    """
-    Vista para crear un nuevo post.
-
-    Esta vista maneja tanto la visualización del formulario como el procesamiento del
-    mismo al enviar los datos. Si el formulario es válido, se crea el post.
-
-    Args:
-        request (HttpRequest): El objeto de solicitud HTTP.
-
-    Returns:
-        HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.
-    """
-    if request.method == "POST":
-        form = NewPostForm(request.POST, request.FILES)
-        if not form.is_valid():
-            return HttpResponseBadRequest("Datos proporcionados invalidos")
-
-        p = form.save(commit=False)
-
-        if "save_draft" in request.POST:
-            p.status = Post.DRAFT
-        elif "submit_review" in request.POST:
-            p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
-
-        p.author = request.user
-        p.save()
-
-        new_creation_log(post=p, user=request.user)
-
-        return redirect("/posts/" + str(p.id))
-
-    ctx = new_ctx(request, {"form": NewPostForm})
-    return render(
-        request,
-        "pages/new_post.html",
-        context=ctx,
-    )
-
-
-@login_required
 @permissions_required(
     [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
 )
@@ -292,6 +251,59 @@ def manage_post(request):
     return render(request, "pages/post_list.html", ctx)
 
 
+# ----------------
+# Operaciones CRUD
+# ----------------
+
+
+@login_required
+@permissions_required([POST_CREATE_PERMISSION])
+def create_post(request):
+    """
+    Vista para crear un nuevo post.
+
+    Esta vista maneja tanto la visualización del formulario como el procesamiento del
+    mismo al enviar los datos. Si el formulario es válido, se crea el post.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+
+    Returns:
+        HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.
+    """
+    if request.method == "POST":
+        form = NewPostForm(request.POST, request.FILES)
+        if not form.is_valid():
+            return HttpResponseBadRequest("Datos proporcionados invalidos")
+
+        p = form.save(commit=False)
+
+        if "save_draft" in request.POST:
+            p.status = Post.DRAFT
+        elif "submit_review" in request.POST:
+            p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
+
+        author = request.user
+
+        p.author = request.user
+        p.save()
+
+        # actualizar la cantidad de post creados por el autor
+        author.c_creados += 1
+        author.save()
+
+        new_creation_log(post=p, user=request.user)
+
+        return redirect("/posts/" + str(p.id))
+
+    ctx = new_ctx(request, {"form": NewPostForm})
+    return render(
+        request,
+        "pages/new_post.html",
+        context=ctx,
+    )
+
+
 @login_required
 def delete_post(request, id):
     """
@@ -317,6 +329,10 @@ def delete_post(request, id):
 
     if request.method == "POST":
         post.delete()
+
+        request.user.c_audit_eliminados += 1
+        request.user.save()
+
         return redirect("post_list")
 
     # Si no es una solicitud POST, muestra un mensaje de confirmación
@@ -366,21 +382,6 @@ def edit_post(request, id):
 
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
-
-
-def enhanced_search(request):
-    form = SearchPostForm(request.GET)
-
-    if not form.is_valid():
-        return redirect("home")
-
-    input = form.cleaned_data["input"]
-    results = buscador.generate_query_set(input).execute()
-
-    ctx = new_ctx(
-        request, {"posts": results, "form": SearchPostForm(initial={"input": input})}
-    )
-    return render(request, "pages/search_results.html", context=ctx)
 
 
 # --------------------
@@ -474,6 +475,16 @@ def aprove_post(request, id):
     post.status = Post.PENDING_PUBLICATION
     post.save()
 
+    # actualizar las estadisticas del editor y el autor
+    author = post.author
+    editor = request.user
+
+    editor.c_audit_revisados += 1
+    author.c_aprobados += 1
+
+    editor.save()
+    author.save()
+
     return redirect("kanban_board")
 
 
@@ -504,6 +515,16 @@ def publish_post(request, id):
     post.publication_date = timezone.now()
     post.save()
 
+    # actualizar las estadisticas del publicador y el autor
+    author = post.author
+    publisher = request.user
+
+    publisher.c_audit_publicados += 1
+    author.c_publicados += 1
+
+    publisher.save()
+    author.save()
+
     return redirect("kanban_board")
 
 
@@ -523,12 +544,38 @@ def reject_post(request, id):
     post = get_object_or_404(Post, id=id)
     post.status = Post.DRAFT
     post.save()
+
+    # actualizar las estadisticas del auditor y el autor
+    author = post.author
+    audit = request.user
+
+    audit.c_audit_rechazados += 1
+    author.c_rechazados += 1
+
+    audit.save()
+    author.save()
+
     return redirect("kanban_board")
 
 
 # --------------------
 #      Varios
 # --------------------
+
+
+def enhanced_search(request):
+    form = SearchPostForm(request.GET)
+
+    if not form.is_valid():
+        return redirect("home")
+
+    input = form.cleaned_data["input"]
+    results = buscador.generate_query_set(input).execute()
+
+    ctx = new_ctx(
+        request, {"posts": results, "form": SearchPostForm(initial={"input": input})}
+    )
+    return render(request, "pages/search_results.html", context=ctx)
 
 
 @login_required
