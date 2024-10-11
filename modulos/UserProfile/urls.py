@@ -4,7 +4,7 @@ from django.urls import path
 from modulos.UserProfile.views import CustomLoginView, SignUpView
 
 from .forms import CustomPasswordResetForm
-from .views import (manage_user_groups, profile_view, user_delete, user_edit,
+from .views import (manage_user_groups, profile_view, statistics, user_delete, user_edit,
                     user_list)
 
 urlpatterns = [
@@ -46,6 +46,7 @@ urlpatterns = [
     path("edit/<int:user_id>/", user_edit, name="user_edit"),
     path("delete/<int:user_id>/", user_delete, name="user_delete"),
     path("groups/<int:user_id>/", manage_user_groups, name="manage_user_groups"),
+    # informacion del perfil
     path("profile/", profile_view, name="profile"),
-    # Otras rutas que ya tenías definidas
+    path("statistics/", statistics, name="statistics"),
 ]
