@@ -40,10 +40,8 @@
 <span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
 <span class="kn">from</span> <span class="nn">django.db.models.query_utils</span> <span class="kn">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">django.http.response</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponseBadRequest</span><span class="p">,</span>
-                                  <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.http.response</span> <span class="kn">import</span> <span class="n">HttpResponseBadRequest</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
-<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Authorization.decorators</span> <span class="kn">import</span> <span class="n">permissions_required</span>
@@ -61,7 +59,7 @@
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.disqus</span> <span class="kn">import</span> <span class="n">get_disqus_stats</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">NewPostForm</span><span class="p">,</span> <span class="n">PostsListFilter</span><span class="p">,</span> <span class="n">SearchPostForm</span>
-<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">RestorePost</span><span class="p">,</span> <span class="n">Version</span><span class="p">,</span> <span class="n">new_creation_log</span><span class="p">,</span> <span class="n">new_edition_log</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">Version</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 
 
@@ -283,7 +281,7 @@
         <span class="n">p</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
         <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-        <span class="n">new_creation_log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">Log</span><span class="o">.</span><span class="n">creation_log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/posts/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
@@ -403,7 +401,7 @@
         <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># generar un registro en los logs</span>
-        <span class="n">new_edition_log</span><span class="p">(</span><span class="n">old_instance</span><span class="o">=</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">new_instance</span><span class="o">=</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">Log</span><span class="o">.</span><span class="n">edition_log</span><span class="p">(</span><span class="n">old_instance</span><span class="o">=</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">new_instance</span><span class="o">=</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
 
@@ -761,9 +759,8 @@
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_versions_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="post_version_detail">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_version_detail">[documentos]</a>
 <span class="nd">@login_required</span>
+<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_version_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Vista para mostrar detalles y diferencias entre el contenido actual del post y una versión específica.</span>
@@ -781,7 +778,7 @@
 
     <span class="k">if</span> <span class="p">(</span>
         <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="n">original</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="ow">or</span> <span class="n">original</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
             <span class="s2">&quot;No tienes permisos para acceder a las versiones de este post&quot;</span>
@@ -808,42 +805,7 @@
         <span class="p">{</span><span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="n">original</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">version</span><span class="p">,</span> <span class="s2">&quot;diff_content&quot;</span><span class="p">:</span> <span class="n">diff</span><span class="p">},</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_version_detail.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="post_revert_version">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_revert_version">[documentos]</a>
-<span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">post_revert_version</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vista para revertir un post a una versión anterior.</span>
-
-<span class="sd">    Argumentos:</span>
-<span class="sd">        request: El objeto de solicitud HTTP.</span>
-<span class="sd">        post_id: El ID del post que se quiere revertir.</span>
-<span class="sd">        version: El número de versión a la que se desea revertir el post.</span>
-
-<span class="sd">    Retorna:</span>
-<span class="sd">        Redirige a la lista de versiones del post después de haber restaurado la versión seleccionada.</span>
-<span class="sd">        Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">original</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">post_id</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="n">original</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
-    <span class="p">):</span>
-        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
-            <span class="s2">&quot;No tienes permisos para acceder a las versiones de este post&quot;</span>
-        <span class="p">)</span>
-
-    <span class="n">version</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Version</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">post_id</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-
-    <span class="n">RestorePost</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;post_versions&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">post_id</span><span class="p">}))</span></div>
-
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_version_detail.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="post_statistics">
