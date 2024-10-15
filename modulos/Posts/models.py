@@ -94,7 +94,13 @@ def NewVersion(post: Post) -> Version:
     )
 
 
-def RestorePost(post: Post, version: Version):
+def RestorePost(post: Post, version: Version) -> None:
+    """
+    Esta funcion restaura un post a una version especificada.
+
+    El post actualizara a su version (+1) y copiara la informacion de la version
+    especificada para la regresion
+    """
     NewVersion(post).save()
 
     post.title = version.title
@@ -112,17 +118,32 @@ def RestorePost(post: Post, version: Version):
 
 
 class Log(models.Model):
+    """
+    Clase que representa los logs de un post especifico.
+
+    NO se debe instanciar de forma manual, para ello se proporcionan las funciones:
+        - new_creation_log
+        - new_edition_log
+    """
+
     creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
     message = models.CharField(max_length=800, verbose_name="description")
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-def new_creation_log(post, user):
+
+def new_creation_log(post, user) -> None:
+    """
+    Metodo para generar un nuevo log cuando se realiza la creacion de un nuevo post.
+
+    Dentro de los mensajes se especificara el nombre de usuario del autor.
+    """
     Log(
         post=post,
         message='El post a sido exitosamente creado por "{user.username}"',
     ).save()
 
-def new_edition_log(old_instance, new_instance, user):
+
+def new_edition_log(old_instance, new_instance, user) -> None:
     """
     Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.
 
@@ -139,9 +160,7 @@ def new_edition_log(old_instance, new_instance, user):
         new_value = getattr(new_instance, field_name)
 
         if old_value != new_value:
-            changes.append(
-                f'Campo {field_name} actualizado por "{user.username}".\n'
-            )
+            changes.append(f'Campo {field_name} actualizado por "{user.username}".\n')
 
     if len(changes) != 0:
         Log(post=new_instance, message="".join(changes)).save()
