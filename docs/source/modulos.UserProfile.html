@@ -120,6 +120,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more">modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.UserProfile.migrations.html#modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.UserProfile.migrations.html#module-modulos.UserProfile.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -430,7 +438,7 @@ is saved manually at a later time. Return the model instance.</p>
 <span id="modulos-userprofile-models-module"></span><h2>modulos.UserProfile.models module<a class="headerlink" href="#module-modulos.UserProfile.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive_notifications</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive_notifications</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_creados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_aprobados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_publicados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_rechazados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_audit_revisados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_audit_publicados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_audit_rechazados</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_audit_eliminados</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.models.UserProfile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.DoesNotExist">
@@ -447,6 +455,62 @@ is saved manually at a later time. Return the model instance.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.address">
 <span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.address" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_aprobados">
+<span class="sig-name descname"><span class="pre">c_aprobados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_aprobados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_audit_eliminados">
+<span class="sig-name descname"><span class="pre">c_audit_eliminados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_audit_eliminados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_audit_publicados">
+<span class="sig-name descname"><span class="pre">c_audit_publicados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_audit_publicados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_audit_rechazados">
+<span class="sig-name descname"><span class="pre">c_audit_rechazados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_audit_rechazados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_audit_revisados">
+<span class="sig-name descname"><span class="pre">c_audit_revisados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_audit_revisados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_creados">
+<span class="sig-name descname"><span class="pre">c_creados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_creados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_publicados">
+<span class="sig-name descname"><span class="pre">c_publicados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_publicados" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.UserProfile.models.UserProfile.c_rechazados">
+<span class="sig-name descname"><span class="pre">c_rechazados</span></span><a class="headerlink" href="#modulos.UserProfile.models.UserProfile.c_rechazados" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
@@ -822,6 +886,11 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.UserProfile.views.statistics">
+<span class="sig-prename descclassname"><span class="pre">modulos.UserProfile.views.</span></span><span class="sig-name descname"><span class="pre">statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/UserProfile/views.html#statistics"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.UserProfile.views.statistics" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-modulos.UserProfile">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-modulos.UserProfile" title="Link to this heading">¶</a></h2>
@@ -943,6 +1012,14 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserProfile.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserProfile.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.address"><code class="docutils literal notranslate"><span class="pre">UserProfile.address</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_aprobados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_aprobados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_audit_eliminados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_audit_eliminados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_audit_publicados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_audit_publicados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_audit_rechazados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_audit_rechazados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_audit_revisados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_audit_revisados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_creados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_creados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_publicados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_publicados</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.c_rechazados"><code class="docutils literal notranslate"><span class="pre">UserProfile.c_rechazados</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.date_joined"><code class="docutils literal notranslate"><span class="pre">UserProfile.date_joined</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.email"><code class="docutils literal notranslate"><span class="pre">UserProfile.email</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.UserProfile.models.UserProfile.favorite_posts"><code class="docutils literal notranslate"><span class="pre">UserProfile.favorite_posts</span></code></a></li>
@@ -994,6 +1071,7 @@ Gestiona los formularios de actualización de datos del usuario y de su perfil.<
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.profile_view"><code class="docutils literal notranslate"><span class="pre">profile_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.UserProfile.views.statistics"><code class="docutils literal notranslate"><span class="pre">statistics()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.UserProfile">Module contents</a></li>

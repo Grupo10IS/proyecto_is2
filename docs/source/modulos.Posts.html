@@ -413,8 +413,16 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <span id="modulos-posts-models-module"></span><h2>modulos.Posts.models module<a class="headerlink" href="#module-modulos.Posts.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Posts.models.Log">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Log" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Log" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Clase que representa los logs de un post especifico.</p>
+<dl class="simple">
+<dt>NO se debe instanciar de forma manual, para ello se proporcionan las funciones:</dt><dd><ul class="simple">
+<li><p>new_creation_log</p></li>
+<li><p>new_edition_log</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.Posts.models.Log.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#modulos.Posts.models.Log.DoesNotExist" title="Link to this definition">¶</a></dt>
@@ -432,21 +440,6 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <span class="sig-name descname"><span class="pre">creation_date</span></span><a class="headerlink" href="#modulos.Posts.models.Log.creation_date" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.Posts.models.Log.creation_log">
-<span class="sig-name descname"><span class="pre">creation_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Log.creation_log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Log.creation_log" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modulos.Posts.models.Log.edition_log">
-<span class="sig-name descname"><span class="pre">edition_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Log.edition_log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Log.edition_log" title="Link to this definition">¶</a></dt>
-<dd><p>Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.</p>
-<p>Todas los cambios sobre el contenido seran reporatadas y generaran un nuevo log el
-cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion
-y el usuario que la realizo.</p>
-<p>Dentro de los mensajes se especificara el nombre de usuario el cual realizo dicho cmabio.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -728,6 +721,19 @@ object the first time, the query is executed.</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.models.RestorePost">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">RestorePost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#RestorePost"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.RestorePost" title="Link to this definition">¶</a></dt>
+<dd><p>Esta funcion restaura un post a una version especificada.</p>
+<p>El post actualizara a su version (+1) y copiara la informacion de la version
+especificada para la regresion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Posts.models.Version">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publication_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduled_publication_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Version"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Version" title="Link to this definition">¶</a></dt>
@@ -872,6 +878,33 @@ object the first time, the query is executed.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.models.new_creation_log">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">new_creation_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#new_creation_log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.new_creation_log" title="Link to this definition">¶</a></dt>
+<dd><p>Metodo para generar un nuevo log cuando se realiza la creacion de un nuevo post.</p>
+<p>Dentro de los mensajes se especificara el nombre de usuario del autor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.models.new_edition_log">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">new_edition_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#new_edition_log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.new_edition_log" title="Link to this definition">¶</a></dt>
+<dd><p>Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.</p>
+<p>Todas los cambios sobre el contenido seran reporatadas y generaran un nuevo log el
+cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion
+y el usuario que la realizo.</p>
+<p>Dentro de los mensajes se especificara el nombre de usuario el cual realizo dicho cmabio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -1054,6 +1087,21 @@ HttpResponseForbidden si el usuario no tiene permisos o no es el autor del post.
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.post_revert_version">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_revert_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_revert_version"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_revert_version" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para revertir un post a una versión anterior.</p>
+<dl class="simple">
+<dt>Argumentos:</dt><dd><p>request: El objeto de solicitud HTTP.
+post_id: El ID del post que se quiere revertir.
+version: El número de versión a la que se desea revertir el post.</p>
+</dd>
+<dt>Retorna:</dt><dd><p>Redirige a la lista de versiones del post después de haber restaurado la versión seleccionada.
+Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.post_statistics">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_statistics"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_statistics" title="Link to this definition">¶</a></dt>
 <dd><p>Vista para mostrar estadísticas de un post específico.</p>
@@ -1062,6 +1110,21 @@ HttpResponseForbidden si el usuario no tiene permisos o no es el autor del post.
 id: El ID del post para obtener sus estadísticas.</p>
 </dd>
 <dt>Retorna:</dt><dd><p>Renderiza la página statistics con los registros, versiones y estadísticas de Disqus del post.
+Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.post_version_detail">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_version_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_version_detail"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_version_detail" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para mostrar detalles y diferencias entre el contenido actual del post y una versión específica.</p>
+<dl class="simple">
+<dt>Argumentos:</dt><dd><p>request: El objeto de solicitud HTTP.
+post_id: El ID del post.
+version: El número de versión del post para comparar.</p>
+</dd>
+<dt>Retorna:</dt><dd><p>Renderiza la página post_version_detail con las diferencias entre el contenido de la versión y el contenido actual del post.
 Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.</p>
 </dd>
 </dl>
@@ -1180,8 +1243,6 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Log.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Log.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.creation_date"><code class="docutils literal notranslate"><span class="pre">Log.creation_date</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.creation_log"><code class="docutils literal notranslate"><span class="pre">Log.creation_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.edition_log"><code class="docutils literal notranslate"><span class="pre">Log.edition_log()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.get_next_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Log.get_next_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.get_previous_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Log.get_previous_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.id"><code class="docutils literal notranslate"><span class="pre">Log.id</span></code></a></li>
@@ -1224,6 +1285,7 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.version"><code class="docutils literal notranslate"><span class="pre">Post.version</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.RestorePost"><code class="docutils literal notranslate"><span class="pre">RestorePost()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.Version"><code class="docutils literal notranslate"><span class="pre">Version</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Version.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Version.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Version.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Version.MultipleObjectsReturned</span></code></a></li>
@@ -1247,6 +1309,8 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Version.version"><code class="docutils literal notranslate"><span class="pre">Version.version</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.new_creation_log"><code class="docutils literal notranslate"><span class="pre">new_creation_log()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.new_edition_log"><code class="docutils literal notranslate"><span class="pre">new_edition_log()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.signals">modulos.Posts.signals module</a><ul>
@@ -1278,7 +1342,9 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.list_contenidos_view"><code class="docutils literal notranslate"><span class="pre">list_contenidos_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_log_list"><code class="docutils literal notranslate"><span class="pre">post_log_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_revert_version"><code class="docutils literal notranslate"><span class="pre">post_revert_version()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_statistics"><code class="docutils literal notranslate"><span class="pre">post_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_version_detail"><code class="docutils literal notranslate"><span class="pre">post_version_detail()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.publish_post"><code class="docutils literal notranslate"><span class="pre">publish_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>

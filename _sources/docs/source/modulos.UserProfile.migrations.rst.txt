@@ -68,6 +68,14 @@ modulos.UserProfile.migrations.0008\_alter\_userprofile\_receive\_notifications 
    :undoc-members:
    :show-inheritance:
 
+modulos.UserProfile.migrations.0009\_userprofile\_c\_aprobados\_and\_more module
+--------------------------------------------------------------------------------
+
+.. automodule:: modulos.UserProfile.migrations.0009_userprofile_c_aprobados_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

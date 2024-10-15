@@ -137,52 +137,91 @@
 
 
 
+<div class="viewcode-block" id="RestorePost">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.RestorePost">[documentos]</a>
+<span class="k">def</span> <span class="nf">RestorePost</span><span class="p">(</span><span class="n">post</span><span class="p">:</span> <span class="n">Post</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="n">Version</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Esta funcion restaura un post a una version especificada.</span>
+
+<span class="sd">    El post actualizara a su version (+1) y copiara la informacion de la version</span>
+<span class="sd">    especificada para la regresion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NewVersion</span><span class="p">(</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">title</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">image</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">category</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">status</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">publication_date</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">scheduled_publication_date</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">scheduled_publication_date</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">author</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">tags</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">version</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+
 <div class="viewcode-block" id="Log">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.Log">[documentos]</a>
 <span class="k">class</span> <span class="nc">Log</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clase que representa los logs de un post especifico.</span>
+
+<span class="sd">    NO se debe instanciar de forma manual, para ello se proporcionan las funciones:</span>
+<span class="sd">        - new_creation_log</span>
+<span class="sd">        - new_edition_log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">creation_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Fecha de creacion&quot;</span><span class="p">)</span>
     <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">)</span>
-    <span class="n">post</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Log.creation_log">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.Log.creation_log">[documentos]</a>
-    <span class="k">def</span> <span class="nf">creation_log</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
-        <span class="n">Log</span><span class="p">(</span>
-            <span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">,</span>
-            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;El post a sido exitosamente creado por &quot;</span><span class="si">{user.username}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Log.edition_log">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.Log.edition_log">[documentos]</a>
-    <span class="k">def</span> <span class="nf">edition_log</span><span class="p">(</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">new_instance</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.</span>
 
-<span class="sd">        Todas los cambios sobre el contenido seran reporatadas y generaran un nuevo log el</span>
-<span class="sd">        cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion</span>
-<span class="sd">        y el usuario que la realizo.</span>
+<div class="viewcode-block" id="new_creation_log">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.new_creation_log">[documentos]</a>
+<span class="k">def</span> <span class="nf">new_creation_log</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metodo para generar un nuevo log cuando se realiza la creacion de un nuevo post.</span>
 
-<span class="sd">        Dentro de los mensajes se especificara el nombre de usuario el cual realizo dicho cmabio.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">old_instance</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-            <span class="n">field_name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
-            <span class="n">new_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+<span class="sd">    Dentro de los mensajes se especificara el nombre de usuario del autor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Log</span><span class="p">(</span>
+        <span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;El post a sido exitosamente creado por &quot;</span><span class="si">{user.username}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
-            <span class="k">if</span> <span class="n">old_value</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
-                <span class="n">changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Campo </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s1"> actualizado por &quot;</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s1">&quot;.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">changes</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">Log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">new_instance</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">changes</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-            <span class="c1"># guardar un registro de las versiones del post (solo si existen cambios)</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="n">NewVersion</span><span class="p">(</span><span class="n">old_instance</span><span class="p">)</span>
-            <span class="n">version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
-</div>
+<div class="viewcode-block" id="new_edition_log">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.new_edition_log">[documentos]</a>
+<span class="k">def</span> <span class="nf">new_edition_log</span><span class="p">(</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">new_instance</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metodo para generar un nuevo log cuando se realiza una edicion de un campo sobre un post.</span>
+
+<span class="sd">    Todas los cambios sobre el contenido seran reporatadas y generaran un nuevo log el</span>
+<span class="sd">    cual contendra la fecha de la accion, la accion en si, el campo donde se realizo la actualizacion</span>
+<span class="sd">    y el usuario que la realizo.</span>
+
+<span class="sd">    Dentro de los mensajes se especificara el nombre de usuario el cual realizo dicho cmabio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">old_instance</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">old_instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_instance</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">old_value</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
+            <span class="n">changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Campo </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s1"> actualizado por &quot;</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s1">&quot;.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">changes</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">Log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">new_instance</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">changes</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># guardar un registro de las versiones del post (solo si existen cambios)</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">NewVersion</span><span class="p">(</span><span class="n">old_instance</span><span class="p">)</span>
+        <span class="n">version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 </pre></div>
 
