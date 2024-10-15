@@ -2,10 +2,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import TemplateView
 
 from modulos.Authorization import permissions
 from modulos.Authorization.decorators import permissions_required
@@ -234,3 +234,12 @@ def manage_user_groups(request, user_id):
         "admin_panel/manage_user_groups.html",
         new_ctx(request, {"form": form, "user": user}),
     )
+
+
+@login_required
+def statistics(request):
+    user = request.user
+
+    ctx = new_ctx(request, {"user": user})
+
+    return render(request, "registration/statistics.html", ctx)

@@ -26,6 +26,11 @@ urlpatterns = [
         name="post_version_detail",
     ),
     path("<int:id>/logs", post_log_list, name="post_log_list"),
+    path(
+        "<int:post_id>/versions/<int:version>/revert",
+        post_revert_version,
+        name="post_revert_version",
+    ),
     # -- estadisticas --
     path("<int:id>/statistics", post_statistics, name="post_statistics"),
     # -- miscelanea --

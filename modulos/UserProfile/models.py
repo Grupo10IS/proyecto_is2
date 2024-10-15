@@ -19,5 +19,19 @@ class UserProfile(AbstractUser):
         verbose_name="Desea recibir notificaciones sobre nuevas publicaciones?",
     )
 
+    # estadisticas del publicador
+    c_creados = models.IntegerField(default=0)
+    c_aprobados = models.IntegerField(default=0)
+    c_publicados = models.IntegerField(default=0)
+    c_rechazados = models.IntegerField(default=0)
+
+    # estadisticas del editor y publicador
+    c_audit_revisados = models.IntegerField(default=0)
+    c_audit_publicados = models.IntegerField(default=0)
+    c_audit_rechazados = models.IntegerField(default=0)  # rechazo por parte del publicador
+
+    # estadisticas de admin
+    c_audit_eliminados = models.IntegerField(default=0)
+
     def has_perm(self, perm: str, obj=None) -> bool:
         return super().has_perm("UserProfile." + perm, obj)
