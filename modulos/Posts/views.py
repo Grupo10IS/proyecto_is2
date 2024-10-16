@@ -186,12 +186,15 @@ def view_post(request, id):
         return render(
             request,
             "pages/post_preview.html",
-            {
-                "post": post,
-                "category": category,
-                "preview_content": preview_content,
-                "modal_message": modal_message,
-            },
+            new_ctx(
+                request,
+                {
+                    "post": post,
+                    "category": category,
+                    "preview_content": preview_content,
+                    "modal_message": modal_message,
+                },
+            ),
         )
 
     # Si el usuario tiene acceso, mostrar el detalle completo del post
@@ -688,10 +691,13 @@ def list_contenidos_view(request):
             posts_by_category[category] = page_obj
 
     # Crear el contexto y pasarlo a la plantilla
-    ctx = {
-        "posts_by_category": posts_by_category,
-        "form": form,  # Pasar el formulario al contexto
-    }
+    ctx = new_ctx(
+        request,
+        {
+            "posts_by_category": posts_by_category,
+            "form": form,  # Pasar el formulario al contexto
+        },
+    )
 
     return render(request, "pages/list_contenidos.html", ctx)
 
