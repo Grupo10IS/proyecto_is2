@@ -841,7 +841,10 @@ def post_statistics(request, id):
     """
     post = get_object_or_404(Post, pk=id)
 
-    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
         return HttpResponseForbidden(
             "No tienes permisos para acceder a los logs de este post"
         )
