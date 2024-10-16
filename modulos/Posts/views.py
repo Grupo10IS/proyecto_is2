@@ -380,6 +380,30 @@ def edit_post(request, id):
 
         return redirect("post_list")
 
+    # no permitir editar posts ya publicados
+    if post.status == post.PUBLISHED:
+        return HttpResponseBadRequest(f"No se puede editar un post ya publicado")
+
+    # solo permitir a editores editar cuando esta pendiente de revision.
+    if post.status == post.PENDING_REVIEW and not request.user.has_perm(
+        POST_APPROVE_PERMISSION
+    ):
+        return HttpResponseBadRequest(
+            f"No se puede editar un post pendiente de aprobacion si no es un editor"
+        )
+
+    # solo permitir a publicadores editar cuando esta pendiente de publicacion.
+    if post.status == post.PENDING_PUBLICATION and not request.user.has_perm(
+        POST_PUBLISH_PERMISSION
+    ):
+        return HttpResponseBadRequest(
+            f"No se puede editar un post pendiente de publicacion si no es un publicador"
+        )
+
+    # solo permitir a los propios autores editar sus borradores.
+    if post.status == post.DRAFT and not request.user != post.author:
+        return HttpResponseBadRequest(f"Solo los autores pueden editar un borrador")
+
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
@@ -832,6 +856,9 @@ def post_revert_version(request, post_id, version):
     # Evitar que un post en estado publicado pueda ser revertido
     if original.status == original.PUBLISHED:
         return HttpResponseForbidden("Un post publicado no puede ser revertido")
+
+    # Que no se pueda hacer reversion durante el proceso de edicion/aprobacion/publicacion
+    # a menos que este en "derecho" de realizar dicha modificacion.
 
     version = get_object_or_404(Version, version=version, post_id=original.id)
 
