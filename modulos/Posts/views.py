@@ -716,7 +716,10 @@ def post_log_list(request, id):
     """
     post = get_object_or_404(Post, pk=id)
 
-    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
         return HttpResponseForbidden(
             "No tienes permisos para acceder a los logs de este post"
         )
@@ -727,7 +730,6 @@ def post_log_list(request, id):
 
 
 @login_required
-@permissions_required([POST_REVIEW_PERMISSION])
 def post_versions_list(request, id):
     """
     Vista para listar todas las versiones de un post específico.
@@ -739,7 +741,15 @@ def post_versions_list(request, id):
     Retorna:
         Renderiza la página post_versions_list con las versiones del post.
     """
-    get_object_or_404(Post, pk=id)
+    post = get_object_or_404(Post, pk=id)
+
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder al registro de versiones de este post"
+        )
 
     versions = Version.objects.filter(post_id=id)
     ctx = new_ctx(request, {"versions": versions})
@@ -819,6 +829,10 @@ def post_revert_version(request, post_id, version):
             "No tienes permisos para acceder a las versiones de este post"
         )
 
+    # Evitar que un post en estado publicado pueda ser revertido
+    if original.status == original.PUBLISHED:
+        return HttpResponseForbidden("Un post publicado no puede ser revertido")
+
     version = get_object_or_404(Version, version=version, post_id=original.id)
 
     RestorePost(original, version)
@@ -846,7 +860,7 @@ def post_statistics(request, id):
         and post.author != request.user
     ):
         return HttpResponseForbidden(
-            "No tienes permisos para acceder a los logs de este post"
+            "No tienes permisos para acceder a las estadisticas de este post"
         )
 
     ctx = new_ctx(
