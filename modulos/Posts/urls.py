@@ -10,7 +10,7 @@ urlpatterns = [
     path("search/", enhanced_search, name="post_search"),
     # -- administracion de contenido --
     path("create/", create_post, name="post_create"),
-    path("<int:id>/delete", delete_post, name="delete_post"),
+    path("<int:id>/delete", inactivate_post, name="delete_post"),
     path("<int:id>/edit/", edit_post, name="edit_post"),
     # -- vistas de publicacion de contenido --
     path("<int:id>/approve", aprove_post, name="approve_post"),

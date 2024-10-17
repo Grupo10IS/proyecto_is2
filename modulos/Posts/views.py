@@ -305,16 +305,16 @@ def create_post(request):
 
 
 @login_required
-def delete_post(request, id):
+def inactivate_post(request, id):
     """
-    Vista para eliminar un post.
+    Vista para inactivar un post.
 
-    Esta vista muestra un mensaje de confirmación antes de eliminar un post.
+    Esta vista muestra un mensaje de confirmación antes de inactivar un post.
     Si la solicitud es un POST, se elimina el post y se redirige a la lista de posts.
 
     Args:
         request (HttpRequest): El objeto de solicitud HTTP.
-        id (int): El ID del post a eliminar.
+        id (int): El ID del post a inactivar.
 
     Returns:
         HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
@@ -325,7 +325,7 @@ def delete_post(request, id):
         not request.user.has_perm(POST_DELETE_PERMISSION)
         and post.author != request.user
     ):
-        return HttpResponseForbidden("No tienes permiso para eliminar este post.")
+        return HttpResponseForbidden("No tienes permiso para inactivar este post.")
 
     if request.method == "POST":
         post.delete()

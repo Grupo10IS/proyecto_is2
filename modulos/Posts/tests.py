@@ -290,11 +290,11 @@ def test_search_post_view(client):
 @pytest.mark.django_db
 def test_delete_post_view(client):
     """
-    Test para eliminar un post.
+    Test para inactivar un post.
     """
     categoria = Category.objects.create(name="prueba")
     post = Post.objects.create(
-        category=categoria, title="Post a Eliminar", content="Contenido a eliminar"
+        category=categoria, title="Post a inactivar", content="Contenido a inactivar"
     )
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
@@ -309,7 +309,7 @@ def test_delete_post_view(client):
     ), "Debería retornar 200 al acceder a la vista de confirmación de eliminación."
 
     response = client.post(url)
-    assert response.status_code == 302, "Debería redirigir después de eliminar el post."
+    assert response.status_code == 302, "Debería redirigir después de inactivar el post."
     assert not Post.objects.filter(
         id=post.id
     ).exists(), "El post debería haber sido eliminado."
