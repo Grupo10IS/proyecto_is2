@@ -426,13 +426,35 @@ def kanban_board(request):
         Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,
         pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.
     """
-    drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
-    pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
-    pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
-    recently_published = Post.objects.filter(
-        status=Post.PUBLISHED,
-        publication_date__gte=timezone.now() - timedelta(days=5),
-    )
+    user = request.user
+
+    # Listar todos los posts o solo los posts si se trata de un publisher/editor
+    if (
+        user.has_perm(POST_PUBLISH_PERMISSION)
+        or user.has_perm(POST_APPROVE_PERMISSION)
+        or user.has_perm(POST_REJECT_PERMISSION)
+        or user.has_perm(POST_DELETE_PERMISSION)
+    ):
+        recently_published = Post.objects.filter(
+            status=Post.PUBLISHED,
+            publication_date__gte=timezone.now() - timedelta(days=5),
+        )
+        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
+        pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
+
+    # De lo contrario listar solo los posts del autor
+    else:
+        recently_published = Post.objects.filter(
+            status=Post.PUBLISHED,
+            author=user,
+            publication_date__gte=timezone.now() - timedelta(days=5),
+        )
+        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW, author=user)
+        pending_publication = Post.objects.filter(
+            status=Post.PENDING_PUBLICATION, author=user
+        )
+
+    drafts = Post.objects.filter(status=Post.DRAFT, author=user)
 
     # asignar publicacion directa a aquellas publicaciones cuya categoria es de tipo "libre"
     for post in drafts:
@@ -453,10 +475,10 @@ def kanban_board(request):
                 "pending_publication": pending_publication,
                 "published": recently_published,
                 # permisos para mostrar las acciones sobre las publicaciones
-                "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
-                "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
-                "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),
-                "can_reject": request.user.has_perm(POST_REJECT_PERMISSION),
+                "can_create": user.has_perm(POST_CREATE_PERMISSION),
+                "can_publish": user.has_perm(POST_PUBLISH_PERMISSION),
+                "can_approve": user.has_perm(POST_APPROVE_PERMISSION),
+                "can_reject": user.has_perm(POST_REJECT_PERMISSION),
             },
         ),
     )
@@ -566,7 +588,18 @@ def reject_post(request, id):
         Redirige al tablero Kanban después de cambiar el estado del post a 'Borrador'.
     """
     post = get_object_or_404(Post, id=id)
-    post.status = Post.DRAFT
+
+    if post.status == post.PUBLISHED:
+        return HttpResponseForbidden(
+            "No puedes tocar el estado de un post ya publicado"
+        )
+
+    # Retrasar un paoso el estado de publicacion
+    if post.status == post.PENDING_REVIEW:
+        post.status = Post.DRAFT
+    elif post.status == post.PENDING_PUBLICATION:
+        post.status = Post.PENDING_REVIEW
+
     post.save()
 
     # actualizar las estadisticas del auditor y el autor
