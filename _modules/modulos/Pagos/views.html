@@ -36,10 +36,12 @@
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
-<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
-<span class="kn">from</span> <span class="nn">modulos.Pagos.forms</span> <span class="kn">import</span> <span class="n">PaymentForm</span><span class="p">,</span> <span class="n">UserProfileForm</span><span class="p">,</span> <span class="n">PaymentFilterForm</span>
-<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
+
 <span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="n">VIEW_PURCHASED_CATEGORIES</span>
+<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.forms</span> <span class="kn">import</span> <span class="n">PaymentFilterForm</span><span class="p">,</span> <span class="n">PaymentForm</span><span class="p">,</span> <span class="n">UserProfileForm</span>
+<span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
+<span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 
 <span class="c1"># Configura tu clave secreta de Stripe</span>
 <span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
@@ -72,7 +74,9 @@
         <span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">profile_form</span> <span class="o">=</span> <span class="n">UserProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
@@ -84,27 +88,32 @@
 
             <span class="c1"># Verificar el estado del PaymentIntent antes de redirigir</span>
             <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">intent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
-                <span class="c1"># Redirigir a la página de éxito</span>
-                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;payment_success&quot;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
                     <span class="n">request</span><span class="p">,</span>
                     <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
-                        <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
-                        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
-                        <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
-                        <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>
-                        <span class="s2">&quot;payment_error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="p">},</span>
+                    <span class="n">new_ctx</span><span class="p">(</span>
+                        <span class="n">request</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+                            <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
+                            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                            <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
+                            <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>
+                            <span class="s2">&quot;payment_error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">),</span>
                 <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Si hay un error en el formulario, mostrar los errores</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+
+            <span class="c1"># Redirigir a la página de éxito</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;payment_success&quot;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="c1"># Si hay un error en el formulario, mostrar los errores</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
+            <span class="n">new_ctx</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
-                <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
                     <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
@@ -112,22 +121,25 @@
                     <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
                     <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>
                 <span class="p">},</span>
-            <span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># GET request</span>
-        <span class="n">profile_form</span> <span class="o">=</span> <span class="n">UserProfileForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
-        <span class="n">payment_form</span> <span class="o">=</span> <span class="n">PaymentForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">5.00</span><span class="p">})</span>
+    <span class="n">profile_form</span> <span class="o">=</span> <span class="n">UserProfileForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">payment_form</span> <span class="o">=</span> <span class="n">PaymentForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">5.00</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
         <span class="s2">&quot;payment_form.html&quot;</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
-            <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
-            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
-            <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>  <span class="c1"># Pasar siempre el client_secret</span>
-            <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>  <span class="c1"># Pasar la clave pública de Stripe</span>
-        <span class="p">},</span>
+        <span class="n">new_ctx</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;profile_form&quot;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+                <span class="s2">&quot;payment_form&quot;</span><span class="p">:</span> <span class="n">payment_form</span><span class="p">,</span>
+                <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>  <span class="c1"># Pasar siempre el client_secret</span>
+                <span class="s2">&quot;STRIPE_PUBLIC_KEY&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLIC_KEY</span><span class="p">,</span>  <span class="c1"># Pasar la clave pública de Stripe</span>
+            <span class="p">},</span>
+        <span class="p">),</span>
     <span class="p">)</span></div>
 
 
@@ -146,27 +158,34 @@
         <span class="p">)</span>
         <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">stripe_payment_id</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
-            <span class="c1"># Actualizar el estado del pago en la base de datos</span>
-            <span class="n">payment</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
-            <span class="n">payment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-
-            <span class="c1"># Redirigir a la página de éxito</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;payment_success.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
                 <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">},</span>
+                <span class="n">new_ctx</span><span class="p">(</span>
+                    <span class="n">request</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;El pago no se completó correctamente. Estado: </span><span class="si">{</span><span class="n">intent</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">},</span>
+                <span class="p">),</span>
             <span class="p">)</span>
+
+        <span class="c1"># Actualizar el estado del pago en la base de datos</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># Redirigir a la página de éxito</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;payment_success.html&quot;</span><span class="p">,</span>
+            <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">}),</span>
+        <span class="p">)</span>
 
     <span class="k">except</span> <span class="n">Payment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
             <span class="n">request</span><span class="p">,</span>
             <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se encontró el pago en la base de datos.&quot;</span><span class="p">},</span>
+            <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se encontró el pago en la base de datos.&quot;</span><span class="p">}),</span>
         <span class="p">)</span></div>
 
 
@@ -183,9 +202,12 @@
         <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span>
     <span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
 
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;purchased_categories&quot;</span><span class="p">:</span> <span class="n">purchased_categories</span><span class="p">,</span>
-    <span class="p">}</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;purchased_categories&quot;</span><span class="p">:</span> <span class="n">purchased_categories</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;purchased_categories.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
@@ -220,10 +242,13 @@
         <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
             <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
 
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
-        <span class="s2">&quot;payments&quot;</span><span class="p">:</span> <span class="n">payments</span><span class="p">,</span>
-    <span class="p">}</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+            <span class="s2">&quot;payments&quot;</span><span class="p">:</span> <span class="n">payments</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;financial_view.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 

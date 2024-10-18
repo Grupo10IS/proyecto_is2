@@ -83,6 +83,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">ReportForm</span><span class="p">()</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span> <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;create_report.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span></div>
 
 
@@ -177,9 +178,10 @@
     <span class="n">posts_with_reports</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">report_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
         <span class="n">report_count__gt</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
-        <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;report_list.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts_with_reports&quot;</span><span class="p">:</span> <span class="n">posts_with_reports</span><span class="p">}</span>
-    <span class="p">)</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts_with_reports&quot;</span><span class="p">:</span> <span class="n">posts_with_reports</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;report_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 </pre></div>
 
           </div>

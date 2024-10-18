@@ -225,12 +225,15 @@
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
             <span class="n">request</span><span class="p">,</span>
             <span class="s2">&quot;pages/post_preview.html&quot;</span><span class="p">,</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span>
-                <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
-                <span class="s2">&quot;preview_content&quot;</span><span class="p">:</span> <span class="n">preview_content</span><span class="p">,</span>
-                <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="n">modal_message</span><span class="p">,</span>
-            <span class="p">},</span>
+            <span class="n">new_ctx</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span>
+                    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                    <span class="s2">&quot;preview_content&quot;</span><span class="p">:</span> <span class="n">preview_content</span><span class="p">,</span>
+                    <span class="s2">&quot;modal_message&quot;</span><span class="p">:</span> <span class="n">modal_message</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">),</span>
         <span class="p">)</span>
 
     <span class="c1"># Si el usuario tiene acceso, mostrar el detalle completo del post</span>
@@ -745,10 +748,13 @@
             <span class="n">posts_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_obj</span>
 
     <span class="c1"># Crear el contexto y pasarlo a la plantilla</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;posts_by_category&quot;</span><span class="p">:</span> <span class="n">posts_by_category</span><span class="p">,</span>
-        <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>  <span class="c1"># Pasar el formulario al contexto</span>
-    <span class="p">}</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;posts_by_category&quot;</span><span class="p">:</span> <span class="n">posts_by_category</span><span class="p">,</span>
+            <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>  <span class="c1"># Pasar el formulario al contexto</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/list_contenidos.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
