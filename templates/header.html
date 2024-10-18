@@ -1,7 +1,7 @@
 {% load static %}
 <header class="border-bottom">
     <div class="container" id="bodycontent">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">  <!-- Ajustamos los elementos -->
             <h1 id="headerTitle">
                 <a href="{% url 'home' %}" class="nav-link px-2">
                     <img src="{% static 'images/logo.png' %}"
@@ -28,60 +28,62 @@
                        style="color:white">Favoritos</a>
                 </li>
             </ul>
-            <div class="navbar-right">
-                {% if request.resolver_match.url_name != 'list_contenidos' %}
-                    <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
-                          role="search"
-                          action="{% url 'post_search' %}"
-                          method="get">
-                        <!-- Campo de entrada de búsqueda que está oculto por defecto -->
-                        <input type="text"
-                               id="search-input"
-                               name="input"
-                               placeholder="Buscar..."
-                               style="display: none"
-                               class="form-control">
-                        <!-- Icono de búsqueda que controla la visibilidad del campo -->
-                        <svg id="search-icon"
-                             xmlns="http://www.w3.org/2000/svg"
-                             width="25"
-                             height="25"
-                             fill="white"
-                             class="bi bi-search"
-                             viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                        </svg>
-                    </form>
-                {% endif %}
-                <div class="dropdown text-end">
+
+            <div class="d-flex align-items-center justify-content-between"> <!-- Ajuste de los elementos -->
+                <!-- Icono de búsqueda -->
+                <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+                      role="search"
+                      action="{% url 'post_search' %}"
+                      method="get">
+                    <input type="text"
+                           id="search-input"
+                           name="input"
+                           placeholder="Buscar..."
+                           style="display: none"
+                           class="form-control">
+                    <svg id="search-icon"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="25"
+                         height="25"
+                         fill="white"
+                         class="bi bi-search"
+                         viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </form>
+
+                <!-- Imagen de perfil -->
+                <div class="dropdown text-end ms-3">
                     <a href="#"
-                       class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                       class=" link-body-emphasis dropdown-toggle"
                        data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="30"
-                             height="30"
-                             fill="white"
-                             class="bi bi-person-circle"
-                             viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                        </svg>
+                       {% if user.is_authenticated and user.profile_image %}
+                           <img src="{{ user.profile_image.url }}"
+                                alt="Foto de perfil"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                       {% else %}
+                           <svg xmlns="http://www.w3.org/2000/svg"
+                                width="30"
+                                height="30"
+                                fill="white"
+                                class="bi bi-person-circle"
+                                viewBox="0 0 16 16">
+                               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                               <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                           </svg>
+                       {% endif %}
                     </a>
                     <ul class="dropdown-menu text-small">
                         {% if user.is_authenticated %}
                             <li>
                                 <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'purchased_categories' %}">Mis Categorias Premium</a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}">
                                     {% csrf_token %}
@@ -98,9 +100,12 @@
                         {% endif %}
                     </ul>
                 </div>
-                <!-- Cambiar el enlace de suscripción en el encabezado -->
-                <a href="{% url 'categories_list' %}?premium=true" class="subscribe">Suscribite por $1</a>
-                <div>{% include 'burguer.html' %}</div>
+
+                <!-- Enlace de suscripción -->
+                <a href="{% url 'categories_list' %}?premium=true"
+                   class="btn btn-primary" style="background-color:white;color:black">Suscribite por R$5</a>
+
+                <div class="ms-3">{% include 'burguer.html' %}</div>
             </div>
         </div>
     </div>
@@ -109,16 +114,12 @@
     document.getElementById('search-icon').addEventListener('click', function() {
         var searchInput = document.getElementById('search-input');
         
-        // Verificamos el estado del campo de búsqueda
         if (searchInput.style.display === 'none' || searchInput.style.display === '') {
-            // Si está oculto, lo mostramos
             searchInput.style.display = 'inline-block';
-            searchInput.focus();  // Ponemos el foco en el campo para que el usuario pueda escribir de inmediato
+            searchInput.focus();
         } else {
-            // Si ya está visible, lo ocultamos
             searchInput.style.display = 'none';
         }
     });
-        
     </script>
 </header>
