@@ -1,50 +1,47 @@
-{% extends "base.html" %}
-{% block content %}
-    <div class="container mt-5">
-        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
-            <h1 class="display-6 fst-italic mb-4">Estadísticas de Creacion</h1>
-            <table class="table table-hover table-striped">
-                <thead class="table-dark fst-italic">
-                    <tr>
-                        <th scope="col">Contenidos Creados</th>
-                        <th scope="col">Aprobados</th>
-                        <th scope="col">Publicados</th>
-                        <th scope="col">Rechazados</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ user.c_creados }}</td>
-                        <td>{{ user.c_aprobados }}</td>
-                        <td>{{ user.c_publicados }}</td>
-                        <td>{{ user.c_rechazados }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h1 class="display-6 fst-italic mb-4">Estadísticas de Auditoria</h1>
-            <table class="table table-hover table-striped">
-                <thead class="table-dark fst-italic">
-                    <tr>
-                        <th scope="col">Auditados y Revisados</th>
-                        <th scope="col">Auditados y Publicados</th>
-                        <th scope="col">Auditados y Rechazados</th>
-                        <th scope="col">Eliminados</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ user.c_audit_revisados }}</td>
-                        <td>{{ user.c_audit_publicados }}</td>
-                        <td>{{ user.c_audit_rechazados }}</td>
-                        <td>{{ user.c_audit_eliminados }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <a href="{% url 'profile' %}"
-               class="btn btn-secondary"
-               style="background-color: black;
-                      border-color: black;
-                      color:white">Volver al perfil</a>
-        </div>
+<div class="container mt-5">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <h1 class="display-6 fst-italic mb-4">Estadísticas de Creacion</h1>
+        <table class="table table-hover table-striped">
+            <thead class="table-dark fst-italic">
+                <tr>
+                    <th scope="col">Contenidos Creados</th>
+                    <th scope="col">Aprobados</th>
+                    <th scope="col">Publicados</th>
+                    <th scope="col">Rechazados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ user.c_creados }}</td>
+                    <td>{{ user.c_aprobados }}</td>
+                    <td>{{ user.c_publicados }}</td>
+                    <td>{{ user.c_rechazados }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h1 class="display-6 fst-italic mb-4">Estadísticas de Auditoria</h1>
+        <table class="table table-hover table-striped">
+            <thead class="table-dark fst-italic">
+                <tr>
+                    <th scope="col">Auditados y Revisados</th>
+                    <th scope="col">Auditados y Publicados</th>
+                    <th scope="col">Auditados y Rechazados</th>
+                    <th scope="col">Inactivados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ user.c_audit_revisados }}</td>
+                    <td>{{ user.c_audit_publicados }}</td>
+                    <td>{{ user.c_audit_rechazados }}</td>
+                    <td>{{ user.c_audit_eliminados }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{% url 'profile' %}"
+           class="btn btn-secondary"
+           style="background-color: black;
+                  border-color: black;
+                  color:white">Volver al perfil</a>
     </div>
-{% endblock %}
+</div>

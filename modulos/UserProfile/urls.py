@@ -4,7 +4,7 @@ from django.urls import path
 from modulos.UserProfile.views import CustomLoginView, SignUpView
 
 from .forms import CustomPasswordResetForm
-from .views import (manage_user_groups, profile_view, statistics, user_delete, user_edit,
+from .views import (manage_user_groups, profile_view, user_delete, user_edit,
                     user_list)
 
 urlpatterns = [
@@ -48,5 +48,4 @@ urlpatterns = [
     path("groups/<int:user_id>/", manage_user_groups, name="manage_user_groups"),
     # informacion del perfil
     path("profile/", profile_view, name="profile"),
-    path("statistics/", statistics, name="statistics"),
 ]

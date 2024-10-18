@@ -115,6 +115,7 @@ def profile_view(request):
             "u_form": u_form,
             "p_form": p_form,
             "groups": request.user.groups.all(),
+            "user": request.user
         },
     )
 
@@ -169,6 +170,7 @@ def user_edit(request, user_id):
             print(form.errors)  # Imprimir los errores del formulario si no es válido
     else:
         form = CustomUserEditForm(instance=user)
+
     return render(
         request, "admin_panel/user_form.html", new_ctx(request, {"form": form})
     )
@@ -195,6 +197,7 @@ def user_delete(request, user_id):
     if request.method == "POST":
         user.delete()
         return redirect("user_list")
+
     return render(
         request,
         "admin_panel/user_confirm_delete.html",
@@ -229,17 +232,9 @@ def manage_user_groups(request, user_id):
             )  # Redirige al listado de usuarios después de guardar
     else:
         form = UserGroupForm(instance=user)
+
     return render(
         request,
         "admin_panel/manage_user_groups.html",
         new_ctx(request, {"form": form, "user": user}),
     )
-
-
-@login_required
-def statistics(request):
-    user = request.user
-
-    ctx = new_ctx(request, {"user": user})
-
-    return render(request, "registration/statistics.html", ctx)
