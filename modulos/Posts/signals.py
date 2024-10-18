@@ -15,7 +15,7 @@ def send_notification_to_users(sender, instance, **kwargs):
     Envía una notificación a los usuarios cuando un post cambia a estado "Publicado".
     """
     if instance.pk:
-        old_instance = Post.objects.filter(pk=instance.pk).first()
+        old_instance = Post.objects.filter(pk=instance.pk, active=True).first()
 
         # Verificar si se realiza un cambio de estado a "PUBLISHED"
         if (
@@ -69,7 +69,7 @@ def send_notification_to_authors(sender, instance, **kwargs):
     """
     if instance.pk:
         # Obtenemos el estado anterior del post para verificar los cambios
-        old_instance = Post.objects.filter(pk=instance.pk).first()
+        old_instance = Post.objects.filter(pk=instance.pk, active=True).first()
 
         if old_instance:
             # Verificamos si hay un autor asignado al post
@@ -141,7 +141,7 @@ def check_top_posts():
     """
     # Obtener el post destacado (más favoritos)
     post_destacado = (
-        Post.objects.filter(status=Post.PUBLISHED)
+        Post.objects.filter(status=Post.PUBLISHED, active=True)
         .annotate(favorite_count=Count("favorites"))
         .order_by("-favorite_count")
         .first()
@@ -149,7 +149,7 @@ def check_top_posts():
 
     # Obtener los 5 posts más populares
     posts_populares = (
-        Post.objects.filter(status=Post.PUBLISHED)
+        Post.objects.filter(status=Post.PUBLISHED, active=True)
         .annotate(favorite_count=Count("favorites"))
         .order_by("-favorite_count")[:5]
     )

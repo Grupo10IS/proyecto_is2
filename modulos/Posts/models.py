@@ -12,14 +12,12 @@ class Post(models.Model):
     PENDING_REVIEW = "Esperando revision"
     PENDING_PUBLICATION = "Esperando publicacion"
     PUBLISHED = "Publicado"
-    INACTIVE = "INACTIVE"
 
     STATUS_CHOICES = [
         (DRAFT, DRAFT),
         (PENDING_REVIEW, PENDING_REVIEW),
         (PENDING_PUBLICATION, PENDING_PUBLICATION),
         (PUBLISHED, PUBLISHED),
-        (INACTIVE, INACTIVE),
     ]
 
     title = models.CharField(max_length=80, verbose_name="Titulo")
@@ -33,6 +31,7 @@ class Post(models.Model):
     status = models.CharField(
         max_length=30, choices=STATUS_CHOICES, default=DRAFT, verbose_name="Status"
     )
+    active = models.BooleanField(default=True)
     creation_date = models.DateTimeField(default=now, verbose_name="Fecha de creacion")
     publication_date = models.DateTimeField(
         null=True, blank=True, verbose_name="Fecha de publicacion"

@@ -130,7 +130,7 @@ class CategoryDetailView(DetailView):
         if page <= 0:
             page = 1
 
-        posts = Post.objects.filter(status=Post.PUBLISHED, category=category)[
+        posts = Post.objects.filter(active=True, status=Post.PUBLISHED, category=category)[
             20 * (page - 1) : 20 * page
         ]
 
@@ -211,7 +211,7 @@ def category_edit(request, category_id):
         if form.is_valid():
             # Verifica si la categoría está siendo cambiada a inactiva y tiene posts asociados
             if (
-                form.cleaned_data["status"] == "INACTIVO"
+                form.cleaned_data["active"] == "Inactivo"
                 and Post.objects.filter(category=category).exists()
             ):
                 return render(
@@ -226,6 +226,7 @@ def category_edit(request, category_id):
                     ),
                 )
             form.save()
+
             return redirect("category_list")
 
     form = CategoryCreationForm(instance=category)

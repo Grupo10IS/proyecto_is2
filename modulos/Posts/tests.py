@@ -149,7 +149,7 @@ def test_create_post_view(client):
 
     # test of existing new post
     assert Post.objects.filter(
-        title="New Test Post"
+        title="New Test Post", active=True
     ).exists(), "Post should exist in the database after creation."
 
 
@@ -309,9 +309,11 @@ def test_delete_post_view(client):
     ), "Debería retornar 200 al acceder a la vista de confirmación de eliminación."
 
     response = client.post(url)
-    assert response.status_code == 302, "Debería redirigir después de inactivar el post."
+    assert (
+        response.status_code == 302
+    ), "Debería redirigir después de inactivar el post."
     assert not Post.objects.filter(
-        id=post.id
+        active=True, id=post.id
     ).exists(), "El post debería haber sido eliminado."
 
 
