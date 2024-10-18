@@ -167,7 +167,7 @@
         <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">page</span> <span class="o">=</span> <span class="mi">1</span>
 
-        <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)[</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)[</span>
             <span class="mi">20</span> <span class="o">*</span> <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">page</span>
         <span class="p">]</span>
 
@@ -250,7 +250,7 @@
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
             <span class="c1"># Verifica si la categoría está siendo cambiada a inactiva y tiene posts asociados</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;INACTIVO&quot;</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Inactivo&quot;</span>
                 <span class="ow">and</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
             <span class="p">):</span>
                 <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
@@ -265,6 +265,7 @@
                     <span class="p">),</span>
                 <span class="p">)</span>
             <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;category_list&quot;</span><span class="p">)</span>
 
     <span class="n">form</span> <span class="o">=</span> <span class="n">CategoryCreationForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>

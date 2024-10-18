@@ -51,7 +51,7 @@
 <span class="sd">    Envía una notificación a los usuarios cuando un post cambia a estado &quot;Publicado&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
-        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
         <span class="c1"># Verificar si se realiza un cambio de estado a &quot;PUBLISHED&quot;</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -108,7 +108,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
         <span class="c1"># Obtenemos el estado anterior del post para verificar los cambios</span>
-        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">old_instance</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">old_instance</span><span class="p">:</span>
             <span class="c1"># Verificamos si hay un autor asignado al post</span>
@@ -183,7 +183,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Obtener el post destacado (más favoritos)</span>
     <span class="n">post_destacado</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
         <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)</span>
         <span class="o">.</span><span class="n">first</span><span class="p">()</span>
@@ -191,7 +191,7 @@
 
     <span class="c1"># Obtener los 5 posts más populares</span>
     <span class="n">posts_populares</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
         <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
     <span class="p">)</span>

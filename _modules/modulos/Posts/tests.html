@@ -191,7 +191,7 @@
 
     <span class="c1"># test of existing new post</span>
     <span class="k">assert</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;Post should exist in the database after creation.&quot;</span></div>
 
 
@@ -347,11 +347,11 @@
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
 <span class="k">def</span> <span class="nf">test_delete_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Test para eliminar un post.</span>
+<span class="sd">    Test para inactivar un post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a Eliminar&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a eliminar&quot;</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a inactivar&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a inactivar&quot;</span>
     <span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
         <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
@@ -366,9 +366,11 @@
     <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 al acceder a la vista de confirmación de eliminación.&quot;</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">,</span> <span class="s2">&quot;Debería redirigir después de eliminar el post.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería redirigir después de inactivar el post.&quot;</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">id</span>
     <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;El post debería haber sido eliminado.&quot;</span></div>
 
 
