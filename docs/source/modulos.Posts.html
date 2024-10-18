@@ -1131,6 +1131,19 @@ Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpRespo
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.post_versions_list">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">post_versions_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#post_versions_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.post_versions_list" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para listar todas las versiones de un post específico.</p>
+<dl class="simple">
+<dt>Argumentos:</dt><dd><p>request: El objeto de solicitud HTTP.
+id: El ID del post para obtener sus versiones.</p>
+</dd>
+<dt>Retorna:</dt><dd><p>Renderiza la página post_versions_list con las versiones del post.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.publish_post">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">publish_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#publish_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.publish_post" title="Link to this definition">¶</a></dt>
 <dd><p>Vista para publicar una publicación.</p>
@@ -1345,6 +1358,7 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_revert_version"><code class="docutils literal notranslate"><span class="pre">post_revert_version()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_statistics"><code class="docutils literal notranslate"><span class="pre">post_statistics()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_version_detail"><code class="docutils literal notranslate"><span class="pre">post_version_detail()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.post_versions_list"><code class="docutils literal notranslate"><span class="pre">post_versions_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.publish_post"><code class="docutils literal notranslate"><span class="pre">publish_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.view_post"><code class="docutils literal notranslate"><span class="pre">view_post()</span></code></a></li>
 </ul>

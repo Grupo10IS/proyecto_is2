@@ -426,6 +426,30 @@
 
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
 
+    <span class="c1"># no permitir editar posts ya publicados</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se puede editar un post ya publicado&quot;</span><span class="p">)</span>
+
+    <span class="c1"># solo permitir a editores editar cuando esta pendiente de revision.</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span>
+        <span class="n">POST_APPROVE_PERMISSION</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;No se puede editar un post pendiente de aprobacion si no es un editor&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># solo permitir a publicadores editar cuando esta pendiente de publicacion.</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span>
+        <span class="n">POST_PUBLISH_PERMISSION</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;No se puede editar un post pendiente de publicacion si no es un publicador&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># solo permitir a los propios autores editar sus borradores.</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">DRAFT</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">!=</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solo los autores pueden editar un borrador&quot;</span><span class="p">)</span>
+
     <span class="n">form</span> <span class="o">=</span> <span class="n">NewPostForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">}))</span>
 
@@ -448,13 +472,35 @@
 <span class="sd">        Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,</span>
 <span class="sd">        pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">drafts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
-    <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">)</span>
-    <span class="n">pending_publication</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">)</span>
-    <span class="n">recently_published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>
-        <span class="n">publication_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
-    <span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+    <span class="c1"># Listar todos los posts o solo los posts si se trata de un publisher/editor</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">recently_published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>
+            <span class="n">publication_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">)</span>
+        <span class="n">pending_publication</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">)</span>
+
+    <span class="c1"># De lo contrario listar solo los posts del autor</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">recently_published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span>
+            <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">publication_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pending_review</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">pending_publication</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">user</span>
+        <span class="p">)</span>
+
+    <span class="n">drafts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
 
     <span class="c1"># asignar publicacion directa a aquellas publicaciones cuya categoria es de tipo &quot;libre&quot;</span>
     <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">drafts</span><span class="p">:</span>
@@ -475,10 +521,10 @@
                 <span class="s2">&quot;pending_publication&quot;</span><span class="p">:</span> <span class="n">pending_publication</span><span class="p">,</span>
                 <span class="s2">&quot;published&quot;</span><span class="p">:</span> <span class="n">recently_published</span><span class="p">,</span>
                 <span class="c1"># permisos para mostrar las acciones sobre las publicaciones</span>
-                <span class="s2">&quot;can_create&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_publish&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_approve&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">),</span>
-                <span class="s2">&quot;can_reject&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_create&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_publish&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_PUBLISH_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_approve&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_APPROVE_PERMISSION</span><span class="p">),</span>
+                <span class="s2">&quot;can_reject&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">),</span>
             <span class="p">},</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -591,7 +637,18 @@
 <span class="sd">        Redirige al tablero Kanban después de cambiar el estado del post a &#39;Borrador&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
-    <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
+
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
+            <span class="s2">&quot;No puedes tocar el estado de un post ya publicado&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Retrasar un paoso el estado de publicacion</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">:</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
+    <span class="k">elif</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">:</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span>
+
     <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
     <span class="c1"># actualizar las estadisticas del auditor y el autor</span>
@@ -782,7 +839,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span> <span class="ow">or</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
         <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
             <span class="s2">&quot;No tienes permisos para acceder a los logs de este post&quot;</span>
         <span class="p">)</span>
@@ -793,8 +853,9 @@
 
 
 
+<div class="viewcode-block" id="post_versions_list">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.post_versions_list">[documentos]</a>
 <span class="nd">@login_required</span>
-<span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_versions_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Vista para listar todas las versiones de un post específico.</span>
@@ -806,12 +867,21 @@
 <span class="sd">    Retorna:</span>
 <span class="sd">        Renderiza la página post_versions_list con las versiones del post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
+            <span class="s2">&quot;No tienes permisos para acceder al registro de versiones de este post&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">versions</span> <span class="o">=</span> <span class="n">Version</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;versions&quot;</span><span class="p">:</span> <span class="n">versions</span><span class="p">})</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_versions_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_versions_list.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="post_version_detail">
@@ -891,6 +961,13 @@
             <span class="s2">&quot;No tienes permisos para acceder a las versiones de este post&quot;</span>
         <span class="p">)</span>
 
+    <span class="c1"># Evitar que un post en estado publicado pueda ser revertido</span>
+    <span class="k">if</span> <span class="n">original</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">original</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span><span class="s2">&quot;Un post publicado no puede ser revertido&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Que no se pueda hacer reversion durante el proceso de edicion/aprobacion/publicacion</span>
+    <span class="c1"># a menos que este en &quot;derecho&quot; de realizar dicha modificacion.</span>
+
     <span class="n">version</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Version</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">post_id</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
     <span class="n">RestorePost</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
@@ -916,9 +993,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span> <span class="ow">or</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_REVIEW_PERMISSION</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
         <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span>
-            <span class="s2">&quot;No tienes permisos para acceder a los logs de este post&quot;</span>
+            <span class="s2">&quot;No tienes permisos para acceder a las estadisticas de este post&quot;</span>
         <span class="p">)</span>
 
     <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
