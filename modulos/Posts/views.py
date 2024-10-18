@@ -48,7 +48,7 @@ def home_view(req):
 
     # Obtener el post con más favoritos
     post_destacado = (
-        Post.objects.filter(status=Post.PUBLISHED)
+        Post.objects.filter(status=Post.PUBLISHED, active=True)
         .annotate(favorite_count=Count("favorites"))
         .order_by("-favorite_count")
         .first()
@@ -56,14 +56,14 @@ def home_view(req):
 
     # Obtener las tres categorías con más posts marcados como favoritos
     categorias_populares = (
-        Category.objects.filter(post__status=Post.PUBLISHED)
+        Category.objects.filter(post__status=Post.PUBLISHED, post__active=True)
         .annotate(favorite_count=Count("post__favorites"))
         .order_by("-favorite_count")[:3]
     )
 
     # Obtener los 5 posts más populares (con más favoritos)
     posts_populares = (
-        Post.objects.filter(status=Post.PUBLISHED)
+        Post.objects.filter(status=Post.PUBLISHED, active=True)
         .annotate(favorite_count=Count("favorites"))
         .order_by("-favorite_count")[:5]
     )
@@ -74,9 +74,9 @@ def home_view(req):
         posts_recientes = buscador.generate_query_set(input_search).execute()
     else:
         # Obtener los posts publicados más recientes
-        posts_recientes = Post.objects.filter(status=Post.PUBLISHED).order_by(
-            "-publication_date"
-        )
+        posts_recientes = Post.objects.filter(
+            status=Post.PUBLISHED, active=True
+        ).order_by("-publication_date")
 
     # Configuración de paginación (10 posts por página)
     paginator = Paginator(posts_recientes, 10)
@@ -126,7 +126,7 @@ def view_post(request, id):
 
     # Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos
     if (
-        post.status != Post.PUBLISHED
+        (post.status != Post.PUBLISHED or not post.active)
         and post.author != request.user
         and not request.user.has_perm(POST_REVIEW_PERMISSION)
     ):
@@ -221,7 +221,7 @@ def view_post(request, id):
 @permissions_required(
     [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
 )
-def manage_post(request):
+def manage_posts(request):
     """
     Vista para gestionar los posts.
 
@@ -235,12 +235,11 @@ def manage_post(request):
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
     """
     is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
-    posts = Post.objects.all() if is_admin else Post.objects.filter(author=request.user)
-
-    if is_admin:
-        posts = Post.objects.all()
-    else:
-        posts = Post.objects.filter(author=request.user)
+    posts = (
+        Post.objects.filter(active=True, status=Post.PUBLISHED)
+        if is_admin
+        else Post.objects.filter(author=request.user, active=True)
+    )
 
     ctx = new_ctx(
         request,
@@ -251,7 +250,37 @@ def manage_post(request):
             "perm_delete": request.user.has_perm(POST_DELETE_PERMISSION),
         },
     )
+
     return render(request, "pages/post_list.html", ctx)
+
+
+def manage_inactive_posts(request):
+    """
+    Vista para gestionar los posts inactivos.
+
+    Esta vista lista todos los posts inactivos del usuario actual o de todos los usuarios
+    si el usuario pertenece al grupo 'Administrador'.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+
+    Returns:
+        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
+    """
+    can_delete = request.user.has_perm(POST_DELETE_PERMISSION)
+
+    posts = (
+        Post.objects.filter(active=False)
+        if can_delete
+        else Post.objects.filter(author=request.user, active=False)
+    )
+
+    ctx = new_ctx(
+        request,
+        {"posts": posts, "can_delete": can_delete},
+    )
+
+    return render(request, "pages/inactives_list.html", ctx)
 
 
 # ----------------
@@ -281,11 +310,6 @@ def create_post(request):
 
         p = form.save(commit=False)
 
-        if "save_draft" in request.POST:
-            p.status = Post.DRAFT
-        elif "submit_review" in request.POST:
-            p.status = Post.PENDING_REVIEW  # Estado "Pendiente de Revisión"
-
         author = request.user
 
         p.author = request.user
@@ -300,6 +324,7 @@ def create_post(request):
         return redirect("/posts/" + str(p.id))
 
     ctx = new_ctx(request, {"form": NewPostForm})
+
     return render(
         request,
         "pages/new_post.html",
@@ -308,16 +333,16 @@ def create_post(request):
 
 
 @login_required
-def delete_post(request, id):
+def inactivate_post(request, id):
     """
-    Vista para eliminar un post.
+    Vista para inactivar un post.
 
-    Esta vista muestra un mensaje de confirmación antes de eliminar un post.
+    Esta vista muestra un mensaje de confirmación antes de inactivar un post.
     Si la solicitud es un POST, se elimina el post y se redirige a la lista de posts.
 
     Args:
         request (HttpRequest): El objeto de solicitud HTTP.
-        id (int): El ID del post a eliminar.
+        id (int): El ID del post a inactivar.
 
     Returns:
         HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
@@ -328,10 +353,13 @@ def delete_post(request, id):
         not request.user.has_perm(POST_DELETE_PERMISSION)
         and post.author != request.user
     ):
-        return HttpResponseForbidden("No tienes permiso para eliminar este post.")
+        return HttpResponseForbidden("No tienes permiso para inactivar este post.")
 
     if request.method == "POST":
-        post.delete()
+        post.active = False
+        post.save()
+
+        Log(post=post, message=f"Post inactivado por: {request.user.username}").save()
 
         request.user.c_audit_eliminados += 1
         request.user.save()
@@ -341,6 +369,43 @@ def delete_post(request, id):
     # Si no es una solicitud POST, muestra un mensaje de confirmación
     ctx = new_ctx(request, {"post": post})
     return render(request, "pages/post_confirm_delete.html", ctx)
+
+
+def reactivate_post(request, id):
+    """
+    Vista para reactivar un post.
+
+    Esta vista vuelve a activar un post que estaba inactivado. Solo aquellos que pueden inactivar
+    un post pueden volver a reactivarlo.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+        id (int): El ID del post a inactivar.
+
+    Returns:
+        HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
+    """
+    post: Post = get_object_or_404(Post, pk=id)
+
+    if not request.user.has_perm(POST_DELETE_PERMISSION):
+        return HttpResponseForbidden(
+            "No tienes permiso para reactivar este post. Contacta con un administrador"
+        )
+
+    if request.method == "POST":
+        post.active = True
+        post.save()
+
+        Log(post=post, message=f"Post reactivado por: {request.user.username}").save()
+
+        request.user.c_audit_eliminados += 1
+        request.user.save()
+
+        return redirect("post_list")
+
+    # Si no es una solicitud POST, muestra un mensaje de confirmación
+    ctx = new_ctx(request, {"post": post})
+    return render(request, "pages/post_confirm_reactivation.html", ctx)
 
 
 @login_required
@@ -365,6 +430,9 @@ def edit_post(request, id):
     """
     post = get_object_or_404(Post, pk=id)
     old_instance = get_object_or_404(Post, pk=id)
+
+    if not post.active:
+        return HttpResponseForbidden("No se puede editar un post inactivo")
 
     if request.method == "POST":
 
@@ -440,24 +508,30 @@ def kanban_board(request):
     ):
         recently_published = Post.objects.filter(
             status=Post.PUBLISHED,
+            active=True,
             publication_date__gte=timezone.now() - timedelta(days=5),
         )
-        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
-        pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
+        pending_review = Post.objects.filter(active=True, status=Post.PENDING_REVIEW)
+        pending_publication = Post.objects.filter(
+            active=True, status=Post.PENDING_PUBLICATION
+        )
 
     # De lo contrario listar solo los posts del autor
     else:
         recently_published = Post.objects.filter(
             status=Post.PUBLISHED,
+            active=True,
             author=user,
             publication_date__gte=timezone.now() - timedelta(days=5),
         )
-        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW, author=user)
+        pending_review = Post.objects.filter(
+            active=True, status=Post.PENDING_REVIEW, author=user
+        )
         pending_publication = Post.objects.filter(
-            status=Post.PENDING_PUBLICATION, author=user
+            active=True, status=Post.PENDING_PUBLICATION, author=user
         )
 
-    drafts = Post.objects.filter(status=Post.DRAFT, author=user)
+    drafts = Post.objects.filter(status=Post.DRAFT, active=True, author=user)
 
     # asignar publicacion directa a aquellas publicaciones cuya categoria es de tipo "libre"
     for post in drafts:
@@ -501,6 +575,10 @@ def send_to_review(request, id):
         Redirige al tablero Kanban una vez que el estado del post se ha actualizado a 'Pendiente de Revisión'.
     """
     post = get_object_or_404(Post, id=id)
+
+    if not post.active:
+        return HttpResponseForbidden("No se puede enviar a review un post inactivo")
+
     post.status = Post.PENDING_REVIEW
     post.save()
 
@@ -521,6 +599,10 @@ def aprove_post(request, id):
         Redirige al tablero Kanban después de cambiar el estado del post a 'Pendiente de Publicación'.
     """
     post = get_object_or_404(Post, id=id)
+
+    if not post.active:
+        return HttpResponseForbidden("No se puede enviar a review un post inactivo")
+
     post.status = Post.PENDING_PUBLICATION
     post.save()
 
@@ -550,6 +632,10 @@ def publish_post(request, id):
         Redirige al tablero Kanban una vez que el estado del post se ha actualizado a 'Publicado' y se ha registrado la fecha de publicación.
     """
     post = get_object_or_404(Post, id=id)
+
+    if not post.active:
+        return HttpResponseForbidden("No se puede publicar un post inactivo")
+
     category = post.category
 
     if (
@@ -591,6 +677,9 @@ def reject_post(request, id):
         Redirige al tablero Kanban después de cambiar el estado del post a 'Borrador'.
     """
     post = get_object_or_404(Post, id=id)
+
+    if not post.active:
+        return HttpResponseForbidden("No se puede rechazar un post inactivo")
 
     if post.status == post.PUBLISHED:
         return HttpResponseForbidden(
@@ -676,7 +765,7 @@ def favorite_list(request):
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/posts_favorites_list.html'.
     """
     # Obtener los posts favoritos
-    posts_favorites = Post.objects.filter(favorites=request.user)
+    posts_favorites = Post.objects.filter(favorites=request.user, active=True)
 
     # Paginación: 5 posts por página
     paginator = Paginator(posts_favorites, 5)  # 5 posts por página
@@ -702,13 +791,15 @@ def list_contenidos_view(request):
     """
     Vista para listar todos los contenidos por categoría con opción de búsqueda y filtrado.
     """
-    categories = Category.objects.filter(post__status=Post.PUBLISHED).distinct()
+    categories = Category.objects.filter(
+        post__status=Post.PUBLISHED, post__active=True
+    ).distinct()
 
     # Inicializa el formulario de búsqueda con los parámetros GET si existen
     form = PostsListFilter(request.GET or None)
 
     # Construimos un query dinámico para los filtros
-    posts_query = Post.objects.filter(status=Post.PUBLISHED)
+    posts_query = Post.objects.filter(status=Post.PUBLISHED, active=True)
 
     # Aplicar filtros si el formulario es válido
     if form.is_valid():
@@ -883,6 +974,9 @@ def post_revert_version(request, post_id, version):
         Si el usuario no tiene permisos o no es el autor del post, devuelve un HttpResponseForbidden.
     """
     original = get_object_or_404(Post, pk=post_id)
+
+    if not original.active:
+        return HttpResponseForbidden("No se puede modificar un post inactivo")
 
     if (
         not request.user.has_perm(POST_EDIT_PERMISSION)

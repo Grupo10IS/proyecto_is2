@@ -4,13 +4,15 @@ from .views import *
 
 urlpatterns = [
     # -- vistas de usuario --
-    path("", manage_post, name="post_list"),
+    path("", manage_posts, name="post_list"),
+    path("inactives", manage_inactive_posts, name="inactives_list"),
     path("list/", list_contenidos_view, name="list_contenidos"),
     path("<int:id>/", view_post, name="post_detail"),
     path("search/", enhanced_search, name="post_search"),
     # -- administracion de contenido --
     path("create/", create_post, name="post_create"),
-    path("<int:id>/delete", delete_post, name="delete_post"),
+    path("<int:id>/inactivate", inactivate_post, name="delete_post"),
+    path("<int:id>/reactivate", reactivate_post, name="reactivate_post"),
     path("<int:id>/edit/", edit_post, name="edit_post"),
     # -- vistas de publicacion de contenido --
     path("<int:id>/approve", aprove_post, name="approve_post"),

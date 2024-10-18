@@ -24,7 +24,7 @@ class QueryBuilder:
 
     def execute(self):
         # Ejecuta la consulta sobre el modelo
-        return self.model.objects.filter(self.filters)
+        return self.model.objects.filter(self.filters, active=True)
 
 
 # The base Node class

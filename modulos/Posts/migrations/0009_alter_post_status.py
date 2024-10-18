@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                     ("Esperando publicacion", "Esperando publicacion"),
                     ("Publicado", "Publicado"),
                     ("Rechazado", "Rechazado"),
-                    ("INACTIVE", "INACTIVE"),
+                    ("Inactivo", "Inactivo"),
                 ],
                 default="Borrador",
                 max_length=30,

@@ -2,14 +2,7 @@
 {% block content %}
     <div class="container mt-5">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
-            <div class="d-flex flex-row align-items-center">
-                <h1 class="display-6 fst-italic mb-4">Contenido</h1>
-                <a href="{% url 'inactives_list' %}"
-                   class="btn btn-secondary ms-auto"
-                   style="background-color: black;
-                          border-color: black;
-                          color: white">Inactivos</a>
-            </div>
+            <h1 class="display-6 fst-italic mb-4">Inactivos</h1>
             <table class="table table-hover table-striped">
                 <thead class="table-dark fst-italic">
                     <tr>
@@ -35,32 +28,18 @@
                                    style="background-color: black;
                                           border-color: black;
                                           color:white">Detalles</a>
-                                {% if perm_create or perm_edit %}
-                                    <a href="{% url 'edit_post' post.id %}"
-                                       class="btn btn-sm btn-primary"
-                                       style="background-color: black;
-                                              border-color: black;
-                                              color:white">Editar</a>
-                                {% endif %}
-                                {% if "delete" in permisos %}
-                                    <a href="{% url 'delete_post' post.id %}"
+                                {% if can_delete %}
+                                    <a href="{% url 'reactivate_post' post.id %}"
                                        class="btn btn-sm btn-danger"
                                        style="background-color: black;
                                               border-color: black;
-                                              color:white">Inactivar</a>
+                                              color:white">reactivar</a>
                                 {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            {% if perm_create %}
-                <a href="{% url 'post_create' %}"
-                   class="btn btn-primary"
-                   style="background-color: black;
-                          border-color: black;
-                          color:white">Crear Post</a>
-            {% endif %}
             <a href="{% url 'home' %}"
                class="btn btn-secondary"
                style="background-color: black;
