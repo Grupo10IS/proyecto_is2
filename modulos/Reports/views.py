@@ -47,6 +47,7 @@ def create_report(request, id):
     else:
         form = ReportForm()
         ctx = new_ctx(request, {"post": post, "form": form})
+
         return render(request, "create_report.html", context=ctx)
 
 
@@ -140,6 +141,7 @@ def review(request, id):
     posts_with_reports = Post.objects.annotate(report_count=Count("reports")).filter(
         report_count__gt=0
     )
-    return render(
-        request, "report_list.html", {"posts_with_reports": posts_with_reports}
-    )
+
+    ctx = new_ctx(request, {"posts_with_reports": posts_with_reports})
+
+    return render(request, "report_list.html", ctx)
