@@ -104,7 +104,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ["phone_number", "address", "receive_notifications"]
+        fields = ["phone_number", "address", "receive_notifications", "profile_image"]
 
 
 class CustomPasswordResetForm(PasswordResetForm):
