@@ -124,6 +124,14 @@ modulos.Posts.migrations.0015\_alter\_post\_version module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0016\_post\_active\_alter\_post\_status module
+-----------------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0016_post_active_alter_post_status
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
