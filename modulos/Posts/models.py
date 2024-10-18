@@ -138,7 +138,7 @@ def new_creation_log(post, user) -> None:
     """
     Log(
         post=post,
-        message='El post a sido exitosamente creado por "{user.username}"',
+        message=f'El post a sido exitosamente creado por "{user.username}"',
     ).save()
 
 

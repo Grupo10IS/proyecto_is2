@@ -3,9 +3,9 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-body text-black">
-                <h1 class="card-title">Inactivar Post</h1>
+                <h1 class="card-title">Reactivar Post</h1>
                 <p class="card-text">
-                    ¿Estás seguro de que deseas inactivar el post <strong>{{ post.title }}</strong>?
+                    ¿Estás seguro de que deseas reaactivar el post <strong>{{ post.title }}</strong>?
                 </p>
                 {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
                 <form method="post">
@@ -15,7 +15,7 @@
                                 class="btn btn-danger"
                                 style="background-color: black;
                                        border-color: black;
-                                       color:white">Inactivar</button>
+                                       color:white">Reactivar</button>
                         <a href="#"
                            class="btn btn-secondary"
                            style="background-color: black;

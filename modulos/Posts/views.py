@@ -218,7 +218,7 @@ def view_post(request, id):
 @permissions_required(
     [POST_CREATE_PERMISSION, POST_EDIT_PERMISSION, POST_DELETE_PERMISSION]
 )
-def manage_post(request):
+def manage_posts(request):
     """
     Vista para gestionar los posts.
 
@@ -232,12 +232,11 @@ def manage_post(request):
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
     """
     is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
-    posts = Post.objects.all() if is_admin else Post.objects.filter(author=request.user)
-
-    if is_admin:
-        posts = Post.objects.all()
-    else:
-        posts = Post.objects.filter(author=request.user)
+    posts = (
+        Post.objects.filter(active=True, status=Post.PUBLISHED)
+        if is_admin
+        else Post.objects.filter(author=request.user, active=True)
+    )
 
     ctx = new_ctx(
         request,
@@ -250,6 +249,38 @@ def manage_post(request):
     )
 
     return render(request, "pages/post_list.html", ctx)
+
+
+def manage_inactive_posts(request):
+    """
+    Vista para gestionar los posts inactivos.
+
+    Esta vista lista todos los posts inactivos del usuario actual o de todos los usuarios
+    si el usuario pertenece al grupo 'Administrador'.
+
+    Args:
+        request (HttpRequest): El objeto de solicitud HTTP.
+
+    Returns:
+        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
+    """
+    can_delete = request.user.has_perm(POST_DELETE_PERMISSION)
+
+    posts = (
+        Post.objects.filter(active=False)
+        if can_delete
+        else Post.objects.filter(author=request.user, active=False)
+    )
+
+    ctx = new_ctx(
+        request,
+        {
+            "posts": posts,
+            "can_delete": can_delete
+        },
+    )
+
+    return render(request, "pages/inactives_list.html", ctx)
 
 
 # ----------------
@@ -357,7 +388,7 @@ def reactivate_post(request, id):
     post: Post = get_object_or_404(Post, pk=id)
 
     if not request.user.has_perm(POST_DELETE_PERMISSION):
-        return HttpResponseForbidden("No tienes permiso para reactivar este post.")
+        return HttpResponseForbidden("No tienes permiso para reactivar este post. Contacta con un administrador")
 
     if request.method == "POST":
         post.active = True
@@ -372,7 +403,7 @@ def reactivate_post(request, id):
 
     # Si no es una solicitud POST, muestra un mensaje de confirmación
     ctx = new_ctx(request, {"post": post})
-    return render(request, "pages/post_confirm_delete.html", ctx)
+    return render(request, "pages/post_confirm_reactivation.html", ctx)
 
 
 @login_required
@@ -758,7 +789,9 @@ def list_contenidos_view(request):
     """
     Vista para listar todos los contenidos por categoría con opción de búsqueda y filtrado.
     """
-    categories = Category.objects.filter(post__status=Post.PUBLISHED, post__active=True).distinct()
+    categories = Category.objects.filter(
+        post__status=Post.PUBLISHED, post__active=True
+    ).distinct()
 
     # Inicializa el formulario de búsqueda con los parámetros GET si existen
     form = PostsListFilter(request.GET or None)
@@ -937,7 +970,7 @@ def post_revert_version(request, post_id, version):
     """
     original = get_object_or_404(Post, pk=post_id)
 
-    if not original.active: 
+    if not original.active:
         return HttpResponseForbidden("No se puede modificar un post inactivo")
 
     if (
