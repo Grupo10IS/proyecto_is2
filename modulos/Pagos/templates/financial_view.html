@@ -45,7 +45,7 @@
                     <td>{{ payment.user.username }}</td>
                     <td>{{ payment.category.name }}</td>
                     <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
-                    <td>${{ payment.amount }}</td>
+                    <td>R${{ payment.amount }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
