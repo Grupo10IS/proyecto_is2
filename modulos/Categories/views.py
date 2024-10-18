@@ -189,7 +189,7 @@ def category_edit(request, category_id):
         if form.is_valid():
             # Verifica si la categoría está siendo cambiada a inactiva y tiene posts asociados
             if (
-                form.cleaned_data["active"] == "Inactivo"
+                form.cleaned_data["status"] == "Inactivo"
                 and Post.objects.filter(category=category).exists()
             ):
                 return render(

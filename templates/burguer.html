@@ -25,6 +25,7 @@
         <line x1="3" y1="18" x2="21" y2="18"></line>
     </svg>
 </button>
+
 <!-- Offcanvas para el menú de navegación -->
 <div class="offcanvas offcanvas-end"
      tabindex="-1"
@@ -39,62 +40,48 @@
     <div class="offcanvas-body">
         <!-- Panel de Control -->
         {% if user.is_authenticated %}
-            {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos  %}
+            {% if "user" in permisos or "role" in permisos or "category" in permisos or "post" in permisos %}
                 <h4>Panel de Control</h4>
                 <nav class="nav nav-pills flex-column mb-5">
                     {% if "user" in permisos %}
-                        <a class="nav-link  text-start "
-                           style="color:white"
-                           href="{% url 'user_list' %}"
-                           role="button">Gestionar Usuarios</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'user_list' %}" role="button">Gestionar Usuarios</a>
                     {% endif %}
                     {% if "role" in permisos %}
-                        <a class="nav-link  text-start"
-                           style="color:white"
-                           href="{% url 'role_list' %}"
-                           role="button">Roles y Permisos</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'role_list' %}" role="button">Roles y Permisos</a>
                     {% endif %}
                     {% if "category" in permisos %}
-                        <a class="nav-link  text-start"
-                           style="color:white"
-                           href="{% url 'category_list' %}"
-                           role="button">Gestion de Categorias</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'category_list' %}" role="button">Gestion de Categorias</a>
                     {% endif %}
                     {% if "post" in permisos %}
-                        <a class="nav-link  text-start"
-                           style="color:white"
-                           href="{% url 'post_list' %}"
-                           role="button">Gestion de Contenido</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'post_list' %}" role="button">Gestion de Contenido</a>
                     {% endif %}
                     {% if has_kanban_access %}
-                        <a class="nav-link text-start"
-                           style="color:white"
-                           href="{% url 'kanban_board' %}"
-                           role="button">Tablero de Publicacion</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'kanban_board' %}" role="button">Tablero de Publicacion</a>
                     {% endif %}
-                    <a class="nav-link  text-start"
-                       style="color:white"
-                       href="{% url 'reports' %}"
-                       role="button">Reportes</a>
+                    <a class="nav-link text-start" style="color:white" href="{% url 'reports' %}" role="button">Reportes</a>
                     {% if has_financial_acces %}
-                        <a class="nav-link text-start"
-                           style="color:white"
-                           href="{% url 'financial_view' %}"
-                           role="button">Ver Finanzas</a>
+                        <a class="nav-link text-start" style="color:white" href="{% url 'financial_view' %}" role="button">Ver Finanzas</a>
                     {% endif %}
                 </nav>
             {% endif %}
+
+            <!-- Mostrar roles del usuario -->
+            <h4>Roles de {{ user.username }}</h4>
+            <ul class="nav list flex-column mb-5">
+                {% for group in user.groups.all %}
+                    <li class="nav-link" style="color:white">
+                        {{ group.name }}
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
+
         <!-- Sección de categorías -->
         <h4>Categorías</h4>
         <nav class="nav nav-pills flex-column">
             {% for category in categories %}
-                <a class="nav-link  text-start"
-                   style="color:white"
-                   href="{% url 'category_detail' category.id %}"
-                   role="button">{{ category.name }}</a>
+                <a class="nav-link text-start" style="color:white" href="{% url 'category_detail' category.id %}" role="button">{{ category.name }}</a>
             {% endfor %}
         </nav>
     </div>
 </div>
-
