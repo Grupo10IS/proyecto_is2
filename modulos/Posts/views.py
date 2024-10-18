@@ -383,6 +383,30 @@ def edit_post(request, id):
 
         return redirect("post_list")
 
+    # no permitir editar posts ya publicados
+    if post.status == post.PUBLISHED:
+        return HttpResponseBadRequest(f"No se puede editar un post ya publicado")
+
+    # solo permitir a editores editar cuando esta pendiente de revision.
+    if post.status == post.PENDING_REVIEW and not request.user.has_perm(
+        POST_APPROVE_PERMISSION
+    ):
+        return HttpResponseBadRequest(
+            f"No se puede editar un post pendiente de aprobacion si no es un editor"
+        )
+
+    # solo permitir a publicadores editar cuando esta pendiente de publicacion.
+    if post.status == post.PENDING_PUBLICATION and not request.user.has_perm(
+        POST_PUBLISH_PERMISSION
+    ):
+        return HttpResponseBadRequest(
+            f"No se puede editar un post pendiente de publicacion si no es un publicador"
+        )
+
+    # solo permitir a los propios autores editar sus borradores.
+    if post.status == post.DRAFT and not request.user != post.author:
+        return HttpResponseBadRequest(f"Solo los autores pueden editar un borrador")
+
     form = NewPostForm(instance=post)
     return render(request, "pages/new_post.html", new_ctx(request, {"form": form}))
 
@@ -405,13 +429,35 @@ def kanban_board(request):
         Renderiza la página kanban_board con las publicaciones en sus respectivos estados: borradores, pendientes de revisión,
         pendientes de publicación y recientemente publicadas. También pasa los permisos del usuario para determinar las acciones disponibles.
     """
-    drafts = Post.objects.filter(status=Post.DRAFT, author=request.user)
-    pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
-    pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
-    recently_published = Post.objects.filter(
-        status=Post.PUBLISHED,
-        publication_date__gte=timezone.now() - timedelta(days=5),
-    )
+    user = request.user
+
+    # Listar todos los posts o solo los posts si se trata de un publisher/editor
+    if (
+        user.has_perm(POST_PUBLISH_PERMISSION)
+        or user.has_perm(POST_APPROVE_PERMISSION)
+        or user.has_perm(POST_REJECT_PERMISSION)
+        or user.has_perm(POST_DELETE_PERMISSION)
+    ):
+        recently_published = Post.objects.filter(
+            status=Post.PUBLISHED,
+            publication_date__gte=timezone.now() - timedelta(days=5),
+        )
+        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW)
+        pending_publication = Post.objects.filter(status=Post.PENDING_PUBLICATION)
+
+    # De lo contrario listar solo los posts del autor
+    else:
+        recently_published = Post.objects.filter(
+            status=Post.PUBLISHED,
+            author=user,
+            publication_date__gte=timezone.now() - timedelta(days=5),
+        )
+        pending_review = Post.objects.filter(status=Post.PENDING_REVIEW, author=user)
+        pending_publication = Post.objects.filter(
+            status=Post.PENDING_PUBLICATION, author=user
+        )
+
+    drafts = Post.objects.filter(status=Post.DRAFT, author=user)
 
     # asignar publicacion directa a aquellas publicaciones cuya categoria es de tipo "libre"
     for post in drafts:
@@ -432,10 +478,10 @@ def kanban_board(request):
                 "pending_publication": pending_publication,
                 "published": recently_published,
                 # permisos para mostrar las acciones sobre las publicaciones
-                "can_create": request.user.has_perm(POST_CREATE_PERMISSION),
-                "can_publish": request.user.has_perm(POST_PUBLISH_PERMISSION),
-                "can_approve": request.user.has_perm(POST_APPROVE_PERMISSION),
-                "can_reject": request.user.has_perm(POST_REJECT_PERMISSION),
+                "can_create": user.has_perm(POST_CREATE_PERMISSION),
+                "can_publish": user.has_perm(POST_PUBLISH_PERMISSION),
+                "can_approve": user.has_perm(POST_APPROVE_PERMISSION),
+                "can_reject": user.has_perm(POST_REJECT_PERMISSION),
             },
         ),
     )
@@ -545,7 +591,18 @@ def reject_post(request, id):
         Redirige al tablero Kanban después de cambiar el estado del post a 'Borrador'.
     """
     post = get_object_or_404(Post, id=id)
-    post.status = Post.DRAFT
+
+    if post.status == post.PUBLISHED:
+        return HttpResponseForbidden(
+            "No puedes tocar el estado de un post ya publicado"
+        )
+
+    # Retrasar un paoso el estado de publicacion
+    if post.status == post.PENDING_REVIEW:
+        post.status = Post.DRAFT
+    elif post.status == post.PENDING_PUBLICATION:
+        post.status = Post.PENDING_REVIEW
+
     post.save()
 
     # actualizar las estadisticas del auditor y el autor
@@ -722,7 +779,10 @@ def post_log_list(request, id):
     """
     post = get_object_or_404(Post, pk=id)
 
-    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
         return HttpResponseForbidden(
             "No tienes permisos para acceder a los logs de este post"
         )
@@ -733,7 +793,6 @@ def post_log_list(request, id):
 
 
 @login_required
-@permissions_required([POST_REVIEW_PERMISSION])
 def post_versions_list(request, id):
     """
     Vista para listar todas las versiones de un post específico.
@@ -745,7 +804,15 @@ def post_versions_list(request, id):
     Retorna:
         Renderiza la página post_versions_list con las versiones del post.
     """
-    get_object_or_404(Post, pk=id)
+    post = get_object_or_404(Post, pk=id)
+
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
+        return HttpResponseForbidden(
+            "No tienes permisos para acceder al registro de versiones de este post"
+        )
 
     versions = Version.objects.filter(post_id=id)
     ctx = new_ctx(request, {"versions": versions})
@@ -825,6 +892,13 @@ def post_revert_version(request, post_id, version):
             "No tienes permisos para acceder a las versiones de este post"
         )
 
+    # Evitar que un post en estado publicado pueda ser revertido
+    if original.status == original.PUBLISHED:
+        return HttpResponseForbidden("Un post publicado no puede ser revertido")
+
+    # Que no se pueda hacer reversion durante el proceso de edicion/aprobacion/publicacion
+    # a menos que este en "derecho" de realizar dicha modificacion.
+
     version = get_object_or_404(Version, version=version, post_id=original.id)
 
     RestorePost(original, version)
@@ -847,9 +921,12 @@ def post_statistics(request, id):
     """
     post = get_object_or_404(Post, pk=id)
 
-    if not request.user.has_perm(POST_REVIEW_PERMISSION) or post.author != request.user:
+    if (
+        not request.user.has_perm(POST_REVIEW_PERMISSION)
+        and post.author != request.user
+    ):
         return HttpResponseForbidden(
-            "No tienes permisos para acceder a los logs de este post"
+            "No tienes permisos para acceder a las estadisticas de este post"
         )
 
     ctx = new_ctx(
