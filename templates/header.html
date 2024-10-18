@@ -100,14 +100,16 @@
                 </div>
                 <!-- Cambiar el enlace de suscripción en el encabezado -->
                 <a href="{% url 'categories_list' %}?premium=true" class="subscribe">Suscribite por $1</a>
-                {% if request.resolver_match.url_name != 'list_contenidos' %}
-                    <div>{% include 'burguer.html' %}</div>
-                {% endif %}
+                <div>{% include 'burguer.html' %}</div>
             </div>
         </div>
     </div>
-    {% block expand_nav %}
-    {% endblock expand_nav %}
+    <nav class="nav nav-scroller nav-underline justify-content-start">
+        {% for category in categories %}
+            <a class="nav-item nav-link link-body-emphasis"
+               href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+        {% endfor %}
+    </nav>
     <script src="{% static 'js/dropdown.js' %}">
          // Cuando el usuario haga clic en el icono de búsqueda, mostramos el campo de búsqueda
     document.getElementById('search-icon').addEventListener('click', function() {

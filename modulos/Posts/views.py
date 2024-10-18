@@ -274,10 +274,7 @@ def manage_inactive_posts(request):
 
     ctx = new_ctx(
         request,
-        {
-            "posts": posts,
-            "can_delete": can_delete
-        },
+        {"posts": posts, "can_delete": can_delete},
     )
 
     return render(request, "pages/inactives_list.html", ctx)
@@ -388,7 +385,9 @@ def reactivate_post(request, id):
     post: Post = get_object_or_404(Post, pk=id)
 
     if not request.user.has_perm(POST_DELETE_PERMISSION):
-        return HttpResponseForbidden("No tienes permiso para reactivar este post. Contacta con un administrador")
+        return HttpResponseForbidden(
+            "No tienes permiso para reactivar este post. Contacta con un administrador"
+        )
 
     if request.method == "POST":
         post.active = True
@@ -837,10 +836,13 @@ def list_contenidos_view(request):
             posts_by_category[category] = page_obj
 
     # Crear el contexto y pasarlo a la plantilla
-    ctx = {
-        "posts_by_category": posts_by_category,
-        "form": form,  # Pasar el formulario al contexto
-    }
+    ctx = new_ctx(
+        request,
+        {
+            "posts_by_category": posts_by_category,
+            "form": form,  # Pasar el formulario al contexto
+        },
+    )
 
     return render(request, "pages/list_contenidos.html", ctx)
 
