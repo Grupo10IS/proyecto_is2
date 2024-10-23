@@ -18,6 +18,12 @@ class UserProfile(AbstractUser):
         default=False,
         verbose_name="Desea recibir notificaciones sobre nuevas publicaciones?",
     )
+    profile_image = models.ImageField(
+        upload_to="profile_images/",
+        blank=True,
+        null=True,
+        verbose_name="Foto de perfil",
+    )
 
     # estadisticas del publicador
     c_creados = models.IntegerField(default=0)

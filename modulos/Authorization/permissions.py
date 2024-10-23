@@ -111,8 +111,14 @@ def user_has_access_to_category(user, category):
         return True
 
     # Verificar si el usuario pertenece a grupos con acceso a la categoría
-    from modulos.Authorization.roles import (ADMIN, AUTOR, EDITOR, FINANCIAL,
-                                             PUBLISHER, SUBSCRIBER)
+    from modulos.Authorization.roles import (
+        ADMIN,
+        AUTOR,
+        EDITOR,
+        FINANCIAL,
+        PUBLISHER,
+        SUBSCRIBER,
+    )
 
     if (
         category.tipo == category.SUSCRIPCION
