@@ -938,7 +938,7 @@ y envía una notificación al autor del post.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.signals.send_notification_to_authors">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.signals.</span></span><span class="sig-name descname"><span class="pre">send_notification_to_authors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/signals.html#send_notification_to_authors"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.signals.send_notification_to_authors" title="Link to this definition">¶</a></dt>
-<dd><p>Envía una notificación al autor cuando su post cambia de estado a «Publicado» o es «Rechazado».</p>
+<dd><p>Envía una notificación al autor cuando su post cambia de estado a «Publicado».</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1017,6 +1017,28 @@ Verifica que un post existente se puede editar correctamente.</p>
 </section>
 <section id="module-modulos.Posts.views">
 <span id="modulos-posts-views-module"></span><h2>modulos.Posts.views module<a class="headerlink" href="#module-modulos.Posts.views" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.views.RejectionReasonForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">RejectionReasonForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#RejectionReasonForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.RejectionReasonForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.views.RejectionReasonForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'rejection_reason':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.views.RejectionReasonForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.views.RejectionReasonForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'rejection_reason':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.views.RejectionReasonForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modulos.Posts.views.RejectionReasonForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#modulos.Posts.views.RejectionReasonForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.enhanced_search">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">enhanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#enhanced_search"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.enhanced_search" title="Link to this definition">¶</a></dt>
@@ -1387,6 +1409,12 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.urls">modulos.Posts.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.views">modulos.Posts.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.RejectionReasonForm"><code class="docutils literal notranslate"><span class="pre">RejectionReasonForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.views.RejectionReasonForm.base_fields"><code class="docutils literal notranslate"><span class="pre">RejectionReasonForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.views.RejectionReasonForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">RejectionReasonForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.views.RejectionReasonForm.media"><code class="docutils literal notranslate"><span class="pre">RejectionReasonForm.media</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.enhanced_search"><code class="docutils literal notranslate"><span class="pre">enhanced_search()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>

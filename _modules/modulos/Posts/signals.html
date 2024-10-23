@@ -80,7 +80,7 @@
 
             <span class="k">for</span> <span class="n">recipient</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
                 <span class="n">subject</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">💯💥&quot;</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">recipient</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">👋👋, hay una nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. No te la pierdas!, http://localhost:8000/posts/</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">recipient</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">👋👋, hay una nueva publicación en la categoría </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. No te la pierdas!, https://www.makexfp.com/posts/</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">send_mail</span><span class="p">(</span>
@@ -96,7 +96,7 @@
 
 
 
-<span class="c1"># NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO O RECHAZADO</span>
+<span class="c1"># NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO</span>
 
 
 <div class="viewcode-block" id="send_notification_to_authors">
@@ -104,7 +104,7 @@
 <span class="nd">@receiver</span><span class="p">(</span><span class="n">pre_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Post</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">send_notification_to_authors</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Envía una notificación al autor cuando su post cambia de estado a &quot;Publicado&quot; o es &quot;Rechazado&quot;.</span>
+<span class="sd">    Envía una notificación al autor cuando su post cambia de estado a &quot;Publicado&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
         <span class="c1"># Obtenemos el estado anterior del post para verificar los cambios</span>
@@ -136,34 +136,7 @@
                         <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando la pulicacion.&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                    <span class="k">return</span>
-
-            <span class="c1"># Notificar al autor si el post ha sido &quot;Rechazado&quot; (cambio a &quot;Borrador&quot;)</span>
-            <span class="k">elif</span> <span class="p">(</span>
-                <span class="n">old_instance</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">,</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_PUBLICATION</span><span class="p">]</span>
-                <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">DRAFT</span>
-            <span class="p">):</span>
-
-                <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Tu post ha sido rechazado 😕&quot;</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Hola </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, tu post &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; ha sido rechazado y vuelto al estado de borrador. &quot;</span>
-                    <span class="s2">&quot;Por favor, revisa los comentarios o haz los ajustes necesarios antes de volver a enviarlo para revisión.&quot;</span>
-                <span class="p">)</span>
-
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">send_mail</span><span class="p">(</span>
-                        <span class="n">subject</span><span class="p">,</span>
-                        <span class="n">message</span><span class="p">,</span>
-                        <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
-                        <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
-                        <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando el rechazo.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Correo enviado al autor </span><span class="si">{</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> notificando la publicación.&quot;</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ocurrieron errores al notificar al autor del post: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
