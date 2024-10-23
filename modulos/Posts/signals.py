@@ -44,7 +44,7 @@ def send_notification_to_users(sender, instance, **kwargs):
 
             for recipient in users:
                 subject = f"Nueva publicación en la categoría {category.name}💯💥"
-                message = f"Hola {recipient.username}👋👋, hay una nueva publicación en la categoría {category.name}. No te la pierdas!, http://localhost:8000/posts/{instance.id}"
+                message = f"Hola {recipient.username}👋👋, hay una nueva publicación en la categoría {category.name}. No te la pierdas!, https://www.makexfp.com/posts/{instance.id}"
 
                 try:
                     send_mail(
@@ -59,13 +59,13 @@ def send_notification_to_users(sender, instance, **kwargs):
                     return
 
 
-# NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO O RECHAZADO
+# NOTIFICA A LOS AUTORES CUANDO SU POST ES PUBLICADO
 
 
 @receiver(pre_save, sender=Post)
 def send_notification_to_authors(sender, instance, **kwargs):
     """
-    Envía una notificación al autor cuando su post cambia de estado a "Publicado" o es "Rechazado".
+    Envía una notificación al autor cuando su post cambia de estado a "Publicado".
     """
     if instance.pk:
         # Obtenemos el estado anterior del post para verificar los cambios
@@ -97,34 +97,7 @@ def send_notification_to_authors(sender, instance, **kwargs):
                         fail_silently=False,
                     )
                     print(
-                        f"Correo enviado al autor {author.username} notificando la pulicacion."
-                    )
-                except Exception as e:
-                    print("Ocurrieron errores al notificar al autor del post: ", e)
-                    return
-
-            # Notificar al autor si el post ha sido "Rechazado" (cambio a "Borrador")
-            elif (
-                old_instance.status in [Post.PENDING_REVIEW, Post.PENDING_PUBLICATION]
-                and instance.status == Post.DRAFT
-            ):
-
-                subject = "Tu post ha sido rechazado 😕"
-                message = (
-                    f"Hola {author.username}, tu post '{instance.title}' ha sido rechazado y vuelto al estado de borrador. "
-                    "Por favor, revisa los comentarios o haz los ajustes necesarios antes de volver a enviarlo para revisión."
-                )
-
-                try:
-                    send_mail(
-                        subject,
-                        message,
-                        "groupmakex@gmail.com",
-                        [author.email],
-                        fail_silently=False,
-                    )
-                    print(
-                        f"Correo enviado al autor {author.username} notificando el rechazo."
+                        f"Correo enviado al autor {author.username} notificando la publicación."
                     )
                 except Exception as e:
                     print("Ocurrieron errores al notificar al autor del post: ", e)

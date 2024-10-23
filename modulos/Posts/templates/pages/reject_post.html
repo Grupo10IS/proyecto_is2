@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="display-6 fst-italic mb-4">Rechazar publicación</h2>
+                <p>¿Estás seguro de que deseas rechazar el post <strong>{{ post.title }}</strong>? Proporciona el motivo del rechazo.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-danger">Rechazar</button>
+                    <a href="{% url 'kanban_board' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
