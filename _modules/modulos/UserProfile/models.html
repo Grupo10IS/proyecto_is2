@@ -54,6 +54,12 @@
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Desea recibir notificaciones sobre nuevas publicaciones?&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">profile_image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span>
+        <span class="n">upload_to</span><span class="o">=</span><span class="s2">&quot;profile_images/&quot;</span><span class="p">,</span>
+        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Foto de perfil&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># estadisticas del publicador</span>
     <span class="n">c_creados</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
