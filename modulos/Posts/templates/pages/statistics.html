@@ -160,13 +160,8 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    
-    
     <script>
-        // Asegúrate de pasar los datos del backend al frontend
         const commentsData = {{ disqus.comments_by_day| safe }};
         const likes = {{ disqus.likes }};
         const dislikes = {{ disqus.dislikes }};

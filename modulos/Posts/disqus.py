@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+
 import requests
 from django.conf import settings
 
@@ -14,7 +15,7 @@ def get_disqus_stats(post_id):
     params = {
         "api_key": api_key,
         "forum": forum,
-        "thread:link": f"/posts/{post_id}/",
+        "thread:ident": f"/posts/{post_id}/",
         "order": "asc",  # Para obtener en orden cronológico
     }
 
@@ -59,4 +60,3 @@ def get_disqus_stats(post_id):
     else:
         print(f"Cannot get disqus statistics: {response.content}")
         return {"comments_by_day": {}, "total_comments": 0, "likes": 0, "dislikes": 0}
-
