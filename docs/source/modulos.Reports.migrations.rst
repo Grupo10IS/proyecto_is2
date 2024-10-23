@@ -20,6 +20,14 @@ modulos.Reports.migrations.0002\_rename\_created\_at\_report\_creation\_date mod
    :undoc-members:
    :show-inheritance:
 
+modulos.Reports.migrations.0003\_report\_is\_handled module
+-----------------------------------------------------------
+
+.. automodule:: modulos.Reports.migrations.0003_report_is_handled
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
