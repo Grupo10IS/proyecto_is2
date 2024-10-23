@@ -30,7 +30,8 @@ from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
 from modulos.Posts.models import (Log, Post, RestorePost, Version,
                                   new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
-
+from django.core.mail import send_mail
+from django import forms
 
 def home_view(req):
     """
@@ -663,18 +664,16 @@ def publish_post(request, id):
     return redirect("kanban_board")
 
 
+# Formulario para el motivo de rechazo
+class RejectionReasonForm(forms.Form):
+    rejection_reason = forms.CharField(widget=forms.Textarea, label="", required=True)
+
+
 @login_required
 @permissions_required([POST_REJECT_PERMISSION])
 def reject_post(request, id):
     """
     Vista para rechazar una publicación y devolverla al estado de 'Borrador'.
-
-    Argumentos:
-        request: El objeto de solicitud HTTP.
-        id: El ID del post que se va a rechazar.
-
-    Retorna:
-        Redirige al tablero Kanban después de cambiar el estado del post a 'Borrador'.
     """
     post = get_object_or_404(Post, id=id)
 
@@ -686,26 +685,57 @@ def reject_post(request, id):
             "No puedes tocar el estado de un post ya publicado"
         )
 
-    # Retrasar un paoso el estado de publicacion
-    if post.status == post.PENDING_REVIEW:
-        post.status = Post.DRAFT
-    elif post.status == post.PENDING_PUBLICATION:
-        post.status = Post.PENDING_REVIEW
+    if request.method == "POST":
+        form = RejectionReasonForm(request.POST)
+        if form.is_valid():
+            # Obtener la razón de rechazo del formulario
+            rejection_reason = form.cleaned_data["rejection_reason"]
 
-    post.save()
+            # Retrasar un paso el estado de la publicación
+            if post.status == post.PENDING_REVIEW:
+                post.status = Post.DRAFT
+            elif post.status == post.PENDING_PUBLICATION:
+                post.status = Post.PENDING_REVIEW
 
-    # actualizar las estadisticas del auditor y el autor
-    author = post.author
-    audit = request.user
+            post.save()
 
-    audit.c_audit_rechazados += 1
-    author.c_rechazados += 1
+            # Actualizar las estadísticas del auditor y el autor
+            author = post.author
+            audit = request.user
 
-    audit.save()
-    author.save()
+            audit.c_audit_rechazados += 1
+            author.c_rechazados += 1
+            audit.save()
+            author.save()
 
-    return redirect("kanban_board")
+            # Registrar el log del rechazo
+            Log(
+                post=post,
+                message=f'El post "{post.title}" ha sido rechazado por "{audit.username}". Motivo: {rejection_reason}.',
+            ).save()
 
+            # Enviar el correo de notificación al autor con el motivo del rechazo
+            subject = "Tu post ha sido rechazado 😕"
+            message = (
+                f"Hola {post.author.username}, tu post '{post.title}' ha sido rechazado. "
+                f"\nMotivo del rechazo: {rejection_reason}. "
+                "\nPor favor, revisa los comentarios o haz los ajustes necesarios antes de volver a enviarlo para revisión."
+            )
+            send_mail(
+                subject,
+                message,
+                "groupmakex@gmail.com",
+                [post.author.email],
+                fail_silently=False,
+            )
+
+            return redirect("kanban_board")
+
+    else:
+        form = RejectionReasonForm()
+
+    context = {"form": form, "post": post}
+    return render(request, "pages/reject_post.html", context)
 
 # --------------------
 #      Varios
