@@ -12,19 +12,27 @@
                         <div class="mb-3">{{ u_form.email|as_crispy_field }}</div>
                         <div class="mb-3">{{ p_form.phone_number|as_crispy_field }}</div>
                         <div class="mb-3">{{ p_form.address|as_crispy_field }}</div>
-                        <div class="mb-3">{{ p_form.profile_image|as_crispy_field }}</div> 
+                        <div class="mb-3">{{ p_form.profile_image|as_crispy_field }}</div>
                         <div>
                             <!-- Imagen de vista previa, se muestra solo si el usuario ya tiene una imagen cargada -->
                             {% if user.profile_image %}
-                                <img id="profileImagePreview" 
-                                     src="{{ user.profile_image.url }}" 
-                                     alt="Vista previa de la imagen de perfil" 
-                                     style="max-width: 150px; max-height: 150px; object-fit: cover; margin-bottom: 10px;">
+                                <img id="profileImagePreview"
+                                     src="{{ user.profile_image.url }}"
+                                     alt="Vista previa de la imagen de perfil"
+                                     style="max-width: 150px;
+                                            max-height: 150px;
+                                            object-fit: cover;
+                                            margin-bottom: 10px">
                             {% else %}
-                                <img id="profileImagePreview" 
-                                     src="" 
-                                     alt="Vista previa de la imagen de perfil" 
-                                     style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; display: none;">
+                                <img id="profileImagePreview"
+                                     src=""
+                                     alt="Vista previa de la imagen de perfil"
+                                     style="max-width: 100px;
+                                            max-height: 100px;
+                                            object-fit: cover;
+                                            border-radius: 50%;
+                                            margin-bottom: 10px;
+                                            display: none">
                             {% endif %}
                         </div>
                         <div class="mb-3">{{ p_form.receive_notifications|as_crispy_field }}</div>
