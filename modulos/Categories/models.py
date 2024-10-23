@@ -52,7 +52,9 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name="Descripción")
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
     tipo = models.CharField(max_length=15, choices=TIPO_CHOICES, default=GRATIS)
-    moderacion = models.CharField(max_length=15, choices=MODERACION_CHOICES, default=MODERADA)
+    moderacion = models.CharField(
+        max_length=15, choices=MODERACION_CHOICES, default=MODERADA
+    )
 
     # Campo nuevo para la imagen de la categoría
     image = models.ImageField(

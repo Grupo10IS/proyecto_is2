@@ -115,7 +115,7 @@ def profile_view(request):
             "u_form": u_form,
             "p_form": p_form,
             "groups": request.user.groups.all(),
-            "user": request.user
+            "user": request.user,
         },
     )
 

@@ -1,7 +1,5 @@
-from modulos.Authorization.permissions import (
-    KANBAN_VIEW_PERMISSION,
-    VIEW_PURCHASED_CATEGORIES,
-)
+from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
+                                               VIEW_PURCHASED_CATEGORIES)
 from modulos.Categories.models import Category
 from modulos.Posts.forms import SearchPostForm
 

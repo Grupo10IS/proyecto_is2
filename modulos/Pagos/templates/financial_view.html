@@ -1,57 +1,54 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block content %}
-<div class="container mt-5">
-    <h1 class="display-6 fst-italic">Ventas de Categorías Premium</h1>
-
-    <!-- Formulario de filtrado -->
-    <form method="GET" class="mb-4">
-        <div class="row">
-            <div class="col-md-3">
-                <label for="category">Categoría:</label>
-                {{ form.category }}
+    <div class="container mt-5">
+        <h1 class="display-6 fst-italic">Ventas de Categorías Premium</h1>
+        <!-- Formulario de filtrado -->
+        <form method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="category">Categoría:</label>
+                    {{ form.category }}
+                </div>
+                <div class="col-md-3">
+                    <label for="user">Usuario:</label>
+                    {{ form.user }}
+                </div>
+                <div class="col-md-3">
+                    <label for="date_from">Fecha desde:</label>
+                    {{ form.date_from }}
+                </div>
+                <div class="col-md-3">
+                    <label for="date_to">Fecha hasta:</label>
+                    {{ form.date_to }}
+                </div>
             </div>
-            <div class="col-md-3">
-                <label for="user">Usuario:</label>
-                {{ form.user }}
-            </div>
-            <div class="col-md-3">
-                <label for="date_from">Fecha desde:</label>
-                {{ form.date_from }}
-            </div>
-            <div class="col-md-3">
-                <label for="date_to">Fecha hasta:</label>
-                {{ form.date_to }}
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
-    </form>
-
-    <!-- Lista de pagos filtrados -->
-    {% if payments %}
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Categoría</th>
-                    <th>Fecha de Pago</th>
-                    <th>Monto</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in payments %}
-                <tr>
-                    <td>{{ payment.user.username }}</td>
-                    <td>{{ payment.category.name }}</td>
-                    <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
-                    <td>${{ payment.amount }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No se encontraron ventas.</p>
-    {% endif %}
-</div>
+            <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+        </form>
+        <!-- Lista de pagos filtrados -->
+        {% if payments %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Categoría</th>
+                        <th>Fecha de Pago</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.user.username }}</td>
+                            <td>{{ payment.category.name }}</td>
+                            <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
+                            <td>${{ payment.amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No se encontraron ventas.</p>
+        {% endif %}
+    </div>
 {% endblock %}

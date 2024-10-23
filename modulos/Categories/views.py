@@ -108,9 +108,9 @@ class CategoryDetailView(DetailView):
         if page <= 0:
             page = 1
 
-        posts = Post.objects.filter(active=True, status=Post.PUBLISHED, category=category)[
-            20 * (page - 1) : 20 * page
-        ]
+        posts = Post.objects.filter(
+            active=True, status=Post.PUBLISHED, category=category
+        )[20 * (page - 1) : 20 * page]
 
         context["posts"] = posts
 
