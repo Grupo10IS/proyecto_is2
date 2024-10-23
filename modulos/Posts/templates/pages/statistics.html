@@ -86,18 +86,21 @@
                     <tbody>
                         <tr>
                             <td>Comentarios</td>
-                            <td>{{ disqus.comments }}</td>
+                            <td>{{ disqus.total_comments }}</td>
                         </tr>
                         <tr>
                             <td>Likes</td>
                             <td>{{ disqus.likes }}</td>
                         </tr>
                         <tr>
-                            <td>Compartidos</td>
+                            <td>Dislikes</td>
                             <td>{{ disqus.dislikes }}</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <canvas id="commentsChart" width="400" height="200"></canvas>
             </div>
         </div>
         <!-- Sección de Logs -->
@@ -157,4 +160,54 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    
+    <script>
+        // Asegúrate de pasar los datos del backend al frontend
+        const commentsData = {{ disqus.comments_by_day| safe }};
+        const likes = {{ disqus.likes }};
+        const dislikes = {{ disqus.dislikes }};
+
+        // Convertir las claves (fechas) del diccionario en etiquetas (eje X)
+        const labels = Object.keys(commentsData);
+
+        // Convertir los valores (cantidad de comentarios) en datos (eje Y)
+        const data = Object.values(commentsData);
+
+        const ctx = document.getElementById('commentsChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line', // Tipo de gráfico (línea)
+            data: {
+                labels: labels, // Fechas
+                datasets: [{
+                    label: 'Número de Comentarios',
+                    data: data, // Cantidad de comentarios por día
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fecha'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Cantidad de Comentarios'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}
