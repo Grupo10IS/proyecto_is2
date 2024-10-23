@@ -76,6 +76,14 @@ modulos.UserProfile.migrations.0009\_userprofile\_c\_aprobados\_and\_more module
    :undoc-members:
    :show-inheritance:
 
+modulos.UserProfile.migrations.0010\_userprofile\_profile\_image module
+-----------------------------------------------------------------------
+
+.. automodule:: modulos.UserProfile.migrations.0010_userprofile_profile_image
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
