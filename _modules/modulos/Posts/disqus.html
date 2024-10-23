@@ -32,7 +32,10 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.Posts.disqus</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 
 
@@ -44,11 +47,12 @@
     <span class="n">forum</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">DISQUS_FORUM</span>
 
     <span class="c1"># URL de la API para obtener los comentarios</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://disqus.com/api/3.0/threads/details.json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://disqus.com/api/3.0/threads/listPosts.json&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
         <span class="s2">&quot;forum&quot;</span><span class="p">:</span> <span class="n">forum</span><span class="p">,</span>
         <span class="s2">&quot;thread:ident&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/posts/</span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;asc&quot;</span><span class="p">,</span>  <span class="c1"># Para obtener en orden cronológico</span>
     <span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
@@ -58,14 +62,40 @@
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span>
 
-        <span class="n">likes</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;likes&quot;</span><span class="p">]</span>
-        <span class="n">dislikes</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;dislikes&quot;</span><span class="p">]</span>
-        <span class="n">comments</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;posts&quot;</span><span class="p">]</span>
+        <span class="c1"># Inicializamos contadores para likes, dislikes y un diccionario para comentarios por día</span>
+        <span class="n">likes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dislikes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">comment_dates</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+            <span class="nb">int</span>
+        <span class="p">)</span>  <span class="c1"># Diccionario para contar comentarios por fecha</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="n">comments</span><span class="p">,</span> <span class="s2">&quot;likes&quot;</span><span class="p">:</span> <span class="n">likes</span><span class="p">,</span> <span class="s2">&quot;dislikes&quot;</span><span class="p">:</span> <span class="n">dislikes</span><span class="p">}</span>
+        <span class="c1"># Procesar cada comentario individual</span>
+        <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="c1"># Contar comentarios por fecha</span>
+            <span class="n">comment_date</span> <span class="o">=</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">]</span>  <span class="c1"># Fecha del comentario</span>
+            <span class="n">date_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                <span class="n">comment_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span>
+            <span class="p">)</span>  <span class="c1"># Convertir a datetime</span>
+            <span class="n">date_only</span> <span class="o">=</span> <span class="n">date_obj</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Solo la fecha (sin tiempo)</span>
+            <span class="n">comment_dates</span><span class="p">[</span><span class="n">date_only</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Sumar likes y dislikes (puedes ajustar según cómo quieras usarlos)</span>
+            <span class="n">likes</span> <span class="o">+=</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;likes&quot;</span><span class="p">]</span>
+            <span class="n">dislikes</span> <span class="o">+=</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;dislikes&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Calcular la cantidad total de comentarios</span>
+        <span class="n">total_comments</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">comment_dates</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="c1"># Regresar el conteo de comentarios por día, likes, dislikes y total de comentarios</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;comments_by_day&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">comment_dates</span><span class="p">),</span>
+            <span class="s2">&quot;total_comments&quot;</span><span class="p">:</span> <span class="n">total_comments</span><span class="p">,</span>
+            <span class="s2">&quot;likes&quot;</span><span class="p">:</span> <span class="n">likes</span><span class="p">,</span>
+            <span class="s2">&quot;dislikes&quot;</span><span class="p">:</span> <span class="n">dislikes</span><span class="p">,</span>
+        <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get disqus statistics: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;likes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dislikes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;comments_by_day&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;total_comments&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;likes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dislikes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span></div>
 
 </pre></div>
 
