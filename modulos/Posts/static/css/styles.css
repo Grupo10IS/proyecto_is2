@@ -12,6 +12,7 @@ body {
     transform: scale(0.98);
     transition: transform 0.3s ease;
 }
+
 /* Para asegurarse de que el contenido principal ocupe el espacio restante */
 main {
     flex: 1;
