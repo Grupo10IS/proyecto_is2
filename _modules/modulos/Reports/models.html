@@ -59,7 +59,8 @@
     <span class="p">)</span>  <span class="c1"># Descripción opcional del reporte</span>
     <span class="n">creation_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
         <span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>  <span class="c1"># fecha y hora de creacion del reporte</span></div>
+    <span class="p">)</span>  <span class="c1"># fecha y hora de creacion del reporte</span>
+    <span class="n">is_handled</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># si el reporte fue  tratado o no</span></div>
 
 </pre></div>
 

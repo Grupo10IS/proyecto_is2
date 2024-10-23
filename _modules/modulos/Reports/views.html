@@ -33,7 +33,7 @@
             
   <h1>Código fuente para modulos.Reports.views</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
-<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span><span class="p">,</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">JsonResponse</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">render</span>
 
@@ -61,9 +61,11 @@
 <span class="sd">    - Si el método es GET, renderiza el formulario de creación de reportes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
-    <span class="n">existing_report</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">existing_report</span><span class="p">:</span>
+    <span class="c1"># Verifica si hay reportes no tratados del usuario para el post</span>
+    <span class="k">if</span> <span class="n">Report</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">post</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_handled</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Ya has reportado este contenido.&quot;</span><span class="p">},</span>
             <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
@@ -100,9 +102,9 @@
 <span class="sd">    Retorno:</span>
 <span class="sd">    - Renderiza una plantilla con los posts que tienen reportes y los permisos del usuario.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">posts_with_reports</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">report_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">report_count__gt</span><span class="o">=</span><span class="mi">0</span>
-    <span class="p">)</span>
+    <span class="n">posts_with_reports</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="n">report_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">Q</span><span class="p">(</span><span class="n">reports__is_handled</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">report_count__gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">permisos</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
     <span class="n">perm_view_reports</span> <span class="o">=</span> <span class="s2">&quot;UserProfile.&quot;</span> <span class="o">+</span> <span class="n">VIEW_REPORTS</span> <span class="ow">in</span> <span class="n">permisos</span>
@@ -157,7 +159,7 @@
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">VIEW_REPORTS</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">review</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Envía un post a revisión al cambiar su estado.</span>
+<span class="sd">    Envía un post a revisión.</span>
 
 <span class="sd">    Parámetros:</span>
 <span class="sd">    - request: El objeto HttpRequest que contiene la información de la petición.</span>
@@ -165,19 +167,19 @@
 
 <span class="sd">    Retorno:</span>
 <span class="sd">    - Renderiza la plantilla con los posts que tienen reportes.</span>
-<span class="sd">    - Si el contenido ya está en revisión, retorna un HttpResponseForbidden.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span><span class="s2">&quot;Este contenido ya está en revisión.&quot;</span><span class="p">)</span>
 
     <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span>
     <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="n">posts_with_reports</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">report_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">report_count__gt</span><span class="o">=</span><span class="mi">0</span>
-    <span class="p">)</span>
+    <span class="c1"># Actualiza is_handled a True para todos los reportes relacionados con el post</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">reports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_handled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Retorna solo los posts no tratados</span>
+    <span class="n">posts_with_reports</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="n">report_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">Q</span><span class="p">(</span><span class="n">reports__is_handled</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">report_count__gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;posts_with_reports&quot;</span><span class="p">:</span> <span class="n">posts_with_reports</span><span class="p">})</span>
 

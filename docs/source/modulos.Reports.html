@@ -59,6 +59,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Reports.migrations.html#module-modulos.Reports.migrations.0003_report_is_handled">modulos.Reports.migrations.0003_report_is_handled module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Reports.migrations.html#modulos.Reports.migrations.0003_report_is_handled.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Reports.migrations.html#modulos.Reports.migrations.0003_report_is_handled.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Reports.migrations.html#modulos.Reports.migrations.0003_report_is_handled.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Reports.migrations.html#module-modulos.Reports.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -141,7 +149,7 @@
 <span id="modulos-reports-models-module"></span><h2>modulos.Reports.models module<a class="headerlink" href="#module-modulos.Reports.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Reports.models.Report">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Reports.models.</span></span><span class="sig-name descname"><span class="pre">Report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Reports/models.html#Report"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Reports.models.Report" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Reports.models.</span></span><span class="sig-name descname"><span class="pre">Report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_handled</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Reports/models.html#Report"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Reports.models.Report" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.Reports.models.Report.DoesNotExist">
@@ -210,6 +218,13 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Reports.models.Report.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#modulos.Reports.models.Report.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Reports.models.Report.is_handled">
+<span class="sig-name descname"><span class="pre">is_handled</span></span><a class="headerlink" href="#modulos.Reports.models.Report.is_handled" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
@@ -351,6 +366,7 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.get_previous_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Report.get_previous_by_creation_date()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.get_reason_display"><code class="docutils literal notranslate"><span class="pre">Report.get_reason_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.id"><code class="docutils literal notranslate"><span class="pre">Report.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.is_handled"><code class="docutils literal notranslate"><span class="pre">Report.is_handled</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.objects"><code class="docutils literal notranslate"><span class="pre">Report.objects</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.reason"><code class="docutils literal notranslate"><span class="pre">Report.reason</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.models.Report.user"><code class="docutils literal notranslate"><span class="pre">Report.user</span></code></a></li>

@@ -32,10 +32,8 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
-    <span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">,</span>
-<span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+                                               <span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">SearchPostForm</span>
 
@@ -86,6 +84,8 @@
                 <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;edit&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
                 <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;edit&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;reports&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
+                <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">)</span>
 
     <span class="c1"># TODO: listar solo las categorias de interes o las mas votadas capaz</span>
     <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>

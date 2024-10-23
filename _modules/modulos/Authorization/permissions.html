@@ -150,14 +150,8 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="c1"># Verificar si el usuario pertenece a grupos con acceso a la categoría</span>
-    <span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="p">(</span>
-        <span class="n">ADMIN</span><span class="p">,</span>
-        <span class="n">AUTOR</span><span class="p">,</span>
-        <span class="n">EDITOR</span><span class="p">,</span>
-        <span class="n">PUBLISHER</span><span class="p">,</span>
-        <span class="n">SUBSCRIBER</span><span class="p">,</span>
-        <span class="n">FINANCIAL</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ADMIN</span><span class="p">,</span> <span class="n">AUTOR</span><span class="p">,</span> <span class="n">EDITOR</span><span class="p">,</span> <span class="n">FINANCIAL</span><span class="p">,</span>
+                                             <span class="n">PUBLISHER</span><span class="p">,</span> <span class="n">SUBSCRIBER</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">category</span><span class="o">.</span><span class="n">tipo</span> <span class="o">==</span> <span class="n">category</span><span class="o">.</span><span class="n">SUSCRIPCION</span>
