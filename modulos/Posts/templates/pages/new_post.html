@@ -7,13 +7,17 @@
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}
-
         <!-- Previsualización de la imagen -->
         <div class="mb-3">
             <label for="imagePreview" class="form-label">Vista previa de la portada:</label>
-            <img id="imagePreview" src="#" alt="Vista previa de la portada" style="display: none; width: 200px; height: auto; margin-top: 10px;">
+            <img id="imagePreview"
+                 src="#"
+                 alt="Vista previa de la portada"
+                 style="display: none;
+                        width: 200px;
+                        height: auto;
+                        margin-top: 10px">
         </div>
-
         <!-- Botón para guardar como borrador -->
         <input type="submit"
                class="btn btn-secondary"
@@ -22,7 +26,6 @@
                       border-color: gray;
                       color: white">
     </form>
-
     <!-- Script de JavaScript para previsualizar la imagen -->
     <script>
         document.querySelector('input[type="file"]').addEventListener('change', function(event) {

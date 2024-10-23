@@ -1,7 +1,8 @@
 {% load static %}
 <header class="border-bottom">
     <div class="container" id="bodycontent">
-        <div class="d-flex flex-wrap align-items-center justify-content-between">  <!-- Ajustamos los elementos -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <!-- Ajustamos los elementos -->
             <h1 id="headerTitle">
                 <a href="{% url 'home' %}" class="nav-link px-2">
                     <img src="{% static 'images/logo.png' %}"
@@ -28,8 +29,8 @@
                        style="color:white">Favoritos</a>
                 </li>
             </ul>
-
-            <div class="d-flex align-items-center justify-content-between"> <!-- Ajuste de los elementos -->
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Ajuste de los elementos -->
                 <!-- Icono de búsqueda -->
                 <form class="search-form col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
                       role="search"
@@ -51,39 +52,45 @@
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                     </svg>
                 </form>
-
                 <!-- Imagen de perfil -->
                 <div class="dropdown text-end ms-3">
                     <a href="#"
                        class=" link-body-emphasis dropdown-toggle"
                        data-bs-toggle="dropdown"
                        aria-expanded="false">
-                       {% if user.is_authenticated and user.profile_image %}
-                           <img src="{{ user.profile_image.url }}"
-                                alt="Foto de perfil"
-                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                       {% else %}
-                           <svg xmlns="http://www.w3.org/2000/svg"
-                                width="30"
-                                height="30"
-                                fill="white"
-                                class="bi bi-person-circle"
-                                viewBox="0 0 16 16">
-                               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                               <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                           </svg>
-                       {% endif %}
+                        {% if user.is_authenticated and user.profile_image %}
+                            <img src="{{ user.profile_image.url }}"
+                                 alt="Foto de perfil"
+                                 style="width: 40px;
+                                        height: 40px;
+                                        border-radius: 50%;
+                                        object-fit: cover">
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="30"
+                                 height="30"
+                                 fill="white"
+                                 class="bi bi-person-circle"
+                                 viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                            </svg>
+                        {% endif %}
                     </a>
                     <ul class="dropdown-menu text-small">
                         {% if user.is_authenticated %}
                             <li>
                                 <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'purchased_categories' %}">Mis Categorias Premium</a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}">
                                     {% csrf_token %}
@@ -100,11 +107,11 @@
                         {% endif %}
                     </ul>
                 </div>
-
                 <!-- Enlace de suscripción -->
                 <a href="{% url 'categories_list' %}?premium=true"
-                   class="btn btn-primary" style="background-color:white;color:black">Suscribite por R$5</a>
-
+                   class="btn btn-primary"
+                   style="background-color:white;
+                          color:black">Suscribite por R$5</a>
                 <div class="ms-3">{% include 'burguer.html' %}</div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
@@ -25,9 +25,11 @@ def create_report(request, id):
     - Si el método es GET, renderiza el formulario de creación de reportes.
     """
     post = get_object_or_404(Post, id=id)
-    existing_report = Report.objects.filter(content=post, user=request.user).first()
 
-    if existing_report:
+    # Verifica si hay reportes no tratados del usuario para el post
+    if Report.objects.filter(
+        content=post, user=request.user, is_handled=False
+    ).exists():
         return JsonResponse(
             {"success": False, "message": "Ya has reportado este contenido."},
             status=400,
@@ -63,9 +65,9 @@ def manage_reports(request):
     Retorno:
     - Renderiza una plantilla con los posts que tienen reportes y los permisos del usuario.
     """
-    posts_with_reports = Post.objects.annotate(report_count=Count("reports")).filter(
-        report_count__gt=0
-    )
+    posts_with_reports = Post.objects.annotate(
+        report_count=Count("reports", filter=Q(reports__is_handled=False))
+    ).filter(report_count__gt=0)
 
     permisos = request.user.get_all_permissions()
     perm_view_reports = "UserProfile." + VIEW_REPORTS in permisos
@@ -120,7 +122,7 @@ def report_detail(request, id):
 @permissions_required([VIEW_REPORTS])
 def review(request, id):
     """
-    Envía un post a revisión al cambiar su estado.
+    Envía un post a revisión.
 
     Parámetros:
     - request: El objeto HttpRequest que contiene la información de la petición.
@@ -128,19 +130,19 @@ def review(request, id):
 
     Retorno:
     - Renderiza la plantilla con los posts que tienen reportes.
-    - Si el contenido ya está en revisión, retorna un HttpResponseForbidden.
     """
     post = get_object_or_404(Post, id=id)
-
-    if post.status == Post.PENDING_REVIEW:
-        return HttpResponseForbidden("Este contenido ya está en revisión.")
 
     post.status = Post.PENDING_REVIEW
     post.save()
 
-    posts_with_reports = Post.objects.annotate(report_count=Count("reports")).filter(
-        report_count__gt=0
-    )
+    # Actualiza is_handled a True para todos los reportes relacionados con el post
+    post.reports.update(is_handled=True)
+
+    # Retorna solo los posts no tratados
+    posts_with_reports = Post.objects.annotate(
+        report_count=Count("reports", filter=Q(reports__is_handled=False))
+    ).filter(report_count__gt=0)
 
     ctx = new_ctx(request, {"posts_with_reports": posts_with_reports})
 

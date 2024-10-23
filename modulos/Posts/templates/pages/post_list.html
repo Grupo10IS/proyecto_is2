@@ -43,7 +43,7 @@
                                               color:white">Editar</a>
                                 {% endif %}
                                 {% if "delete" in permisos %}
-                                    <a href="{% url 'delete_post' post.id %}"
+                                    <a href="{% url 'inactivate_post' post.id %}"
                                        class="btn btn-sm btn-danger"
                                        style="background-color: black;
                                               border-color: black;

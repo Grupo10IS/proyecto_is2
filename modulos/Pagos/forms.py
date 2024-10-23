@@ -1,8 +1,10 @@
 from django import forms
+from django.contrib.auth import get_user_model
+
+from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
 from modulos.UserProfile.models import UserProfile
-from modulos.Categories.models import Category
-from django.contrib.auth import get_user_model
+
 
 # Formulario para la información de pago
 # Formulario para la información de pago
@@ -26,6 +28,7 @@ class UserProfileForm(forms.ModelForm):
             "username": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
         }
+
 
 User = get_user_model()
 

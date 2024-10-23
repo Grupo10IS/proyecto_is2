@@ -1,8 +1,10 @@
 import difflib
 from datetime import timedelta
 
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser, Group
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.query_utils import Q
@@ -30,8 +32,7 @@ from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
 from modulos.Posts.models import (Log, Post, RestorePost, Version,
                                   new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
-from django.core.mail import send_mail
-from django import forms
+
 
 def home_view(req):
     """
@@ -349,6 +350,11 @@ def inactivate_post(request, id):
         HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
     """
     post: Post = get_object_or_404(Post, pk=id)
+
+    # Verifica si la acción proviene de un reporte
+    if request.GET.get("from_report") == "true":
+        # Actualiza is_handled a True para todos los reportes relacionados con el post
+        post.reports.update(is_handled=True)
 
     if (
         not request.user.has_perm(POST_DELETE_PERMISSION)
@@ -736,6 +742,7 @@ def reject_post(request, id):
 
     context = {"form": form, "post": post}
     return render(request, "pages/reject_post.html", context)
+
 
 # --------------------
 #      Varios

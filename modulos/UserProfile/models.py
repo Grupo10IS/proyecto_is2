@@ -34,7 +34,9 @@ class UserProfile(AbstractUser):
     # estadisticas del editor y publicador
     c_audit_revisados = models.IntegerField(default=0)
     c_audit_publicados = models.IntegerField(default=0)
-    c_audit_rechazados = models.IntegerField(default=0)  # rechazo por parte del publicador
+    c_audit_rechazados = models.IntegerField(
+        default=0
+    )  # rechazo por parte del publicador
 
     # estadisticas de admin
     c_audit_eliminados = models.IntegerField(default=0)

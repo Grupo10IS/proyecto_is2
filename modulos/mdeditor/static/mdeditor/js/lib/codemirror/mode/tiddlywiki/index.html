@@ -1,9 +1,7 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <title>CodeMirror: TiddlyWiki mode</title>
-<meta charset="utf-8"/>
+<meta charset="utf-8" />
 <link rel=stylesheet href="../../doc/docs.css">
-
 <link rel="stylesheet" href="../../lib/codemirror.css">
 <link rel="stylesheet" href="tiddlywiki.css">
 <script src="../../lib/codemirror.js"></script>
@@ -11,24 +9,29 @@
 <script src="tiddlywiki.js"></script>
 <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
 <div id=nav>
-  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
-
-  <ul>
-    <li><a href="../../index.html">Home</a>
-    <li><a href="../../doc/manual.html">Manual</a>
-    <li><a href="https://github.com/codemirror/codemirror">Code</a>
-  </ul>
-  <ul>
-    <li><a href="../index.html">Language modes</a>
-    <li><a class=active href="#">TiddlyWiki</a>
-  </ul>
-</div>
-
-<article>
-<h2>TiddlyWiki mode</h2>
-
-
-<div><textarea id="code" name="code">
+    <a href="http://codemirror.net">
+        <h1>CodeMirror</h1>
+        <img id=logo src="../../doc/logo.png">
+    </a>
+    <ul>
+        <li>
+            <a href="../../index.html">Home</a>
+            <li>
+                <a href="../../doc/manual.html">Manual</a>
+                <li>
+                    <a href="https://github.com/codemirror/codemirror">Code</a>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="../index.html">Language modes</a>
+                        <li>
+                            <a class=active href="#">TiddlyWiki</a>
+                        </ul>
+                    </div>
+                    <article>
+                        <h2>TiddlyWiki mode</h2>
+                        <div>
+                            <textarea id="code" name="code">
 !TiddlyWiki Formatting
 * Rendered versions can be found at: http://www.tiddlywiki.com/#Reference
 
@@ -136,19 +139,19 @@ cf. [[TiddlyWiki.com|http://www.tiddlywiki.com/#EmbeddedImages]]
 * [[HTML entities|http://www.tiddlywiki.com/#HtmlEntities]]
 * [[HTML entities local|HtmlEntities]]
 * {{{<<macroName>>}}} calls the respective [[macro|Macros]]
-* To hide text within a tiddler so that it is not displayed, it can be wrapped in {{{/%}}} and {{{%/}}}.<br/>This can be a useful trick for hiding drafts or annotating complex markup.
+* To hide text within a tiddler so that it is not displayed, it can be wrapped in {{{/%}}} and {{{%/}}}.<br />This can be a useful trick for hiding drafts or annotating complex markup.
 * To prevent wiki markup from taking effect for a particular section, that section can be enclosed in three double quotes: e.g. {{{"""WikiWord"""}}}.
-</textarea></div>
-
-    <script>
+</textarea>
+                        </div>
+                        <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         mode: 'tiddlywiki',      
         lineNumbers: true,
         matchBrackets: true
       });
-    </script>
-
-    <p>TiddlyWiki mode supports a single configuration.</p>
-
-    <p><strong>MIME types defined:</strong> <code>text/x-tiddlywiki</code>.</p>
-  </article>
+                        </script>
+                        <p>TiddlyWiki mode supports a single configuration.</p>
+                        <p>
+                            <strong>MIME types defined:</strong> <code>text/x-tiddlywiki</code>.
+                        </p>
+                    </article>
