@@ -1,0 +1,39 @@
+{% extends  "register_base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">
+                {% if form.instance.pk %}
+                    Editar Categoria
+                {% else %}
+                    Crear Categoria
+                {% endif %}
+            </h1>
+            <form method="post" enctype="multipart/form-data" class="needs-validation">
+                {% csrf_token %}
+                <!-- Mostrar la imagen si ya existe -->
+                {% if form.instance.image %}
+                    <div class="form-group mb-3">
+                        <label>Imagen actual:</label>
+                        <img src="{{ form.instance.image.url }}"
+                             alt="{{ form.instance.name }}"
+                             style="max-width: 150px">
+                    </div>
+                {% endif %}
+                {{ form.as_p }}
+                <div class="mt-4">
+                    <button type="submit"
+                            class="btn btn-primary"
+                            style="background-color: black;
+                                   border-color: black;
+                                   color:white">Guardar</button>
+                    <a href="{% url 'category_list' %}"
+                       class="btn btn-secondary ms-2"
+                       style="background-color: black;
+                              border-color: black;
+                              color:white">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

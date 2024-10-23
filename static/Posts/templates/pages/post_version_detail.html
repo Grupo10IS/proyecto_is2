@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <a href="{% url 'post_revert_version' version.post_id version.version %}"
+           class="btn btn-secondary mt-4">Revertir a esta version</a>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Version {{ version.version }}</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Título</th>
+                        <td>{{ version.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Imagen</th>
+                        <td>
+                            {% if version.image %}
+                                <img src="{{ version.image.url }}"
+                                     alt="Imagen de la revisión"
+                                     class="img-thumbnail"
+                                     style="max-width: 100px">
+                            {% else %}
+                                No disponible
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Categoría</th>
+                        <td>{{ version.category }}</td>
+                    </tr>
+                    <tr>
+                        <th>Estado</th>
+                        <td>{{ version.status }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Creación</th>
+                        <td>{{ version.creation_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Publicación</th>
+                        <td>{{ version.publication_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Publicación Agendada</th>
+                        <td>{{ version.scheduled_publication_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Autor</th>
+                        <td>{{ version.author }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tags</th>
+                        <td>{{ version.tags }}</td>
+                    </tr>
+                    <tr>
+                        <th>Versión</th>
+                        <td>{{ version.version }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h3>Latest Version</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Título</th>
+                        <td>{{ original.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Imagen</th>
+                        <td>
+                            {% if original.image %}
+                                <img src="{{ original.image.url }}"
+                                     alt="Imagen del post"
+                                     class="img-thumbnail"
+                                     style="max-width: 100px">
+                            {% else %}
+                                No disponible
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Categoría</th>
+                        <td>{{ original.category }}</td>
+                    </tr>
+                    <tr>
+                        <th>Estado</th>
+                        <td>{{ original.status }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Creación</th>
+                        <td>{{ original.creation_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Publicación</th>
+                        <td>{{ original.publication_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Publicación Agendada</th>
+                        <td>{{ original.scheduled_publication_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Autor</th>
+                        <td>{{ original.author }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tags</th>
+                        <td>{{ original.tags }}</td>
+                    </tr>
+                    <tr>
+                        <th>Versión</th>
+                        <td>{{ original.version }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="diff-container"></div>
+        <a href="{% url 'post_versions' version.post_id %}"
+           class="btn btn-secondary mt-4">Volver a la lista</a>
+    </div>
+    <!-- Scripts para renderizado de la vista de comparacion -->
+    <!-- Scripts para renderizado de la vista de comparacion -->
+    <!-- CSS -->
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+    <!-- JavaScript -->
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const targetElement = document.getElementById('diff-container');
+            const diffContent = `{{diff_content|escapejs}}`;
+
+            if (diffContent && diffContent.trim() !== '') {
+                try {
+                    const diff2htmlUi = new Diff2HtmlUI(targetElement, diffContent, {
+                        inputFormat: 'diff',
+                        showFiles: false,
+                        matching: 'lines',
+                        outputFormat: 'side-by-side'
+                    });
+
+                    diff2htmlUi.draw();
+                    diff2htmlUi.highlightCode();
+                } catch (error) {
+                    console.error("Error drawing diff:", error);
+                }
+            } else {
+                console.error("Diff content is empty or invalid");
+            }
+        });
+    </script>
+{% endblock %}

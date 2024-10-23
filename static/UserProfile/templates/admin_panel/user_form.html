@@ -1,0 +1,33 @@
+{% extends  "register_base.html" %}
+{% block content %}
+    <div class="container"
+         style="background-color:white;
+                border-color: black;
+                color:black">
+        <div class="p-4 mb-4 rounded">
+            <h1 class="display-6 fst-italic mb-4">
+                {% if form.instance.pk %}
+                    Editar Usuario
+                {% else %}
+                    Crear Usuario
+                {% endif %}
+            </h1>
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="mt-4">
+                    <button type="submit"
+                            class="btn btn-primary"
+                            style="background-color: black;
+                                   border-color: black;
+                                   color:white">Guardar</button>
+                    <a href="{% url 'user_list' %}"
+                       class="btn btn-secondary ms-2"
+                       style="background-color: black;
+                              border-color: black;
+                              color:white">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

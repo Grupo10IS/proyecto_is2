@@ -1,0 +1,56 @@
+{% extends "register_base.html" %}
+{% block content %}
+    <div class="container  mt-5" style="color:black">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="border rounded overflow-hidden shadow-sm "
+                     style="background-color:white">
+                    <div class="p-3 text-center border-bottom">
+                        <h2 class="display-6 fst-italic">Inicia Sesión en MakeX</h2>
+                    </div>
+                    <div class="p-4">
+                        {% if messages %}
+                            <div class="alert alert-danger">
+                                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+                            </div>
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nombre de usuario</label>
+                                <input type="text"
+                                       name="username"
+                                       class="form-control"
+                                       required
+                                       style="background-color: #555;
+                                              color: #fff">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password"
+                                       name="password"
+                                       class="form-control"
+                                       required
+                                       style="background-color: #555;
+                                              color: #fff">
+                            </div>
+                            <button type="submit"
+                                    class="btn btn-primary btn-block w-100"
+                                    style="background-color: black;
+                                           border-color:white;
+                                           color:white">Iniciar Sesión</button>
+                        </form>
+                    </div>
+                    <div class="p-3 text-center border-top">
+                        <p class="mb-2">
+                            <a href="{% url 'signup' %}" class=" fw-bold" style="color:black">¿Aún no tienes cuenta? Regístrate</a>
+                        </p>
+                        <a href="{% url 'password_reset' %}"
+                           class=" fw-bold"
+                           style="color:black">¿Olvidaste tu contraseña?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

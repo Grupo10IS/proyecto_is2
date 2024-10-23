@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Modified Access Denied Message Container -->
+    <div class="container">
+        <div class="p-4 mb-4 rounded bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Acceso Restringido</h1>
+            <p>{{ modal_message }}</p>
+            <hr>
+            <a href="{% url 'categories_list' %}" class="btn btn-primary">Volver</a>
+            {% if category.tipo == category.PREMIUM %}
+                {% if user.is_authenticated %}
+                    <!-- User is logged in and the category is PREMIUM -->
+                    <a href="{% url 'payment_view' category.id %}" class="btn btn-warning">Quiero suscribirme</a>
+                {% else %}
+                    <!-- User is not logged in -->
+                    <a href="{% url 'login' %}?next={{ request.path }}"
+                       class="btn btn-primary">Iniciar sesión</a>
+                    <a href="{% url 'signup' %}?next={{ request.path }}"
+                       class="btn btn-primary">Registrarme</a>
+                {% endif %}
+            {% else %}
+                <!-- If the category is not PREMIUM, always show the login/signup buttons -->
+                <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Registrarme</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -348,7 +348,12 @@ def inactivate_post(request, id):
         HttpResponse: Redirección a la lista de posts o renderización de la confirmación de eliminación.
     """
     post: Post = get_object_or_404(Post, pk=id)
-
+    
+    # Verifica si la acción proviene de un reporte
+    if request.GET.get("from_report") == "true":
+        # Actualiza is_handled a True para todos los reportes relacionados con el post
+        post.reports.update(is_handled=True)
+    
     if (
         not request.user.has_perm(POST_DELETE_PERMISSION)
         and post.author != request.user

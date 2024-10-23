@@ -1,0 +1,29 @@
+{% extends "register_base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Logs</h1>
+            <table class="table table-hover table-striped">
+                <thead class="table-dark fst-italic">
+                    <tr>
+                        <th scope="col">Fecha de Creación</th>
+                        <th scope="col">Mensaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td>{{ log.creation_date }}</td>
+                            <td>{{ log.message|linebreaksbr }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'post_list' %}"
+               class="btn btn-secondary"
+               style="background-color: black;
+                      border-color: black;
+                      color:white">Volver</a>
+        </div>
+    </div>
+{% endblock %}

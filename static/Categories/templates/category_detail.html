@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="p-4 mb-4 rounded bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">{{ category.name }}</h1>
+            <p>{{ category.description }}</p>
+            <hr>
+            <!-- Filtrar posts por la categoría y mostrarlos como en el home -->
+            <div class="d-flex flex-wrap justify-content-start">
+                <!-- Flexbox para ajustar la distribución -->
+                {% if posts %}
+                    <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
+                        {% if posts %}
+                            {% for post in posts %}
+                                <div class="col">
+                                    <div class="p-4 card h-100 card-container">
+                                        <div class="post-category fst-italic mb-2">
+                                            {{ post.category }}  <!-- Muestra la categoría del post -->
+                                        </div>
+                                        {% if post.image %}
+                                            <!-- Show the uploaded post image -->
+                                            <img src="{{ post.image.url }}"
+                                                 class="card-img-top"
+                                                 alt="{{ post.title }}"
+                                                 width="300"
+                                                 height="300">
+                                        {% else %}
+                                            <!-- Fallback to a placeholder if no image is uploaded -->
+                                            <img src="{% static 'images/makex.png' %}"
+                                                 class="card-img-top "
+                                                 alt="{{ post.title }}"
+                                                 width="300"
+                                                 height="300">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{ post.title }}</h4>
+                                            <small class="card-text">{{ post.date_created|date:"d M Y" }}</small>
+                                            <p class="card-text mt-3">{{ post.summary|truncatewords:30|safe }}</p>
+                                            <a href="{% url 'post_detail' post.id %}" class="stretched-link"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col text-center">
+                                <p>No hay posts disponibles.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No hay publicaciones en esta categoría.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% if previous_page %}
+            <a href="{% url 'categories_list' %}?page={{ previous_page }}"
+               class="float-end">Anterior</a>
+        {% endif %}
+        {% if next_page %}
+            <a href="{% url 'categories_list' %}?page={{ next_page }}"
+               class="float-end">Siguiente</a>
+        {% endif %}
+    </div>
+{% endblock %}

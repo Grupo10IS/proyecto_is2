@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Completa tu pago para acceder a la categoria "{{ category.name }}"</h2>
+                        <form id="payment-form" method="POST">
+                            {% csrf_token %}
+                            <!-- Información del perfil -->
+                            <h3>Información del perfil</h3>
+                            <div class="form-group mb-3">
+                                <label for="id_username">Nombre de usuario:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="id_username"
+                                       name="username"
+                                       value="{{ user.username }}"
+                                       readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="id_email">Correo electrónico:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="id_email"
+                                       name="email"
+                                       value="{{ user.email }}"
+                                       readonly>
+                            </div>
+                            <!-- Campo oculto para el monto -->
+                            <input type="hidden" name="amount" value="500">
+                            <!-- Reemplazar con el monto correcto -->
+                            <!-- Stripe Elements para la tarjeta de crédito -->
+                            <h3>Información de la tarjeta</h3>
+                            <div class="form-group mb-3">
+                                <div id="card-element" class="form-control">
+                                    <!-- Stripe.js insertará el formulario de la tarjeta aquí -->
+                                </div>
+                                <div id="card-errors" class="text-danger mt-2" role="alert"></div>
+                            </div>
+                            <!-- Botón para enviar -->
+                            <div class="text-center">
+                                <button type="submit" id="submit-button" class="btn btn-primary btn-lg mt-3">Pagar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cargar Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+    // Inicializar Stripe con la clave pública
+    var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+    var elements = stripe.elements();
+    var cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    var form = document.querySelector('#payment-form'); // Asegúrate de que el id coincide con el del formulario
+    var clientSecret = "{{ client_secret }}";  // Asegúrate de que el client_secret se pasa correctamente
+
+    // Verificar que clientSecret esté disponible
+    console.log("Public Key:", '{{ STRIPE_PUBLIC_KEY }}');
+    console.log("Client Secret:", clientSecret);
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevenir el comportamiento predeterminado del formulario
+
+        // Asegurarse de que el clientSecret esté presente antes de proceder
+        if (!clientSecret || clientSecret === 'None') {
+            document.getElementById('card-errors').textContent = 'Error al obtener el client secret. Por favor, recarga la página e inténtalo de nuevo.';
+            console.log('Error: clientSecret no disponible o incorrecto.');
+            return;
+        }
+
+        // Confirmar el pago con el clientSecret y los detalles de la tarjeta
+        stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: {
+                    name: "{{ user.get_full_name }}",  // Datos del usuario para la facturación
+                    email: "{{ user.email }}"
+                }
+            }
+        }).then(function(result) {
+            if (result.error) {
+                // Mostrar error en la página
+                document.getElementById('card-errors').textContent = result.error.message;
+                console.error('Error en el pago:', result.error.message);
+            } else {
+                console.log('PaymentIntent status:', result.paymentIntent.status);
+                if (result.paymentIntent.status === 'succeeded') {
+                    // Redirigir a la página de éxito con el id de la categoría
+                    window.location.href = "{% url 'payment_success' category.id %}";
+                } else {
+                    document.getElementById('card-errors').textContent = 'El pago no se completó correctamente. Por favor, inténtalo de nuevo.';
+                    console.log('El pago no se completó correctamente. Estado:', result.paymentIntent.status);
+                }
+            }
+        });
+    });
+    </script>
+{% endblock %}

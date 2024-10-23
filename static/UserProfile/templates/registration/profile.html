@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="border rounded overflow-hidden shadow-sm text-body-emphasis bg-body-secondary p-4">
+                    <h2 class="display-6 fst-italic text-center mb-4">Tu Perfil</h2>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">{{ u_form.username|as_crispy_field }}</div>
+                        <div class="mb-3">{{ u_form.email|as_crispy_field }}</div>
+                        <div class="mb-3">{{ p_form.phone_number|as_crispy_field }}</div>
+                        <div class="mb-3">{{ p_form.address|as_crispy_field }}</div>
+                        <div class="mb-3">{{ p_form.profile_image|as_crispy_field }}</div> 
+                        <div>
+                            <!-- Imagen de vista previa, se muestra solo si el usuario ya tiene una imagen cargada -->
+                            {% if user.profile_image %}
+                                <img id="profileImagePreview" 
+                                     src="{{ user.profile_image.url }}" 
+                                     alt="Vista previa de la imagen de perfil" 
+                                     style="max-width: 150px; max-height: 150px; object-fit: cover; margin-bottom: 10px;">
+                            {% else %}
+                                <img id="profileImagePreview" 
+                                     src="" 
+                                     alt="Vista previa de la imagen de perfil" 
+                                     style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; display: none;">
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">{{ p_form.receive_notifications|as_crispy_field }}</div>
+                        <!-- Checkbox para notificaciones -->
+                        <div class="mb-3">
+                            <label for="groups" class="form-label">Roles asignados:</label>
+                            <ul class="list">
+                                {% for group in groups %}<li>{{ group.name }}</li>{% endfor %}
+                            </ul>
+                        </div>
+                        <button type="submit"
+                                class="btn btn-primary btn-block w-100"
+                                style="background-color: black;
+                                       border-color: black;
+                                       color:white">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-5">{% include "registration/statistics.html" %}</div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,50 @@
+{% extends  "register_base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic mb-4">Inactivos</h1>
+            <table class="table table-hover table-striped">
+                <thead class="table-dark fst-italic">
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha de Creación</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                            </td>
+                            <td>{{ post.category }}</td>
+                            <td>{{ post.status }}</td>
+                            <td>{{ post.creation_date }}</td>
+                            <td class="actions">
+                                <a href="{% url 'post_statistics' post.id %}"
+                                   class="btn btn-sm btn-danger"
+                                   style="background-color: black;
+                                          border-color: black;
+                                          color:white">Detalles</a>
+                                {% if can_delete %}
+                                    <a href="{% url 'reactivate_post' post.id %}"
+                                       class="btn btn-sm btn-danger"
+                                       style="background-color: black;
+                                              border-color: black;
+                                              color:white">reactivar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'home' %}"
+               class="btn btn-secondary"
+               style="background-color: black;
+                      border-color: black;
+                      color:white">Volver al Inicio</a>
+        </div>
+    </div>
+{% endblock %}
