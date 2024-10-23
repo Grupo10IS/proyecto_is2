@@ -4,7 +4,9 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h2 class="display-6 fst-italic mb-4">Rechazar publicación</h2>
-                <p>¿Estás seguro de que deseas rechazar el post <strong>{{ post.title }}</strong>? Proporciona el motivo del rechazo.</p>
+                <p>
+                    ¿Estás seguro de que deseas rechazar el post <strong>{{ post.title }}</strong>? Proporciona el motivo del rechazo.
+                </p>
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}

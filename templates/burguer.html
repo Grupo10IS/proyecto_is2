@@ -72,11 +72,11 @@
                            href="{% url 'kanban_board' %}"
                            role="button">Tablero de Publicacion</a>
                     {% endif %}
-                    {% if "reports" in permisos%}
+                    {% if "reports" in permisos %}
                         <a class="nav-link text-start"
-                            style="color:white"
-                            href="{% url 'reports' %}"
-                            role="button">Reportes</a>
+                           style="color:white"
+                           href="{% url 'reports' %}"
+                           role="button">Reportes</a>
                     {% endif %}
                     {% if has_financial_acces %}
                         <a class="nav-link text-start"

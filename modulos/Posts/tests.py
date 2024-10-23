@@ -302,7 +302,7 @@ def test_delete_post_view(client):
     user.user_permissions.add(Permission.objects.get(codename=POST_DELETE_PERMISSION))
     client.login(username="testuser", password="password")
 
-    url = reverse("delete_post", args=[post.id])
+    url = reverse("inactivate_post", args=[post.id])
     response = client.get(url)
     assert (
         response.status_code == 200
