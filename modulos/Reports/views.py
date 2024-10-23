@@ -25,9 +25,11 @@ def create_report(request, id):
     - Si el método es GET, renderiza el formulario de creación de reportes.
     """
     post = get_object_or_404(Post, id=id)
-    existing_report = Report.objects.filter(content=post, user=request.user).first()
 
-    if existing_report:
+    # Verifica si hay reportes no tratados del usuario para el post
+    if Report.objects.filter(
+        content=post, user=request.user, is_handled=False
+    ).exists():
         return JsonResponse(
             {"success": False, "message": "Ya has reportado este contenido."},
             status=400,
