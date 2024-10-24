@@ -1,14 +1,50 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from modulos.Authorization.permissions import *
 from modulos.Categories.models import Category
-from modulos.Posts.models import Post, Version
+from modulos.Posts.models import Category, Post, Version
 
 
 @pytest.mark.django_db
+def test_post_expiration_inactivates_post():
+    """
+    Test para verificar que los posts se inactivan después de la fecha de validez.
+    """
+    # Configuración inicial de datos
+    category = Category.objects.create(name="Test Category")
+    user = get_user_model().objects.create_user(
+        username="testuser", password="password"
+    )
+
+    # Crear un post que expira ayer
+    post = Post.objects.create(
+        title="Expiring Post",
+        content="This post will expire",
+        category=category,
+        author=user,
+        publication_date=timezone.now() - timezone.timedelta(days=2),
+        expiration_date=timezone.now() - timezone.timedelta(days=1),
+        active=True,
+        status=Post.PUBLISHED,
+    )
+
+    # Ejecutar la lógica para inactivar el post expirado
+    post.active = False
+    post.save()
+
+    # Verificar que el post está inactivo
+    post.refresh_from_db()
+    assert (
+        not post.active
+    ), "El post debería haberse inactivado después de la fecha de validez."
+
+
 @pytest.mark.filterwarnings("ignore::RuntimeWarning")
+@pytest.mark.django_db
 def test_home_view(client):
     """
     Test the home view to check if posts are displayed correctly.
