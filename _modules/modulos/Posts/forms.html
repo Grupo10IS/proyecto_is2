@@ -53,6 +53,8 @@
             <span class="s2">&quot;category&quot;</span><span class="p">,</span>
             <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
             <span class="s2">&quot;content&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;publication_date&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;expiration_date&quot;</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
@@ -74,6 +76,12 @@
             <span class="p">),</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">ClearableFileInput</span><span class="p">(</span>
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-file-input&quot;</span><span class="p">}</span>  <span class="c1"># Custom class for the file input</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateInput</span><span class="p">(</span>
+                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-date-input&quot;</span><span class="p">}</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;expiration_date&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateInput</span><span class="p">(</span>
+                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-date-input&quot;</span><span class="p">}</span>
             <span class="p">),</span>
         <span class="p">}</span></div>
 </div>

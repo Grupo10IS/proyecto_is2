@@ -164,6 +164,9 @@
 <span class="sd">    utilizando la plantilla &#39;posts/post_detail.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="c1"># Verificacion de permanencia de validez del post</span>
+    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s2">&quot;Este post ha expirado y no está disponible.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos</span>
     <span class="k">if</span> <span class="p">(</span>
@@ -358,6 +361,13 @@
         <span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
 
         <span class="n">p</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="c1"># Para asegurar que se guarden las fechas</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span>
+                <span class="s2">&quot;La fecha de validez no puede ser anterior a la de publicacion&quot;</span>
+            <span class="p">)</span>
         <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># actualizar la cantidad de post creados por el autor</span>
@@ -500,6 +510,11 @@
 
         <span class="c1"># guardar el post con la version actualizada</span>
         <span class="n">post</span><span class="o">.</span><span class="n">version</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Verificar fechas durante edicion</span>
+        <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="o">&lt;=</span> <span class="n">post</span><span class="o">.</span><span class="n">publication_date</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span>
+                <span class="s2">&quot;La fecha de validez no puede ser anterior a la de publicación.&quot;</span>
+            <span class="p">)</span>
         <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># generar un registro en los logs</span>

@@ -75,6 +75,9 @@
     <span class="n">scheduled_publication_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Fecha de publicacion agendada&quot;</span>
     <span class="p">)</span>
+    <span class="n">expiration_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Fecha de validez&quot;</span>
+    <span class="p">)</span>
     <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
         <span class="n">UserProfile</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Autor&quot;</span>
     <span class="p">)</span>
@@ -221,6 +224,16 @@
         <span class="c1"># guardar un registro de las versiones del post (solo si existen cambios)</span>
         <span class="n">version</span> <span class="o">=</span> <span class="n">NewVersion</span><span class="p">(</span><span class="n">old_instance</span><span class="p">)</span>
         <span class="n">version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="is_valid">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.is_valid">[documentos]</a>
+<span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Devuelve True si el post es válido para ser mostrado&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">&lt;=</span> <span class="n">now</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">publication_date</span></div>
 
 </pre></div>
 
