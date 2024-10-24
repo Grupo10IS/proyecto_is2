@@ -8,6 +8,7 @@ from .views import (manage_user_groups, profile_view, user_delete, user_edit,
                     user_list)
 
 urlpatterns = [
+    path("", user_list, name="user_list"),
     path("login/", CustomLoginView.as_view(), name="login"),  # Vista de login
     path("signup/", SignUpView.as_view(), name="signup"),  # Vista de registro
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
@@ -42,10 +43,7 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("", user_list, name="user_list"),
     path("edit/<int:user_id>/", user_edit, name="user_edit"),
     path("delete/<int:user_id>/", user_delete, name="user_delete"),
     path("groups/<int:user_id>/", manage_user_groups, name="manage_user_groups"),
-    # informacion del perfil
-    path("profile/", profile_view, name="profile"),
 ]

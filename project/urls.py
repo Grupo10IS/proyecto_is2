@@ -9,9 +9,11 @@ from modulos.Posts import urls as posts_urls
 from modulos.Posts.views import home_view
 from modulos.Reports import urls as reports_urls
 from modulos.UserProfile import urls as user_urls
+from modulos.UserProfile.views import profile_view
 
 urlpatterns = [
     path("", home_view, name="home"),
+    path("profile/", profile_view, name="profile"),
     path("users/", include(user_urls)),
     path("roles/", include(roles_urls)),
     path("categories/", include(category_urls)),
