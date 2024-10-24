@@ -170,6 +170,8 @@ def new_edition_log(old_instance, new_instance, user) -> None:
         # guardar un registro de las versiones del post (solo si existen cambios)
         version = NewVersion(old_instance)
         version.save()
+
+
 def is_valid(self):
     """Devuelve True si el post es válido para ser mostrado"""
     if self.expiration_date:

@@ -125,7 +125,7 @@ def view_post(request, id):
     utilizando la plantilla 'posts/post_detail.html'.
     """
     post = get_object_or_404(Post, id=id)
-    #Verificacion de permanencia de validez del post
+    # Verificacion de permanencia de validez del post
     if post.expiration_date and timezone.now() > post.expiration_date:
         return HttpResponseBadRequest("Este post ha expirado y no está disponible.")
 
@@ -318,11 +318,13 @@ def create_post(request):
         author = request.user
 
         p.author = request.user
-        #Para asegurar que se guarden las fechas
+        # Para asegurar que se guarden las fechas
         if p.publication_date is None:
             p.publication_date = timezone.now()
         if p.expiration_date and p.expiration_date <= p.publication_date:
-            return HttpResponseBadRequest("La fecha de validez no puede ser anterior a la de publicacion")
+            return HttpResponseBadRequest(
+                "La fecha de validez no puede ser anterior a la de publicacion"
+            )
         p.save()
 
         # actualizar la cantidad de post creados por el autor
@@ -459,9 +461,11 @@ def edit_post(request, id):
 
         # guardar el post con la version actualizada
         post.version += 1
-        #Verificar fechas durante edicion
+        # Verificar fechas durante edicion
         if post.expiration_date and post.expiration_date <= post.publication_date:
-            return HttpResponseBadRequest("La fecha de validez no puede ser anterior a la de publicación.")
+            return HttpResponseBadRequest(
+                "La fecha de validez no puede ser anterior a la de publicación."
+            )
         post.save()
 
         # generar un registro en los logs
