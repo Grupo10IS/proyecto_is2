@@ -132,6 +132,14 @@ modulos.Posts.migrations.0016\_post\_active\_alter\_post\_status module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0017\_post\_expiration\_date module
+------------------------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0017_post_expiration_date
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
