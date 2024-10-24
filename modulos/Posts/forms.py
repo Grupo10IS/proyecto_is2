@@ -15,6 +15,8 @@ class NewPostForm(ModelForm):
             "category",
             "tags",
             "content",
+            "publication_date",
+            "expiration_date",
         ]
 
         widgets = {
@@ -37,6 +39,12 @@ class NewPostForm(ModelForm):
             "image": forms.ClearableFileInput(
                 attrs={"class": "custom-file-input"}  # Custom class for the file input
             ),
+            "publication_date": forms.DateInput(
+                attrs={"type": "date", "class": "custom-date-input"}
+            ),
+            "expiration_date": forms.DateInput(
+                attrs={"type": "date", "class": "custom-date-input"}
+            )
         }
 
 

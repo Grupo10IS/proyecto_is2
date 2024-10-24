@@ -39,6 +39,9 @@ class Post(models.Model):
     scheduled_publication_date = models.DateTimeField(
         null=True, blank=True, verbose_name="Fecha de publicacion agendada"
     )
+    expiration_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Fecha de validez"
+    )
     author = models.ForeignKey(
         UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
     )
@@ -167,3 +170,8 @@ def new_edition_log(old_instance, new_instance, user) -> None:
         # guardar un registro de las versiones del post (solo si existen cambios)
         version = NewVersion(old_instance)
         version.save()
+def is_valid(self):
+    """Devuelve True si el post es válido para ser mostrado"""
+    if self.expiration_date:
+        return self.publication_date <= now() <= self.expiration_date
+    return self.publication_date
