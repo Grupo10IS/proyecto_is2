@@ -11,5 +11,5 @@ urlpatterns = [
         purchased_categories_view,
         name="purchased_categories",
     ),
-    path("financial/", financial_view, name="financial_view"),
+    path("panel/", financial_view, name="financial_view"),
 ]
