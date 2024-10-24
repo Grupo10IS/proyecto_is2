@@ -3,8 +3,8 @@ from django.urls import path
 from modulos.Categories.views import *
 
 urlpatterns = [
-    path("", categories_manage, name="category_list"),
-    path("list/", CategoryListView.as_view(), name="categories_list"),
+    path("", CategoryListView.as_view(), name="categories_list"),
+    path("admin/", categories_manage, name="category_admin"),
     path("<int:pk>/", CategoryDetailView.as_view(), name="category_detail"),
     path("category_create/", category_create, name="category_create"),
     path("category_delete/<int:category_id>/", category_delete, name="category_delete"),

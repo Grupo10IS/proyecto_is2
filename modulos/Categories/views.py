@@ -131,7 +131,7 @@ def category_create(request):
         form = CategoryCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect("category_list")
+            return redirect("category_admin")
     else:
         form = CategoryCreationForm()
 
@@ -146,7 +146,7 @@ def category_create(request):
 def categories_manage(request):
     categories = Category.objects.all()
     ctx = new_ctx(request, {"categories": categories})
-    return render(request, "category_list.html", ctx)
+    return render(request, "category_admin.html", ctx)
 
 
 # Vista para eliminar una categoría
@@ -173,7 +173,7 @@ def category_delete(request, category_id):
 
         # Elimina la categoría si no hay posts asociados
         category.delete()
-        return redirect("category_list")
+        return redirect("category_admin")
 
     ctx = new_ctx(request, {"category": category})
     return render(request, "category_confirm_delete.html", ctx)
@@ -205,7 +205,7 @@ def category_edit(request, category_id):
                 )
             form.save()
 
-            return redirect("category_list")
+            return redirect("category_admin")
 
     form = CategoryCreationForm(instance=category)
     return render(request, "category_form.html", new_ctx(request, {"form": form}))
