@@ -71,17 +71,6 @@ class NewPostForm(forms.ModelForm):
             raise ValidationError("Contenido requerido.")  # Mensaje personalizado
         return content
 
-    def clean_image(self):
-        image = self.cleaned_data.get("image")
-        if image:
-            valid_image_formats = ["image/jpeg", "image/png", "image/jpg", "image/webp"]
-            if image.content_type not in valid_image_formats:
-                raise ValidationError(
-                    "El formato de imagen no es válido. Formatos permitidos: .webp, .png, .jpg, .jpeg"
-                )
-        return image
-
-
 class SearchPostForm(forms.Form):
     input = forms.CharField(
         max_length=120,

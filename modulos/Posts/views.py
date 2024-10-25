@@ -126,7 +126,11 @@ def view_post(request, id):
     """
     post = get_object_or_404(Post, id=id)
     # Verificacion de permanencia de validez del post
-    if post.expiration_date and timezone.now() > post.expiration_date:
+    if (
+        post.expiration_date
+        and timezone.now() > post.expiration_date
+        and post.author != request.user
+    ):
         return HttpResponseBadRequest("Este post ha expirado y no está disponible.")
 
     # Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos
@@ -239,6 +243,9 @@ def manage_posts(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
     """
+    # FIX: solucionar esta parte y repensar los permisos para ver, porque no puede
+    # ser que esta verificacion esta acoplada al ROL admin y no a algun permiso (OJO: podemos
+    # tener roles personalizados ACUERDENSE).
     is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
     posts = (
         Post.objects.filter(active=True, status=Post.PUBLISHED)
@@ -309,11 +316,8 @@ def create_post(request):
         HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.
     """
     if request.method == "POST":
-
         form = NewPostForm(request.POST, request.FILES)
-
         if form.is_valid():
-
             p = form.save(commit=False)
             author = request.user
             p.author = author
@@ -341,16 +345,14 @@ def create_post(request):
             new_creation_log(post=p, user=author)
 
             return redirect("/posts/" + str(p.id))
-        else:
 
-            # Si el formulario no es válido, mostrar los errores en el template
-            ctx = new_ctx(request, {"form": form})
-            return render(request, "pages/new_post.html", context=ctx)
-    else:
-
-        form = NewPostForm()
+        # Si el formulario no es válido, mostrar los errores en el template
         ctx = new_ctx(request, {"form": form})
         return render(request, "pages/new_post.html", context=ctx)
+
+    form = NewPostForm()
+    ctx = new_ctx(request, {"form": form})
+    return render(request, "pages/new_post.html", context=ctx)
 
 
 @login_required
@@ -464,16 +466,21 @@ def edit_post(request, id):
         form = NewPostForm(request.POST, request.FILES, instance=post)
 
         if not form.is_valid():
-            # FIX: mostrar errores en el editor
-            return HttpResponseBadRequest(f"Formulario inválido")
+            # Si el formulario no es válido, mostrar los errores en el template
+            ctx = new_ctx(request, {"form": form})
+            return render(request, "pages/new_post.html", context=ctx)
 
         # guardar el post con la version actualizada
         post.version += 1
         # Verificar fechas durante edicion
         if post.expiration_date and post.expiration_date <= post.publication_date:
-            return HttpResponseBadRequest(
-                "La fecha de validez no puede ser anterior a la de publicación."
+            form.add_error(
+                "expiration_date",
+                "La fecha de expiracion no puede ser menor a la de publicacion",
             )
+            ctx = new_ctx(request, {"form": form})
+            return render(request, "pages/new_post.html", context=ctx)
+
         post.save()
 
         # generar un registro en los logs
@@ -490,7 +497,7 @@ def edit_post(request, id):
         POST_APPROVE_PERMISSION
     ):
         return HttpResponseBadRequest(
-            f"No se puede editar un post pendiente de aprobacion si no es un editor"
+            f"No se puede editar un post pendiente de aprobacion si no eres un editor"
         )
 
     # solo permitir a publicadores editar cuando esta pendiente de publicacion.
@@ -498,7 +505,7 @@ def edit_post(request, id):
         POST_PUBLISH_PERMISSION
     ):
         return HttpResponseBadRequest(
-            f"No se puede editar un post pendiente de publicacion si no es un publicador"
+            f"No se puede editar un post pendiente de publicacion si no eres un publicador"
         )
 
     # solo permitir a los propios autores editar sus borradores.
