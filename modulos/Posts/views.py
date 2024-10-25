@@ -309,39 +309,48 @@ def create_post(request):
         HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.
     """
     if request.method == "POST":
+
         form = NewPostForm(request.POST, request.FILES)
-        if not form.is_valid():
-            return HttpResponseBadRequest("Datos proporcionados invalidos")
 
-        p = form.save(commit=False)
+        if form.is_valid():
 
-        author = request.user
+            p = form.save(commit=False)
+            author = request.user
+            p.author = author
 
-        p.author = request.user
-        # Para asegurar que se guarden las fechas
-        if p.publication_date is None:
-            p.publication_date = timezone.now()
-        if p.expiration_date and p.expiration_date <= p.publication_date:
-            return HttpResponseBadRequest(
-                "La fecha de validez no puede ser anterior a la de publicacion"
-            )
-        p.save()
+            # Validar fechas dentro de la vista
+            if p.publication_date is None:
+                p.publication_date = timezone.now()
 
-        # actualizar la cantidad de post creados por el autor
-        author.c_creados += 1
-        author.save()
+            if p.expiration_date and p.expiration_date <= p.publication_date:
+                form.add_error(
+                    "expiration_date",
+                    "La fecha de validez no puede ser anterior o igual a la fecha de publicación.",
+                )
 
-        new_creation_log(post=p, user=request.user)
+                # Renderizar de nuevo el formulario con el error agregado
+                ctx = new_ctx(request, {"form": form})
+                return render(request, "pages/new_post.html", context=ctx)
 
-        return redirect("/posts/" + str(p.id))
+            p.save()
 
-    ctx = new_ctx(request, {"form": NewPostForm})
+            # Actualizar la cantidad de posts creados por el autor
+            author.c_creados += 1
+            author.save()
 
-    return render(
-        request,
-        "pages/new_post.html",
-        context=ctx,
-    )
+            new_creation_log(post=p, user=author)
+
+            return redirect("/posts/" + str(p.id))
+        else:
+
+            # Si el formulario no es válido, mostrar los errores en el template
+            ctx = new_ctx(request, {"form": form})
+            return render(request, "pages/new_post.html", context=ctx)
+    else:
+
+        form = NewPostForm()
+        ctx = new_ctx(request, {"form": form})
+        return render(request, "pages/new_post.html", context=ctx)
 
 
 @login_required
