@@ -26,6 +26,7 @@
                                             </a>
                                         </li>
                                         <div class="d-flex justify-content-between mt-2 mb-2">
+                                            <a href="{% url 'edit_post' post.id %}" class="btn btn-light">Editar</a>
                                             {% if post.can_publish_directly %}
                                                 <a href="{% url 'publish_post' post.id %}" class="btn btn-success">Publicar</a>
                                             {% else %}
