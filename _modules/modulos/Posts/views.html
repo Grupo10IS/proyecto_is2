@@ -352,39 +352,48 @@
 <span class="sd">        HttpResponse: Redirección a la vista del post creado o renderización del formulario con errores.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+
         <span class="n">form</span> <span class="o">=</span> <span class="n">NewPostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s2">&quot;Datos proporcionados invalidos&quot;</span><span class="p">)</span>
 
-        <span class="n">p</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
 
-        <span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
 
-        <span class="n">p</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
-        <span class="c1"># Para asegurar que se guarden las fechas</span>
-        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span>
-                <span class="s2">&quot;La fecha de validez no puede ser anterior a la de publicacion&quot;</span>
-            <span class="p">)</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c1"># Validar fechas dentro de la vista</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
-        <span class="c1"># actualizar la cantidad de post creados por el autor</span>
-        <span class="n">author</span><span class="o">.</span><span class="n">c_creados</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">author</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">expiration_date</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="n">publication_date</span><span class="p">:</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span>
+                    <span class="s2">&quot;expiration_date&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;La fecha de validez no puede ser anterior o igual a la fecha de publicación.&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
 
-        <span class="n">new_creation_log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                <span class="c1"># Renderizar de nuevo el formulario con el error agregado</span>
+                <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/posts/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">NewPostForm</span><span class="p">})</span>
+            <span class="c1"># Actualizar la cantidad de posts creados por el autor</span>
+            <span class="n">author</span><span class="o">.</span><span class="n">c_creados</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">author</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
-        <span class="n">request</span><span class="p">,</span>
-        <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span>
-        <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span>
-    <span class="p">)</span>
+            <span class="n">new_creation_log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">author</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/posts/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># Si el formulario no es válido, mostrar los errores en el template</span>
+            <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">form</span> <span class="o">=</span> <span class="n">NewPostForm</span><span class="p">()</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="inactivate_post">

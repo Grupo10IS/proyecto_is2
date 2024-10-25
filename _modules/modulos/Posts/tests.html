@@ -173,7 +173,6 @@
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span></div>
 
 
-
 <div class="viewcode-block" id="test_create_post_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_create_post_view">[documentos]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
@@ -211,12 +210,14 @@
         <span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span>
     <span class="p">],</span> <span class="s2">&quot;Template &#39;new_post.html&#39; should be used.&quot;</span>
 
-    <span class="c1"># Test creating a post with invalid data</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Content for new test post&quot;</span><span class="p">}</span>
+    <span class="c1"># Test creating a post with invalid data (missing required fields)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>  <span class="c1"># Invalid data, fields required</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
-    <span class="p">),</span> <span class="s2">&quot;Invalid form data should return 400 Bad Request.&quot;</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;Invalid form data should return the form with errors (status 200).&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;form&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="s2">&quot;Form should be in the context.&quot;</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;form&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="s2">&quot;Form should contain errors.&quot;</span>
 
     <span class="c1"># Test creating a post with valid data</span>
     <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;test_category&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;descripcion&quot;</span><span class="p">)</span>
@@ -228,12 +229,10 @@
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">,</span> <span class="s2">&quot;Successful post creation should redirect.&quot;</span>
 
-    <span class="c1"># test of existing new post</span>
+    <span class="c1"># Verify the post was created</span>
     <span class="k">assert</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;Post should exist in the database after creation.&quot;</span></div>
-
-
 
 <div class="viewcode-block" id="test_post_manage_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_post_manage_view">[documentos]</a>

@@ -34,15 +34,21 @@
   <h1>Código fuente para modulos.Posts.forms</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
 <span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">CharField</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">ModelForm</span>
-
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>  <span class="c1"># Ensure you have imported the Post model</span>
 
 
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+
 <div class="viewcode-block" id="NewPostForm">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm">[documentos]</a>
-<span class="k">class</span> <span class="nc">NewPostForm</span><span class="p">(</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">NewPostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <div class="viewcode-block" id="NewPostForm.Meta">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.Meta">[documentos]</a>
     <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
@@ -56,7 +62,6 @@
             <span class="s2">&quot;publication_date&quot;</span><span class="p">,</span>
             <span class="s2">&quot;expiration_date&quot;</span><span class="p">,</span>
         <span class="p">]</span>
-
         <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span>
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-input&quot;</span><span class="p">,</span> <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter title&quot;</span><span class="p">}</span>
@@ -64,9 +69,7 @@
             <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span>
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-input&quot;</span><span class="p">,</span> <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Tag1, tag2, tag3 ...&quot;</span><span class="p">}</span>
             <span class="p">),</span>
-            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span>
-                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-select&quot;</span><span class="p">}</span>  <span class="c1"># Custom class for the dropdown</span>
-            <span class="p">),</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-select&quot;</span><span class="p">}),</span>
             <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span>
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
                     <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-textarea&quot;</span><span class="p">,</span>
@@ -74,9 +77,7 @@
                     <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter content&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="p">),</span>
-            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">ClearableFileInput</span><span class="p">(</span>
-                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-file-input&quot;</span><span class="p">}</span>  <span class="c1"># Custom class for the file input</span>
-            <span class="p">),</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">ClearableFileInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-file-input&quot;</span><span class="p">}),</span>
             <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateInput</span><span class="p">(</span>
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-date-input&quot;</span><span class="p">}</span>
             <span class="p">),</span>
@@ -84,6 +85,51 @@
                 <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;custom-date-input&quot;</span><span class="p">}</span>
             <span class="p">),</span>
         <span class="p">}</span></div>
+
+
+    <span class="c1"># Desactivar validación implícita `required` en estos campos</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NewPostForm.clean_title">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.clean_title">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Título requerido.&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje personalizado</span>
+        <span class="k">return</span> <span class="n">title</span></div>
+
+
+<div class="viewcode-block" id="NewPostForm.clean_category">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.clean_category">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">category</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Categoría requerida.&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje personalizado</span>
+        <span class="k">return</span> <span class="n">category</span></div>
+
+
+<div class="viewcode-block" id="NewPostForm.clean_content">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.clean_content">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Contenido requerido.&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje personalizado</span>
+        <span class="k">return</span> <span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="NewPostForm.clean_image">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.clean_image">[documentos]</a>
+    <span class="k">def</span> <span class="nf">clean_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
+            <span class="n">valid_image_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span> <span class="s2">&quot;image/jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;image/webp&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">content_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_image_formats</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                    <span class="s2">&quot;El formato de imagen no es válido. Formatos permitidos: .webp, .png, .jpg, .jpeg&quot;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span></div>
 </div>
 
 

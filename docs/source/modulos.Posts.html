@@ -367,9 +367,29 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 <span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'content':</span> <span class="pre">&lt;modulos.mdeditor.fields.MDTextFormField</span> <span class="pre">object&gt;,</span> <span class="pre">'expiration_date':</span> <span class="pre">&lt;django.forms.fields.DateTimeField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'publication_date':</span> <span class="pre">&lt;django.forms.fields.DateTimeField</span> <span class="pre">object&gt;,</span> <span class="pre">'tags':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.clean_category">
+<span class="sig-name descname"><span class="pre">clean_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm.clean_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.clean_category" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.clean_content">
+<span class="sig-name descname"><span class="pre">clean_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm.clean_content"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.clean_content" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.clean_image">
+<span class="sig-name descname"><span class="pre">clean_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm.clean_image"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.clean_image" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.clean_title">
+<span class="sig-name descname"><span class="pre">clean_title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/forms.html#NewPostForm.clean_title"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.clean_title" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Posts.forms.NewPostForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.declared_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Posts.forms.NewPostForm.declared_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1321,6 +1341,10 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm"><code class="docutils literal notranslate"><span class="pre">NewPostForm</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.Meta"><code class="docutils literal notranslate"><span class="pre">NewPostForm.Meta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.base_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.clean_category"><code class="docutils literal notranslate"><span class="pre">NewPostForm.clean_category()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.clean_content"><code class="docutils literal notranslate"><span class="pre">NewPostForm.clean_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.clean_image"><code class="docutils literal notranslate"><span class="pre">NewPostForm.clean_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.clean_title"><code class="docutils literal notranslate"><span class="pre">NewPostForm.clean_title()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">NewPostForm.declared_fields</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.forms.NewPostForm.media"><code class="docutils literal notranslate"><span class="pre">NewPostForm.media</span></code></a></li>
 </ul>
