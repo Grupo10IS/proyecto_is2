@@ -1087,6 +1087,24 @@ Verifica que un post existente se puede editar correctamente.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.edit_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">edit_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#edit_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.edit_post" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para editar un post existente.</p>
+<p>Esta vista carga el formulario con los datos del post y procesa la actualización
+si se envían nuevos datos.</p>
+<p>Cuando se realiza una modificacion de un post y el mismo se encuentra en cualquier estado
+que no sea borrador, entonces se guarda una version del estado anterior del post a modo de historial de
+cambios.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): El objeto de solicitud HTTP.
+id (int): El ID del post a editar.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: Redirección a la lista de posts o renderización del formulario con los datos del post.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.enhanced_search">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">enhanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#enhanced_search"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.enhanced_search" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1469,6 +1487,7 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.views.RejectionReasonForm.media"><code class="docutils literal notranslate"><span class="pre">RejectionReasonForm.media</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.edit_post"><code class="docutils literal notranslate"><span class="pre">edit_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.enhanced_search"><code class="docutils literal notranslate"><span class="pre">enhanced_search()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
