@@ -130,7 +130,6 @@ def test_view_post(client):
     response = client.get(url)
     assert response.status_code == 400
 
-
 @pytest.mark.django_db
 def test_create_post_view(client):
     """
@@ -166,12 +165,14 @@ def test_create_post_view(client):
         t.name for t in response.templates
     ], "Template 'new_post.html' should be used."
 
-    # Test creating a post with invalid data
-    data = {"title": "New Test Post", "content": "Content for new test post"}
+    # Test creating a post with invalid data (missing required fields)
+    data = {"title": "", "content": ""}  # Invalid data, fields required
     response = client.post(url, data)
     assert (
-        response.status_code == 400
-    ), "Invalid form data should return 400 Bad Request."
+        response.status_code == 200
+    ), "Invalid form data should return the form with errors (status 200)."
+    assert "form" in response.context, "Form should be in the context."
+    assert response.context["form"].errors, "Form should contain errors."
 
     # Test creating a post with valid data
     category = Category.objects.create(name="test_category", description="descripcion")
@@ -183,12 +184,10 @@ def test_create_post_view(client):
     response = client.post(url, data)
     assert response.status_code == 302, "Successful post creation should redirect."
 
-    # test of existing new post
+    # Verify the post was created
     assert Post.objects.filter(
         title="New Test Post", active=True
     ).exists(), "Post should exist in the database after creation."
-
-
 @pytest.mark.django_db
 def test_post_manage_view(client):
     """
