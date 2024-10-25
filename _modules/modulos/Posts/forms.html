@@ -117,21 +117,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Contenido requerido.&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje personalizado</span>
         <span class="k">return</span> <span class="n">content</span></div>
-
-
-<div class="viewcode-block" id="NewPostForm.clean_image">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.NewPostForm.clean_image">[documentos]</a>
-    <span class="k">def</span> <span class="nf">clean_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
-            <span class="n">valid_image_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span> <span class="s2">&quot;image/jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;image/webp&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">content_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_image_formats</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="s2">&quot;El formato de imagen no es válido. Formatos permitidos: .webp, .png, .jpg, .jpeg&quot;</span>
-                <span class="p">)</span>
-        <span class="k">return</span> <span class="n">image</span></div>
 </div>
-
 
 
 <div class="viewcode-block" id="SearchPostForm">
