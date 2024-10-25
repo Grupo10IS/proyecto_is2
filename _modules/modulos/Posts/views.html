@@ -165,7 +165,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
     <span class="c1"># Verificacion de permanencia de validez del post</span>
-    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span>
+        <span class="ow">and</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span>
+        <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">):</span>
         <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s2">&quot;Este post ha expirado y no está disponible.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Permitir ver la publicación solo si está publicada o si el usuario es el autor o tiene permisos</span>
@@ -279,6 +283,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla &#39;pages/post_list.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># FIX: solucionar esta parte y repensar los permisos para ver, porque no puede</span>
+    <span class="c1"># ser que esta verificacion esta acoplada al ROL admin y no a algun permiso (OJO: podemos</span>
+    <span class="c1"># tener roles personalizados ACUERDENSE).</span>
     <span class="n">is_admin</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ADMIN</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
     <span class="n">posts</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
@@ -518,7 +525,10 @@
         <span class="n">post</span><span class="o">.</span><span class="n">version</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># Verificar fechas durante edicion</span>
         <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">expiration_date</span> <span class="o">&lt;=</span> <span class="n">post</span><span class="o">.</span><span class="n">publication_date</span><span class="p">:</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="s2">&quot;expiration_date&quot;</span><span class="p">,</span> <span class="s2">&quot;La fecha de expiracion no puede ser menor a la de publicacion&quot;</span><span class="p">)</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span>
+                <span class="s2">&quot;expiration_date&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;La fecha de expiracion no puede ser menor a la de publicacion&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/new_post.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
 
