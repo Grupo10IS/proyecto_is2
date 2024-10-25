@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.db.models import Q
-from django.utils import timezone
 
 from modulos.Posts.buscador.tokenizer import *
 
@@ -25,8 +24,7 @@ class QueryBuilder:
 
     def execute(self):
         # Ejecuta la consulta sobre el modelo
-        now = timezone.now()
-        return self.model.objects.filter(self.filters, active=True, expiration_date__lte=now)
+        return self.model.objects.filter(self.filters, active=True)
 
 
 # The base Node class
