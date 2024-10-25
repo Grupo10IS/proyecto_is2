@@ -435,7 +435,6 @@ def reactivate_post(request, id):
 
 
 @login_required
-@permissions_required([POST_EDIT_PERMISSION])
 def edit_post(request, id):
     """
     Vista para editar un post existente.
@@ -503,7 +502,7 @@ def edit_post(request, id):
         )
 
     # solo permitir a los propios autores editar sus borradores.
-    if post.status == post.DRAFT and not request.user != post.author:
+    if post.status == post.DRAFT and request.user != post.author:
         return HttpResponseBadRequest(f"Solo los autores pueden editar un borrador")
 
     form = NewPostForm(instance=post)
