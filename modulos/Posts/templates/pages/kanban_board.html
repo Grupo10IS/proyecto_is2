@@ -32,7 +32,6 @@
                                             {% else %}
                                                 <a href="{% url 'send_to_review' post.id %}" class="btn btn-success">Enviar</a>
                                             {% endif %}
-                                            <a href="{% url 'inactivate_post' post.id %}" class="btn btn-danger">Inactivar</a>
                                         </div>
                                     {% endfor %}
                                 </ul>
