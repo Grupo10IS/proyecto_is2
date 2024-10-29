@@ -26,11 +26,30 @@
                                             </a>
                                         </li>
                                         <div class="d-flex justify-content-between mt-2 mb-2">
-                                            <a href="{% url 'edit_post' post.id %}" class="btn btn-light">Editar</a>
+                                            <a href="{% url 'edit_post' post.id %}" 
+                                                    class="btn btn-light" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#confirmationModal" 
+                                                    onclick="setConfirmActionUrl(this)">
+                                                        Editar
+                                                    </a>
                                             {% if post.can_publish_directly %}
-                                                <a href="{% url 'publish_post' post.id %}" class="btn btn-success">Publicar</a>
+                                                <a href="{% url 'publish_post' post.id %}" 
+                                                class="btn btn-sm btn-success" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#confirmationModal" 
+                                                onclick="setConfirmActionUrl(this)">
+                                                Publicar
+                                                 </a>
+                                            
                                             {% else %}
-                                                <a href="{% url 'send_to_review' post.id %}" class="btn btn-success">Enviar</a>
+                                                <a href="{% url 'send_to_review' post.id %}" 
+                                                class="btn btn-success" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#confirmationModal" 
+                                                onclick="setConfirmActionUrl(this)">
+                                                Enviar
+                                            </a>
                                             {% endif %}
                                         </div>
                                     {% endfor %}
@@ -55,10 +74,21 @@
                                         </a>
                                     </li>
                                     <div class="d-flex justify-content-between mt-2 mb-2">
-                                        <a href="{% url 'edit_post' post.id %}" class="btn btn-light">Editar</a>
+                                        <a href="{% url 'edit_post' post.id %}" 
+                                            class="btn btn-light" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#confirmationModal" 
+                                            onclick="setConfirmActionUrl(this)">
+                                                Editar
+                                            </a>
                                         {% if can_approve %}
-                                            <a href="{% url 'approve_post' post.id %}"
-                                               class="btn btn-sm btn-success">Aprobar</a>
+                                        <a href="{% url 'approve_post' post.id %}" 
+                                        class="btn btn-sm btn-success" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#confirmationModal" 
+                                        onclick="setConfirmActionUrl(this)">
+                                         Aprobar
+                                     </a>
                                         {% endif %}
                                         {% if can_reject %}
                                             <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
@@ -85,10 +115,22 @@
                                         </a>
                                     </li>
                                     <div class="d-flex justify-content-between mt-2 mb-2">
-                                        <a href="{% url 'edit_post' post.id %}" class="btn btn-light">Editar</a>
+                                        <a href="{% url 'edit_post' post.id %}" 
+                                            class="btn btn-light" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#confirmationModal" 
+                                            onclick="setConfirmActionUrl(this)">
+                                                Editar
+                                            </a>
                                         {% if can_publish %}
-                                            <a href="{% url 'publish_post' post.id %}"
-                                               class="btn btn-sm btn-success">Publicar</a>
+                                        <a href="{% url 'publish_post' post.id %}" 
+                                        class="btn btn-sm btn-success" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#confirmationModal" 
+                                        onclick="setConfirmActionUrl(this)">
+                                         Publicar
+                                     </a>
+                                     
                                         {% endif %}
                                         {% if can_reject %}
                                             <a href="{% url 'reject_post' post.id %}" class="btn btn-sm btn-danger">Rechazar</a>
@@ -122,4 +164,35 @@
             </div>
         </div>
     </div>
+
+        <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas realizar esta acción?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="#" id="confirmActionButton" class="btn btn-primary">Confirmar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setConfirmActionUrl(element) {
+            // Captura el URL del botón original
+            const actionUrl = element.getAttribute("href");
+            
+            // Establece el URL en el botón de confirmación del modal
+            document.getElementById("confirmActionButton").setAttribute("href", actionUrl);
+        }
+    </script>
+    
+
 {% endblock content %}
