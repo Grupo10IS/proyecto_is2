@@ -28,7 +28,8 @@ from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
-from modulos.Posts.forms import NewPostForm, PostsListFilter, SearchPostForm
+from modulos.Posts.forms import (ModalWithMsgForm, NewPostForm,
+                                 PostsListFilter, SearchPostForm)
 from modulos.Posts.models import (Log, Post, RestorePost, Version,
                                   new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
@@ -372,11 +373,6 @@ def inactivate_post(request, id):
     """
     post: Post = get_object_or_404(Post, pk=id)
 
-    # Verifica si la acción proviene de un reporte
-    if request.GET.get("from_report") == "true":
-        # Actualiza is_handled a True para todos los reportes relacionados con el post
-        post.reports.update(is_handled=True)
-
     if (
         not request.user.has_perm(POST_DELETE_PERMISSION)
         and post.author != request.user
@@ -384,18 +380,42 @@ def inactivate_post(request, id):
         return HttpResponseForbidden("No tienes permiso para inactivar este post.")
 
     if request.method == "POST":
-        post.active = False
-        post.save()
+        form = ModalWithMsgForm(request.POST)
+        if form.is_valid():
+            post.active = False
+            post.save()
 
-        Log(post=post, message=f"Post inactivado por: {request.user.username}").save()
+            # Marca como resueltos todos los reportes de este post
+            post.reports.update(is_handled=True)
 
-        request.user.c_audit_eliminados += 1
-        request.user.save()
+            # Generar log y manda mail al autor del post.
+            reasson = form.cleaned_data["msg"]
 
-        return redirect("post_list")
+            Log(
+                post=post,
+                message=f"Post inactivado por: {request.user.username}.\nMotivo: {reasson}",
+            ).save()
 
-    # Si no es una solicitud POST, muestra un mensaje de confirmación
-    ctx = new_ctx(request, {"post": post})
+            send_mail(
+                "Tu post ha sido inactivado.",
+                (
+                    f"Post {post.title} fue inactivado por: {request.user.username}.\n\nMotivo: {reasson}"
+                ),
+                "groupmakex@gmail.com",
+                [post.author.email],
+                fail_silently=True,
+            )
+
+            # Actualizar las estadisticas del moderador
+            request.user.c_audit_eliminados += 1
+            request.user.save()
+
+            return redirect("post_list")
+    else:
+        form = ModalWithMsgForm()
+
+    # Si es una solicitud GET, muestra un mensaje de confirmación
+    ctx = new_ctx(request, {"post": post, "form": form})
     return render(request, "pages/post_confirm_delete.html", ctx)
 
 
@@ -700,11 +720,6 @@ def publish_post(request, id):
     return redirect("kanban_board")
 
 
-# Formulario para el motivo de rechazo
-class RejectionReasonForm(forms.Form):
-    rejection_reason = forms.CharField(widget=forms.Textarea, label="", required=True)
-
-
 @login_required
 @permissions_required([POST_REJECT_PERMISSION])
 def reject_post(request, id):
@@ -722,10 +737,10 @@ def reject_post(request, id):
         )
 
     if request.method == "POST":
-        form = RejectionReasonForm(request.POST)
+        form = ModalWithMsgForm(request.POST)
         if form.is_valid():
             # Obtener la razón de rechazo del formulario
-            rejection_reason = form.cleaned_data["rejection_reason"]
+            rejection_reason = form.cleaned_data["msg"]
 
             # Retrasar un paso el estado de la publicación
             if post.status == post.PENDING_REVIEW:
@@ -762,13 +777,13 @@ def reject_post(request, id):
                 message,
                 "groupmakex@gmail.com",
                 [post.author.email],
-                fail_silently=False,
+                fail_silently=True,
             )
 
             return redirect("kanban_board")
 
     else:
-        form = RejectionReasonForm()
+        form = ModalWithMsgForm()
 
     context = {"form": form, "post": post}
     return render(request, "pages/reject_post.html", context)
@@ -917,9 +932,9 @@ def list_contenidos_view(request):
     return render(request, "pages/list_contenidos.html", ctx)
 
 
-# --------------------
-#    Estadisticas
-# --------------------
+# -----------------------
+#   Estadisticas y logs
+# -----------------------
 
 
 @login_required
