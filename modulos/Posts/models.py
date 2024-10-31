@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.utils.timezone import now
 
 from modulos.Categories.models import Category
@@ -52,6 +53,21 @@ class Post(models.Model):
     favorites = models.ManyToManyField(
         UserProfile, related_name="favorite_posts", verbose_name="Favoritos"
     )
+
+
+def get_popular_posts():
+    """
+    Obtiene los 5 posts más populares. Los posts mas populares son aquellos con
+    mas conteo de favoritos.
+    """
+    # Obtener los 5 posts más populares (mayor conteo de favoritos)
+    posts_populares = (
+        Post.objects.filter(status=Post.PUBLISHED, active=True)
+        .annotate(favorite_count=Count("favorites"))
+        .order_by("-favorite_count")[:5]
+    )
+
+    return posts_populares
 
 
 class Version(models.Model):
@@ -177,3 +193,29 @@ def is_valid(self):
     if self.expiration_date:
         return self.publication_date <= now() <= self.expiration_date
     return self.publication_date
+
+
+# Lista con los posts destacados manualmente por el admin.
+class Destacado(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=False)
+    date = models.DateTimeField(default=now, verbose_name="Fecha de destacado")
+
+
+def get_highlighted_post():
+    """
+    Retorna el post destacado del momento. El post destacado es el ultimo en ser anadido
+    a la lista.
+    """
+    # Obtener el post destacado (destacado por el admin)
+    post_destacado = (
+        Destacado.objects.filter(post__status=Post.PUBLISHED, post__active=True)
+        .order_by("-date")
+        .first()
+    )
+
+    if post_destacado == None: 
+        return None
+
+    return post_destacado.post
+
+

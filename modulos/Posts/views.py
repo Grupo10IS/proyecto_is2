@@ -1,14 +1,13 @@
 import difflib
 from datetime import timedelta
 
-from django import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser, Group
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.query_utils import Q
-from django.http.response import (HttpResponseBadRequest,
+from django.http.response import (HttpResponse, HttpResponseBadRequest,
                                   HttpResponseForbidden, HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -20,17 +19,19 @@ from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                POST_CREATE_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
+                                               POST_HIGHLIGHT_PERMISSION,
                                                POST_PUBLISH_PERMISSION,
                                                POST_REJECT_PERMISSION,
                                                POST_REVIEW_PERMISSION,
                                                user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
+from modulos.Posts import signals
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import (ModalWithMsgForm, NewPostForm,
                                  PostsListFilter, SearchPostForm)
-from modulos.Posts.models import (Log, Post, RestorePost, Version,
+from modulos.Posts.models import (Destacado, Log, Post, RestorePost, Version, get_highlighted_post, get_popular_posts,
                                   new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
 
@@ -47,28 +48,15 @@ def home_view(req):
     También maneja la búsqueda de posts a través del formulario.
     """
 
-    form = SearchPostForm(req.GET or None)  # Inicializa el formulario de búsqueda
+    form = SearchPostForm(req.GET or None)
 
-    # Obtener el post con más favoritos
-    post_destacado = (
-        Post.objects.filter(status=Post.PUBLISHED, active=True)
-        .annotate(favorite_count=Count("favorites"))
-        .order_by("-favorite_count")
-        .first()
-    )
+    posts_populares = get_popular_posts()
+    post_destacado = get_highlighted_post()
 
-    # Obtener las tres categorías con más posts marcados como favoritos
     categorias_populares = (
         Category.objects.filter(post__status=Post.PUBLISHED, post__active=True)
         .annotate(favorite_count=Count("post__favorites"))
         .order_by("-favorite_count")[:3]
-    )
-
-    # Obtener los 5 posts más populares (con más favoritos)
-    posts_populares = (
-        Post.objects.filter(status=Post.PUBLISHED, active=True)
-        .annotate(favorite_count=Count("favorites"))
-        .order_by("-favorite_count")[:5]
     )
 
     # Si hay búsqueda activa
@@ -258,9 +246,10 @@ def manage_posts(request):
         request,
         {
             "posts": posts,
-            "perm_create": request.user.has_perm(POST_CREATE_PERMISSION),
             "perm_edit": request.user.has_perm(POST_EDIT_PERMISSION),
+            "perm_create": request.user.has_perm(POST_CREATE_PERMISSION),
             "perm_delete": request.user.has_perm(POST_DELETE_PERMISSION),
+            "perm_highlight": request.user.has_perm(POST_HIGHLIGHT_PERMISSION),
         },
     )
 
@@ -931,6 +920,14 @@ def list_contenidos_view(request):
 
     return render(request, "pages/list_contenidos.html", ctx)
 
+
+@login_required
+@permission_required([POST_HIGHLIGHT_PERMISSION])
+def highlight_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+    Destacado(post=post).save()
+
+    return HttpResponse("Post destacado satisfactoriamente")
 
 # -----------------------
 #   Estadisticas y logs

@@ -42,6 +42,13 @@
                                               border-color: black;
                                               color:white">Editar</a>
                                 {% endif %}
+                                {% if perm_highlight %}
+                                    <a href="{% url 'highlight_post' post.id %}"
+                                       class="btn btn-sm btn-primary"
+                                       style="background-color: black;
+                                              border-color: black;
+                                              color:white">Destacar</a>
+                                {% endif %}
                                 {% if "delete" in permisos %}
                                     <a href="{% url 'inactivate_post' post.id %}"
                                        class="btn btn-sm btn-danger mt-2"

@@ -14,6 +14,7 @@ urlpatterns = [
     path("<int:id>/inactivate", inactivate_post, name="inactivate_post"),
     path("<int:id>/reactivate", reactivate_post, name="reactivate_post"),
     path("<int:id>/edit/", edit_post, name="edit_post"),
+    path("<int:id>/highlight/", highlight_post, name="highlight_post"),
     # -- vistas de publicacion de contenido --
     path("<int:id>/approve", aprove_post, name="approve_post"),
     path("<int:id>/review", send_to_review, name="send_to_review"),
