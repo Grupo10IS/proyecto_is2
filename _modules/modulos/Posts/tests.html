@@ -173,6 +173,7 @@
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span></div>
 
 
+
 <div class="viewcode-block" id="test_create_post_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_create_post_view">[documentos]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
@@ -233,6 +234,8 @@
     <span class="k">assert</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New Test Post&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;Post should exist in the database after creation.&quot;</span></div>
+
+
 
 <div class="viewcode-block" id="test_post_manage_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_post_manage_view">[documentos]</a>
@@ -380,36 +383,59 @@
 
 
 
-<div class="viewcode-block" id="test_delete_post_view">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_delete_post_view">[documentos]</a>
+<div class="viewcode-block" id="test_inactivate_post_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.tests.test_inactivate_post_view">[documentos]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
-<span class="k">def</span> <span class="nf">test_delete_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_inactivate_post_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test para inactivar un post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">categoria</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
-    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a inactivar&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a inactivar&quot;</span>
-    <span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
         <span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
     <span class="p">)</span>
     <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">))</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">categoria</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Post a inactivar&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Contenido a inactivar&quot;</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
 
     <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;inactivate_post&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+
+    <span class="c1"># Test GET request</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
     <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 al acceder a la vista de confirmación de eliminación.&quot;</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="c1"># Test valid POST request</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;mensaje&quot;</span><span class="p">})</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
-    <span class="p">),</span> <span class="s2">&quot;Debería redirigir después de inactivar el post.&quot;</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">id</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s2">&quot;El post debería haber sido eliminado.&quot;</span></div>
+    <span class="p">),</span> <span class="s2">&quot;Deberia retornar 302 luego de la desactivacion del post.&quot;</span>
+    
+    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">post</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="s2">&quot;El post debería haber sido inactivado.&quot;</span>
+
+    <span class="c1"># Reset the post state for the next test</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="c1"># Test invalid POST request</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 si el formulario es inválido.&quot;</span>
+    
+    <span class="c1"># Check for presence of form errors</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Deberían aparecer errores en el formulario.&quot;</span>
+    
+    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="s2">&quot;El post debería seguir activo después de un intento de inactivación fallido.&quot;</span></div>
+
 
 
 

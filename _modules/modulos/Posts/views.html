@@ -62,7 +62,8 @@
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.disqus</span> <span class="kn">import</span> <span class="n">get_disqus_stats</span>
-<span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">NewPostForm</span><span class="p">,</span> <span class="n">PostsListFilter</span><span class="p">,</span> <span class="n">SearchPostForm</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ModalWithMsgForm</span><span class="p">,</span> <span class="n">NewPostForm</span><span class="p">,</span>
+                                 <span class="n">PostsListFilter</span><span class="p">,</span> <span class="n">SearchPostForm</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">RestorePost</span><span class="p">,</span> <span class="n">Version</span><span class="p">,</span>
                                   <span class="n">new_creation_log</span><span class="p">,</span> <span class="n">new_edition_log</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
@@ -417,11 +418,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">post</span><span class="p">:</span> <span class="n">Post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
 
-    <span class="c1"># Verifica si la acción proviene de un reporte</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_report&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
-        <span class="c1"># Actualiza is_handled a True para todos los reportes relacionados con el post</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">reports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_handled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
     <span class="k">if</span> <span class="p">(</span>
         <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">)</span>
         <span class="ow">and</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
@@ -429,18 +425,42 @@
         <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span><span class="s2">&quot;No tienes permiso para inactivar este post.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ModalWithMsgForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">post</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-        <span class="n">Log</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Post inactivado por: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c1"># Marca como resueltos todos los reportes de este post</span>
+            <span class="n">post</span><span class="o">.</span><span class="n">reports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_handled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">c_audit_eliminados</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c1"># Generar log y manda mail al autor del post.</span>
+            <span class="n">reasson</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
+            <span class="n">Log</span><span class="p">(</span>
+                <span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Post inactivado por: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Motivo: </span><span class="si">{</span><span class="n">reasson</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    <span class="c1"># Si no es una solicitud POST, muestra un mensaje de confirmación</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">})</span>
+            <span class="n">send_mail</span><span class="p">(</span>
+                <span class="s2">&quot;Tu post ha sido inactivado.&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Post </span><span class="si">{</span><span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2"> fue inactivado por: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">Motivo: </span><span class="si">{</span><span class="n">reasson</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
+                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Actualizar las estadisticas del moderador</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">c_audit_eliminados</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;post_list&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ModalWithMsgForm</span><span class="p">()</span>
+
+    <span class="c1"># Si es una solicitud GET, muestra un mensaje de confirmación</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span> <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/post_confirm_delete.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
 
@@ -755,14 +775,6 @@
 
 
 
-<span class="c1"># Formulario para el motivo de rechazo</span>
-<div class="viewcode-block" id="RejectionReasonForm">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.RejectionReasonForm">[documentos]</a>
-<span class="k">class</span> <span class="nc">RejectionReasonForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
-    <span class="n">rejection_reason</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-
-
-
 <span class="nd">@login_required</span>
 <span class="nd">@permissions_required</span><span class="p">([</span><span class="n">POST_REJECT_PERMISSION</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">reject_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
@@ -780,10 +792,10 @@
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">RejectionReasonForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ModalWithMsgForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
             <span class="c1"># Obtener la razón de rechazo del formulario</span>
-            <span class="n">rejection_reason</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;rejection_reason&quot;</span><span class="p">]</span>
+            <span class="n">rejection_reason</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span>
 
             <span class="c1"># Retrasar un paso el estado de la publicación</span>
             <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">PENDING_REVIEW</span><span class="p">:</span>
@@ -820,13 +832,13 @@
                 <span class="n">message</span><span class="p">,</span>
                 <span class="s2">&quot;groupmakex@gmail.com&quot;</span><span class="p">,</span>
                 <span class="p">[</span><span class="n">post</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
-                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">fail_silently</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;kanban_board&quot;</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">RejectionReasonForm</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ModalWithMsgForm</span><span class="p">()</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="n">post</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/reject_post.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
@@ -987,9 +999,9 @@
 
 
 
-<span class="c1"># --------------------</span>
-<span class="c1">#    Estadisticas</span>
-<span class="c1"># --------------------</span>
+<span class="c1"># -----------------------</span>
+<span class="c1">#   Estadisticas y logs</span>
+<span class="c1"># -----------------------</span>
 
 
 <div class="viewcode-block" id="post_log_list">
