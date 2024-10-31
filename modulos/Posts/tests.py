@@ -130,6 +130,7 @@ def test_view_post(client):
     response = client.get(url)
     assert response.status_code == 400
 
+
 @pytest.mark.django_db
 def test_create_post_view(client):
     """
@@ -188,6 +189,8 @@ def test_create_post_view(client):
     assert Post.objects.filter(
         title="New Test Post", active=True
     ).exists(), "Post should exist in the database after creation."
+
+
 @pytest.mark.django_db
 def test_post_manage_view(client):
     """
@@ -323,33 +326,56 @@ def test_search_post_view(client):
 
 
 @pytest.mark.django_db
-def test_delete_post_view(client):
+def test_inactivate_post_view(client):
     """
     Test para inactivar un post.
     """
     categoria = Category.objects.create(name="prueba")
-    post = Post.objects.create(
-        category=categoria, title="Post a inactivar", content="Contenido a inactivar"
-    )
     user = get_user_model().objects.create_user(
         username="testuser", password="password"
     )
     user.user_permissions.add(Permission.objects.get(codename=POST_DELETE_PERMISSION))
+    post = Post.objects.create(
+        category=categoria,
+        title="Post a inactivar",
+        content="Contenido a inactivar",
+        author=user,
+    )
     client.login(username="testuser", password="password")
 
     url = reverse("inactivate_post", args=[post.id])
+
+    # Test GET request
     response = client.get(url)
     assert (
         response.status_code == 200
     ), "Debería retornar 200 al acceder a la vista de confirmación de eliminación."
 
-    response = client.post(url)
+    # Test valid POST request
+    response = client.post(url, {"msg": "mensaje"})
     assert (
         response.status_code == 302
-    ), "Debería redirigir después de inactivar el post."
-    assert not Post.objects.filter(
-        active=True, id=post.id
-    ).exists(), "El post debería haber sido eliminado."
+    ), "Deberia retornar 302 luego de la desactivacion del post."
+    
+    post.refresh_from_db()
+    assert not post.active, "El post debería haber sido inactivado."
+
+    # Reset the post state for the next test
+    post.active = True
+    post.save()
+
+    # Test invalid POST request
+    response = client.post(url, {})
+    assert (
+        response.status_code == 200
+    ), "Debería retornar 200 si el formulario es inválido."
+    
+    # Check for presence of form errors
+    assert response.content != "", "Deberían aparecer errores en el formulario."
+    
+    post.refresh_from_db()
+    assert post.active, "El post debería seguir activo después de un intento de inactivación fallido."
+
 
 
 @pytest.mark.django_db

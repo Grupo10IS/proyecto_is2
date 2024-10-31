@@ -1,15 +1,15 @@
 from django import forms
-from django.forms import CharField, Form, ModelForm
 from django.core.exceptions import ValidationError
+from django.forms import CharField, Form, ModelForm
+
 from modulos.Categories.models import Category
 
 from .models import Post  # Ensure you have imported the Post model
 
 
-from django import forms
-from django.core.exceptions import ValidationError
-from modulos.Categories.models import Category
-from .models import Post
+# Formulario para modales de confirmacion con mensaje
+class ModalWithMsgForm(forms.Form):
+    msg = forms.CharField(widget=forms.Textarea, label="", required=True)
 
 
 class NewPostForm(forms.ModelForm):
@@ -70,6 +70,7 @@ class NewPostForm(forms.ModelForm):
         if not content:
             raise ValidationError("Contenido requerido.")  # Mensaje personalizado
         return content
+
 
 class SearchPostForm(forms.Form):
     input = forms.CharField(
