@@ -33,6 +33,7 @@
             
   <h1>Código fuente para modulos.Posts.models</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
 <span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">now</span>
 
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
@@ -88,6 +89,24 @@
     <span class="n">favorites</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span>
         <span class="n">UserProfile</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;favorite_posts&quot;</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Favoritos&quot;</span>
     <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_popular_posts">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.get_popular_posts">[documentos]</a>
+<span class="k">def</span> <span class="nf">get_popular_posts</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Obtiene los 5 posts más populares. Los posts mas populares son aquellos con</span>
+<span class="sd">    mas conteo de favoritos.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Obtener los 5 posts más populares (mayor conteo de favoritos)</span>
+    <span class="n">posts_populares</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">posts_populares</span></div>
 
 
 
@@ -234,6 +253,38 @@
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">&lt;=</span> <span class="n">now</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">publication_date</span></div>
+
+
+
+<span class="c1"># Lista con los posts destacados manualmente por el admin.</span>
+<div class="viewcode-block" id="Destacado">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.Destacado">[documentos]</a>
+<span class="k">class</span> <span class="nc">Destacado</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Fecha de destacado&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_highlighted_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.forms.get_highlighted_post">[documentos]</a>
+<span class="k">def</span> <span class="nf">get_highlighted_post</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retorna el post destacado del momento. El post destacado es el ultimo en ser anadido</span>
+<span class="sd">    a la lista.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Obtener el post destacado (destacado por el admin)</span>
+    <span class="n">post_destacado</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Destacado</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post__status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">post__active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-date&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">post_destacado</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">post_destacado</span><span class="o">.</span><span class="n">post</span></div>
+
+
 
 </pre></div>
 

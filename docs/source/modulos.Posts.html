@@ -280,6 +280,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations.0018_destacado">modulos.Posts.migrations.0018_destacado module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0018_destacado.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0018_destacado.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Posts.migrations.html#modulos.Posts.migrations.0018_destacado.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Posts.migrations.html#module-modulos.Posts.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -464,6 +472,71 @@ name (str): Nombre del módulo de la aplicación “Posts”.</p>
 </section>
 <section id="module-modulos.Posts.models">
 <span id="modulos-posts-models-module"></span><h2>modulos.Posts.models module<a class="headerlink" href="#module-modulos.Posts.models" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Destacado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Destacado"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Destacado" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.date" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.get_next_by_date">
+<span class="sig-name descname"><span class="pre">get_next_by_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Posts.models.Destacado.get_next_by_date" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.get_previous_by_date">
+<span class="sig-name descname"><span class="pre">get_previous_by_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Posts.models.Destacado.get_previous_by_date" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#modulos.Posts.models.Destacado.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.post">
+<span class="sig-name descname"><span class="pre">post</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.post" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Destacado.post_id">
+<span class="sig-name descname"><span class="pre">post_id</span></span><a class="headerlink" href="#modulos.Posts.models.Destacado.post_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Posts.models.Log">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">Log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#Log"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.Log" title="Link to this definition">¶</a></dt>
@@ -650,6 +723,21 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">creation_date</span></span><a class="headerlink" href="#modulos.Posts.models.Post.creation_date" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Posts.models.Post.destacado_set">
+<span class="sig-name descname"><span class="pre">destacado_set</span></span><a class="headerlink" href="#modulos.Posts.models.Post.destacado_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -943,6 +1031,20 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.models.get_highlighted_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">get_highlighted_post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#get_highlighted_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.get_highlighted_post" title="Link to this definition">¶</a></dt>
+<dd><p>Retorna el post destacado del momento. El post destacado es el ultimo en ser anadido
+a la lista.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.models.get_popular_posts">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">get_popular_posts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#get_popular_posts"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.get_popular_posts" title="Link to this definition">¶</a></dt>
+<dd><p>Obtiene los 5 posts más populares. Los posts mas populares son aquellos con
+mas conteo de favoritos.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.models.is_valid">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.models.</span></span><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/models.html#is_valid"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.models.is_valid" title="Link to this definition">¶</a></dt>
 <dd><p>Devuelve True si el post es válido para ser mostrado</p>
@@ -979,24 +1081,11 @@ y el usuario que la realizo.</p>
 <section id="module-modulos.Posts.signals">
 <span id="modulos-posts-signals-module"></span><h2>modulos.Posts.signals module<a class="headerlink" href="#module-modulos.Posts.signals" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="modulos.Posts.signals.check_top_posts">
-<span class="sig-prename descclassname"><span class="pre">modulos.Posts.signals.</span></span><span class="sig-name descname"><span class="pre">check_top_posts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/signals.html#check_top_posts"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.signals.check_top_posts" title="Link to this definition">¶</a></dt>
-<dd><p>Obtiene el post con más favoritos y los 5 posts más populares.
-Retorna el post destacado y una lista con los 5 posts más populares.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.signals.notify_top_posts">
 <span class="sig-prename descclassname"><span class="pre">modulos.Posts.signals.</span></span><span class="sig-name descname"><span class="pre">notify_top_posts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/signals.html#notify_top_posts"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.signals.notify_top_posts" title="Link to this definition">¶</a></dt>
 <dd><p>Verifica si un post se convierte en destacado o entra al Top 5 posts más populares,
 y envía una notificación al autor del post.</p>
 <p>También cuando se cambian los favoritos.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modulos.Posts.signals.send_notification_to_authors">
-<span class="sig-prename descclassname"><span class="pre">modulos.Posts.signals.</span></span><span class="sig-name descname"><span class="pre">send_notification_to_authors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/signals.html#send_notification_to_authors"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.signals.send_notification_to_authors" title="Link to this definition">¶</a></dt>
-<dd><p>Envía una notificación al autor cuando su post cambia de estado a «Publicado».</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1130,6 +1219,11 @@ id (int): El ID del post a marcar como favorito.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Posts.views.highlight_post">
+<span class="sig-prename descclassname"><span class="pre">modulos.Posts.views.</span></span><span class="sig-name descname"><span class="pre">highlight_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Posts/views.html#highlight_post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Posts.views.highlight_post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.Posts.views.home_view">
@@ -1382,6 +1476,18 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.models">modulos.Posts.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.Destacado"><code class="docutils literal notranslate"><span class="pre">Destacado</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Destacado.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Destacado.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.date"><code class="docutils literal notranslate"><span class="pre">Destacado.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.get_next_by_date"><code class="docutils literal notranslate"><span class="pre">Destacado.get_next_by_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.get_previous_by_date"><code class="docutils literal notranslate"><span class="pre">Destacado.get_previous_by_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.id"><code class="docutils literal notranslate"><span class="pre">Destacado.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.objects"><code class="docutils literal notranslate"><span class="pre">Destacado.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.post"><code class="docutils literal notranslate"><span class="pre">Destacado.post</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Destacado.post_id"><code class="docutils literal notranslate"><span class="pre">Destacado.post_id</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.Log"><code class="docutils literal notranslate"><span class="pre">Log</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Log.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Log.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Log.MultipleObjectsReturned</span></code></a></li>
@@ -1411,6 +1517,7 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.category_id"><code class="docutils literal notranslate"><span class="pre">Post.category_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.content"><code class="docutils literal notranslate"><span class="pre">Post.content</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.creation_date"><code class="docutils literal notranslate"><span class="pre">Post.creation_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.destacado_set"><code class="docutils literal notranslate"><span class="pre">Post.destacado_set</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.expiration_date"><code class="docutils literal notranslate"><span class="pre">Post.expiration_date</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.favorites"><code class="docutils literal notranslate"><span class="pre">Post.favorites</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Post.get_next_by_creation_date"><code class="docutils literal notranslate"><span class="pre">Post.get_next_by_creation_date()</span></code></a></li>
@@ -1453,15 +1560,15 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Posts.models.Version.version"><code class="docutils literal notranslate"><span class="pre">Version.version</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.get_highlighted_post"><code class="docutils literal notranslate"><span class="pre">get_highlighted_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.get_popular_posts"><code class="docutils literal notranslate"><span class="pre">get_popular_posts()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.is_valid"><code class="docutils literal notranslate"><span class="pre">is_valid()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.new_creation_log"><code class="docutils literal notranslate"><span class="pre">new_creation_log()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.models.new_edition_log"><code class="docutils literal notranslate"><span class="pre">new_edition_log()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Posts.signals">modulos.Posts.signals module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.signals.check_top_posts"><code class="docutils literal notranslate"><span class="pre">check_top_posts()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.signals.notify_top_posts"><code class="docutils literal notranslate"><span class="pre">notify_top_posts()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.signals.send_notification_to_authors"><code class="docutils literal notranslate"><span class="pre">send_notification_to_authors()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.signals.send_notification_to_users"><code class="docutils literal notranslate"><span class="pre">send_notification_to_users()</span></code></a></li>
 </ul>
 </li>
@@ -1485,6 +1592,7 @@ utilizando la plantilla “posts/post_detail.html”.</p>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.enhanced_search"><code class="docutils literal notranslate"><span class="pre">enhanced_search()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_list"><code class="docutils literal notranslate"><span class="pre">favorite_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.favorite_post"><code class="docutils literal notranslate"><span class="pre">favorite_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.highlight_post"><code class="docutils literal notranslate"><span class="pre">highlight_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.inactivate_post"><code class="docutils literal notranslate"><span class="pre">inactivate_post()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Posts.views.list_contenidos_view"><code class="docutils literal notranslate"><span class="pre">list_contenidos_view()</span></code></a></li>

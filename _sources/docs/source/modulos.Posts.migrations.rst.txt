@@ -140,6 +140,14 @@ modulos.Posts.migrations.0017\_post\_expiration\_date module
    :undoc-members:
    :show-inheritance:
 
+modulos.Posts.migrations.0018\_destacado module
+-----------------------------------------------
+
+.. automodule:: modulos.Posts.migrations.0018_destacado
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

@@ -35,14 +35,13 @@
 <span></span><span class="kn">import</span> <span class="nn">difflib</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
-<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AnonymousUser</span><span class="p">,</span> <span class="n">Group</span>
 <span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
 <span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
 <span class="kn">from</span> <span class="nn">django.db.models.query_utils</span> <span class="kn">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">django.http.response</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponseBadRequest</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">django.http.response</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseBadRequest</span><span class="p">,</span>
                                   <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
@@ -54,17 +53,19 @@
                                                <span class="n">POST_CREATE_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_DELETE_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_EDIT_PERMISSION</span><span class="p">,</span>
+                                               <span class="n">POST_HIGHLIGHT_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_PUBLISH_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_REJECT_PERMISSION</span><span class="p">,</span>
                                                <span class="n">POST_REVIEW_PERMISSION</span><span class="p">,</span>
                                                <span class="n">user_has_access_to_category</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Authorization.roles</span> <span class="kn">import</span> <span class="n">ADMIN</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts</span> <span class="kn">import</span> <span class="n">signals</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.disqus</span> <span class="kn">import</span> <span class="n">get_disqus_stats</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ModalWithMsgForm</span><span class="p">,</span> <span class="n">NewPostForm</span><span class="p">,</span>
                                  <span class="n">PostsListFilter</span><span class="p">,</span> <span class="n">SearchPostForm</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">RestorePost</span><span class="p">,</span> <span class="n">Version</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Destacado</span><span class="p">,</span> <span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">RestorePost</span><span class="p">,</span> <span class="n">Version</span><span class="p">,</span> <span class="n">get_highlighted_post</span><span class="p">,</span> <span class="n">get_popular_posts</span><span class="p">,</span>
                                   <span class="n">new_creation_log</span><span class="p">,</span> <span class="n">new_edition_log</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 
@@ -83,28 +84,15 @@
 <span class="sd">    También maneja la búsqueda de posts a través del formulario.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">form</span> <span class="o">=</span> <span class="n">SearchPostForm</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># Inicializa el formulario de búsqueda</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">SearchPostForm</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="c1"># Obtener el post con más favoritos</span>
-    <span class="n">post_destacado</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
-        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">first</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="n">posts_populares</span> <span class="o">=</span> <span class="n">get_popular_posts</span><span class="p">()</span>
+    <span class="n">post_destacado</span> <span class="o">=</span> <span class="n">get_highlighted_post</span><span class="p">()</span>
 
-    <span class="c1"># Obtener las tres categorías con más posts marcados como favoritos</span>
     <span class="n">categorias_populares</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post__status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">post__active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;post__favorites&quot;</span><span class="p">))</span>
         <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Obtener los 5 posts más populares (con más favoritos)</span>
-    <span class="n">posts_populares</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">favorite_count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s2">&quot;favorites&quot;</span><span class="p">))</span>
-        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-favorite_count&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="c1"># Si hay búsqueda activa</span>
@@ -298,9 +286,10 @@
         <span class="n">request</span><span class="p">,</span>
         <span class="p">{</span>
             <span class="s2">&quot;posts&quot;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span>
-            <span class="s2">&quot;perm_create&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
             <span class="s2">&quot;perm_edit&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_EDIT_PERMISSION</span><span class="p">),</span>
+            <span class="s2">&quot;perm_create&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_CREATE_PERMISSION</span><span class="p">),</span>
             <span class="s2">&quot;perm_delete&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_DELETE_PERMISSION</span><span class="p">),</span>
+            <span class="s2">&quot;perm_highlight&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">POST_HIGHLIGHT_PERMISSION</span><span class="p">),</span>
         <span class="p">},</span>
     <span class="p">)</span>
 
@@ -997,6 +986,17 @@
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/list_contenidos.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
+
+
+<div class="viewcode-block" id="highlight_post">
+<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.highlight_post">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@permission_required</span><span class="p">([</span><span class="n">POST_HIGHLIGHT_PERMISSION</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">highlight_post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">Destacado</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;Post destacado satisfactoriamente&quot;</span><span class="p">)</span></div>
 
 
 <span class="c1"># -----------------------</span>
