@@ -26,6 +26,7 @@ from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                user_has_access_to_category)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
+from modulos.Posts import signals
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import (ModalWithMsgForm, NewPostForm,
@@ -47,28 +48,14 @@ def home_view(req):
     También maneja la búsqueda de posts a través del formulario.
     """
 
-    form = SearchPostForm(req.GET or None)  # Inicializa el formulario de búsqueda
+    form = SearchPostForm(req.GET or None)
 
-    # Obtener el post con más favoritos
-    post_destacado = (
-        Post.objects.filter(status=Post.PUBLISHED, active=True)
-        .annotate(favorite_count=Count("favorites"))
-        .order_by("-favorite_count")
-        .first()
-    )
+    post_destacado, posts_populares = signals.get_top_popular_posts()
 
-    # Obtener las tres categorías con más posts marcados como favoritos
     categorias_populares = (
         Category.objects.filter(post__status=Post.PUBLISHED, post__active=True)
         .annotate(favorite_count=Count("post__favorites"))
         .order_by("-favorite_count")[:3]
-    )
-
-    # Obtener los 5 posts más populares (con más favoritos)
-    posts_populares = (
-        Post.objects.filter(status=Post.PUBLISHED, active=True)
-        .annotate(favorite_count=Count("favorites"))
-        .order_by("-favorite_count")[:5]
     )
 
     # Si hay búsqueda activa

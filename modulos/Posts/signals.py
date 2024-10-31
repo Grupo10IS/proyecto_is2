@@ -3,10 +3,10 @@ from django.db.models import Count
 from django.db.models.signals import m2m_changed, post_save, pre_save
 from django.dispatch import receiver
 
-from modulos.Posts.models import Log, Post
+from modulos.Posts.models import Post
 from modulos.UserProfile.models import UserProfile
 
-from .models import Post
+from .models import Destacado, Post
 
 
 @receiver(pre_save, sender=Post)
@@ -79,25 +79,28 @@ def send_notification_to_users(sender, instance, **kwargs):
                     return
 
 
-def check_top_posts():
+def get_top_popular_posts():
     """
     Obtiene el post con más favoritos y los 5 posts más populares.
     Retorna el post destacado y una lista con los 5 posts más populares.
     """
-    # Obtener el post destacado (más favoritos)
-    post_destacado = (
-        Post.objects.filter(status=Post.PUBLISHED, active=True)
-        .annotate(favorite_count=Count("favorites"))
-        .order_by("-favorite_count")
-        .first()
-    )
-
-    # Obtener los 5 posts más populares
+    # Obtener los 5 posts más populares (mayor conteo de favoritos)
     posts_populares = (
         Post.objects.filter(status=Post.PUBLISHED, active=True)
         .annotate(favorite_count=Count("favorites"))
         .order_by("-favorite_count")[:5]
     )
+
+    # Obtener el post destacado (destacado por el admin)
+    post_destacado = (
+        Destacado.objects.filter(post__status=Post.PUBLISHED, post__active=True)
+        .order_by("-date")
+        .first()
+    )
+
+    # Si aun no hay posts destacados se selecciona el primero de los posts populares
+    if post_destacado == None and posts_populares.exists():
+        post_destacado = posts_populares[0]
 
     return post_destacado, posts_populares
 
@@ -112,7 +115,7 @@ def notify_top_posts(sender, instance, **kwargs):
     También cuando se cambian los favoritos.
     """
     # Verificar el top 5 y el post destacado
-    post_destacado, posts_populares = check_top_posts()
+    post_destacado, posts_populares = get_top_popular_posts()
 
     author = instance.author
     if not author:
