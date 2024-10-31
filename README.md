@@ -2,7 +2,7 @@
 
 Para levantar le proyecto se necesitan las siguientes dependencias:
 
-- Pytohon 3.12 + pip
+- Python 3.12 + pip
 - Postgres SQL 16.3
 
 Para la instalacion de las dependencias necesitara instalar `poetry`, para hacerlo se
