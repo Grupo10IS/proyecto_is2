@@ -177,3 +177,9 @@ def is_valid(self):
     if self.expiration_date:
         return self.publication_date <= now() <= self.expiration_date
     return self.publication_date
+
+
+# Lista con los posts destacados manualmente por el admin.
+class Destacado(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=now, verbose_name="Fecha de destacado")
