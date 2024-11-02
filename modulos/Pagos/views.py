@@ -10,6 +10,8 @@ from modulos.Pagos.forms import PaymentFilterForm, PaymentForm, UserProfileForm
 from modulos.Pagos.models import Payment
 from modulos.utils import new_ctx
 from django.utils import timezone
+import json
+from django.db.models import Sum, Count
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -181,6 +183,9 @@ def purchased_categories_view(request):
 
     return render(request, "purchased_categories.html", context)
 
+from django.db.models import Sum, Count
+from django.utils import timezone
+import json
 
 @login_required
 @permission_required([VIEW_PURCHASED_CATEGORIES])
@@ -188,7 +193,9 @@ def financial_view(request):
     form = PaymentFilterForm(request.GET or None)
 
     # Construimos la query inicial (mostrar todos los pagos completados)
-    payments = Payment.objects.filter(status="completed").order_by("-date_paid")
+    payments_queryset = Payment.objects.filter(status="completed").order_by(
+        "-date_paid"
+    )
 
     # Aplicamos filtros si el formulario es válido
     if form.is_valid():
@@ -200,35 +207,81 @@ def financial_view(request):
         funding_type = form.cleaned_data.get("funding_type")
 
         if category:
-            payments = payments.filter(category=category)
-
+            payments_queryset = payments_queryset.filter(category=category)
         if user:
-            payments = payments.filter(user__username__icontains=user)
-
+            payments_queryset = payments_queryset.filter(user__username__icontains=user)
         if date_from:
-            payments = payments.filter(date_paid__gte=date_from)
-
+            payments_queryset = payments_queryset.filter(date_paid__gte=date_from)
         if date_to:
-            payments = payments.filter(date_paid__lte=date_to)
-
+            payments_queryset = payments_queryset.filter(date_paid__lte=date_to)
         if card_brand:
-            payments = payments.filter(card_brand__iexact=card_brand)
-
+            payments_queryset = payments_queryset.filter(card_brand__iexact=card_brand)
         if funding_type:
-            payments = payments.filter(funding_type__iexact=funding_type)
+            payments_queryset = payments_queryset.filter(
+                funding_type__iexact=funding_type
+            )
 
+    # Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)
     unique_payments = {}
-    for payment in payments:
+    for payment in payments_queryset:
         key = (payment.user, payment.category)
         if key not in unique_payments:
             unique_payments[key] = payment
     payments = list(unique_payments.values())
 
+    # Calcular el total de pagos recibidos sin duplicados
+    total_amount = float(sum(payment.amount for payment in payments))
+
+    # Preparar datos para el gráfico de torta (número de compras por categoría sin duplicados)
+    category_totals = {}
+    for payment in payments:
+        category_name = payment.category.name
+        category_totals[category_name] = category_totals.get(category_name, 0) + 1
+
+    category_labels = list(category_totals.keys())
+    category_data = [float(value) for value in category_totals.values()]
+
+    # Preparar datos para el gráfico de barras (monto total por fecha sin duplicados)
+    date_totals = {}
+    for payment in payments:
+        date_str = timezone.localtime(payment.date_paid).strftime("%Y-%m-%d")
+        date_totals[date_str] = date_totals.get(date_str, 0) + float(payment.amount)
+
+    date_labels = list(date_totals.keys())
+    date_data = list(date_totals.values())
+
+    # Preparar datos para el gráfico de líneas (comparativa de categorías por fecha sin duplicados)
+    category_by_date = {}
+    for payment in payments:
+        category_name = payment.category.name
+        date_str = timezone.localtime(payment.date_paid).strftime("%Y-%m-%d")
+        if category_name not in category_by_date:
+            category_by_date[category_name] = {"labels": [], "data": []}
+        if date_str not in category_by_date[category_name]["labels"]:
+            category_by_date[category_name]["labels"].append(date_str)
+            category_by_date[category_name]["data"].append(float(payment.amount))
+        else:
+            # Sumar el monto a la fecha ya existente
+            index = category_by_date[category_name]["labels"].index(date_str)
+            category_by_date[category_name]["data"][index] += float(payment.amount)
+
+    # Ordenar las fechas dentro de cada categoría para una línea de tiempo adecuada
+    for category in category_by_date.values():
+        sorted_data = sorted(zip(category["labels"], category["data"]))
+        category["labels"], category["data"] = zip(*sorted_data)
+
+    # Pasar los datos al contexto
     context = new_ctx(
         request,
         {
             "form": form,
             "payments": payments,
+            "total_amount": total_amount,
+            "category_labels": json.dumps(category_labels),
+            "category_data": json.dumps(category_data),
+            "date_labels": json.dumps(date_labels),
+            "date_data": json.dumps(date_data),
+            "category_by_date": json.dumps(category_by_date),
         },
     )
 

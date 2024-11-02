@@ -1,81 +1,159 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <div class="container mt-5">
-        <h1 class="display-6 fst-italic">Ventas de Categorías Premium</h1>
-        <!-- Formulario de filtrado -->
-        <form method="GET" class="mb-4">
+<div class="container">
+    <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-6 fst-italic">Ventas de Categorías Premium</h1>
+
+            <!-- Formulario de filtrado -->
+            <form method="GET" class="mb-4">
+                <div class="row">
+                    <div class="col-md-6 mt-2">
+                        <label for="category">Categoría:</label>
+                        {{ form.category }}
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="user">Usuario:</label>
+                        {{ form.user }}
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="date_from">Fecha desde:</label>
+                        {{ form.date_from }}
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="date_to">Fecha hasta:</label>
+                        {{ form.date_to }}
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="card_brand">Marca de Tarjeta:</label>
+                        {{ form.card_brand }}
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="funding_type">Tipo de Tarjeta:</label>
+                        {{ form.funding_type }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+            </form>
+
+            <!-- Tabla de pagos -->
+            {% if payments %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Categoría</th>
+                            <th>Fecha de Pago</th>
+                            <th>Monto</th>
+                            <th>Marca de Tarjeta</th>
+                            <th>Tipo de Tarjeta</th>
+                            <th>Últimos 4 Dígitos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.user.username }}</td>
+                                <td>{{ payment.category.name }}</td>
+                                <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
+                                <td>R${{ payment.amount }}</td>
+                                <td>{{ payment.card_brand|default:"N/A" }}</td>
+                                <td>
+                                    {% if payment.funding_type == "credit" %}
+                                        Crédito
+                                    {% elif payment.funding_type == "debit" %}
+                                        Débito
+                                    {% elif payment.funding_type == "prepaid" %}
+                                        Prepagada
+                                    {% else %}
+                                        Desconocido
+                                    {% endif %}
+                                </td>
+                                <td>{{ payment.last4|default:"N/A" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Botón para descargar el Excel -->
+                <a href="{% url 'export_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
+
+                <!-- Gráficos -->
             <div class="row">
-                <div class="col-md-6 mt-2">
-                    <label for="category">Categoría:</label>
-                    {{ form.category }}
+                <!-- Gráfico de torta -->
+                <div class="col-md-6">
+                    <h3>Total de ventas por categoría</h3>
+                    <canvas id="categoryPieChart"></canvas>
                 </div>
-                <div class="col-md-6 mt-2">
-                    <label for="user">Usuario:</label>
-                    {{ form.user }}
+                
+                <!-- Gráfico de barras (monto total por fecha) -->
+                <div class="col-md-6">
+                    <h3>Pagos recibidos por fecha</h3>
+                    <canvas id="dateBarChart"></canvas>
                 </div>
-                <div class="col-md-6 mt-2">
-                    <label for="date_from">Fecha desde:</label>
-                    {{ form.date_from }}
-                </div>
-                <div class="col-md-6 mt-2">
-                    <label for="date_to">Fecha hasta:</label>
-                    {{ form.date_to }}
-                </div>
-                <div class="col-md-6 mt-2">
-                    <label for="card_brand">Marca de Tarjeta:</label>
-                    {{ form.card_brand }}
-                </div>
-                <div class="col-md-6 mt-2">
-                    <label for="funding_type">Tipo de Tarjeta:</label>
-                    {{ form.funding_type }}
+
+                <!-- Gráfico de líneas (comparativa de categorías por fecha) -->
+                <div class="col-md-12 mt-4">
+                    <h3>Comparativa de categorías compradas por fecha</h3>
+                    <canvas id="categoryLineChart"></canvas>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
-        </form>
-        
-        <!-- Lista de pagos filtrados -->
-        {% if payments %}
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Categoría</th>
-                        <th>Fecha de Pago</th>
-                        <th>Monto</th>
-                        <th>Marca de Tarjeta</th>
-                        <th>Tipo de Tarjeta</th>
-                        <th>Últimos 4 Dígitos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for payment in payments %}
-                        <tr>
-                            <td>{{ payment.user.username }}</td>
-                            <td>{{ payment.category.name }}</td>
-                            <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
-                            <td>R${{ payment.amount }}</td>
-                            <td>{{ payment.card_brand|default:"N/A" }}</td>
-                            <td>
-                                {% if payment.funding_type == "credit" %}
-                                    Crédito
-                                {% elif payment.funding_type == "debit" %}
-                                    Débito
-                                {% elif payment.funding_type == "prepaid" %}
-                                    Prepagada
-                                {% else %}
-                                    Desconocido
-                                {% endif %}
-                            </td>
-                            <td>{{ payment.last4|default:"N/A" }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-             <!-- Botón para descargar el Excel -->
-            <a href="{% url 'export_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
-        {% else %}
-            <p>No se encontraron ventas.</p>
-        {% endif %}
+
+            <!-- Total General -->
+            <div class="mt-4">
+                <h3>Total de Pagos Recibidos: R${{ total_amount }}</h3>
+            </div>
+            {% else %}
+                <p>No se encontraron ventas.</p>
+            {% endif %}
     </div>
+</div>
+
+<!-- Scripts para gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Gráfico de torta
+    const categoryPieCtx = document.getElementById("categoryPieChart").getContext("2d");
+    new Chart(categoryPieCtx, {
+        type: "pie",
+        data: {
+            labels: {{ category_labels|safe }},
+            datasets: [{
+                data: {{ category_data|safe }},
+                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
+            }]
+        }
+    });
+
+    // Gráfico de barras
+    const dateBarCtx = document.getElementById("dateBarChart").getContext("2d");
+    new Chart(dateBarCtx, {
+        type: "bar",
+        data: {
+            labels: {{ date_labels|safe }},
+            datasets: [{
+                label: "Monto total por fecha",
+                data: {{ date_data|safe }},
+                backgroundColor: "#36A2EB"
+            }]
+        }
+    });
+
+    // Gráfico de líneas
+    const categoryLineCtx = document.getElementById("categoryLineChart").getContext("2d");
+    const categoryByDateData = {{ category_by_date|safe }};
+    const datasets = Object.keys(categoryByDateData).map((category, index) => ({
+        label: category,
+        data: categoryByDateData[category].data,
+        borderColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"][index % 5],
+        fill: false
+    }));
+
+    new Chart(categoryLineCtx, {
+        type: "line",
+        data: {
+            labels: categoryByDateData[Object.keys(categoryByDateData)[0]].labels,
+            datasets: datasets
+        }
+    });
+</script>
 {% endblock %}
