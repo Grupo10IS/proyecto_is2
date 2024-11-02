@@ -86,9 +86,16 @@
                     {% endif %}
                 </nav>
             {% endif %}
+            <h4>Panel de Control</h4>
+            {% if has_payment %}
+            <a class="nav-link flex-column mb-3 ms-3"
+               style="color:white"
+               href="{% url 'user_payment_view' %}"
+               role="button">Mis Pagos</a>
+            {% endif %}
             <!-- Mostrar roles del usuario -->
             <h4>Roles de {{ user.username }}</h4>
-            <ul class="nav list flex-column mb-5">
+            <ul class="nav list flex-column mb-3">
                 {% for group in user.groups.all %}<li class="nav-link" style="color:white">{{ group.name }}</li>{% endfor %}
             </ul>
         {% endif %}

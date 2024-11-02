@@ -36,6 +36,7 @@ CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
 # financiero
 VIEW_PURCHASED_CATEGORIES = "view_purchased_categories"
+PAYMENT_PERMISSION = "payment_permission"
 
 # reportes de contenido
 VIEW_REPORTS = "view_reports"
@@ -65,6 +66,10 @@ permissions = [
     (
         VIEW_PURCHASED_CATEGORIES,
         "Permiso para ver categorias compradas de todos los suscriptores",
+    ),
+    (
+        PAYMENT_PERMISSION,
+        "Permiso para realizar compras de categorias",
     ),
     # reportes de contenido
     (VIEW_REPORTS, "Permiso para listar los reportes de contenidos"),

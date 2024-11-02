@@ -59,33 +59,48 @@
                      {% endif %}
                  </a>
                  <ul class="dropdown-menu text-small">
-                     {% if user.is_authenticated %}
-                         <li>
-                             <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
-                         </li>
-                         <li>
-                             <hr class="dropdown-divider">
-                         </li>
-                         <li>
-                             <a class="dropdown-item" href="{% url 'purchased_categories' %}">Mis Categorias Premium</a>
-                         </li>
-                         <li>
-                             <hr class="dropdown-divider">
-                         </li>
-                         <li>
-                             <form method="post" action="{% url 'logout' %}">
-                                 {% csrf_token %}
-                                 <button type="submit" class="dropdown-item">Cerrar sesión</button>
-                             </form>
-                         </li>
-                     {% else %}
+                    {% if user.is_authenticated %}
+                        {% if has_payment %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'purchased_categories' %}">Mis Categorias Premium</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}">Mi Perfil</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    {% else %}
                          <li>
                              <a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a>
                          </li>
                          <li>
                              <a class="dropdown-item" href="{% url 'signup' %}">Registrarse</a>
                          </li>
-                     {% endif %}
+                    {% endif %}
                  </ul>
              </div>
             <div class="d-flex align-items-center justify-content-between">

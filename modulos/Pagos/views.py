@@ -2,12 +2,14 @@ import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
-
+import openpyxl
+from django.http import HttpResponse
 from modulos.Authorization.permissions import VIEW_PURCHASED_CATEGORIES
 from modulos.Categories.models import Category
 from modulos.Pagos.forms import PaymentFilterForm, PaymentForm, UserProfileForm
 from modulos.Pagos.models import Payment
 from modulos.utils import new_ctx
+from django.utils import timezone
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -106,20 +108,20 @@ def payment_view(request, category_id):
         ),
     )
 
-
 @login_required
 def payment_success(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     user = request.user
 
     try:
-        # Recuperar el PaymentIntent desde la base de datos
+        # Recuperar el PaymentIntent y su registro en la base de datos
         payment = Payment.objects.filter(user=user, category=category).latest(
             "date_paid"
         )
         intent = stripe.PaymentIntent.retrieve(payment.stripe_payment_id)
 
-        if not intent.status == "succeeded":
+        # Verificar que el pago se completó correctamente
+        if intent.status != "succeeded":
             return render(
                 request,
                 "payment_error.html",
@@ -131,15 +133,26 @@ def payment_success(request, category_id):
                 ),
             )
 
-        # Actualizar el estado del pago en la base de datos
+        # Obtener detalles de la tarjeta del método de pago
+        payment_method = stripe.PaymentMethod.retrieve(intent.payment_method)
+        card = payment_method.card
+
+        # Actualizar el estado y detalles del pago en la base de datos
         payment.status = "completed"
+        payment.funding_type = (
+            card.funding
+        )  # Almacenar "credit", "debit", "prepaid", o "unknown"
+        payment.card_brand = (
+            card.brand
+        )  # Almacenar la marca de tarjeta, como Visa, Mastercard
+        payment.last4 = card.last4  # Almacenar los últimos 4 dígitos
         payment.save()
 
-        # Redirigir a la página de éxito
+        # Pasar `payment` al contexto
         return render(
             request,
             "payment_success.html",
-            new_ctx(request, {"category": category}),
+            new_ctx(request, {"category": category, "payment": payment}),
         )
 
     except Payment.DoesNotExist:
@@ -148,7 +161,6 @@ def payment_success(request, category_id):
             "payment_error.html",
             new_ctx(request, {"error": "No se encontró el pago en la base de datos."}),
         )
-
 
 @login_required
 def purchased_categories_view(request):
@@ -176,7 +188,7 @@ def financial_view(request):
     form = PaymentFilterForm(request.GET or None)
 
     # Construimos la query inicial (mostrar todos los pagos completados)
-    payments = Payment.objects.filter(status="completed")
+    payments = Payment.objects.filter(status="completed").order_by("-date_paid")
 
     # Aplicamos filtros si el formulario es válido
     if form.is_valid():
@@ -184,18 +196,33 @@ def financial_view(request):
         user = form.cleaned_data.get("user")
         date_from = form.cleaned_data.get("date_from")
         date_to = form.cleaned_data.get("date_to")
+        card_brand = form.cleaned_data.get("card_brand")
+        funding_type = form.cleaned_data.get("funding_type")
 
         if category:
             payments = payments.filter(category=category)
 
         if user:
-            payments = payments.filter(user=user)
+            payments = payments.filter(user__username__icontains=user)
 
         if date_from:
             payments = payments.filter(date_paid__gte=date_from)
 
         if date_to:
             payments = payments.filter(date_paid__lte=date_to)
+
+        if card_brand:
+            payments = payments.filter(card_brand__iexact=card_brand)
+
+        if funding_type:
+            payments = payments.filter(funding_type__iexact=funding_type)
+
+    unique_payments = {}
+    for payment in payments:
+        key = (payment.user, payment.category)
+        if key not in unique_payments:
+            unique_payments[key] = payment
+    payments = list(unique_payments.values())
 
     context = new_ctx(
         request,
@@ -206,3 +233,195 @@ def financial_view(request):
     )
 
     return render(request, "financial_view.html", context)
+
+
+@login_required
+def user_payment_view(request):
+    """
+    Vista para que el usuario autenticado vea sus propios pagos.
+    """
+    form = PaymentFilterForm(request.GET or None)
+
+    # Filtramos los pagos solo para el usuario actual
+    payments = Payment.objects.filter(user=request.user, status="completed").order_by(
+        "-date_paid"
+    )
+
+    # Aplicamos los filtros si el formulario es válido
+    if form.is_valid():
+        category = form.cleaned_data.get("category")
+        card_brand = form.cleaned_data.get("card_brand")
+        funding_type = form.cleaned_data.get("funding_type")
+        date_from = form.cleaned_data.get("date_from")
+        date_to = form.cleaned_data.get("date_to")
+
+        if category:
+            payments = payments.filter(category=category)
+        if card_brand:
+            payments = payments.filter(card_brand=card_brand)
+        if funding_type:
+            payments = payments.filter(funding_type=funding_type)
+        if date_from:
+            payments = payments.filter(date_paid__gte=date_from)
+        if date_to:
+            payments = payments.filter(date_paid__lte=date_to)
+
+    unique_payments = {}
+    for payment in payments:
+        key = (payment.user, payment.category)
+        if key not in unique_payments:
+            unique_payments[key] = payment
+    payments = list(unique_payments.values())
+
+    context = new_ctx(
+        request,
+        {
+            "form": form,
+            "payments": payments,
+        },
+    )
+
+    return render(request, "user_financial_view.html", context)
+
+
+@login_required
+def export_payments_excel(request):
+    # Obtener los datos de pagos filtrados
+    payments = Payment.objects.filter(status="completed").order_by("-date_paid")
+
+    unique_payments = {}
+    for payment in payments:
+        key = (payment.user, payment.category)
+        if key not in unique_payments:
+            unique_payments[key] = payment
+    payments = list(unique_payments.values())
+
+    # Crear el archivo Excel en memoria
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Pagos de Categorías Premium"
+
+    # Agregar encabezados
+    headers = [
+        "Usuario",
+        "Categoría",
+        "Fecha de Pago",
+        "Monto",
+        "Marca de Tarjeta",
+        "Tipo de Tarjeta",
+        "Últimos 4 Dígitos",
+    ]
+    worksheet.append(headers)
+
+    # Rellenar datos en el Excel
+    for payment in payments:
+        local_date_paid = timezone.localtime(payment.date_paid).strftime(
+            "%d/%m/%Y %H:%M"
+        )
+        worksheet.append(
+            [
+                payment.user.username,
+                payment.category.name,
+                local_date_paid,  # Fecha en la zona horaria local
+                f"R${payment.amount}",
+                payment.card_brand or "N/A",
+                (
+                    "Crédito"
+                    if payment.funding_type == "credit"
+                    else (
+                        "Débito"
+                        if payment.funding_type == "debit"
+                        else (
+                            "Prepagada"
+                            if payment.funding_type == "prepaid"
+                            else "Desconocido"
+                        )
+                    )
+                ),
+                payment.last4 or "N/A",
+            ]
+        )
+
+    # Preparar la respuesta HTTP para descargar el archivo
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = (
+        'attachment; filename="pagos_categorias_premium.xlsx"'
+    )
+
+    # Guardar el archivo en la respuesta HTTP
+    workbook.save(response)
+    return response
+
+
+@login_required
+def export_user_payments_excel(request):
+    # Obtener los pagos completados solo del usuario autenticado
+    payments = Payment.objects.filter(user=request.user, status="completed").order_by(
+        "-date_paid"
+    )
+
+    # Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)
+    unique_payments = {}
+    for payment in payments:
+        key = (payment.user, payment.category)
+        if key not in unique_payments:
+            unique_payments[key] = payment
+    payments = list(unique_payments.values())
+
+    # Crear el archivo Excel en memoria
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Mis Pagos de Categorías Premium"
+
+    # Agregar encabezados
+    headers = [
+        "Categoría",
+        "Fecha de Pago",
+        "Monto",
+        "Marca de Tarjeta",
+        "Tipo de Tarjeta",
+        "Últimos 4 Dígitos",
+    ]
+    worksheet.append(headers)
+
+    # Rellenar datos en el Excel
+    for payment in payments:
+        local_date_paid = timezone.localtime(payment.date_paid).strftime(
+            "%d/%m/%Y %H:%M"
+        )
+        worksheet.append(
+            [
+                payment.category.name,
+                local_date_paid,  # Fecha en la zona horaria local
+                f"R${payment.amount}",
+                payment.card_brand or "N/A",
+                (
+                    "Crédito"
+                    if payment.funding_type == "credit"
+                    else (
+                        "Débito"
+                        if payment.funding_type == "debit"
+                        else (
+                            "Prepagada"
+                            if payment.funding_type == "prepaid"
+                            else "Desconocido"
+                        )
+                    )
+                ),
+                payment.last4 or "N/A",
+            ]
+        )
+
+    # Preparar la respuesta HTTP para descargar el archivo
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = (
+        'attachment; filename="mis_pagos_categorias_premium.xlsx"'
+    )
+
+    # Guardar el archivo en la respuesta HTTP
+    workbook.save(response)
+    return response
