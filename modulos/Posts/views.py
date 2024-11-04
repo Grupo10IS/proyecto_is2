@@ -20,6 +20,7 @@ from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                POST_DELETE_PERMISSION,
                                                POST_EDIT_PERMISSION,
                                                POST_HIGHLIGHT_PERMISSION,
+                                               POST_MANAGE_PERMISSION,
                                                POST_PUBLISH_PERMISSION,
                                                POST_REJECT_PERMISSION,
                                                POST_REVIEW_PERMISSION,
@@ -31,7 +32,8 @@ from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
 from modulos.Posts.forms import (ModalWithMsgForm, NewPostForm,
                                  PostsListFilter, SearchPostForm)
-from modulos.Posts.models import (Destacado, Log, Post, RestorePost, Version, get_highlighted_post, get_popular_posts,
+from modulos.Posts.models import (Destacado, Log, Post, RestorePost, Version,
+                                  get_highlighted_post, get_popular_posts,
                                   new_creation_log, new_edition_log)
 from modulos.utils import new_ctx
 
@@ -232,13 +234,9 @@ def manage_posts(request):
     Returns:
         HttpResponse: La respuesta HTTP con el contenido renderizado de la plantilla 'pages/post_list.html'.
     """
-    # FIX: solucionar esta parte y repensar los permisos para ver, porque no puede
-    # ser que esta verificacion esta acoplada al ROL admin y no a algun permiso (OJO: podemos
-    # tener roles personalizados ACUERDENSE).
-    is_admin = Group.objects.filter(name=ADMIN, user=request.user).exists()
     posts = (
         Post.objects.filter(active=True, status=Post.PUBLISHED)
-        if is_admin
+        if request.user.has_perm(POST_MANAGE_PERMISSION) # pueden ver los posts de los demas.
         else Post.objects.filter(author=request.user, active=True)
     )
 
@@ -928,6 +926,7 @@ def highlight_post(request, id):
     Destacado(post=post).save()
 
     return HttpResponse("Post destacado satisfactoriamente")
+
 
 # -----------------------
 #   Estadisticas y logs

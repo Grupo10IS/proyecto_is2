@@ -46,7 +46,6 @@ class Post(models.Model):
     author = models.ForeignKey(
         UserProfile, on_delete=models.SET_NULL, null=True, verbose_name="Autor"
     )
-    # FIX: repensar el tema de los tags
     tags = models.CharField(name="tags", max_length=80, blank=True, verbose_name="tags")
     version = models.IntegerField(default=1)
 
