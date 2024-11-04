@@ -33,5 +33,5 @@ def send_payment_notification(sender, instance, created, **kwargs):
             message,
             settings.DEFAULT_FROM_EMAIL,  # Dirección de correo de origen configurada en settings.py
             [user_email],  # Correo del destinatario (usuario que hizo la compra)
-            fail_silently=False,
+            fail_silently=True,
         )
