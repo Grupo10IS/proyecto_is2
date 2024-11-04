@@ -34,6 +34,8 @@ User = get_user_model()
 
 
 # Formulario para el filtrado de pagos por categoría, usuario y fechas
+
+
 class PaymentFilterForm(forms.Form):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
@@ -42,11 +44,15 @@ class PaymentFilterForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-control"}),
     )
 
-    user = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+    user = forms.CharField(
         required=False,
         label="Usuario",
-        widget=forms.Select(attrs={"class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Escribe el nombre del usuario...",
+            }
+        ),
     )
 
     date_from = forms.DateField(
@@ -59,4 +65,30 @@ class PaymentFilterForm(forms.Form):
         required=False,
         label="Fecha hasta",
         widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+    )
+
+    # Filtros adicionales para tarjeta
+    card_brand = forms.ChoiceField(
+        choices=[
+            ("", "Todas"),  # Opción para seleccionar todas las marcas
+            ("visa", "Visa"),
+            ("mastercard", "MasterCard"),
+            ("amex", "American Express"),
+            ("discover", "Discover"),
+        ],
+        required=False,
+        label="Marca de Tarjeta",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    funding_type = forms.ChoiceField(
+        choices=[
+            ("", "Todos"),
+            ("credit", "Crédito"),
+            ("debit", "Débito"),
+            ("unknown", "Desconocido"),
+        ],
+        required=False,
+        label="Tipo de Tarjeta",
+        widget=forms.Select(attrs={"class": "form-control"}),
     )

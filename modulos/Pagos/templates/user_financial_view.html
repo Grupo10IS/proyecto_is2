@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-6 fst-italic">Mis Pagos de Categorías Premium</h1>
+        <!-- Formulario de filtrado -->
+        <form method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="category">Categoría:</label>
+                    {{ form.category }}
+                </div>
+                <div class="col-md-3">
+                    <label for="date_from">Fecha desde:</label>
+                    {{ form.date_from }}
+                </div>
+                <div class="col-md-3">
+                    <label for="date_to">Fecha hasta:</label>
+                    {{ form.date_to }}
+                </div>
+                <div class="col-md-3">
+                    <label for="card_brand">Marca de Tarjeta:</label>
+                    {{ form.card_brand }}
+                </div>
+                <div class="col-md-3">
+                    <label for="funding_type">Tipo de Tarjeta:</label>
+                    {{ form.funding_type }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+        </form>
+
+        <!-- Lista de pagos filtrados -->
+        {% if payments %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Fecha de Pago</th>
+                        <th>Monto</th>
+                        <th>Marca de Tarjeta</th>
+                        <th>Tipo de Tarjeta</th>
+                        <th>Últimos 4 Dígitos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.category.name }}</td>
+                            <td>{{ payment.date_paid|date:"d/m/Y H:i" }}</td>
+                            <td>R${{ payment.amount }}</td>
+                            <td>{{ payment.card_brand|default:"N/A" }}</td>
+                            <td>
+                                {% if payment.funding_type == "credit" %}
+                                    Crédito
+                                {% elif payment.funding_type == "debit" %}
+                                    Débito
+                                {% else %}
+                                    Desconocido
+                                {% endif %}
+                            </td>
+                            <td>{{ payment.last4|default:"N/A" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+             <!-- Botón para descargar el Excel -->
+             <a href="{% url 'export_user_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
+        {% else %}
+            <p>No se encontraron pagos.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
+                                               PAYMENT_PERMISSION,
                                                VIEW_PURCHASED_CATEGORIES)
 from modulos.Categories.models import Category
 from modulos.Posts.forms import SearchPostForm
@@ -26,12 +27,16 @@ def new_ctx(req, params):
     sitios = []
     kanban_permission = False
     finances_permission = False
+    payment_permission = False
+
     if req.user.is_authenticated:
         kanban_permission = req.user.has_perm(KANBAN_VIEW_PERMISSION)
         finances_permission = req.user.has_perm(VIEW_PURCHASED_CATEGORIES)
+        payment_permission = req.user.has_perm(PAYMENT_PERMISSION)
+
         # Para poder listar permisos "parecidos", en vez de tener que buscar por permisos especificos.
         # Esto ya que para ver el panel de control solo se necesita saber si se contiene
-        # ciertos permisos, no permisos especificos
+        # ciertos permisos, no permisos especificos. Da un asco terrible esto por cierto.
         permisos = req.user.get_all_permissions()
         for perm in permisos:
             if "user" in perm and perm not in sitios:
@@ -51,13 +56,13 @@ def new_ctx(req, params):
             if "reports" in perm and perm not in sitios:
                 sitios.append("reports")
 
-    # TODO: listar solo las categorias de interes o las mas votadas capaz
     base = {
         "categories": Category.objects.all(),
         "permisos": sitios,
         "post_search_input": SearchPostForm,
         "has_kanban_access": kanban_permission,
         "has_financial_acces": finances_permission,
+        "has_payment": payment_permission,
     }
     base.update(params)
 
