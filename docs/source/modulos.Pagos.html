@@ -59,6 +59,14 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more">modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="modulos.Pagos.migrations.html#module-modulos.Pagos.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -104,12 +112,12 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm.base_fields">
-<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.base_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'card_brand':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'funding_type':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.base_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Pagos.forms.PaymentFilterForm.declared_fields">
-<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.declared_fields" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'card_brand':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'category':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_from':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'date_to':</span> <span class="pre">&lt;django.forms.fields.DateField</span> <span class="pre">object&gt;,</span> <span class="pre">'funding_type':</span> <span class="pre">&lt;django.forms.fields.ChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'user':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#modulos.Pagos.forms.PaymentFilterForm.declared_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -213,7 +221,7 @@
 <span id="modulos-pagos-models-module"></span><h2>modulos.Pagos.models module<a class="headerlink" href="#module-modulos.Pagos.models" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Pagos.models.</span></span><span class="sig-name descname"><span class="pre">Payment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_paid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripe_payment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/models.html#Payment"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.models.Payment" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Pagos.models.</span></span><span class="sig-name descname"><span class="pre">Payment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_paid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripe_payment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payment_method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funding_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/models.html#Payment"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.models.Payment" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment.DoesNotExist">
@@ -230,6 +238,13 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment.amount">
 <span class="sig-name descname"><span class="pre">amount</span></span><a class="headerlink" href="#modulos.Pagos.models.Payment.amount" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.models.Payment.card_brand">
+<span class="sig-name descname"><span class="pre">card_brand</span></span><a class="headerlink" href="#modulos.Pagos.models.Payment.card_brand" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
@@ -259,9 +274,21 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.models.Payment.funding_type">
+<span class="sig-name descname"><span class="pre">funding_type</span></span><a class="headerlink" href="#modulos.Pagos.models.Payment.funding_type" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment.get_next_by_date_paid">
 <span class="sig-name descname"><span class="pre">get_next_by_date_paid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_paid&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Pagos.models.Payment.get_next_by_date_paid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modulos.Pagos.models.Payment.get_payment_method_display">
+<span class="sig-name descname"><span class="pre">get_payment_method_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">payment_method&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modulos.Pagos.models.Payment.get_payment_method_display" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -277,9 +304,23 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.models.Payment.last4">
+<span class="sig-name descname"><span class="pre">last4</span></span><a class="headerlink" href="#modulos.Pagos.models.Payment.last4" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment.objects">
 <span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#modulos.Pagos.models.Payment.objects" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modulos.Pagos.models.Payment.payment_method">
+<span class="sig-name descname"><span class="pre">payment_method</span></span><a class="headerlink" href="#modulos.Pagos.models.Payment.payment_method" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Pagos.models.Payment.status">
@@ -331,6 +372,16 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <section id="module-modulos.Pagos.views">
 <span id="modulos-pagos-views-module"></span><h2>modulos.Pagos.views module<a class="headerlink" href="#module-modulos.Pagos.views" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.views.export_payments_excel">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">export_payments_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#export_payments_excel"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.export_payments_excel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.views.export_user_payments_excel">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">export_user_payments_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#export_user_payments_excel"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.export_user_payments_excel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.Pagos.views.financial_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">financial_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#financial_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.financial_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -349,6 +400,12 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dt class="sig sig-object py" id="modulos.Pagos.views.purchased_categories_view">
 <span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">purchased_categories_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#purchased_categories_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.purchased_categories_view" title="Link to this definition">¶</a></dt>
 <dd><p>Vista para mostrar todas las categorías premium compradas por el usuario.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.Pagos.views.user_payment_view">
+<span class="sig-prename descclassname"><span class="pre">modulos.Pagos.views.</span></span><span class="sig-name descname"><span class="pre">user_payment_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Pagos/views.html#user_payment_view"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Pagos.views.user_payment_view" title="Link to this definition">¶</a></dt>
+<dd><p>Vista para que el usuario autenticado vea sus propios pagos.</p>
 </dd></dl>
 
 </section>
@@ -436,13 +493,18 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Payment.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Payment.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.amount"><code class="docutils literal notranslate"><span class="pre">Payment.amount</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.card_brand"><code class="docutils literal notranslate"><span class="pre">Payment.card_brand</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.category"><code class="docutils literal notranslate"><span class="pre">Payment.category</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.category_id"><code class="docutils literal notranslate"><span class="pre">Payment.category_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.date_paid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.funding_type"><code class="docutils literal notranslate"><span class="pre">Payment.funding_type</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.get_next_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_next_by_date_paid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.get_payment_method_display"><code class="docutils literal notranslate"><span class="pre">Payment.get_payment_method_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.get_previous_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_previous_by_date_paid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.id"><code class="docutils literal notranslate"><span class="pre">Payment.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.last4"><code class="docutils literal notranslate"><span class="pre">Payment.last4</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.objects"><code class="docutils literal notranslate"><span class="pre">Payment.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.payment_method"><code class="docutils literal notranslate"><span class="pre">Payment.payment_method</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.status"><code class="docutils literal notranslate"><span class="pre">Payment.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.stripe_payment_id"><code class="docutils literal notranslate"><span class="pre">Payment.stripe_payment_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#modulos.Pagos.models.Payment.user"><code class="docutils literal notranslate"><span class="pre">Payment.user</span></code></a></li>
@@ -457,10 +519,13 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.export_payments_excel"><code class="docutils literal notranslate"><span class="pre">export_payments_excel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.export_user_payments_excel"><code class="docutils literal notranslate"><span class="pre">export_user_payments_excel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.financial_view"><code class="docutils literal notranslate"><span class="pre">financial_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.purchased_categories_view"><code class="docutils literal notranslate"><span class="pre">purchased_categories_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Pagos.views.user_payment_view"><code class="docutils literal notranslate"><span class="pre">user_payment_view()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.Pagos">Module contents</a></li>

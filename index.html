@@ -439,6 +439,7 @@
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0001_initial">modulos.Pagos.migrations.0001_initial module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0002_payment_status">modulos.Pagos.migrations.0002_payment_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more">modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#module-modulos.Pagos.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -483,13 +484,18 @@
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Payment.DoesNotExist</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Payment.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.amount"><code class="docutils literal notranslate"><span class="pre">Payment.amount</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.card_brand"><code class="docutils literal notranslate"><span class="pre">Payment.card_brand</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.category"><code class="docutils literal notranslate"><span class="pre">Payment.category</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.category_id"><code class="docutils literal notranslate"><span class="pre">Payment.category_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.date_paid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.funding_type"><code class="docutils literal notranslate"><span class="pre">Payment.funding_type</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.get_next_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_next_by_date_paid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.get_payment_method_display"><code class="docutils literal notranslate"><span class="pre">Payment.get_payment_method_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.get_previous_by_date_paid"><code class="docutils literal notranslate"><span class="pre">Payment.get_previous_by_date_paid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.id"><code class="docutils literal notranslate"><span class="pre">Payment.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.last4"><code class="docutils literal notranslate"><span class="pre">Payment.last4</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.objects"><code class="docutils literal notranslate"><span class="pre">Payment.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.payment_method"><code class="docutils literal notranslate"><span class="pre">Payment.payment_method</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.status"><code class="docutils literal notranslate"><span class="pre">Payment.status</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.stripe_payment_id"><code class="docutils literal notranslate"><span class="pre">Payment.stripe_payment_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.models.Payment.user"><code class="docutils literal notranslate"><span class="pre">Payment.user</span></code></a></li>
@@ -504,10 +510,13 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Pagos.html#module-modulos.Pagos.urls">modulos.Pagos.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Pagos.html#module-modulos.Pagos.views">modulos.Pagos.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.export_payments_excel"><code class="docutils literal notranslate"><span class="pre">export_payments_excel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.export_user_payments_excel"><code class="docutils literal notranslate"><span class="pre">export_user_payments_excel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.financial_view"><code class="docutils literal notranslate"><span class="pre">financial_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_success"><code class="docutils literal notranslate"><span class="pre">payment_success()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_view"><code class="docutils literal notranslate"><span class="pre">payment_view()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.purchased_categories_view"><code class="docutils literal notranslate"><span class="pre">purchased_categories_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.html#modulos.Pagos.views.user_payment_view"><code class="docutils literal notranslate"><span class="pre">user_payment_view()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Pagos.html#module-modulos.Pagos">Module contents</a></li>
@@ -528,6 +537,14 @@
 <li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0002_payment_status.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0002_payment_status.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0002_payment_status.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#module-modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more">modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/source/modulos.Pagos.migrations.html#modulos.Pagos.migrations.0003_payment_card_brand_payment_funding_type_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
 </ul>

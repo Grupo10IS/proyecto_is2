@@ -36,12 +36,16 @@
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
-
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
 <span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="n">VIEW_PURCHASED_CATEGORIES</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Pagos.forms</span> <span class="kn">import</span> <span class="n">PaymentFilterForm</span><span class="p">,</span> <span class="n">PaymentForm</span><span class="p">,</span> <span class="n">UserProfileForm</span>
 <span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Count</span>
 
 <span class="c1"># Configura tu clave secreta de Stripe</span>
 <span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
@@ -143,7 +147,6 @@
     <span class="p">)</span></div>
 
 
-
 <div class="viewcode-block" id="payment_success">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_success">[documentos]</a>
 <span class="nd">@login_required</span>
@@ -152,13 +155,14 @@
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Recuperar el PaymentIntent desde la base de datos</span>
+        <span class="c1"># Recuperar el PaymentIntent y su registro en la base de datos</span>
         <span class="n">payment</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span>
             <span class="s2">&quot;date_paid&quot;</span>
         <span class="p">)</span>
         <span class="n">intent</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentIntent</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">stripe_payment_id</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
+        <span class="c1"># Verificar que el pago se completó correctamente</span>
+        <span class="k">if</span> <span class="n">intent</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
                 <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
@@ -170,15 +174,26 @@
                 <span class="p">),</span>
             <span class="p">)</span>
 
-        <span class="c1"># Actualizar el estado del pago en la base de datos</span>
+        <span class="c1"># Obtener detalles de la tarjeta del método de pago</span>
+        <span class="n">payment_method</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">PaymentMethod</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">intent</span><span class="o">.</span><span class="n">payment_method</span><span class="p">)</span>
+        <span class="n">card</span> <span class="o">=</span> <span class="n">payment_method</span><span class="o">.</span><span class="n">card</span>
+
+        <span class="c1"># Actualizar el estado y detalles del pago en la base de datos</span>
         <span class="n">payment</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">card</span><span class="o">.</span><span class="n">funding</span>
+        <span class="p">)</span>  <span class="c1"># Almacenar &quot;credit&quot;, &quot;debit&quot;, &quot;prepaid&quot;, o &quot;unknown&quot;</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">card_brand</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">card</span><span class="o">.</span><span class="n">brand</span>
+        <span class="p">)</span>  <span class="c1"># Almacenar la marca de tarjeta, como Visa, Mastercard</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">last4</span> <span class="o">=</span> <span class="n">card</span><span class="o">.</span><span class="n">last4</span>  <span class="c1"># Almacenar los últimos 4 dígitos</span>
         <span class="n">payment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-        <span class="c1"># Redirigir a la página de éxito</span>
+        <span class="c1"># Pasar `payment` al contexto</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
             <span class="n">request</span><span class="p">,</span>
             <span class="s2">&quot;payment_success.html&quot;</span><span class="p">,</span>
-            <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">}),</span>
+            <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span> <span class="s2">&quot;payment&quot;</span><span class="p">:</span> <span class="n">payment</span><span class="p">}),</span>
         <span class="p">)</span>
 
     <span class="k">except</span> <span class="n">Payment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
@@ -187,7 +202,6 @@
             <span class="s2">&quot;payment_error.html&quot;</span><span class="p">,</span>
             <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se encontró el pago en la base de datos.&quot;</span><span class="p">}),</span>
         <span class="p">)</span></div>
-
 
 
 <div class="viewcode-block" id="purchased_categories_view">
@@ -212,6 +226,9 @@
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;purchased_categories.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Count</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <div class="viewcode-block" id="financial_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.financial_view">[documentos]</a>
@@ -221,7 +238,9 @@
     <span class="n">form</span> <span class="o">=</span> <span class="n">PaymentFilterForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="c1"># Construimos la query inicial (mostrar todos los pagos completados)</span>
-    <span class="n">payments</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span>
+    <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+        <span class="s2">&quot;-date_paid&quot;</span>
+    <span class="p">)</span>
 
     <span class="c1"># Aplicamos filtros si el formulario es válido</span>
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
@@ -229,18 +248,131 @@
         <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
         <span class="n">date_from</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_from&quot;</span><span class="p">)</span>
         <span class="n">date_to</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_to&quot;</span><span class="p">)</span>
+        <span class="n">card_brand</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;card_brand&quot;</span><span class="p">)</span>
+        <span class="n">funding_type</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funding_type&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__username__icontains</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">date_from</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__gte</span><span class="o">=</span><span class="n">date_from</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">card_brand</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">card_brand__iexact</span><span class="o">=</span><span class="n">card_brand</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">funding_type</span><span class="p">:</span>
+            <span class="n">payments_queryset</span> <span class="o">=</span> <span class="n">payments_queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">funding_type__iexact</span><span class="o">=</span><span class="n">funding_type</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)</span>
+    <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments_queryset</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_payments</span><span class="p">:</span>
+            <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Calcular el total de pagos recibidos sin duplicados</span>
+    <span class="n">total_amount</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span> <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">))</span>
+
+    <span class="c1"># Preparar datos para el gráfico de torta (número de compras por categoría sin duplicados)</span>
+    <span class="n">category_totals</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">category_name</span> <span class="o">=</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">category_totals</span><span class="p">[</span><span class="n">category_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">category_totals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">category_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">category_totals</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">category_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">category_totals</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+    <span class="c1"># Preparar datos para el gráfico de barras (monto total por fecha sin duplicados)</span>
+    <span class="n">date_totals</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">date_str</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">date_paid</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">date_totals</span><span class="p">[</span><span class="n">date_str</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_totals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span><span class="p">)</span>
+
+    <span class="n">date_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">date_totals</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">date_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">date_totals</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Preparar datos para el gráfico de líneas (comparativa de categorías por fecha sin duplicados)</span>
+    <span class="n">category_by_date</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">category_name</span> <span class="o">=</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">date_str</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">date_paid</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">category_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">category_by_date</span><span class="p">:</span>
+            <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">if</span> <span class="n">date_str</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s2">&quot;labels&quot;</span><span class="p">]:</span>
+            <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+            <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Sumar el monto a la fecha ya existente</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+            <span class="n">category_by_date</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span><span class="p">)</span>
+
+    <span class="c1"># Ordenar las fechas dentro de cada categoría para una línea de tiempo adecuada</span>
+    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">category_by_date</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">sorted_data</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">category</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">category</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]))</span>
+        <span class="n">category</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">category</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sorted_data</span><span class="p">)</span>
+
+    <span class="c1"># Pasar los datos al contexto</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+            <span class="s2">&quot;payments&quot;</span><span class="p">:</span> <span class="n">payments</span><span class="p">,</span>
+            <span class="s2">&quot;total_amount&quot;</span><span class="p">:</span> <span class="n">total_amount</span><span class="p">,</span>
+            <span class="s2">&quot;category_labels&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">category_labels</span><span class="p">),</span>
+            <span class="s2">&quot;category_data&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">category_data</span><span class="p">),</span>
+            <span class="s2">&quot;date_labels&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">date_labels</span><span class="p">),</span>
+            <span class="s2">&quot;date_data&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">date_data</span><span class="p">),</span>
+            <span class="s2">&quot;category_by_date&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">category_by_date</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;financial_view.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="user_payment_view">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.user_payment_view">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">user_payment_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para que el usuario autenticado vea sus propios pagos.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">PaymentFilterForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Filtramos los pagos solo para el usuario actual</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+        <span class="s2">&quot;-date_paid&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Aplicamos los filtros si el formulario es válido</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+        <span class="n">card_brand</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;card_brand&quot;</span><span class="p">)</span>
+        <span class="n">funding_type</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funding_type&quot;</span><span class="p">)</span>
+        <span class="n">date_from</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_from&quot;</span><span class="p">)</span>
+        <span class="n">date_to</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_to&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
             <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-            <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
-
+        <span class="k">if</span> <span class="n">card_brand</span><span class="p">:</span>
+            <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">card_brand</span><span class="o">=</span><span class="n">card_brand</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">funding_type</span><span class="p">:</span>
+            <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">funding_type</span><span class="o">=</span><span class="n">funding_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">date_from</span><span class="p">:</span>
             <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__gte</span><span class="o">=</span><span class="n">date_from</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
             <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
+
+    <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_payments</span><span class="p">:</span>
+            <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
@@ -250,7 +382,156 @@
         <span class="p">},</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;financial_view.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;user_financial_view.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="export_payments_excel">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.export_payments_excel">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">export_payments_excel</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Obtener los datos de pagos filtrados</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-date_paid&quot;</span><span class="p">)</span>
+
+    <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_payments</span><span class="p">:</span>
+            <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Crear el archivo Excel en memoria</span>
+    <span class="n">workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+    <span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">active</span>
+    <span class="n">worksheet</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Pagos de Categorías Premium&quot;</span>
+
+    <span class="c1"># Agregar encabezados</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Usuario&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Categoría&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Fecha de Pago&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Monto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Marca de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Tipo de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Últimos 4 Dígitos&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">worksheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="c1"># Rellenar datos en el Excel</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">local_date_paid</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">date_paid</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M&quot;</span>
+        <span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">local_date_paid</span><span class="p">,</span>  <span class="c1"># Fecha en la zona horaria local</span>
+                <span class="sa">f</span><span class="s2">&quot;R$</span><span class="si">{</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">card_brand</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;Crédito&quot;</span>
+                    <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;credit&quot;</span>
+                    <span class="k">else</span> <span class="p">(</span>
+                        <span class="s2">&quot;Débito&quot;</span>
+                        <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;debit&quot;</span>
+                        <span class="k">else</span> <span class="p">(</span>
+                            <span class="s2">&quot;Prepagada&quot;</span>
+                            <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;prepaid&quot;</span>
+                            <span class="k">else</span> <span class="s2">&quot;Desconocido&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">last4</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Preparar la respuesta HTTP para descargar el archivo</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;attachment; filename=&quot;pagos_categorias_premium.xlsx&quot;&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Guardar el archivo en la respuesta HTTP</span>
+    <span class="n">workbook</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+
+
+<div class="viewcode-block" id="export_user_payments_excel">
+<a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.export_user_payments_excel">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">export_user_payments_excel</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Obtener los pagos completados solo del usuario autenticado</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+        <span class="s2">&quot;-date_paid&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)</span>
+    <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_payments</span><span class="p">:</span>
+            <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
+    <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Crear el archivo Excel en memoria</span>
+    <span class="n">workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+    <span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">active</span>
+    <span class="n">worksheet</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Mis Pagos de Categorías Premium&quot;</span>
+
+    <span class="c1"># Agregar encabezados</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Categoría&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Fecha de Pago&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Monto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Marca de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Tipo de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Últimos 4 Dígitos&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">worksheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="c1"># Rellenar datos en el Excel</span>
+    <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+        <span class="n">local_date_paid</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">date_paid</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M&quot;</span>
+        <span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">local_date_paid</span><span class="p">,</span>  <span class="c1"># Fecha en la zona horaria local</span>
+                <span class="sa">f</span><span class="s2">&quot;R$</span><span class="si">{</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">card_brand</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;Crédito&quot;</span>
+                    <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;credit&quot;</span>
+                    <span class="k">else</span> <span class="p">(</span>
+                        <span class="s2">&quot;Débito&quot;</span>
+                        <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;debit&quot;</span>
+                        <span class="k">else</span> <span class="p">(</span>
+                            <span class="s2">&quot;Prepagada&quot;</span>
+                            <span class="k">if</span> <span class="n">payment</span><span class="o">.</span><span class="n">funding_type</span> <span class="o">==</span> <span class="s2">&quot;prepaid&quot;</span>
+                            <span class="k">else</span> <span class="s2">&quot;Desconocido&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">last4</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Preparar la respuesta HTTP para descargar el archivo</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;attachment; filename=&quot;mis_pagos_categorias_premium.xlsx&quot;&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Guardar el archivo en la respuesta HTTP</span>
+    <span class="n">workbook</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span></div>
 
 </pre></div>
 

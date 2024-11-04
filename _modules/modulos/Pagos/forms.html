@@ -80,6 +80,8 @@
 
 
 <span class="c1"># Formulario para el filtrado de pagos por categoría, usuario y fechas</span>
+
+
 <div class="viewcode-block" id="PaymentFilterForm">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.forms.PaymentFilterForm">[documentos]</a>
 <span class="k">class</span> <span class="nc">PaymentFilterForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
@@ -90,11 +92,15 @@
         <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
     <span class="p">)</span>
 
-    <span class="n">user</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span>
-        <span class="n">queryset</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Usuario&quot;</span><span class="p">,</span>
-        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Escribe el nombre del usuario...&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">date_from</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span>
@@ -107,6 +113,32 @@
         <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fecha hasta&quot;</span><span class="p">,</span>
         <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">DateInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Filtros adicionales para tarjeta</span>
+    <span class="n">card_brand</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Todas&quot;</span><span class="p">),</span>  <span class="c1"># Opción para seleccionar todas las marcas</span>
+            <span class="p">(</span><span class="s2">&quot;visa&quot;</span><span class="p">,</span> <span class="s2">&quot;Visa&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;mastercard&quot;</span><span class="p">,</span> <span class="s2">&quot;MasterCard&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;amex&quot;</span><span class="p">,</span> <span class="s2">&quot;American Express&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;discover&quot;</span><span class="p">,</span> <span class="s2">&quot;Discover&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Marca de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+    <span class="p">)</span>
+
+    <span class="n">funding_type</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Todos&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;credit&quot;</span><span class="p">,</span> <span class="s2">&quot;Crédito&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;debit&quot;</span><span class="p">,</span> <span class="s2">&quot;Débito&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;unknown&quot;</span><span class="p">,</span> <span class="s2">&quot;Desconocido&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Tipo de Tarjeta&quot;</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
     <span class="p">)</span></div>
 
 </pre></div>

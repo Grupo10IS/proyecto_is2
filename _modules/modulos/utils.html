@@ -33,6 +33,7 @@
             
   <h1>Código fuente para modulos.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+                                               <span class="n">PAYMENT_PERMISSION</span><span class="p">,</span>
                                                <span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="n">SearchPostForm</span>
@@ -62,12 +63,16 @@
     <span class="n">sitios</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">kanban_permission</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">finances_permission</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">payment_permission</span> <span class="o">=</span> <span class="kc">False</span>
+
     <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
         <span class="n">kanban_permission</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">)</span>
         <span class="n">finances_permission</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">)</span>
+        <span class="n">payment_permission</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="n">PAYMENT_PERMISSION</span><span class="p">)</span>
+
         <span class="c1"># Para poder listar permisos &quot;parecidos&quot;, en vez de tener que buscar por permisos especificos.</span>
         <span class="c1"># Esto ya que para ver el panel de control solo se necesita saber si se contiene</span>
-        <span class="c1"># ciertos permisos, no permisos especificos</span>
+        <span class="c1"># ciertos permisos, no permisos especificos. Da un asco terrible esto por cierto.</span>
         <span class="n">permisos</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_all_permissions</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">permisos</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;user&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
@@ -87,13 +92,13 @@
             <span class="k">if</span> <span class="s2">&quot;reports&quot;</span> <span class="ow">in</span> <span class="n">perm</span> <span class="ow">and</span> <span class="n">perm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sitios</span><span class="p">:</span>
                 <span class="n">sitios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">)</span>
 
-    <span class="c1"># TODO: listar solo las categorias de interes o las mas votadas capaz</span>
     <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
         <span class="s2">&quot;permisos&quot;</span><span class="p">:</span> <span class="n">sitios</span><span class="p">,</span>
         <span class="s2">&quot;post_search_input&quot;</span><span class="p">:</span> <span class="n">SearchPostForm</span><span class="p">,</span>
         <span class="s2">&quot;has_kanban_access&quot;</span><span class="p">:</span> <span class="n">kanban_permission</span><span class="p">,</span>
         <span class="s2">&quot;has_financial_acces&quot;</span><span class="p">:</span> <span class="n">finances_permission</span><span class="p">,</span>
+        <span class="s2">&quot;has_payment&quot;</span><span class="p">:</span> <span class="n">payment_permission</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
