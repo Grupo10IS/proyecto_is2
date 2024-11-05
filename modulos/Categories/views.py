@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.views.generic import DetailView, ListView
-
+from django.db.models.query_utils import Q
 from modulos.Authorization import permissions
 from modulos.Authorization.decorators import permissions_required
 from modulos.Authorization.permissions import user_has_access_to_category
@@ -11,7 +11,7 @@ from modulos.Categories.models import Category
 from modulos.Pagos.models import Payment
 from modulos.Posts.models import Post
 from modulos.utils import new_ctx
-
+from django.utils import timezone
 
 class CategoryCreateView(generic.CreateView):
     form_class = CategoryCreationForm
@@ -48,6 +48,18 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            # Obtener los IDs de las categorías que el usuario ya ha adquirido
+            acquired_categories = Payment.objects.filter(
+                user=self.request.user, status="completed"
+            ).values_list("category_id", flat=True)
+            context["acquired_categories"] = set(
+                acquired_categories
+            )  # Usar un set para eficiencia
+        else:
+            context["acquired_categories"] = (
+                set()
+            )  # Si no está autenticado, no hay categorías adquiridas
         return new_ctx(self.request, context)
 
 
@@ -108,9 +120,16 @@ class CategoryDetailView(DetailView):
         if page <= 0:
             page = 1
 
+        # Filtrar solo los posts activos, publicados y no expirados en la categoría
         posts = Post.objects.filter(
-            active=True, status=Post.PUBLISHED, category=category
-        )[20 * (page - 1) : 20 * page]
+            active=True,
+            status=Post.PUBLISHED,
+            category=category,
+        ).filter(
+            Q(expiration_date__gt=timezone.now()) | Q(expiration_date__isnull=True)
+        )[
+            20 * (page - 1) : 20 * page
+        ]
 
         context["posts"] = posts
 

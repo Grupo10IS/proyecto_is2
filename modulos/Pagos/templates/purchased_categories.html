@@ -5,6 +5,7 @@
 {% endblock title %}
 {% block content %}
     <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
         <h1 class="mb-4 fst-italic display-4">Categorías Premium Compradas</h1>
         {% if purchased_categories %}
             <div class="row">
@@ -22,4 +23,5 @@
             <p>No has comprado ninguna categoría premium.</p>
         {% endif %}
     </div>
+</div>
 {% endblock content %}

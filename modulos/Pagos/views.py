@@ -11,7 +11,7 @@ from modulos.Pagos.models import Payment
 from modulos.utils import new_ctx
 from django.utils import timezone
 import json
-from django.db.models import Sum, Count
+
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -319,6 +319,7 @@ def user_payment_view(request):
         if date_to:
             payments = payments.filter(date_paid__lte=date_to)
 
+    # Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)
     unique_payments = {}
     for payment in payments:
         key = (payment.user, payment.category)
@@ -326,11 +327,15 @@ def user_payment_view(request):
             unique_payments[key] = payment
     payments = list(unique_payments.values())
 
+    # Calcular el total de los pagos
+    total_amount = sum(payment.amount for payment in payments)
+
     context = new_ctx(
         request,
         {
             "form": form,
             "payments": payments,
+            "total_amount": total_amount,  # Pasamos el total al contexto
         },
     )
 
