@@ -236,7 +236,9 @@ def manage_posts(request):
     """
     posts = (
         Post.objects.filter(active=True, status=Post.PUBLISHED)
-        if request.user.has_perm(POST_MANAGE_PERMISSION) # pueden ver los posts de los demas.
+        if request.user.has_perm(
+            POST_MANAGE_PERMISSION
+        )  # pueden ver los posts de los demas.
         else Post.objects.filter(author=request.user, active=True)
     )
 
@@ -246,10 +248,22 @@ def manage_posts(request):
             "posts": posts,
             "perm_edit": request.user.has_perm(POST_EDIT_PERMISSION),
             "perm_create": request.user.has_perm(POST_CREATE_PERMISSION),
-            "perm_delete": request.user.has_perm(POST_DELETE_PERMISSION),
             "perm_highlight": request.user.has_perm(POST_HIGHLIGHT_PERMISSION),
         },
     )
+
+    # Si se trata de un manager de posts, entonces vemos si puede eliminar los posts
+    if request.user.has_perm(POST_MANAGE_PERMISSION) and request.user.has_perm(
+        POST_DELETE_PERMISSION
+    ):
+        ctx.update({"perm_delete": True})
+    elif request.user.has_perm(POST_MANAGE_PERMISSION):
+        ctx.update({"perm_delete": False})
+
+    # si no es un manager de posts entonces es un autor, por tanto si puede eliminar sus
+    # propios posts
+    else:
+        ctx.update({"perm_delete": True})
 
     return render(request, "pages/post_list.html", ctx)
 
