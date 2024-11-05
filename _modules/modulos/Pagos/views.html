@@ -45,7 +45,7 @@
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Count</span>
+
 
 <span class="c1"># Configura tu clave secreta de Stripe</span>
 <span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
@@ -367,6 +367,7 @@
         <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
             <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
 
+    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)</span>
     <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
@@ -374,11 +375,15 @@
             <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
     <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
+    <span class="c1"># Calcular el total de los pagos</span>
+    <span class="n">total_amount</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">amount</span> <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">)</span>
+
     <span class="n">context</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
         <span class="p">{</span>
             <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
             <span class="s2">&quot;payments&quot;</span><span class="p">:</span> <span class="n">payments</span><span class="p">,</span>
+            <span class="s2">&quot;total_amount&quot;</span><span class="p">:</span> <span class="n">total_amount</span><span class="p">,</span>  <span class="c1"># Pasamos el total al contexto</span>
         <span class="p">},</span>
     <span class="p">)</span>
 

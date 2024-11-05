@@ -104,7 +104,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Obtener los posts publicados más recientes</span>
         <span class="n">posts_recientes</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">Q</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__gt</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-publication_date&quot;</span><span class="p">)</span>
 
     <span class="c1"># Configuración de paginación (10 posts por página)</span>
@@ -947,8 +949,12 @@
     <span class="c1"># Inicializa el formulario de búsqueda con los parámetros GET si existen</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">PostsListFilter</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="c1"># Construimos un query dinámico para los filtros</span>
-    <span class="n">posts_query</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Construimos un query dinámico para los filtros, excluyendo posts expirados</span>
+    <span class="n">posts_query</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">Q</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__gt</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="p">)</span>
 
     <span class="c1"># Aplicar filtros si el formulario es válido</span>
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
