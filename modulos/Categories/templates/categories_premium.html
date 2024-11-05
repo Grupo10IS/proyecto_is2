@@ -5,7 +5,7 @@
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
             <h1 class="display-4 fst-italic mb-4">Categorías Premium</h1>
             <p class="lead my-3">
-                Cada categoría tiene un costo de tan solo 5R$, que esperas para obtener los mejores contenidos!
+                Cada categoría tiene un costo de tan solo 5R$, ¡que esperas para obtener los mejores contenidos!
             </p>
             <div class="row">
                 {% if categories %}
@@ -33,6 +33,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <a href="{% url 'category_detail' category.id %}"
                                            class="btn btn-primary btn-sm">Ver más</a>
+                                        {% if category.id in acquired_categories %}
+                                            <span class="badge bg-success text-white">Ya Adquirida</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

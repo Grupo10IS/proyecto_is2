@@ -68,7 +68,9 @@ def home_view(req):
     else:
         # Obtener los posts publicados más recientes
         posts_recientes = Post.objects.filter(
-            status=Post.PUBLISHED, active=True
+            Q(status=Post.PUBLISHED)
+            & Q(active=True)
+            & (Q(expiration_date__gt=timezone.now()) | Q(expiration_date__isnull=True))
         ).order_by("-publication_date")
 
     # Configuración de paginación (10 posts por página)
@@ -881,8 +883,12 @@ def list_contenidos_view(request):
     # Inicializa el formulario de búsqueda con los parámetros GET si existen
     form = PostsListFilter(request.GET or None)
 
-    # Construimos un query dinámico para los filtros
-    posts_query = Post.objects.filter(status=Post.PUBLISHED, active=True)
+    # Construimos un query dinámico para los filtros, excluyendo posts expirados
+    posts_query = Post.objects.filter(
+        Q(status=Post.PUBLISHED)
+        & Q(active=True)
+        & (Q(expiration_date__gt=timezone.now()) | Q(expiration_date__isnull=True))
+    )
 
     # Aplicar filtros si el formulario es válido
     if form.is_valid():

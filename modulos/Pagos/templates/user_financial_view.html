@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="container mt-5">
+        <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
         <h1 class="display-6 fst-italic">Mis Pagos de Categorías Premium</h1>
         <!-- Formulario de filtrado -->
         <form method="GET" class="mb-4">
@@ -67,8 +68,12 @@
 
              <!-- Botón para descargar el Excel -->
              <a href="{% url 'export_user_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
+
+             <!-- Muestra el total de pagos realizados -->
+            <h4>Total de Pagos Realizados: R${{ total_amount }}</h4>
         {% else %}
             <p>No se encontraron pagos.</p>
         {% endif %}
     </div>
+</div>
 {% endblock %}
