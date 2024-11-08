@@ -10,20 +10,20 @@ from modulos.Posts.forms import SearchPostForm
 
 def new_ctx(req, params):
     """
-    Creates a wrapper context dictionary for rendering templates, based on user permissions
-    and additional parameters. It merges a given custom context passed as parameter with
-    the common context for the rest of the pages and views.
+    Crea un diccionario de contexto de envoltura para renderizar plantillas, basado en los permisos
+    del usuario y parámetros adicionales. Combina un contexto personalizado proporcionado como parámetro
+    con el contexto común para el resto de las páginas y vistas.
 
-    Args:
-        req (HttpRequest): The HTTP request object containing user information.
-        params (dict): Additional parameters to be included in the context.
+    Argumentos:
+        req (HttpRequest): El objeto de solicitud HTTP que contiene información del usuario.
+        params (dict): Parámetros adicionales que se incluirán en el contexto.
 
-    Returns:
-        dict: A dictionary containing the context for rendering templates, including user permissions
-        and a list of categories.
+    Retorna:
+        dict: Un diccionario que contiene el contexto para renderizar plantillas, incluyendo permisos
+        del usuario y una lista de categorías.
 
-    Example:
-        >>> base = {"form": OurForm, "data": OurData}
+    Ejemplo:
+        >>> base = {"form": NuestroFormulario, "data": NuestrosDatos}
         >>> ctx = new_ctx(request, base)
         >>> return render(req, "template", ctx)
     """
