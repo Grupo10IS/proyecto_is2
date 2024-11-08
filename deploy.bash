@@ -15,7 +15,7 @@ prod=$2
 # cambiar a la rama
 git pull
 if [[ -n $tag ]]; then
-    git checkout $tag
+    git checkout $tag -f
 fi
 
 # instalar dependencias
@@ -32,4 +32,6 @@ python manage.py collectstatic
 if [[ -n $prod ]]; then
     systemctl restart gunicorn
     systemctl runserver
+else
+    python manage.py runserver
 fi
