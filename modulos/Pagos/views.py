@@ -344,9 +344,31 @@ def user_payment_view(request):
 
 @login_required
 def export_payments_excel(request):
-    # Obtener los datos de pagos filtrados
+    # Obtener los datos de pagos filtrados según los parámetros de la solicitud GET
     payments = Payment.objects.filter(status="completed").order_by("-date_paid")
 
+    # Aplicar filtros basados en los parámetros de la solicitud GET
+    category = request.GET.get("category")
+    user = request.GET.get("user")
+    date_from = request.GET.get("date_from")
+    date_to = request.GET.get("date_to")
+    card_brand = request.GET.get("card_brand")
+    funding_type = request.GET.get("funding_type")
+
+    if category:
+        payments = payments.filter(category__id=category)
+    if user:
+        payments = payments.filter(user__username__icontains=user)
+    if date_from:
+        payments = payments.filter(date_paid__gte=date_from)
+    if date_to:
+        payments = payments.filter(date_paid__lte=date_to)
+    if card_brand:
+        payments = payments.filter(card_brand__iexact=card_brand)
+    if funding_type:
+        payments = payments.filter(funding_type__iexact=funding_type)
+
+    # Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)
     unique_payments = {}
     for payment in payments:
         key = (payment.user, payment.category)
@@ -420,10 +442,28 @@ def export_user_payments_excel(request):
         "-date_paid"
     )
 
-    # Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)
+    # Aplicar filtros basados en los parámetros de la solicitud GET
+    category = request.GET.get("category")
+    date_from = request.GET.get("date_from")
+    date_to = request.GET.get("date_to")
+    card_brand = request.GET.get("card_brand")
+    funding_type = request.GET.get("funding_type")
+
+    if category:
+        payments = payments.filter(category__id=category)
+    if date_from:
+        payments = payments.filter(date_paid__gte=date_from)
+    if date_to:
+        payments = payments.filter(date_paid__lte=date_to)
+    if card_brand:
+        payments = payments.filter(card_brand__iexact=card_brand)
+    if funding_type:
+        payments = payments.filter(funding_type__iexact=funding_type)
+
+    # Filtrar duplicados: Mantener solo el pago más reciente por categoría
     unique_payments = {}
     for payment in payments:
-        key = (payment.user, payment.category)
+        key = payment.category
         if key not in unique_payments:
             unique_payments[key] = payment
     payments = list(unique_payments.values())

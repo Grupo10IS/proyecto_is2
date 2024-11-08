@@ -945,7 +945,8 @@ def highlight_post(request, id):
     post = get_object_or_404(Post, pk=id)
     Destacado(post=post).save()
 
-    return HttpResponse("Post destacado satisfactoriamente")
+    # Redirigir al home después de destacar el post
+    return redirect("home")
 
 
 # -----------------------
