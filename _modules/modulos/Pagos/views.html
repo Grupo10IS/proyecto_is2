@@ -395,9 +395,31 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.export_payments_excel">[documentos]</a>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">export_payments_excel</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c1"># Obtener los datos de pagos filtrados</span>
+    <span class="c1"># Obtener los datos de pagos filtrados según los parámetros de la solicitud GET</span>
     <span class="n">payments</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-date_paid&quot;</span><span class="p">)</span>
 
+    <span class="c1"># Aplicar filtros basados en los parámetros de la solicitud GET</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+    <span class="n">date_from</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_from&quot;</span><span class="p">)</span>
+    <span class="n">date_to</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_to&quot;</span><span class="p">)</span>
+    <span class="n">card_brand</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;card_brand&quot;</span><span class="p">)</span>
+    <span class="n">funding_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funding_type&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category__id</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__username__icontains</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_from</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__gte</span><span class="o">=</span><span class="n">date_from</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">card_brand</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">card_brand__iexact</span><span class="o">=</span><span class="n">card_brand</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">funding_type</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">funding_type__iexact</span><span class="o">=</span><span class="n">funding_type</span><span class="p">)</span>
+
+    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)</span>
     <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
@@ -474,10 +496,28 @@
         <span class="s2">&quot;-date_paid&quot;</span>
     <span class="p">)</span>
 
-    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por (usuario, categoría)</span>
+    <span class="c1"># Aplicar filtros basados en los parámetros de la solicitud GET</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="n">date_from</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_from&quot;</span><span class="p">)</span>
+    <span class="n">date_to</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_to&quot;</span><span class="p">)</span>
+    <span class="n">card_brand</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;card_brand&quot;</span><span class="p">)</span>
+    <span class="n">funding_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funding_type&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category__id</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_from</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__gte</span><span class="o">=</span><span class="n">date_from</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date_paid__lte</span><span class="o">=</span><span class="n">date_to</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">card_brand</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">card_brand__iexact</span><span class="o">=</span><span class="n">card_brand</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">funding_type</span><span class="p">:</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">funding_type__iexact</span><span class="o">=</span><span class="n">funding_type</span><span class="p">)</span>
+
+    <span class="c1"># Filtrar duplicados: Mantener solo el pago más reciente por categoría</span>
     <span class="n">unique_payments</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">payment</span><span class="o">.</span><span class="n">category</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_payments</span><span class="p">:</span>
             <span class="n">unique_payments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">payment</span>
     <span class="n">payments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_payments</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
