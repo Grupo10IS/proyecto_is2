@@ -32,7 +32,10 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
+<span></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">NoCredentialsError</span>
+
+<span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KANBAN_VIEW_PERMISSION</span><span class="p">,</span>
                                                <span class="n">PAYMENT_PERMISSION</span><span class="p">,</span>
                                                <span class="n">VIEW_PURCHASED_CATEGORIES</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
@@ -103,6 +106,87 @@
     <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">base</span></div>
+
+
+
+<div class="viewcode-block" id="upload_to_aws_s3">
+<a class="viewcode-back" href="../../docs/source/modulos.html#modulos.utils.upload_to_aws_s3">[documentos]</a>
+<span class="k">def</span> <span class="nf">upload_to_aws_s3</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sube un archivo a un bucket de Amazon S3 utilizando la API de boto3.</span>
+
+<span class="sd">    Esta función permite cargar un archivo a un bucket de S3 especificado, con la opción de</span>
+<span class="sd">    definir el nombre del objeto en S3. Si no se especifica el nombre del objeto, se utiliza</span>
+<span class="sd">    el nombre del archivo como nombre del objeto en S3.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        - file_path (str): Ruta del archivo a subir. Este parámetro especifica la ubicación del</span>
+<span class="sd">      archivo en el sistema local.</span>
+<span class="sd">    - bucket_name (str): Nombre del bucket de S3 donde se subirá el archivo.</span>
+<span class="sd">    - object_name (str, opcional): Nombre del objeto en S3. Si no se especifica, se utilizará</span>
+<span class="sd">      el nombre del archivo.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        - bool: Devuelve True si la carga fue exitosa.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inicializando cliente S3...&quot;</span><span class="p">)</span>
+    <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;s3&quot;</span><span class="p">)</span>  <span class="c1"># Simula la creación del cliente S3</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subiendo </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> al bucket </span><span class="si">{</span><span class="n">bucket_name</span><span class="si">}</span><span class="s2"> en AWS S3...&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Simulación de la llamada a la función `upload_file`</span>
+        <span class="n">s3</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Simula un mensaje de éxito</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Archivo &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; subido exitosamente a &#39;</span><span class="si">{</span><span class="n">bucket_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Archivo no encontrado.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NoCredentialsError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Credenciales no disponibles.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error inesperado: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="download_from_aws">
+<a class="viewcode-back" href="../../docs/source/modulos.html#modulos.utils.download_from_aws">[documentos]</a>
+<span class="k">def</span> <span class="nf">download_from_aws</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Descarga un archivo desde un bucket de Amazon S3 utilizando la API de boto3.</span>
+
+<span class="sd">    Esta función permite descargar un archivo desde un bucket de S3 especificado y guardarlo</span>
+<span class="sd">    en el sistema de archivos local en la ubicación especificada por el usuario.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    - bucket_name (str): Nombre del bucket de S3 desde el cual se descargará el archivo.</span>
+<span class="sd">    - object_name (str): Nombre del objeto en S3 que se desea descargar.</span>
+<span class="sd">    - file_path (str): Ruta local donde se guardará el archivo descargado.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    - bool: Devuelve True si la descarga fue exitosa, False en caso de error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Inicializa el cliente de S3</span>
+    <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;s3&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Intento de descarga del archivo desde S3 al destino especificado</span>
+        <span class="n">s3</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Archivo descargado exitosamente desde &#39;</span><span class="si">{</span><span class="n">bucket_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">object_name</span><span class="si">}</span><span class="s2">&#39; a &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">except</span> <span class="n">NoCredentialsError</span><span class="p">:</span>
+        <span class="c1"># Manejo de excepción si faltan las credenciales de AWS</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: No se encontraron credenciales de AWS.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Captura cualquier otra excepción que pueda ocurrir</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error inesperado: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 </pre></div>
 

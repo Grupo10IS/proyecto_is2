@@ -789,6 +789,20 @@
 <section id="module-modulos.utils">
 <span id="modulos-utils-module"></span><h2>modulos.utils module<a class="headerlink" href="#module-modulos.utils" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="modulos.utils.download_from_aws">
+<span class="sig-prename descclassname"><span class="pre">modulos.utils.</span></span><span class="sig-name descname"><span class="pre">download_from_aws</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/utils.html#download_from_aws"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.utils.download_from_aws" title="Link to this definition">¶</a></dt>
+<dd><p>Descarga un archivo desde un bucket de Amazon S3 utilizando la API de boto3.</p>
+<p>Esta función permite descargar un archivo desde un bucket de S3 especificado y guardarlo
+en el sistema de archivos local en la ubicación especificada por el usuario.</p>
+<p>Parámetros:
+- bucket_name (str): Nombre del bucket de S3 desde el cual se descargará el archivo.
+- object_name (str): Nombre del objeto en S3 que se desea descargar.
+- file_path (str): Ruta local donde se guardará el archivo descargado.</p>
+<p>Retorna:
+- bool: Devuelve True si la descarga fue exitosa, False en caso de error.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="modulos.utils.new_ctx">
 <span class="sig-prename descclassname"><span class="pre">modulos.utils.</span></span><span class="sig-name descname"><span class="pre">new_ctx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/utils.html#new_ctx"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.utils.new_ctx" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a wrapper context dictionary for rendering templates, based on user permissions
@@ -806,6 +820,35 @@ and a list of categories.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s2">&quot;template&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modulos.utils.upload_to_aws_s3">
+<span class="sig-prename descclassname"><span class="pre">modulos.utils.</span></span><span class="sig-name descname"><span class="pre">upload_to_aws_s3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/utils.html#upload_to_aws_s3"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.utils.upload_to_aws_s3" title="Link to this definition">¶</a></dt>
+<dd><p>Sube un archivo a un bucket de Amazon S3 utilizando la API de boto3.</p>
+<p>Esta función permite cargar un archivo a un bucket de S3 especificado, con la opción de
+definir el nombre del objeto en S3. Si no se especifica el nombre del objeto, se utiliza
+el nombre del archivo como nombre del objeto en S3.</p>
+<dl>
+<dt>Parámetros:</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>file_path (str): Ruta del archivo a subir. Este parámetro especifica la ubicación del</p></li>
+</ul>
+</div></blockquote>
+<p>archivo en el sistema local.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>bucket_name (str): Nombre del bucket de S3 donde se subirá el archivo.</p></li>
+<li><p>object_name (str, opcional): Nombre del objeto en S3. Si no se especifica, se utilizará
+el nombre del archivo.</p></li>
+</ul>
+<dl class="simple">
+<dt>Retorna:</dt><dd><ul class="simple">
+<li><p>bool: Devuelve True si la carga fue exitosa.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -858,7 +901,9 @@ and a list of categories.</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos.utils">modulos.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.utils.download_from_aws"><code class="docutils literal notranslate"><span class="pre">download_from_aws()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modulos.utils.new_ctx"><code class="docutils literal notranslate"><span class="pre">new_ctx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.utils.upload_to_aws_s3"><code class="docutils literal notranslate"><span class="pre">upload_to_aws_s3()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modulos">Module contents</a></li>
