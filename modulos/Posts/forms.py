@@ -45,7 +45,7 @@ class NewPostForm(forms.ModelForm):
             ),
             "expiration_date": forms.DateInput(
                 attrs={"type": "date", "class": "custom-date-input"}
-            ),
+            )
         }
 
     # Desactivar validación implícita `required` en estos campos

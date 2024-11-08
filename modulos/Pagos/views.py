@@ -1,17 +1,18 @@
+import json
+
+import openpyxl
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import get_object_or_404, redirect, render
-import openpyxl
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
 from modulos.Authorization.permissions import VIEW_PURCHASED_CATEGORIES
 from modulos.Categories.models import Category
 from modulos.Pagos.forms import PaymentFilterForm, PaymentForm, UserProfileForm
 from modulos.Pagos.models import Payment
 from modulos.utils import new_ctx
-from django.utils import timezone
-import json
-
 
 # Configura tu clave secreta de Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -110,6 +111,7 @@ def payment_view(request, category_id):
         ),
     )
 
+
 @login_required
 def payment_success(request, category_id):
     category = get_object_or_404(Category, id=category_id)
@@ -164,6 +166,7 @@ def payment_success(request, category_id):
             new_ctx(request, {"error": "No se encontró el pago en la base de datos."}),
         )
 
+
 @login_required
 def purchased_categories_view(request):
     """
@@ -183,9 +186,6 @@ def purchased_categories_view(request):
 
     return render(request, "purchased_categories.html", context)
 
-from django.db.models import Sum, Count
-from django.utils import timezone
-import json
 
 @login_required
 @permission_required([VIEW_PURCHASED_CATEGORIES])
