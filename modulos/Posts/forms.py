@@ -45,12 +45,6 @@ class NewPostForm(forms.ModelForm):
             ),
             "expiration_date": forms.DateInput(
                 attrs={"type": "date", "class": "custom-date-input"}
-            ),
-            "publication_date": forms.DateInput(
-                attrs={"type": "date", "class": "custom-date-input"}
-            ),
-            "expiration_date": forms.DateInput(
-                attrs={"type": "date", "class": "custom-date-input"}
             )
         }
 
