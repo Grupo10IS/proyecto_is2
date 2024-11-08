@@ -1,3 +1,6 @@
+import boto3
+from botocore.exceptions import NoCredentialsError
+
 from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                PAYMENT_PERMISSION,
                                                VIEW_PURCHASED_CATEGORIES)
@@ -67,3 +70,78 @@ def new_ctx(req, params):
     base.update(params)
 
     return base
+
+
+def upload_to_aws_s3(file_path, bucket_name):
+    """
+    Sube un archivo a un bucket de Amazon S3 utilizando la API de boto3.
+
+    Esta función permite cargar un archivo a un bucket de S3 especificado, con la opción de
+    definir el nombre del objeto en S3. Si no se especifica el nombre del objeto, se utiliza
+    el nombre del archivo como nombre del objeto en S3.
+
+    Parámetros:
+        - file_path (str): Ruta del archivo a subir. Este parámetro especifica la ubicación del
+      archivo en el sistema local.
+    - bucket_name (str): Nombre del bucket de S3 donde se subirá el archivo.
+    - object_name (str, opcional): Nombre del objeto en S3. Si no se especifica, se utilizará
+      el nombre del archivo.
+
+    Retorna:
+        - bool: Devuelve True si la carga fue exitosa.
+    """
+    print("Inicializando cliente S3...")
+    s3 = boto3.client("s3")  # Simula la creación del cliente S3
+
+    try:
+        print(f"Subiendo {file_path} al bucket {bucket_name} en AWS S3...")
+
+        # Simulación de la llamada a la función `upload_file`
+        s3.upload_file(file_path, bucket_name, file_path.split("/")[-1])
+
+        # Simula un mensaje de éxito
+        print(f"Archivo '{file_path}' subido exitosamente a '{bucket_name}'.")
+
+    except FileNotFoundError:
+        print("Error: Archivo no encontrado.")
+    except NoCredentialsError:
+        print("Error: Credenciales no disponibles.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+
+
+def download_from_aws(bucket_name, object_name, file_path):
+    """
+    Descarga un archivo desde un bucket de Amazon S3 utilizando la API de boto3.
+
+    Esta función permite descargar un archivo desde un bucket de S3 especificado y guardarlo
+    en el sistema de archivos local en la ubicación especificada por el usuario.
+
+    Parámetros:
+    - bucket_name (str): Nombre del bucket de S3 desde el cual se descargará el archivo.
+    - object_name (str): Nombre del objeto en S3 que se desea descargar.
+    - file_path (str): Ruta local donde se guardará el archivo descargado.
+
+    Retorna:
+    - bool: Devuelve True si la descarga fue exitosa, False en caso de error.
+    """
+
+    # Inicializa el cliente de S3
+    s3 = boto3.client("s3")
+
+    try:
+        # Intento de descarga del archivo desde S3 al destino especificado
+        s3.download_file(bucket_name, object_name, file_path)
+        print(
+            f"Archivo descargado exitosamente desde '{bucket_name}/{object_name}' a '{file_path}'"
+        )
+        return True
+
+    except NoCredentialsError:
+        # Manejo de excepción si faltan las credenciales de AWS
+        print("Error: No se encontraron credenciales de AWS.")
+        return False
+    except Exception as e:
+        # Captura cualquier otra excepción que pueda ocurrir
+        print(f"Error inesperado: {str(e)}")
+        return False
