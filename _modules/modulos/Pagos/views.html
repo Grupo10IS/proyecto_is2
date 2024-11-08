@@ -32,20 +32,21 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.Pagos.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">stripe</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">import</span> <span class="nn">stripe</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
-<span class="kn">import</span> <span class="nn">openpyxl</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
 <span class="kn">from</span> <span class="nn">modulos.Authorization.permissions</span> <span class="kn">import</span> <span class="n">VIEW_PURCHASED_CATEGORIES</span>
 <span class="kn">from</span> <span class="nn">modulos.Categories.models</span> <span class="kn">import</span> <span class="n">Category</span>
 <span class="kn">from</span> <span class="nn">modulos.Pagos.forms</span> <span class="kn">import</span> <span class="n">PaymentFilterForm</span><span class="p">,</span> <span class="n">PaymentForm</span><span class="p">,</span> <span class="n">UserProfileForm</span>
 <span class="kn">from</span> <span class="nn">modulos.Pagos.models</span> <span class="kn">import</span> <span class="n">Payment</span>
 <span class="kn">from</span> <span class="nn">modulos.utils</span> <span class="kn">import</span> <span class="n">new_ctx</span>
-<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
 
 <span class="c1"># Configura tu clave secreta de Stripe</span>
 <span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
@@ -147,6 +148,7 @@
     <span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="payment_success">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.payment_success">[documentos]</a>
 <span class="nd">@login_required</span>
@@ -204,6 +206,7 @@
         <span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="purchased_categories_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.purchased_categories_view">[documentos]</a>
 <span class="nd">@login_required</span>
@@ -226,9 +229,6 @@
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;purchased_categories.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
-<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Count</span>
-<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
-<span class="kn">import</span> <span class="nn">json</span>
 
 <div class="viewcode-block" id="financial_view">
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.views.financial_view">[documentos]</a>
