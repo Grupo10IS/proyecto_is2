@@ -46,20 +46,20 @@
 <a class="viewcode-back" href="../../docs/source/modulos.html#modulos.utils.new_ctx">[documentos]</a>
 <span class="k">def</span> <span class="nf">new_ctx</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates a wrapper context dictionary for rendering templates, based on user permissions</span>
-<span class="sd">    and additional parameters. It merges a given custom context passed as parameter with</span>
-<span class="sd">    the common context for the rest of the pages and views.</span>
+<span class="sd">    Crea un diccionario de contexto de envoltura para renderizar plantillas, basado en los permisos</span>
+<span class="sd">    del usuario y parámetros adicionales. Combina un contexto personalizado proporcionado como parámetro</span>
+<span class="sd">    con el contexto común para el resto de las páginas y vistas.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        req (HttpRequest): The HTTP request object containing user information.</span>
-<span class="sd">        params (dict): Additional parameters to be included in the context.</span>
+<span class="sd">    Argumentos:</span>
+<span class="sd">        req (HttpRequest): El objeto de solicitud HTTP que contiene información del usuario.</span>
+<span class="sd">        params (dict): Parámetros adicionales que se incluirán en el contexto.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: A dictionary containing the context for rendering templates, including user permissions</span>
-<span class="sd">        and a list of categories.</span>
+<span class="sd">    Retorna:</span>
+<span class="sd">        dict: Un diccionario que contiene el contexto para renderizar plantillas, incluyendo permisos</span>
+<span class="sd">        del usuario y una lista de categorías.</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; base = {&quot;form&quot;: OurForm, &quot;data&quot;: OurData}</span>
+<span class="sd">    Ejemplo:</span>
+<span class="sd">        &gt;&gt;&gt; base = {&quot;form&quot;: NuestroFormulario, &quot;data&quot;: NuestrosDatos}</span>
 <span class="sd">        &gt;&gt;&gt; ctx = new_ctx(request, base)</span>
 <span class="sd">        &gt;&gt;&gt; return render(req, &quot;template&quot;, ctx)</span>
 <span class="sd">    &quot;&quot;&quot;</span>

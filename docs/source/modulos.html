@@ -805,17 +805,17 @@ en el sistema de archivos local en la ubicación especificada por el usuario.</p
 <dl class="py function">
 <dt class="sig sig-object py" id="modulos.utils.new_ctx">
 <span class="sig-prename descclassname"><span class="pre">modulos.utils.</span></span><span class="sig-name descname"><span class="pre">new_ctx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/utils.html#new_ctx"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.utils.new_ctx" title="Link to this definition">¶</a></dt>
-<dd><p>Creates a wrapper context dictionary for rendering templates, based on user permissions
-and additional parameters. It merges a given custom context passed as parameter with
-the common context for the rest of the pages and views.</p>
+<dd><p>Crea un diccionario de contexto de envoltura para renderizar plantillas, basado en los permisos
+del usuario y parámetros adicionales. Combina un contexto personalizado proporcionado como parámetro
+con el contexto común para el resto de las páginas y vistas.</p>
 <dl>
-<dt>Args:</dt><dd><p>req (HttpRequest): The HTTP request object containing user information.
-params (dict): Additional parameters to be included in the context.</p>
+<dt>Argumentos:</dt><dd><p>req (HttpRequest): El objeto de solicitud HTTP que contiene información del usuario.
+params (dict): Parámetros adicionales que se incluirán en el contexto.</p>
 </dd>
-<dt>Returns:</dt><dd><p>dict: A dictionary containing the context for rendering templates, including user permissions
-and a list of categories.</p>
+<dt>Retorna:</dt><dd><p>dict: Un diccionario que contiene el contexto para renderizar plantillas, incluyendo permisos
+del usuario y una lista de categorías.</p>
 </dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">OurForm</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">OurData</span><span class="p">}</span>
+<dt>Ejemplo:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">NuestroFormulario</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">NuestrosDatos</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s2">&quot;template&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
 </pre></div>
