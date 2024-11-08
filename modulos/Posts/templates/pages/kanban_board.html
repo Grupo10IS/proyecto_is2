@@ -155,11 +155,6 @@
                                             <br>
                                             <small>Autor: {{ post.author }}</small>
                                         </a>
-                                        {% if "delete" in permisos %}
-                                            <a href="{% url 'inactivate_post' post.id %}"
-                                            class="btn btn-sm btn-danger mt-2"
-                                            >Inactivar</a>
-                                        {% endif %}
                                     </li>
                                 {% endfor %}
                             </ul>

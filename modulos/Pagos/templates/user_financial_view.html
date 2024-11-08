@@ -66,10 +66,11 @@
                 </tbody>
             </table>
 
-             <!-- Botón para descargar el Excel -->
-             <a href="{% url 'export_user_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
+            <!-- Botón para descargar el Excel -->
+            <a href="{% url 'export_user_payments_excel' %}?category={{ form.category.value }}&date_from={{ form.date_from.value }}&date_to={{ form.date_to.value }}&card_brand={{ form.card_brand.value }}&funding_type={{ form.funding_type.value }}" class="btn btn-success mb-4">Ver Excel</a>
 
-             <!-- Muestra el total de pagos realizados -->
+
+            <!-- Muestra el total de pagos realizados -->
             <h4>Total de Pagos Realizados: R${{ total_amount }}</h4>
         {% else %}
             <p>No se encontraron pagos.</p>

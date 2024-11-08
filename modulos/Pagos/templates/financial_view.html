@@ -75,7 +75,8 @@
                     </tbody>
                 </table>
                 <!-- Botón para descargar el Excel -->
-                <a href="{% url 'export_payments_excel' %}" class="btn btn-success mb-4">Ver Excel</a>
+                <a href="{% url 'export_payments_excel' %}?category={{ form.category.value }}&user={{ form.user.value }}&date_from={{ form.date_from.value }}&date_to={{ form.date_to.value }}&card_brand={{ form.card_brand.value }}&funding_type={{ form.funding_type.value }}" class="btn btn-success mb-4">Ver Excel</a>
+
 
                 <!-- Gráficos -->
             <div class="row">
