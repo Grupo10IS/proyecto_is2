@@ -11,8 +11,10 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
 - **Docker**: Puedes instalar Docker siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Si estás utilizando una versión más reciente de Docker, Docker Compose ya viene incluido. De lo contrario, puedes instalarlo siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/compose/install/).
 **LUEGO SOLO TIENES QUE EJECUTAR**
-  deploy_container con la siguiente sintaxis -> Uso: ./deploy_container.sh [prod|dev]
-Antes verifica dar permiso de ejecucion -> chmod +x deploy_container.sh 🙇‍♂️
+  
+  deploy_container con la siguiente sintaxis -> Uso: ```./deploy_container.sh [prod|dev]```
+
+Antes verifica dar permiso de ejecucion -> ```chmod +x deploy_container.sh``` 🙇‍♂️
   
 Verifica las instalaciones ejecutando los siguientes comandos:
 
