@@ -1,37 +1,26 @@
-# First run
 
-Para levantar le proyecto se necesitan las siguientes dependencias:
+El sistema esta dockerizado y aqui las instrucciones
+# Proyecto de Despliegue Automatizado
 
-- Python 3.12 + pip
-- Postgres SQL 16.3
+Este repositorio contiene un script para desplegar automáticamente versiones específicas de una aplicación dentro de un contenedor Docker utilizando `docker` y `docker-compose`.
 
-Para la instalacion de las dependencias necesitara instalar `poetry`, para hacerlo se
-recomienda crear y activar un `virtualenv` en python y correr:
+## **Requisitos**
 
-```bash
-pip install -U poetry
-```
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
 
-Luego de ello poetry instalara todas las dependencias de manera automatica utilizando:
-
-```bash
-poetry install
-```
-
-Una vez instaladas las dependencias debera de configurar su base de datos y crear una nueva DB
-llamada `proyecto`.
-Luego de ello asegurese de estar corriendo el cliente de postgres.
-
-Posteriormente realize las migraciones necesarias con el comando:
+- **Docker**: Puedes instalar Docker siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/get-docker/).
+- **Docker Compose**: Si estás utilizando una versión más reciente de Docker, Docker Compose ya viene incluido. De lo contrario, puedes instalarlo siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/compose/install/).
+**LUEGO SOLO TIENES QUE EJECUTAR**
+  deploy_container con la siguiente sintaxis -> Uso: ./deploy_container.sh [prod|dev]
+Antes verifica dar permiso de ejecucion -> chmod +x deploy_container.sh 🙇‍♂️
+  
+Verifica las instalaciones ejecutando los siguientes comandos:
 
 ```bash
-python manage.py migrate
-```
+docker --version
+docker-compose --version
 
-Esto inicializara la base de datos e inicializara el sistema de roles y permisos de forma
-automatica.
-
-Para la administracion del sition debera crear un nuevo usuario administrador, el cual sera
+Para la administracion del sitio debera crear un nuevo usuario administrador, el cual sera
 utilizando el comando:
 
 ```bash
