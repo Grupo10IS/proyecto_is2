@@ -1,64 +1,48 @@
+# Deploy Automatizado de Infraestructura y Aplicación Django
 
-El sistema esta dockerizado y aqui las instrucciones
-# Proyecto de Despliegue Automatizado
+Este repositorio contiene un script automatizado para desplegar la infraestructura necesaria (en entornos de desarrollo o producción) y la aplicación Django basada en el repositorio [`Grupo10IS/proyecto_is2`](https://github.com/Grupo10IS/proyecto_is2).
 
-Este repositorio contiene un script para desplegar automáticamente versiones específicas de una aplicación dentro de un contenedor Docker utilizando `docker` y `docker-compose`.
+## Requisitos Previos
 
-## **Requisitos**
+Antes de usar este script, asegúrate de cumplir con los siguientes requisitos:
 
-Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
+- **Docker**: Instalado en tu sistema. [Guía de instalación de Docker](https://docs.docker.com/get-docker/)
+- **Docker Compose**: Instalado en tu sistema. [Guía de instalación de Docker Compose](https://docs.docker.com/compose/install/)
 
-- **Docker**: Puedes instalar Docker siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Si estás utilizando una versión más reciente de Docker, Docker Compose ya viene incluido. De lo contrario, puedes instalarlo siguiendo las instrucciones oficiales [aquí](https://docs.docker.com/compose/install/).
-**LUEGO SOLO TIENES QUE EJECUTAR**
-  
-  deploy_container con la siguiente sintaxis -> Uso: ```./deploy_container.sh [prod|dev]```
+## Cómo Usar
 
-Antes verifica dar permiso de ejecucion -> ```chmod +x deploy_container.sh``` 🙇‍♂️
-  
-Verifica las instalaciones ejecutando los siguientes comandos:
+### 1. Ejecutar el Script `deploy_full.sh`
 
-```bash
-docker --version
-docker-compose --version
+El script `deploy_full.sh` se encarga de:
 
-Para la administracion del sitio debera crear un nuevo usuario administrador, el cual sera
-utilizando el comando:
+1. **Elegir el entorno a desplegar**:
+   - **Producción (`prod`)**: Incluye Nginx y configuración optimizada para producción.
+   - **Desarrollo (`dev`)**: Incluye configuración más sencilla, sin Nginx.
 
-```bash
-python manage.py  new_admin
+2. **Levantar la infraestructura con Docker Compose**:
+   - Descarga y utiliza el repositorio correspondiente para el entorno seleccionado.
+
+3. **Seleccionar la versión de la aplicación Django a desplegar**:
+   - Lista los **tags disponibles** en el repositorio de la aplicación [`Grupo10IS/proyecto_is2`](https://github.com/Grupo10IS/proyecto_is2).
+   - Despliega la versión del tag seleccionado.
+
+4. **Reiniciar la base de datos (opcional)**:
+   - Limpia y reinicia la base de datos para aplicar las migraciones sin errores.
+
+5. **Aplicar migraciones y archivos estáticos automáticamente**:
+   - Configura el entorno Django para estar listo para usar.
+
+### 2. Ejecución
+
+Sigue estos pasos:
+
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/Grupo10IS/proyecto_is2.git
+   cd DeployAbsolutCSM
+
+
 ```
-
-NOTA:
-deberas contar con las siguientes variables de entorno en un archivo `.env` dentro de la raiz
-del proyecto:
-
-```bash
-# stripe
-export STRIPE_SECRET_KEY=stripe
-export STRIPE_PUBLIC_KEY=stripe
-
-# disqus
-export DISQUS_API_KEY=disqus
-export DISQUS_FORUM=disqus (default = 'makexfp-com')
-```
-
-Luego de estos pasos ya podra levantar el servidor con:
-
-```bash
-python manage.py  runserver
-```
-
-**TLDR**:
-
-```bash
-pip install -U poetry
-poetry install
-python manage.py migrate
-python manage.py  new_admin
-python manage.py  runserver
-```
-
 ### Testing
 
 Para correr la suit de test:
