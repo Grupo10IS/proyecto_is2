@@ -140,19 +140,38 @@
     });
 
     // Gráfico de líneas
+    
+    // Obtener los datos de la categoría por fecha
+    const categoryByDateData = {{ category_by_date| safe }};
+    // Generar todas las fechas únicas del eje X
+    const allDates = [...new Set(
+        Object.values(categoryByDateData).flatMap(category => category.labels)
+    )].sort();
+    // Obtener el contexto del gráfico
     const categoryLineCtx = document.getElementById("categoryLineChart").getContext("2d");
-    const categoryByDateData = {{ category_by_date|safe }};
-    const datasets = Object.keys(categoryByDateData).map((category, index) => ({
-        label: category,
-        data: categoryByDateData[category].data,
-        borderColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"][index % 5],
-        fill: false
-    }));
+    // Preparar los datasets
+    const datasets = Object.keys(categoryByDateData).map(category => {
+            const categoryData = categoryByDateData[category];
+
+            // Alinear datos con todas las fechas
+            const data = allDates.map(date => {
+                const index = categoryData.labels.indexOf(date);
+                return index !== -1 ? categoryData.data[index] : 0; // Rellenar con 0 si no hay datos
+            });
+
+            return {
+                label: category,
+                data: data,
+                borderColor: getRandomColor(), // Color único por categoría
+                fill: false,  // No llenar el área bajo la línea
+            };
+        });
+
 
     new Chart(categoryLineCtx, {
         type: "line",
         data: {
-            labels: categoryByDateData[Object.keys(categoryByDateData)[0]].labels,
+            labels: allDates,  // Usar las fechas únicas como etiquetas del eje X
             datasets: datasets
         }
     });
