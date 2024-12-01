@@ -94,7 +94,7 @@ fi
 echo "Tags disponibles en el repositorio:"
 git --git-dir="$TMP_DIR_PROYECTO/repo" tag
 
-read -p "Introduce el tag del repositorio a desplegar: " TAG
+read -p "Introduce el NOMBRE del tag que quiere desplegar: " TAG
 
 # Paso 6: Clonar el tag dentro del contenedor web
 docker exec -it "$CONTAINER_WEB" /bin/bash -c "
