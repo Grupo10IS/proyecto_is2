@@ -1,9 +1,9 @@
 #!/bin/bash
 # Función para verificar si usar docker-compose o docker compose
 function get_compose_command {
-    if command -v docker-compose &> /dev/null; then
+    if command -v docker-compose &>/dev/null; then
         echo "docker-compose"
-    elif docker compose version &> /dev/null; then
+    elif docker compose version &>/dev/null; then
         echo "docker compose"
     else
         echo "Error: Ni docker-compose ni docker compose están instalados."
@@ -99,7 +99,8 @@ read -p "Introduce el NOMBRE del tag que quiere desplegar: " TAG
 # Paso 6: Clonar el tag dentro del contenedor web
 docker exec -it "$CONTAINER_WEB" /bin/bash -c "
     apt-get update &&
-    apt-get install -y git &&
+    apt-get install -y git python3 python3-pip &&
+    pip install poetry &&
     mkdir -p /app/temp_deploy &&
     cd /app/temp_deploy &&
     git clone $REPO_PROYECTO proyecto_temp &&
@@ -119,4 +120,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "¡Despliegue completado para el entorno '$ENTORNO' con el tag '$TAG'!"
+echo "¡Despliegue completado para el entorno '$REPO_ENTORNO' con el tag '$TAG'!"
