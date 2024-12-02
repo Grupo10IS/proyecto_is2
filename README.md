@@ -41,6 +41,14 @@ Para ejecutar el proyecto simplemente:
 python manage.py runserver
 ```
 
+
+Si es la primera vez que se corre el proyecto, debera crear un nuevo administrador del sistema
+con: 
+
+```bash
+python manage.py new_admin
+```
+
 ### Testing
 
 Para correr la suit de test:
@@ -138,3 +146,19 @@ lal terminacion de "web" o "db" o "nginx".
 
 Finalmente el contenedor docker sera exitosamente instanciado.
 Puede conectarse al servidor web desde el puerto ":80".
+
+## Creacion del admin
+
+Debera crear un nuevo administrador del sistema.
+Esto lo hace conectandose al contenedor con:
+
+```bash
+docker exec -it csm-web bash
+```
+
+Luego puede correr el siguiente comando, el cual le pedira que ingrese los datos para el nuevo
+admin: 
+
+```bash
+python manage.py new_admin
+```
