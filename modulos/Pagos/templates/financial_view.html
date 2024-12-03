@@ -152,7 +152,7 @@
     new Chart(categoryLineCtx, {
         type: "line",
         data: {
-            labels: categoryByDateData[Object.keys(categoryByDateData)[0]].labels,
+            labels: Object.keys({{date_labels|safe}}),
             datasets: datasets
         }
     });
