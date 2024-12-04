@@ -416,7 +416,7 @@
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
     <span class="p">),</span> <span class="s2">&quot;Deberia retornar 302 luego de la desactivacion del post.&quot;</span>
-    
+
     <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">post</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="s2">&quot;El post debería haber sido inactivado.&quot;</span>
 
@@ -429,13 +429,14 @@
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
     <span class="p">),</span> <span class="s2">&quot;Debería retornar 200 si el formulario es inválido.&quot;</span>
-    
+
     <span class="c1"># Check for presence of form errors</span>
     <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Deberían aparecer errores en el formulario.&quot;</span>
-    
-    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="s2">&quot;El post debería seguir activo después de un intento de inactivación fallido.&quot;</span></div>
 
+    <span class="n">post</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">post</span><span class="o">.</span><span class="n">active</span>
+    <span class="p">),</span> <span class="s2">&quot;El post debería seguir activo después de un intento de inactivación fallido.&quot;</span></div>
 
 
 

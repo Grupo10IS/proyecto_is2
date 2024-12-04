@@ -42,29 +42,36 @@
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s1">&#39;Pagos&#39;</span><span class="p">,</span> <span class="s1">&#39;0002_payment_status&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Pagos&quot;</span><span class="p">,</span> <span class="s2">&quot;0002_payment_status&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;card_brand&#39;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;card_brand&quot;</span><span class="p">,</span>
             <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;funding_type&#39;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;funding_type&quot;</span><span class="p">,</span>
             <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;last4&#39;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;last4&quot;</span><span class="p">,</span>
             <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-            <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;payment_method&#39;</span><span class="p">,</span>
-            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;credit_card&#39;</span><span class="p">,</span> <span class="s1">&#39;Tarjeta de Crédito&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;debit_card&#39;</span><span class="p">,</span> <span class="s1">&#39;Tarjeta de Débito&#39;</span><span class="p">)],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;credit_card&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;payment&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;payment_method&quot;</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+                <span class="n">choices</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;credit_card&quot;</span><span class="p">,</span> <span class="s2">&quot;Tarjeta de Crédito&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;debit_card&quot;</span><span class="p">,</span> <span class="s2">&quot;Tarjeta de Débito&quot;</span><span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">default</span><span class="o">=</span><span class="s2">&quot;credit_card&quot;</span><span class="p">,</span>
+                <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span></div>
 

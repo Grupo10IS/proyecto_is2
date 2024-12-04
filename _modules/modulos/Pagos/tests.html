@@ -32,10 +32,11 @@
           <div class="body" role="main">
             
   <h1>Código fuente para modulos.Pagos.tests</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Payment</span><span class="p">,</span> <span class="n">Category</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Payment</span>
 
 <span class="n">User</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
 
@@ -48,7 +49,7 @@
 <a class="viewcode-back" href="../../../docs/source/modulos.Pagos.html#modulos.Pagos.tests.PaymentModelTests.setUp">[documentos]</a>
     <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Crear un usuario de prueba</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;12345&quot;</span><span class="p">)</span>
 
         <span class="c1"># Crear una categoría de prueba</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;TestCategory&quot;</span><span class="p">)</span></div>
@@ -63,24 +64,24 @@
             <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
             <span class="n">amount</span><span class="o">=</span><span class="mf">100.00</span><span class="p">,</span>
             <span class="n">date_paid</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-            <span class="n">stripe_payment_id</span><span class="o">=</span><span class="s1">&#39;test_id&#39;</span><span class="p">,</span>
-            <span class="n">status</span><span class="o">=</span><span class="s1">&#39;completed&#39;</span><span class="p">,</span>
-            <span class="n">payment_method</span><span class="o">=</span><span class="s1">&#39;credit_card&#39;</span><span class="p">,</span>
-            <span class="n">funding_type</span><span class="o">=</span><span class="s1">&#39;credit&#39;</span><span class="p">,</span>
-            <span class="n">card_brand</span><span class="o">=</span><span class="s1">&#39;visa&#39;</span><span class="p">,</span>
-            <span class="n">last4</span><span class="o">=</span><span class="s1">&#39;1234&#39;</span>
+            <span class="n">stripe_payment_id</span><span class="o">=</span><span class="s2">&quot;test_id&quot;</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+            <span class="n">payment_method</span><span class="o">=</span><span class="s2">&quot;credit_card&quot;</span><span class="p">,</span>
+            <span class="n">funding_type</span><span class="o">=</span><span class="s2">&quot;credit&quot;</span><span class="p">,</span>
+            <span class="n">card_brand</span><span class="o">=</span><span class="s2">&quot;visa&quot;</span><span class="p">,</span>
+            <span class="n">last4</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Comprueba que el pago fue creado correctamente</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;testuser&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;TestCategory&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s2">&quot;testuser&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;TestCategory&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="mf">100.00</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">stripe_payment_id</span><span class="p">,</span> <span class="s1">&#39;test_id&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s1">&#39;completed&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s1">&#39;credit_card&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">funding_type</span><span class="p">,</span> <span class="s1">&#39;credit&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">card_brand</span><span class="p">,</span> <span class="s1">&#39;visa&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">last4</span><span class="p">,</span> <span class="s1">&#39;1234&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">stripe_payment_id</span><span class="p">,</span> <span class="s2">&quot;test_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s2">&quot;completed&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s2">&quot;credit_card&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">funding_type</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">card_brand</span><span class="p">,</span> <span class="s2">&quot;visa&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">last4</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PaymentModelTests.test_valor_predeterminado">
@@ -88,14 +89,12 @@
     <span class="k">def</span> <span class="nf">test_valor_predeterminado</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Crear un nuevo objeto Payment con valores predeterminados</span>
         <span class="n">nuevo_pago</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-            <span class="n">amount</span><span class="o">=</span><span class="mf">50.00</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">50.00</span>
         <span class="p">)</span>
 
         <span class="c1"># Verificar valores predeterminados</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s1">&#39;credit_card&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s2">&quot;credit_card&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PaymentModelTests.test_pago_con_metodo_debito">
@@ -106,15 +105,15 @@
             <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
             <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
             <span class="n">amount</span><span class="o">=</span><span class="mf">75.00</span><span class="p">,</span>
-            <span class="n">payment_method</span><span class="o">=</span><span class="s1">&#39;debit_card&#39;</span><span class="p">,</span>
-            <span class="n">card_brand</span><span class="o">=</span><span class="s1">&#39;mastercard&#39;</span><span class="p">,</span>
-            <span class="n">last4</span><span class="o">=</span><span class="s1">&#39;5678&#39;</span>
+            <span class="n">payment_method</span><span class="o">=</span><span class="s2">&quot;debit_card&quot;</span><span class="p">,</span>
+            <span class="n">card_brand</span><span class="o">=</span><span class="s2">&quot;mastercard&quot;</span><span class="p">,</span>
+            <span class="n">last4</span><span class="o">=</span><span class="s2">&quot;5678&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Verificar valores específicos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s1">&#39;debit_card&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">card_brand</span><span class="p">,</span> <span class="s1">&#39;mastercard&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">last4</span><span class="p">,</span> <span class="s1">&#39;5678&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">payment_method</span><span class="p">,</span> <span class="s2">&quot;debit_card&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">card_brand</span><span class="p">,</span> <span class="s2">&quot;mastercard&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">last4</span><span class="p">,</span> <span class="s2">&quot;5678&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PaymentModelTests.test_str_method">
@@ -122,12 +121,12 @@
     <span class="k">def</span> <span class="nf">test_str_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Crear un nuevo objeto Payment</span>
         <span class="n">nuevo_pago</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-            <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
         <span class="p">)</span>
         <span class="c1"># Verificar el método __str__</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Payment </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Payment </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PaymentModelTests.test_actualizacion_pago">
@@ -135,9 +134,7 @@
     <span class="k">def</span> <span class="nf">test_actualizacion_pago</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Crear un nuevo objeto Payment</span>
         <span class="n">nuevo_pago</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-            <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
         <span class="p">)</span>
         <span class="c1"># Actualizar el pago</span>
         <span class="n">nuevo_pago</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">40.00</span>
@@ -152,9 +149,7 @@
     <span class="k">def</span> <span class="nf">test_eliminacion_pago</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Crear un nuevo objeto Payment</span>
         <span class="n">nuevo_pago</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-            <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">30.00</span>
         <span class="p">)</span>
         <span class="c1"># Eliminar el pago</span>
         <span class="n">nuevo_pago_id</span> <span class="o">=</span> <span class="n">nuevo_pago</span><span class="o">.</span><span class="n">id</span>
@@ -170,10 +165,7 @@
     <span class="k">def</span> <span class="nf">test_fecha_pago_futura</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">futuro</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timezone</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">nuevo_pago</span> <span class="o">=</span> <span class="n">Payment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-            <span class="n">amount</span><span class="o">=</span><span class="mf">50.00</span><span class="p">,</span>
-            <span class="n">date_paid</span><span class="o">=</span><span class="n">futuro</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">50.00</span><span class="p">,</span> <span class="n">date_paid</span><span class="o">=</span><span class="n">futuro</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="n">nuevo_pago</span><span class="o">.</span><span class="n">date_paid</span><span class="p">,</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span></div>
 </div>
