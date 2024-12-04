@@ -212,9 +212,7 @@ def get_highlighted_post():
         .first()
     )
 
-    if post_destacado == None: 
+    if post_destacado == None:
         return None
 
     return post_destacado.post
-
-

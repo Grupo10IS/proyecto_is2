@@ -52,7 +52,10 @@ permissions = [
     (POST_DELETE_PERMISSION, "Permiso para eliminar publicaciones"),
     (POST_POST_PERMISSION, "Permiso para crear publicaciones"),
     (POST_HIGHLIGHT_PERMISSION, "Permiso para destacar publicaciones"),
-    (POST_MANAGE_PERMISSION, "Permiso para listar y manejar los posts de todos los autores"),
+    (
+        POST_MANAGE_PERMISSION,
+        "Permiso para listar y manejar los posts de todos los autores",
+    ),
     # flujo de publicacion
     (POST_APPROVE_PERMISSION, "Permiso para aprobar revisiones de posts"),
     (POST_REJECT_PERMISSION, "Permiso para rechazar publicaciones"),

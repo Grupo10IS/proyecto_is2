@@ -33,9 +33,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <a href="{% url 'category_detail' category.id %}"
                                            class="btn btn-primary btn-sm">Ver más</a>
-                                        {% if category.id in acquired_categories %}
-                                            <span class="badge bg-success text-white">Ya Adquirida</span>
-                                        {% endif %}
+                                        {% if category.id in acquired_categories %}<span class="badge bg-success text-white">Ya Adquirida</span>{% endif %}
                                     </div>
                                 </div>
                             </div>

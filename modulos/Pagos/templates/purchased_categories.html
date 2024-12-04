@@ -6,22 +6,22 @@
 {% block content %}
     <div class="container mt-5">
         <div class="p-4 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <h1 class="mb-4 fst-italic display-4">Categorías Premium Compradas</h1>
-        {% if purchased_categories %}
-            <div class="row">
-                {% for payment in purchased_categories %}
-                    <div class="col-md-4 mb-4">
-                        <div class="p-4 card h-100 card-container">
-                            <h5 class="card-title">{{ payment.category.name }}</h5>
-                            <p class="card-text">{{ payment.category.description }}</p>
-                            <p class="text-muted">Comprada el {{ payment.date_paid|date:"d/m/Y" }}</p>
+            <h1 class="mb-4 fst-italic display-4">Categorías Premium Compradas</h1>
+            {% if purchased_categories %}
+                <div class="row">
+                    {% for payment in purchased_categories %}
+                        <div class="col-md-4 mb-4">
+                            <div class="p-4 card h-100 card-container">
+                                <h5 class="card-title">{{ payment.category.name }}</h5>
+                                <p class="card-text">{{ payment.category.description }}</p>
+                                <p class="text-muted">Comprada el {{ payment.date_paid|date:"d/m/Y" }}</p>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>No has comprado ninguna categoría premium.</p>
-        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No has comprado ninguna categoría premium.</p>
+            {% endif %}
+        </div>
     </div>
-</div>
 {% endblock content %}
