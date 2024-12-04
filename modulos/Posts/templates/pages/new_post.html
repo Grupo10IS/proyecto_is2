@@ -1,97 +1,73 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post" enctype="multipart/form-data" action="./" style="margin-left: 30px"  novalidate>
+    <form method="post"
+          enctype="multipart/form-data"
+          action="./"
+          style="margin-left: 30px"
+          novalidate>
         {% csrf_token %}
-        
         {{ form.media }}
-        
         <!-- Título -->
         <div class="form-group">
             <label for="id_title">Título:</label>
             {{ form.title }}
-            {% if form.title.errors %}
-                <div class="text-danger">
-                    {{ form.title.errors }}
-                </div>
-            {% endif %}
+            {% if form.title.errors %}<div class="text-danger">{{ form.title.errors }}</div>{% endif %}
         </div>
-
         <!-- Portada -->
         <div class="form-group mt-2">
             <label for="id_image">Portada:</label>
             {{ form.image }}
             <p class="help-block">Formatos permitidos: .webp, .png, .jpg, .jpeg</p>
-            {% if form.image.errors %}
-                <div class="text-danger">
-                    {{ form.image.errors }}
-                </div>
-            {% endif %}
+            {% if form.image.errors %}<div class="text-danger">{{ form.image.errors }}</div>{% endif %}
         </div>
-
         <!-- Categoría -->
         <div class="form-group mt-2">
             <label for="id_category">Categoría:</label>
             {{ form.category }}
-            {% if form.category.errors %}
-                <div class="text-danger">
-                    {{ form.category.errors }}
-                </div>
-            {% endif %}
+            {% if form.category.errors %}<div class="text-danger">{{ form.category.errors }}</div>{% endif %}
         </div>
-
         <!-- Tags -->
         <div class="form-group mt-2">
             <label for="id_tags">Tags:</label>
             {{ form.tags }}
         </div>
-
         <!-- Contenido -->
         <div class="form-group mt-2">
             <label for="id_content">Contenido:</label>
             {{ form.content }}
-            {% if form.content.errors %}
-                <div class="text-danger">
-                    {{ form.content.errors }}
-                </div>
-            {% endif %}
+            {% if form.content.errors %}<div class="text-danger">{{ form.content.errors }}</div>{% endif %}
         </div>
-
         <!-- Fecha de publicación -->
         <div class="form-group mt-2">
             <label for="id_publication_date">Fecha de publicación:</label>
             {{ form.publication_date }}
-            {% if form.publication_date.errors %}
-                <div class="text-danger">
-                    {{ form.publication_date.errors }}
-                </div>
-            {% endif %}
+            {% if form.publication_date.errors %}<div class="text-danger">{{ form.publication_date.errors }}</div>{% endif %}
         </div>
-
         <!-- Fecha de validez -->
         <div class="form-group mt-2">
             <label for="id_expiration_date">Fecha de validez:</label>
             {{ form.expiration_date }}
-            {% if form.expiration_date.errors %}
-                <div class="text-danger">
-                    {{ form.expiration_date.errors }}
-                </div>
-            {% endif %}
+            {% if form.expiration_date.errors %}<div class="text-danger">{{ form.expiration_date.errors }}</div>{% endif %}
         </div>
-
         <!-- Previsualización de la imagen -->
         <div class="mb-3">
             <label for="imagePreview" class="form-label">Vista previa de la portada:</label>
             <img id="imagePreview"
                  src="#"
                  alt="Vista previa de la portada"
-                 style="display: none; width: 200px; height: auto; margin-top: 10px">
+                 style="display: none;
+                        width: 200px;
+                        height: auto;
+                        margin-top: 10px">
         </div>
-
         <!-- Botón para guardar -->
-        <input type="submit" class="btn btn-secondary" value="Guardar" style="background-color: gray; border-color: gray; color: white">
-
+        <input type="submit"
+               class="btn btn-secondary"
+               value="Guardar"
+               style="background-color: gray;
+                      border-color: gray;
+                      color: white">
     </form>
-
     <!-- Script para la previsualización de la imagen -->
     <script>
         document.querySelector('input[type="file"]').addEventListener('change', function(event) {

@@ -356,7 +356,7 @@ def test_inactivate_post_view(client):
     assert (
         response.status_code == 302
     ), "Deberia retornar 302 luego de la desactivacion del post."
-    
+
     post.refresh_from_db()
     assert not post.active, "El post debería haber sido inactivado."
 
@@ -369,13 +369,14 @@ def test_inactivate_post_view(client):
     assert (
         response.status_code == 200
     ), "Debería retornar 200 si el formulario es inválido."
-    
+
     # Check for presence of form errors
     assert response.content != "", "Deberían aparecer errores en el formulario."
-    
-    post.refresh_from_db()
-    assert post.active, "El post debería seguir activo después de un intento de inactivación fallido."
 
+    post.refresh_from_db()
+    assert (
+        post.active
+    ), "El post debería seguir activo después de un intento de inactivación fallido."
 
 
 @pytest.mark.django_db
