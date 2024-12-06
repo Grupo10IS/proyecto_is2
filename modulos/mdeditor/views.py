@@ -26,9 +26,7 @@ class UploadView(generic.View):
         return super(UploadView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not request.user.has_perm(
-            "UserProfile." + POST_CREATE_PERMISSION
-        ):
+        if not request.user.is_authenticated or not request.user.has_perm(POST_CREATE_PERMISSION):
             return HttpResponseForbidden(
                 "No tienes permiso para acceder a esta página."
             )
