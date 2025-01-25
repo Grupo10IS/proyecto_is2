@@ -1,8 +1,8 @@
 
-1. [Desarrollo en ambiente local](#Para desarrollo en el ambiente local)
+1. [Desarrollo en ambiente local](#Para-desarrollo-en-el-ambiente-local)
     * [Ejecucion](#ejecucion)
     * [Testing](#testing)
-2. [Deploy automatizado con Docker](#Deploy Automatizado utilizando Docker)
+2. [Deploy automatizado con Docker](#Deploy-Automatizado-utilizando-Docker)
     * [Requisitos Previos](#requisitos-previos)
     * [Ambiente de produccion y testing](#ambiente-de-produccion-y-testing)
     * [Acerca de `deploy_full.sh`](#acerca-de-`deploy_full.sh`)
