@@ -8,7 +8,7 @@
     * [Ambiente de produccion y testing](#ambiente-de-produccion-y-testing)
     * [Acerca de `deploy_full.sh`](#acerca-de-`deploy_full.sh`)
 
-El proyecto cuenta con generacion de **[documentacion automatizada](https://grupo10is.github.io/proyecto_is2/)**.
+El proyecto cuenta con generacion de **[documentacion automatizada](https://elias-gill.github.io/django_cms/)**.
 
 # Para desarrollo en el ambiente local
 
