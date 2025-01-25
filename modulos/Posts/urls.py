@@ -4,7 +4,6 @@ from .views import *
 
 urlpatterns = [
     # -- vistas de usuario --
-    path("", list_contenidos_view, name="list_contenidos"),
     path("admin", manage_posts, name="post_list"),
     path("inactives", manage_inactive_posts, name="inactives_list"),
     path("<int:id>/", view_post, name="post_detail"),
