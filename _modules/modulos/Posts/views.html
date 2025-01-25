@@ -65,7 +65,7 @@
 <span class="kn">from</span> <span class="nn">modulos.Posts.buscador</span> <span class="kn">import</span> <span class="n">buscador</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.disqus</span> <span class="kn">import</span> <span class="n">get_disqus_stats</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.forms</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ModalWithMsgForm</span><span class="p">,</span> <span class="n">NewPostForm</span><span class="p">,</span>
-                                 <span class="n">PostsListFilter</span><span class="p">,</span> <span class="n">SearchPostForm</span><span class="p">)</span>
+                                 <span class="n">SearchPostForm</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">modulos.Posts.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Destacado</span><span class="p">,</span> <span class="n">Log</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">RestorePost</span><span class="p">,</span> <span class="n">Version</span><span class="p">,</span>
                                   <span class="n">get_highlighted_post</span><span class="p">,</span> <span class="n">get_popular_posts</span><span class="p">,</span>
                                   <span class="n">new_creation_log</span><span class="p">,</span> <span class="n">new_edition_log</span><span class="p">)</span>
@@ -936,76 +936,6 @@
 
 
 
-<div class="viewcode-block" id="list_contenidos_view">
-<a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.list_contenidos_view">[documentos]</a>
-<span class="k">def</span> <span class="nf">list_contenidos_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vista para listar todos los contenidos por categoría con opción de búsqueda y filtrado.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">categories</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">post__status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">post__active</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
-
-    <span class="c1"># Inicializa el formulario de búsqueda con los parámetros GET si existen</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">PostsListFilter</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span>
-
-    <span class="c1"># Construimos un query dinámico para los filtros, excluyendo posts expirados</span>
-    <span class="n">posts_query</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">Q</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">)</span>
-        <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="o">&amp;</span> <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__gt</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">expiration_date__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Aplicar filtros si el formulario es válido</span>
-    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-        <span class="c1"># Filtro por palabra clave en el título o contenido</span>
-        <span class="n">input_search</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">input_search</span><span class="p">:</span>
-            <span class="n">posts_query</span> <span class="o">=</span> <span class="n">posts_query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="n">input_search</span><span class="p">))</span>
-
-        <span class="c1"># Filtro por categoría</span>
-        <span class="n">category</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
-            <span class="n">posts_query</span> <span class="o">=</span> <span class="n">posts_query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
-
-        <span class="c1"># Filtro por autor</span>
-        <span class="n">author</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">author</span><span class="p">:</span>
-            <span class="n">posts_query</span> <span class="o">=</span> <span class="n">posts_query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">author__username__icontains</span><span class="o">=</span><span class="n">author</span><span class="p">)</span>
-
-        <span class="c1"># Filtro por fecha de publicación</span>
-        <span class="n">publication_date</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_date&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">publication_date</span><span class="p">:</span>
-            <span class="n">posts_query</span> <span class="o">=</span> <span class="n">posts_query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">publication_date</span><span class="o">=</span><span class="n">publication_date</span><span class="p">)</span>
-
-    <span class="c1"># Crear un diccionario para almacenar los posts paginados por categoría</span>
-    <span class="n">posts_by_category</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
-        <span class="n">filtered_posts</span> <span class="o">=</span> <span class="n">posts_query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
-
-        <span class="c1"># Paginación: 6 posts por página para cada categoría</span>
-        <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">filtered_posts</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>  <span class="c1"># 6 posts por página</span>
-        <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;page_</span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span>
-        <span class="p">)</span>  <span class="c1"># Se captura la página de cada categoría</span>
-        <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">filtered_posts</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">posts_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_obj</span>
-
-    <span class="c1"># Crear el contexto y pasarlo a la plantilla</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="n">new_ctx</span><span class="p">(</span>
-        <span class="n">request</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;posts_by_category&quot;</span><span class="p">:</span> <span class="n">posts_by_category</span><span class="p">,</span>
-            <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>  <span class="c1"># Pasar el formulario al contexto</span>
-        <span class="p">},</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;pages/list_contenidos.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
-
-
-
 <div class="viewcode-block" id="highlight_post">
 <a class="viewcode-back" href="../../../docs/source/modulos.Posts.html#modulos.Posts.views.highlight_post">[documentos]</a>
 <span class="nd">@login_required</span>
@@ -1290,7 +1220,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2024, Grupo 6 IS2.
+      &#169;2025, Grupo 6 IS2.
       
       |
       Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
