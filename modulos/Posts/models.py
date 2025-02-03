@@ -206,13 +206,14 @@ def get_highlighted_post():
     a la lista.
     """
     # Obtener el post destacado (destacado por el admin)
-    post_destacado = (
-        Destacado.objects.filter(post__status=Post.PUBLISHED, post__active=True)
-        .order_by("-date")
-        .first()
-    )
+    # post_destacado = (
+    #     Destacado.objects.filter(post__status=Post.PUBLISHED, post__active=True)
+    #     .order_by("-date")
+    #     .first()
+    # )
 
-    if post_destacado == None:
-        return None
+    # if post_destacado == None:
+        # return None
 
-    return post_destacado.post
+    # return post_destacado.post
+    return None

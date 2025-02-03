@@ -23,15 +23,12 @@ from modulos.Authorization.permissions import (KANBAN_VIEW_PERMISSION,
                                                POST_MANAGE_PERMISSION,
                                                POST_PUBLISH_PERMISSION,
                                                POST_REJECT_PERMISSION,
-                                               POST_REVIEW_PERMISSION,
-                                               user_has_access_to_category)
+                                               POST_REVIEW_PERMISSION)
 from modulos.Authorization.roles import ADMIN
 from modulos.Categories.models import Category
-from modulos.Posts import signals
 from modulos.Posts.buscador import buscador
 from modulos.Posts.disqus import get_disqus_stats
-from modulos.Posts.forms import (ModalWithMsgForm, NewPostForm,
-                                 SearchPostForm)
+from modulos.Posts.forms import ModalWithMsgForm, NewPostForm, SearchPostForm
 from modulos.Posts.models import (Destacado, Log, Post, RestorePost, Version,
                                   get_highlighted_post, get_popular_posts,
                                   new_creation_log, new_edition_log)
@@ -139,72 +136,14 @@ def view_post(request, id):
     category = post.category
 
     # Si la categoría es gratis, mostrar el post completo sin restricción
-    if category.tipo == category.GRATIS:
-        # Mostrar el detalle completo del post
-        tags = post.tags.split(",") if post.tags else []
-        tags = [tag.strip() for tag in tags]
-
-        # Verifica si el post es favorito del usuario actual
-        es_favorito = (
-            post.favorites.filter(id=user.id).exists()
-            if user.is_authenticated
-            else False
-        )
-
-        ctx = new_ctx(
-            request,
-            {
-                "post": post,
-                "tags": tags,
-                "categories": Category.objects.all(),
-                "es_favorito": es_favorito,
-            },
-        )
-
-        return render(request, "pages/post_detail.html", context=ctx)
-
-    # Si el usuario no está autenticado, mostrar la previsualización
-    if isinstance(user, AnonymousUser) or (
-        user.is_authenticated and not user_has_access_to_category(user, category)
-    ):
-        preview_content = post.content.split()[
-            :50
-        ]  # Truncar a las primeras 50 palabras
-        preview_content = " ".join(preview_content) + "..."
-        modal_message = None
-
-        # Mensaje diferente según el tipo de categoría
-        if isinstance(user, AnonymousUser):
-            modal_message = (
-                "Para poder ver esta publicación debes iniciar sesión o registrarte."
-            )
-        elif category.tipo == category.PREMIUM:
-            modal_message = "No tienes acceso a esta publicación. Debes suscribirte para poder ver el contenido pagando 1$."
-        elif category.tipo == category.SUSCRIPCION:
-            modal_message = (
-                "Para poder ver esta publicación debes ser suscriptor de nuestra web."
-            )
-
-        return render(
-            request,
-            "pages/post_preview.html",
-            new_ctx(
-                request,
-                {
-                    "post": post,
-                    "category": category,
-                    "preview_content": preview_content,
-                    "modal_message": modal_message,
-                },
-            ),
-        )
-
-    # Si el usuario tiene acceso, mostrar el detalle completo del post
+    # Mostrar el detalle completo del post
     tags = post.tags.split(",") if post.tags else []
     tags = [tag.strip() for tag in tags]
 
     # Verifica si el post es favorito del usuario actual
-    es_favorito = post.favorites.filter(id=request.user.id).exists()
+    es_favorito = (
+        post.favorites.filter(id=user.id).exists() if user.is_authenticated else False
+    )
 
     ctx = new_ctx(
         request,

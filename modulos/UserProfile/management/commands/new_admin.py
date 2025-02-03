@@ -8,7 +8,7 @@ import re
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modulos.Authorization.roles import ADMIN
+from modulos.Authorization.roles import ADMIN, EDITOR, PUBLISHER
 from modulos.UserProfile.models import UserProfile
 
 # NOTE: para propositos de testing esta estructurado de esa manera
@@ -77,8 +77,14 @@ def create_admin(c: _credentials):
         username=c.username, email=c.email, password=c.paswd
     )
 
+    # asign groups
     admin_group = Group.objects.get(name=ADMIN)
+    editor_group = Group.objects.get(name=EDITOR)
+    publisher_group = Group.objects.get(name=PUBLISHER)
+
     user_profile.groups.add(admin_group)
+    user_profile.groups.add(publisher_group)
+    user_profile.groups.add(editor_group)
 
     user_profile.save()
 

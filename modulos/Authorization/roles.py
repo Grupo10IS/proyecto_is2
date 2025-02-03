@@ -27,7 +27,6 @@ default_roles = {
         POST_HIGHLIGHT_PERMISSION,
         POST_MANAGE_PERMISSION,
     ],
-    SUBSCRIBER: [PAYMENT_PERMISSION],  # solo el usuario tiene permisos para comprar
     AUTOR: [POST_CREATE_PERMISSION, KANBAN_VIEW_PERMISSION],
     EDITOR: [
         POST_EDIT_PERMISSION,

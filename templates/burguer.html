@@ -119,21 +119,6 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                {% if has_financial_acces or has_payment %}
-                    <h5>Gestión de Finanzas</h5>
-                    <div>
-                        {% if has_financial_acces %}
-                            <a class="nav-link flex-column"
-                               href="{% url 'financial_view' %}"
-                               role="button">Finanzas del sitio</a>
-                        {% endif %}
-                        {% if has_payment %}
-                            <a class="nav-link flex-column"
-                               href="{% url 'user_payment_view' %}"
-                               role="button">Mis Pagos</a>
-                        {% endif %}
-                    </div>
-                {% endif %}
             </nav>
             <!-- Mostrar roles del usuario -->
             <h4>Roles de {{ user.username }}</h4>

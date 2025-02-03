@@ -23,22 +23,12 @@ class Category(models.Model):
     ACTIVO = "Activo"
     INACTIVO = "Inactivo"
 
-    PREMIUM = "Premium"
-    SUSCRIPCION = "Suscripcion"
-    GRATIS = "Gratis"
-
     LIBRE = "Libre"
     MODERADA = "Moderada"
 
     ESTADO_CHOICES = [
         (ACTIVO, ACTIVO),
         (INACTIVO, INACTIVO),
-    ]
-
-    TIPO_CHOICES = [
-        (PREMIUM, PREMIUM),
-        (GRATIS, GRATIS),
-        (SUSCRIPCION, SUSCRIPCION),
     ]
 
     MODERACION_CHOICES = [
@@ -51,7 +41,6 @@ class Category(models.Model):
     )
     description = models.TextField(blank=True, null=True, verbose_name="Descripción")
     status = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=ACTIVO)
-    tipo = models.CharField(max_length=15, choices=TIPO_CHOICES, default=GRATIS)
     moderacion = models.CharField(
         max_length=15, choices=MODERACION_CHOICES, default=MODERADA
     )

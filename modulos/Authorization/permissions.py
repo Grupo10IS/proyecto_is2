@@ -3,7 +3,6 @@ from os import _exit
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
-from modulos.Pagos.models import Payment
 from modulos.UserProfile.models import UserProfile
 
 #####
@@ -37,7 +36,6 @@ CATEGORY_MANAGE_PERMISSION = "category_manage_permission"
 
 # financiero
 VIEW_PURCHASED_CATEGORIES = "view_purchased_categories"
-PAYMENT_PERMISSION = "payment_permission"
 
 # reportes de contenido
 VIEW_REPORTS = "view_reports"
@@ -72,10 +70,6 @@ permissions = [
         VIEW_PURCHASED_CATEGORIES,
         "Permiso para ver categorias compradas de todos los suscriptores",
     ),
-    (
-        PAYMENT_PERMISSION,
-        "Permiso para realizar compras de categorias",
-    ),
     # reportes de contenido
     (VIEW_REPORTS, "Permiso para listar los reportes de contenidos"),
 ]
@@ -106,40 +100,3 @@ def initialize_permissions():
             _exit(1)
 
     print(f"- Permisos incializados correctamente")
-
-
-def user_has_access_to_category(user, category):
-    """
-    Checks if the user has access to the given category.
-    """
-    # Verificar si la categoría es gratuita
-    if category.tipo == category.GRATIS:
-        return True
-
-    # Verificar si el usuario tiene un pago exitoso para esta categoría
-    if Payment.objects.filter(
-        user=user, category=category, status="completed"
-    ).exists():
-        return True
-
-    # Verificar si el usuario pertenece a grupos con acceso a la categoría
-    from modulos.Authorization.roles import (ADMIN, AUTOR, EDITOR, FINANCIAL,
-                                             PUBLISHER, SUBSCRIBER)
-
-    if (
-        category.tipo == category.SUSCRIPCION
-        and user.groups.filter(
-            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, SUBSCRIBER, FINANCIAL]
-        ).exists()
-    ):
-        return True
-
-    if (
-        category.tipo == category.PREMIUM
-        and user.groups.filter(
-            name__in=[ADMIN, PUBLISHER, EDITOR, AUTOR, FINANCIAL]
-        ).exists()
-    ):
-        return True
-
-    return False

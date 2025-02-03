@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-from decouple import config
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -32,13 +30,11 @@ STATICFILES_FINDERS = [
 
 # Application definition
 INSTALLED_APPS = [
-    "compressor",
     "modulos.mdeditor.apps.MdeditorConfig",
     "modulos.UserProfile.apps.UserprofileConfig",
     "modulos.Posts.apps.PostsConfig",
     "modulos.Authorization.apps.AuthorizationConfig",
     "modulos.Categories.apps.CategoriesConfig",
-    "modulos.Pagos.apps.PagosConfig",
     "modulos.Reports.apps.ReportsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -84,25 +80,12 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# NOTE: si vamos a cambiar deberiamos repensar la gh_action
-if os.environ.get("GH_ACTION") == "True":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "proyecto",
-            "USER": "postgres",
-            "PASSWORD": "postgres",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -149,23 +132,6 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 # Bootstrap library
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# SendGrid (correo electronico)
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = config("EMAIL_HOST", default="smtp.sendgrid.net")
-EMAIL_PORT = config("EMAIL_PORT", default=587)
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
-EMAIL_HOST_USER = config(
-    "EMAIL_HOST_USER", default="apikey"
-)  # Debe ser literalmente 'apikey'
-EMAIL_HOST_PASSWORD = config(
-    "EMAIL_HOST_PASSWORD", default="default"
-)  # Tu API Key de SendGrid
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="groupmakex@gmail.com")
-
-# stripe (pagos)
-STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="stripe")
-STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="stripe")
-
 # Disqus (comentarios)
-DISQUS_API_KEY = config("DISQUS_API_KEY", default="disqus_api")
-DISQUS_FORUM = config("DISQUS_FORUM", default="makexfp-com")
+# DISQUS_API_KEY = config("DISQUS_API_KEY", default="disqus_api")
+# DISQUS_FORUM = config("DISQUS_FORUM", default="makexfp-com")
