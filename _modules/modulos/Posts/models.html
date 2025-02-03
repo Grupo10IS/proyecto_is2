@@ -272,16 +272,17 @@
 <span class="sd">    a la lista.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Obtener el post destacado (destacado por el admin)</span>
-    <span class="n">post_destacado</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">Destacado</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">post__status</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">PUBLISHED</span><span class="p">,</span> <span class="n">post__active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-date&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">first</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="c1"># post_destacado = (</span>
+    <span class="c1">#     Destacado.objects.filter(post__status=Post.PUBLISHED, post__active=True)</span>
+    <span class="c1">#     .order_by(&quot;-date&quot;)</span>
+    <span class="c1">#     .first()</span>
+    <span class="c1"># )</span>
 
-    <span class="k">if</span> <span class="n">post_destacado</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># if post_destacado == None:</span>
+        <span class="c1"># return None</span>
 
-    <span class="k">return</span> <span class="n">post_destacado</span><span class="o">.</span><span class="n">post</span></div>
+    <span class="c1"># return post_destacado.post</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
 
 </pre></div>
 
@@ -317,6 +318,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.migrations.html">modulos.Authorization.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
@@ -331,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.html">modulos.mdeditor package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.migrations.html">modulos.mdeditor.migrations package</a></li>
 </ul>
 
 <div class="relations">

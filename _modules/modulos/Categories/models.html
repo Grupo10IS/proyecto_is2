@@ -59,22 +59,12 @@
     <span class="n">ACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Activo&quot;</span>
     <span class="n">INACTIVO</span> <span class="o">=</span> <span class="s2">&quot;Inactivo&quot;</span>
 
-    <span class="n">PREMIUM</span> <span class="o">=</span> <span class="s2">&quot;Premium&quot;</span>
-    <span class="n">SUSCRIPCION</span> <span class="o">=</span> <span class="s2">&quot;Suscripcion&quot;</span>
-    <span class="n">GRATIS</span> <span class="o">=</span> <span class="s2">&quot;Gratis&quot;</span>
-
     <span class="n">LIBRE</span> <span class="o">=</span> <span class="s2">&quot;Libre&quot;</span>
     <span class="n">MODERADA</span> <span class="o">=</span> <span class="s2">&quot;Moderada&quot;</span>
 
     <span class="n">ESTADO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">ACTIVO</span><span class="p">,</span> <span class="n">ACTIVO</span><span class="p">),</span>
         <span class="p">(</span><span class="n">INACTIVO</span><span class="p">,</span> <span class="n">INACTIVO</span><span class="p">),</span>
-    <span class="p">]</span>
-
-    <span class="n">TIPO_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">PREMIUM</span><span class="p">,</span> <span class="n">PREMIUM</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">GRATIS</span><span class="p">,</span> <span class="n">GRATIS</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">SUSCRIPCION</span><span class="p">,</span> <span class="n">SUSCRIPCION</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">MODERACION_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
@@ -87,7 +77,6 @@
     <span class="p">)</span>
     <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s2">&quot;Descripción&quot;</span><span class="p">)</span>
     <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ESTADO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ACTIVO</span><span class="p">)</span>
-    <span class="n">tipo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TIPO_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">GRATIS</span><span class="p">)</span>
     <span class="n">moderacion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">MODERACION_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MODERADA</span>
     <span class="p">)</span>
@@ -137,6 +126,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.html">modulos.Authorization package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Authorization.migrations.html">modulos.Authorization.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.Pagos.html">modulos.Pagos package</a></li>
@@ -151,6 +141,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.html">modulos.mdeditor package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/source/modulos.mdeditor.migrations.html">modulos.mdeditor.migrations package</a></li>
 </ul>
 
 <div class="relations">

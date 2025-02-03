@@ -9,7 +9,6 @@ Subpackages
 
    modulos.Authorization
    modulos.Categories
-   modulos.Pagos
    modulos.Posts
    modulos.Reports
    modulos.UserProfile

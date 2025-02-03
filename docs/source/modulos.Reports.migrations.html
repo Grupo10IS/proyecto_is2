@@ -47,7 +47,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Reports.migrations.0001_initial.Migration.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0008_alter_post_author_alter_post_category_and_more'),</span> <span class="pre">('UserProfile',</span> <span class="pre">'__first__')]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0001_initial.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Posts',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0001_initial.Migration.dependencies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -57,45 +57,31 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="modulos.Reports.migrations.0001_initial.Migration.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Report',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('reason',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('description',</span> <span class="pre">&lt;django.db.models.fields.TextField&gt;),</span> <span class="pre">('created_at',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('content',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0001_initial.Migration.operations" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Report',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('reason',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('description',</span> <span class="pre">&lt;django.db.models.fields.TextField&gt;),</span> <span class="pre">('creation_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('is_handled',</span> <span class="pre">&lt;django.db.models.fields.BooleanField&gt;),</span> <span class="pre">('content',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0001_initial.Migration.operations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-modulos.Reports.migrations.0002_rename_created_at_report_creation_date">
-<span id="modulos-reports-migrations-0002-rename-created-at-report-creation-date-module"></span><h2>modulos.Reports.migrations.0002_rename_created_at_report_creation_date module<a class="headerlink" href="#module-modulos.Reports.migrations.0002_rename_created_at_report_creation_date" title="Link to this heading">¶</a></h2>
+<section id="module-modulos.Reports.migrations.0002_initial">
+<span id="modulos-reports-migrations-0002-initial-module"></span><h2>modulos.Reports.migrations.0002_initial module<a class="headerlink" href="#module-modulos.Reports.migrations.0002_initial" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Reports.migrations.0002_rename_created_at_report_creation_date.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Reports/migrations/0002_rename_created_at_report_creation_date.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_initial.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Reports.migrations.0002_initial.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Reports/migrations/0002_initial.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Reports.migrations.0002_initial.Migration" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Reports',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_initial.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Reports',</span> <span class="pre">'0001_initial'),</span> <span class="pre">('UserProfile',</span> <span class="pre">'__first__')]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0002_initial.Migration.dependencies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameField</span>&#160; <span class="pre">model_name='report',</span> <span class="pre">old_name='created_at',</span> <span class="pre">new_name='creation_date'&gt;]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.operations" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-modulos.Reports.migrations.0003_report_is_handled">
-<span id="modulos-reports-migrations-0003-report-is-handled-module"></span><h2>modulos.Reports.migrations.0003_report_is_handled module<a class="headerlink" href="#module-modulos.Reports.migrations.0003_report_is_handled" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0003_report_is_handled.Migration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modulos.Reports.migrations.0003_report_is_handled.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/modulos/Reports/migrations/0003_report_is_handled.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#modulos.Reports.migrations.0003_report_is_handled.Migration" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0003_report_is_handled.Migration.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('Reports',</span> <span class="pre">'0002_rename_created_at_report_creation_date')]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0003_report_is_handled.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_initial.Migration.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#modulos.Reports.migrations.0002_initial.Migration.initial" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="modulos.Reports.migrations.0003_report_is_handled.Migration.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='report',</span> <span class="pre">name='is_handled',</span> <span class="pre">field=&lt;django.db.models.fields.BooleanField&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0003_report_is_handled.Migration.operations" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modulos.Reports.migrations.0002_initial.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='report',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#modulos.Reports.migrations.0002_initial.Migration.operations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -139,6 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.html">modulos.Authorization package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.html">modulos.Authorization.management package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.management.commands.html">modulos.Authorization.management.commands package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.Authorization.migrations.html">modulos.Authorization.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.html">modulos.Categories package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Categories.migrations.html">modulos.Categories.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.Pagos.html">modulos.Pagos package</a></li>
@@ -158,18 +145,11 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Reports.migrations.0002_rename_created_at_report_creation_date">modulos.Reports.migrations.0002_rename_created_at_report_creation_date module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0002_rename_created_at_report_creation_date.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Reports.migrations.0003_report_is_handled">modulos.Reports.migrations.0003_report_is_handled module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulos.Reports.migrations.0003_report_is_handled.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0003_report_is_handled.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0003_report_is_handled.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modulos.Reports.migrations.0002_initial">modulos.Reports.migrations.0002_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulos.Reports.migrations.0002_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0002_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0002_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modulos.Reports.migrations.0002_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -182,6 +162,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.management.commands.html">modulos.UserProfile.management.commands package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.UserProfile.migrations.html">modulos.UserProfile.migrations package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modulos.mdeditor.html">modulos.mdeditor package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modulos.mdeditor.migrations.html">modulos.mdeditor.migrations package</a></li>
 </ul>
 
 <div class="relations">

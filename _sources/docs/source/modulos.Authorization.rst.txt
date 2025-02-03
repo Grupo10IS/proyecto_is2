@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    modulos.Authorization.management
+   modulos.Authorization.migrations
 
 Submodules
 ----------

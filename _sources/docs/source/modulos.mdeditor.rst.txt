@@ -1,6 +1,14 @@
 modulos.mdeditor package
 ========================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   modulos.mdeditor.migrations
+
 Submodules
 ----------
 
